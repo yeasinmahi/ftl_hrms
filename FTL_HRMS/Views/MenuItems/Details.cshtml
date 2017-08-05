@@ -1,0 +1,91 @@
+﻿@model FTL_HRMS.Models.MenuItem
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MenuItem</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ParentItemId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParentItemId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ControllerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ControllerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActionName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AllFunctions)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AllFunctions)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ViewNames)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ViewNames)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MenuOrder)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MenuOrder)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IcnClass)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IcnClass)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

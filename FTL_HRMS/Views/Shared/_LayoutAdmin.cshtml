@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html class="">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8" />
+    <title>Role Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <link rel="shortcut icon" href="~/Content/AdminTemplate/assets/images/favicon.png" type="image/x-icon" />    <!-- Favicon -->
+    <link rel="apple-touch-icon-precomposed" href="~/Content/AdminTemplate/assets/images/apple-touch-icon-57-precomposed.png">	<!-- For iPhone -->
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/Content/AdminTemplate/assets/images/apple-touch-icon-114-precomposed.png">    <!-- For iPhone 4 Retina display -->
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/Content/AdminTemplate/assets/images/apple-touch-icon-72-precomposed.png">    <!-- For iPad -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/Content/AdminTemplate/assets/images/apple-touch-icon-144-precomposed.png">    <!-- For iPad Retina display -->
+    <!-- CORE CSS FRAMEWORK - START -->
+    <link href="~/Content/AdminTemplate/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/AdminTemplate/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminTemplate/assets/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminTemplate/assets/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminTemplate/assets/css/animate.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminTemplate/assets/plugins/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
+    <!-- CORE CSS FRAMEWORK - END -->
+    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
+    <link href="~/Content/AdminTemplate/assets/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/AdminTemplate/assets/plugins/morris-chart/css/morris.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/AdminTemplate/assets/plugins/jquery-ui/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/AdminTemplate/assets/plugins/jvectormap/jquery-jvectormap-2.0.1.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/AdminTemplate/assets/plugins/icheck/skins/minimal/white.css" rel="stylesheet" type="text/css" media="screen" />        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
+    <link href="~/Content/AdminTemplate/assets/plugins/datepicker/css/datepicker.css" rel="stylesheet" type="text/css" media="screen" />
+    <!-- CORE CSS TEMPLATE - START -->
+    <link href="~/Content/AdminTemplate/assets/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminTemplate/assets/css/responsive.css" rel="stylesheet" type="text/css" />
+    <!-- CORE CSS TEMPLATE - END -->
+
+    <script src="~/Content/assets/ckeditor/ckeditor.js" type="text/javascript"></script>
+
+
+    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
+    <link href="~/Content/AdminTemplate/assets/plugins/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/AdminTemplate/assets/plugins/datatables/extensions/TableTools/css/dataTables.tableTools.min.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/AdminTemplate/assets/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/AdminTemplate/assets/plugins/datatables/extensions/Responsive/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" type="text/css" media="screen" />        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
+
+
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class=" ">
+    <!-- START TOPBAR -->
+    <div class='page-topbar '>
+        @Html.Partial("~/Views/Shared/_TopBarAdmin.cshtml")
+    </div>
+    <!-- END TOPBAR -->
+    <!-- START CONTAINER -->
+    <div class="page-container row-fluid">
+        <div class="page-sidebar ">
+            @using Microsoft.AspNet.Identity;
+
+            @if (Request.IsAuthenticated)
+            {
+
+
+                FTL_HRMS.Models.HRMSDbContext db_ctx = new FTL_HRMS.Models.HRMSDbContext();
+                List<FTL_HRMS.ViewModels.VMMenuByRole> MenuItemsForRole = new List<FTL_HRMS.ViewModels.VMMenuByRole>();
+
+
+
+                UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+
+                string rolll = userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
+                string role_id = db_ctx.Roles.Where(t => t.Name == rolll).Select(g => g.Id).FirstOrDefault();
+
+                FTL_HRMS.Models.RolePermission RolePermissions = db_ctx.RolePermission.Where(t => t.RoleId == role_id).FirstOrDefault();
+                List<FTL_HRMS.Models.MenuItem> MenuItems = new List<FTL_HRMS.Models.MenuItem>();
+
+                FTL_HRMS.Models.MenuItem MenuItemsForCurrentUser = new FTL_HRMS.Models.MenuItem();
+
+                Dictionary<int, string> ParentMenuName = new Dictionary<int, string>();
+                string[] MenuIds = null;
+                if (RolePermissions != null)
+                {
+                    MenuIds = RolePermissions.MenuItemIdList.Split(',');
+
+                    List<int> IntMenuIds = new List<int>();
+                    foreach (string s in MenuIds)
+                    {
+                        IntMenuIds.Add(Convert.ToInt32(s));
+                    }
+
+                    foreach (int mId in IntMenuIds)
+                    {
+                        MenuItemsForCurrentUser = db_ctx.MenuItem.Where(t => t.Id == mId).FirstOrDefault();
+                        if (MenuItemsForCurrentUser.ParentItemId != null)
+                        {
+                            ParentMenuName.Add(mId, db_ctx.MenuItem.Where(w => w.Id == MenuItemsForCurrentUser.ParentItemId).FirstOrDefault().Name);
+                        }
+
+
+                        MenuItems.Add(MenuItemsForCurrentUser);
+                    }
+                }
+                foreach (var mi in MenuItems)
+                {
+                    FTL_HRMS.ViewModels.VMMenuByRole MenuByRole = new FTL_HRMS.ViewModels.VMMenuByRole();
+                    MenuByRole.ActionName = mi.ActionName;
+                    MenuByRole.ControllerName = mi.ControllerName;
+                    MenuByRole.MenuItemName = mi.Name;
+                    MenuByRole.Id = mi.Id;
+                    MenuByRole.MenuOrder = mi.MenuOrder;
+                    MenuByRole.ParentId = mi.ParentItemId;
+                    MenuByRole.ParentMenuName = mi.ParentItemId != null ? ParentMenuName[mi.Id] : "";
+                    MenuByRole.MnuIcnClass = mi.IcnClass;
+                    MenuItemsForRole.Add(MenuByRole);
+                }
+
+                @Html.Partial("~/Views/Shared/_SideBarAdmin.cshtml", MenuItemsForRole)
+            }
+            else
+            {
+                @Html.Partial("~/Views/Shared/_SideBarAdmin.cshtml")
+            }
+        </div>
+
+        <!--  SIDEBAR - END -->
+        <!-- START CONTENT -->
+        <section id="main-content" class=" ">
+            <section class="wrapper" style='margin-top:60px;display:inline-block;width:100%;padding:15px 0 0 15px;'>
+
+
+                <div class="clearfix"></div>
+                <div class="col-lg-12">
+                    <section class="box ">
+                        @RenderBody()
+                    </section>
+                </div>
+            </section>
+        </section>
+        <!-- END CONTENT -->
+
+    </div>
+  
+    <!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
+    <!-- CORE JS FRAMEWORK - START -->
+    <script src="~/Content/AdminTemplate/assets/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/js/jquery.easing.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/viewport/viewportchecker.js" type="text/javascript"></script>
+    <!-- CORE JS FRAMEWORK - END -->
+    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
+    <script src="~/Content/AdminTemplate/assets/plugins/rickshaw-chart/vendor/d3.v3.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/autosize/autosize.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/datepicker/js/datepicker.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/calendar/moment.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/jquery-ui/smoothness/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/calendar/fullcalendar.min.js" type="text/javascript"></script>
+    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
+    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
+    <script src="~/Content/AdminTemplate/assets/plugins/datatables/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/plugins/datatables/extensions/Responsive/bootstrap/3/dataTables.bootstrap.js" type="text/javascript"></script>
+    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
+
+    <!-- CORE TEMPLATE JS START -->
+    <script src="~/Content/AdminTemplate/assets/js/scripts.js" type="text/javascript"></script>
+    <!-- END CORE TEMPLATE JS - END -->
+    <!-- Sidebar Graph - START -->
+    <script src="~/Content/AdminTemplate/assets/plugins/sparkline-chart/jquery.sparkline.min.js" type="text/javascript"></script>
+    <script src="~/Content/AdminTemplate/assets/js/chart-sparkline.js" type="text/javascript"></script>
+    <!-- Sidebar Graph - END -->
+</body>
+</html>

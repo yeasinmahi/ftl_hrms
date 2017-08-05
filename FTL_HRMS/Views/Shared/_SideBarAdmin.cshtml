@@ -1,0 +1,92 @@
+﻿@model List<FTL_HRMS.ViewModels.VMMenuByRole>
+   
+<!-- SIDEBAR - START -->
+<!-- MAIN MENU - START -->
+<div class="page-sidebar-wrapper" id="main-menu-wrapper" >
+
+    <!-- USER INFO - START -->
+    <div class="profile-info row">
+
+        <div class="profile-image col-md-4 col-sm-4 col-xs-4">
+            <a href="@Url.Action("ProfileInfo", "Account")">
+                <img src="~/Content/AdminTemplate/data/profile/profile.png" class="img-responsive img-circle">
+            </a>
+        </div>
+
+        <div class="profile-details col-md-8 col-sm-8 col-xs-8">
+
+            <h3>
+                <a>@Session["UserName"]</a>
+
+                <!-- Available statuses: online, idle, busy, away and offline -->
+                <span class="profile-status online"></span>
+            </h3>
+
+            <p class="profile-title">@Session["RoleName"]</p>
+
+        </div>
+
+    </div>
+    <!-- USER INFO - END -->
+
+
+
+    <ul class='wraplist'>
+        <li class="open">
+            <a href="@Url.Action("AdminDashboard", "Home")">
+                <i class="fa fa-dashboard"></i>
+                <span class="title">Dashboard</span>
+            </a>
+        </li>
+        @if (Model != null)
+        {
+            List<FTL_HRMS.ViewModels.VMMenuByRole> par = Model.Where(t => t.ParentId == null).OrderBy(p => p.MenuOrder).ToList();
+
+            List<FTL_HRMS.ViewModels.VMMenuByRole> child = null;
+
+            for (int i = 0; i < par.Count; i++)
+            {
+                child = Model.OrderBy(t => t.MenuOrder).Where(t => t.ParentId == par[i].Id).ToList();
+                <li class="">
+                    <a href="javascript:;">
+                        <i class="@par[i].MnuIcnClass"></i>
+                        <span class="title">@par[i].MenuItemName</span>
+                        <span class="arrow "></span>
+                    </a>
+                    <ul class="sub-menu">
+                        @foreach (var ch in child)
+                        {
+                            <li id="@ch.Id">
+                                <a class="" href="@Url.Action(ch.ActionName, ch.ControllerName)">@ch.MenuItemName</a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+                
+            }
+        }
+        
+    </ul>
+
+</div>
+<!-- MAIN MENU - END -->
+
+<div class="project-info">
+
+    <div class="block1">
+        <div class="data">
+            <span class='title'>Total In Patient</span>
+            <span class='total'></span>
+        </div>
+
+    </div>
+
+    <div class="block2">
+        <div class="data">
+            <span class='title'>Total Released Patient</span>
+            <span class='total'></span>
+        </div>
+
+    </div>
+
+</div>
