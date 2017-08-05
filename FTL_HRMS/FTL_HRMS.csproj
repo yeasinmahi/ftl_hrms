@@ -2763,6 +2763,10 @@
     <Compile Include="Migrations\201708051026197_basic_setup_by_manas.Designer.cs">
       <DependentUpon>201708051026197_basic_setup_by_manas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708051105464_add_new_tables.cs" />
+    <Compile Include="Migrations\201708051105464_add_new_tables.Designer.cs">
+      <DependentUpon>201708051105464_add_new_tables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Branch.cs" />
@@ -2986,6 +2990,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708051026197_basic_setup_by_manas.resx">
       <DependentUpon>201708051026197_basic_setup_by_manas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708051105464_add_new_tables.resx">
+      <DependentUpon>201708051105464_add_new_tables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
