@@ -19,6 +19,17 @@ namespace FTL_HRMS.Models
         public DbSet<MenuItem> MenuItem { get; set; }
         public DbSet<RolePermission> RolePermission { get; set; }
 
+        public DbSet<PerformanceRating> PerformanceRating { get; set; }
+        public DbSet<PerformanceIssue> PerformanceIssue { get; set; }
+        public DbSet<DisciplinaryAction> DisciplinaryAction { get; set; }
+        public DbSet<DisciplinaryActionType> DisciplinaryActionType { get; set; }
+        public DbSet<Resignation> Resignation { get; set; }
+        public DbSet<BranchTransfer> BranchTransfer { get; set; }
+        public DbSet<DepartmentTransfer> DepartmentTransfer { get; set; }
+        public DbSet<EmployeeType> EmployeeType { get; set; }
+
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
