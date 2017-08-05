@@ -2765,6 +2765,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\DepartmentTransfer.cs" />
     <Compile Include="Models\DisciplinaryAction.cs" />
     <Compile Include="Models\DisciplinaryActionType.cs" />
@@ -3000,7 +3001,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49660</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
