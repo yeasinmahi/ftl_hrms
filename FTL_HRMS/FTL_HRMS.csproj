@@ -2737,7 +2737,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <None Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -2759,9 +2761,17 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\DepartmentTransfer.cs" />
+    <Compile Include="Models\DisciplinaryAction.cs" />
+    <Compile Include="Models\DisciplinaryActionType.cs" />
+    <Compile Include="Models\EmployeeType.cs" />
     <Compile Include="Models\HRMSDbContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\BranchTransfer.cs" />
     <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\PerformanceIssue .cs" />
+    <Compile Include="Models\PerformanceRating.cs" />
+    <Compile Include="Models\Resignation.cs" />
     <Compile Include="Models\RolePermission.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
