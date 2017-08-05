@@ -19,6 +19,7 @@ namespace FTL_HRMS.Models
         public DbSet<MenuItem> MenuItem { get; set; }
         public DbSet<RolePermission> RolePermission { get; set; }
 
+<<<<<<< HEAD
         public DbSet<PerformanceRating> PerformanceRating { get; set; }
         public DbSet<PerformanceIssue> PerformanceIssue { get; set; }
         public DbSet<DisciplinaryAction> DisciplinaryAction { get; set; }
@@ -29,6 +30,16 @@ namespace FTL_HRMS.Models
         public DbSet<EmployeeType> EmployeeType { get; set; }
 
 
+=======
+        public DbSet<Designation> Designation { get; set; }
+        public DbSet<Department> Department { get; set; }
+        public DbSet<DepartmentGroup> DepartmentGroup { get; set; }
+        public DbSet<SourceOfHire> SourceOfHire { get; set; }
+        public DbSet<Education> Education { get; set; }
+        public DbSet<Experience> Experience { get; set; }
+        public DbSet<Employee> Employee { get; set; }
+        public DbSet<Images> Images { get; set; }
+>>>>>>> 7de4dcf946d47ccd990a20474a881fac3eea21d2
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
