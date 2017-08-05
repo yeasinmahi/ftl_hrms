@@ -2780,8 +2780,6 @@
     <Compile Include="Models\SourceOfHire.cs" />
     <Compile Include="Models\DepartmentGroup.cs" />
     <Compile Include="Models\Department.cs" />
-    <Compile Include="Models\HRMSDbContext.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Designation.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\PerformanceIssue .cs" />
