@@ -25,5 +25,8 @@ namespace FTL_HRMS.Models
 
         [Required(ErrorMessage = "Performance Issue cannot be empty")]
         public int PerformanceIssueId { get; set; }
+
+        public virtual Employee Employee { get; set; }
+        public virtual PerformanceIssue PerformanceIssue { get; set; }
     }
 }
