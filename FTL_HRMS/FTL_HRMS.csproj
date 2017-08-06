@@ -2786,6 +2786,14 @@
     <Compile Include="Migrations\201708051127026_update_tables.Designer.cs">
       <DependentUpon>201708051127026_update_tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708060945434_update_branch.cs" />
+    <Compile Include="Migrations\201708060945434_update_branch.Designer.cs">
+      <DependentUpon>201708060945434_update_branch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708061143340_update_status.cs" />
+    <Compile Include="Migrations\201708061143340_update_status.Designer.cs">
+      <DependentUpon>201708061143340_update_status.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Branch.cs" />
@@ -2995,11 +3003,6 @@
     <Content Include="Views\Designations\Details.cshtml" />
     <Content Include="Views\Designations\Edit.cshtml" />
     <Content Include="Views\Designations\Index.cshtml" />
-    <Content Include="Views\Departments\Create.cshtml" />
-    <Content Include="Views\Departments\Delete.cshtml" />
-    <Content Include="Views\Departments\Details.cshtml" />
-    <Content Include="Views\Departments\Edit.cshtml" />
-    <Content Include="Views\Departments\Index.cshtml" />
     <Content Include="Views\DepartmentGroups\Create.cshtml" />
     <Content Include="Views\DepartmentGroups\Delete.cshtml" />
     <Content Include="Views\DepartmentGroups\Details.cshtml" />
@@ -3075,6 +3078,11 @@
     <Content Include="Views\PerformanceRatings\Details.cshtml" />
     <Content Include="Views\PerformanceRatings\Edit.cshtml" />
     <Content Include="Views\PerformanceRatings\Index.cshtml" />
+    <Content Include="Views\Departments\Create.cshtml" />
+    <Content Include="Views\Departments\Delete.cshtml" />
+    <Content Include="Views\Departments\Details.cshtml" />
+    <Content Include="Views\Departments\Edit.cshtml" />
+    <Content Include="Views\Departments\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3100,6 +3108,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708051127026_update_tables.resx">
       <DependentUpon>201708051127026_update_tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708060945434_update_branch.resx">
+      <DependentUpon>201708060945434_update_branch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708061143340_update_status.resx">
+      <DependentUpon>201708061143340_update_status.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

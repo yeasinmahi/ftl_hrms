@@ -16,5 +16,7 @@ namespace FTL_HRMS.Models
         [Required(ErrorMessage = "Name cannot be empty")]
         [MaxLength(250)]
         public string Name { get; set; }
+
+        public bool Status { get; set; }
     }
 }

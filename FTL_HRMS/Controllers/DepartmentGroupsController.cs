@@ -14,12 +14,15 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext db = new HRMSDbContext();
 
+        #region List
         // GET: DepartmentGroups
         public ActionResult Index()
         {
-            return View(db.DepartmentGroup.ToList());
+            return View(db.DepartmentGroup.Where(i=> i.Status==true).ToList());
         }
+        #endregion
 
+        #region Details
         // GET: DepartmentGroups/Details/5
         public ActionResult Details(int? id)
         {
@@ -34,7 +37,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(departmentGroup);
         }
+        #endregion
 
+        #region Create
         // GET: DepartmentGroups/Create
         public ActionResult Create()
         {
@@ -50,14 +55,22 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                string UserName = User.Identity.Name;
+                int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                departmentGroup.CreatedBy = userId;
+                departmentGroup.CreateDate = DateTime.Now;
+                departmentGroup.Status = true;
                 db.DepartmentGroup.Add(departmentGroup);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(departmentGroup);
         }
+        #endregion
 
+        #region Edit
         // GET: DepartmentGroups/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -82,13 +95,21 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                string UserName = User.Identity.Name;
+                int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                departmentGroup.UpdatedBy = userId;
+                departmentGroup.UpdateDate = DateTime.Now;
                 db.Entry(departmentGroup).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(departmentGroup);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(departmentGroup);
         }
+        #endregion
 
+        #region Delete
         // GET: DepartmentGroups/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -110,11 +131,14 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             DepartmentGroup departmentGroup = db.DepartmentGroup.Find(id);
-            db.DepartmentGroup.Remove(departmentGroup);
+            departmentGroup.Status = false;
+            db.Entry(departmentGroup).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -123,5 +147,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

@@ -19,5 +19,7 @@ namespace FTL_HRMS.Models
 
         [Required(ErrorMessage = "Address cannot be empty")]
         public string Address { get; set; }
+
+        public bool Status { get; set; }
     }
 }

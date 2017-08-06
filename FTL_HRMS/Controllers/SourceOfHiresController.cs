@@ -14,12 +14,15 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext db = new HRMSDbContext();
 
+        #region List
         // GET: SourceOfHires
         public ActionResult Index()
         {
-            return View(db.SourceOfHire.ToList());
+            return View(db.SourceOfHire.Where(i => i.Status == true).ToList());
         }
+        #endregion
 
+        #region Details
         // GET: SourceOfHires/Details/5
         public ActionResult Details(int? id)
         {
@@ -34,7 +37,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(sourceOfHire);
         }
+        #endregion
 
+        #region Create
         // GET: SourceOfHires/Create
         public ActionResult Create()
         {
@@ -46,18 +51,22 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,Name")] SourceOfHire sourceOfHire)
+        public ActionResult Create([Bind(Include = "Sl,Name,Status")] SourceOfHire sourceOfHire)
         {
             if (ModelState.IsValid)
             {
+                sourceOfHire.Status = true;
                 db.SourceOfHire.Add(sourceOfHire);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(sourceOfHire);
         }
+        #endregion
 
+        #region Edit
         // GET: SourceOfHires/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -78,17 +87,21 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Name")] SourceOfHire sourceOfHire)
+        public ActionResult Edit([Bind(Include = "Sl,Name,Status")] SourceOfHire sourceOfHire)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(sourceOfHire).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(sourceOfHire);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(sourceOfHire);
         }
+        #endregion
 
+        #region Delete
         // GET: SourceOfHires/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -110,11 +123,14 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             SourceOfHire sourceOfHire = db.SourceOfHire.Find(id);
-            db.SourceOfHire.Remove(sourceOfHire);
+            sourceOfHire.Status = false;
+            db.Entry(sourceOfHire).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -123,5 +139,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

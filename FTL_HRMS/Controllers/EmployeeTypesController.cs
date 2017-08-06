@@ -14,12 +14,15 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext db = new HRMSDbContext();
 
+        #region List
         // GET: EmployeeTypes
         public ActionResult Index()
         {
-            return View(db.EmployeeType.ToList());
+            return View(db.EmployeeType.Where(i => i.Status == true).ToList());
         }
+        #endregion
 
+        #region Details
         // GET: EmployeeTypes/Details/5
         public ActionResult Details(int? id)
         {
@@ -34,7 +37,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(employeeType);
         }
+        #endregion
 
+        #region Create
         // GET: EmployeeTypes/Create
         public ActionResult Create()
         {
@@ -46,18 +51,22 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,Name")] EmployeeType employeeType)
+        public ActionResult Create([Bind(Include = "Sl,Name,Status")] EmployeeType employeeType)
         {
             if (ModelState.IsValid)
             {
+                employeeType.Status = true;
                 db.EmployeeType.Add(employeeType);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(employeeType);
         }
+        #endregion
 
+        #region Edit
         // GET: EmployeeTypes/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -78,17 +87,21 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Name")] EmployeeType employeeType)
+        public ActionResult Edit([Bind(Include = "Sl,Name,Status")] EmployeeType employeeType)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(employeeType).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(employeeType);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(employeeType);
         }
+        #endregion
 
+        #region Delete
         // GET: EmployeeTypes/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -110,11 +123,14 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             EmployeeType employeeType = db.EmployeeType.Find(id);
-            db.EmployeeType.Remove(employeeType);
+            employeeType.Status = false;
+            db.Entry(employeeType).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -123,5 +139,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

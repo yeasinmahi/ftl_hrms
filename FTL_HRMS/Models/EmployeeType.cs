@@ -17,5 +17,6 @@ namespace FTL_HRMS.Models
         [MaxLength(250)]
         public string Name { get; set; }
 
+        public bool Status { get; set; }
     }
 }

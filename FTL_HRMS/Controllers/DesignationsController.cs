@@ -14,12 +14,15 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext db = new HRMSDbContext();
 
+        #region List
         // GET: Designations
         public ActionResult Index()
         {
-            return View(db.Designation.ToList());
+            return View(db.Designation.Include(i => i.Department).Where(i => i.Status == true).ToList());
         }
+        #endregion
 
+        #region Details
         // GET: Designations/Details/5
         public ActionResult Details(int? id)
         {
@@ -34,10 +37,15 @@ namespace FTL_HRMS.Controllers
             }
             return View(designation);
         }
+        #endregion
 
+        #region Create
         // GET: Designations/Create
         public ActionResult Create()
         {
+            List<Department> DepartmentList = new List<Department>();
+            DepartmentList = db.Department.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name");
             return View();
         }
 
@@ -48,16 +56,28 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,DepartmentId,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
         {
+            List<Department> DepartmentList = new List<Department>();
+            DepartmentList = db.Department.Where(i => i.Status == true).ToList();
             if (ModelState.IsValid)
             {
+                string UserName = User.Identity.Name;
+                int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                designation.CreatedBy = userId;
+                designation.CreateDate = DateTime.Now;
+                designation.Status = true;
                 db.Designation.Add(designation);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name");
+                return RedirectToAction("Create");
             }
-
+            ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name", designation.DepartmentId);
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(designation);
         }
+        #endregion
 
+        #region Edit
         // GET: Designations/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -70,6 +90,9 @@ namespace FTL_HRMS.Controllers
             {
                 return HttpNotFound();
             }
+            List<Department> DepartmentList = new List<Department>();
+            DepartmentList = db.Department.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name", designation.DepartmentId);
             return View(designation);
         }
 
@@ -80,15 +103,27 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,Code,Name,DepartmentId,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
         {
+            List<Department> DepartmentList = new List<Department>();
+            DepartmentList = db.Department.Where(i => i.Status == true).ToList();
             if (ModelState.IsValid)
             {
+                string UserName = User.Identity.Name;
+                int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                designation.UpdatedBy = userId;
+                designation.UpdateDate = DateTime.Now;
                 db.Entry(designation).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name", designation.DepartmentId);
+                return View(designation);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
+            ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name", designation.DepartmentId);
             return View(designation);
         }
+        #endregion
 
+        #region Delete
         // GET: Designations/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -110,11 +145,14 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Designation designation = db.Designation.Find(id);
-            db.Designation.Remove(designation);
+            designation.Status = false;
+            db.Entry(designation).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -123,5 +161,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

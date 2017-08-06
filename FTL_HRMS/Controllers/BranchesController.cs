@@ -14,12 +14,15 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext db = new HRMSDbContext();
 
+        #region List
         // GET: Branches
         public ActionResult Index()
         {
-            return View(db.Branches.ToList());
+            return View(db.Branches.Where(i=> i.Status==true).ToList());
         }
+        #endregion
 
+        #region Details
         // GET: Branches/Details/5
         public ActionResult Details(int? id)
         {
@@ -34,7 +37,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(branch);
         }
+        #endregion
 
+        #region Create
         // GET: Branches/Create
         public ActionResult Create()
         {
@@ -46,18 +51,24 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,Name,Address")] Branch branch)
+        public ActionResult Create([Bind(Include = "Sl,Name,Address,Status")] Branch branch)
         {
             if (ModelState.IsValid)
             {
+                string Address = Request["Address"].ToString();
+                branch.Address = Address;
+                branch.Status = true;
                 db.Branches.Add(branch);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(branch);
         }
+        #endregion
 
+        #region Edit
         // GET: Branches/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -78,17 +89,23 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Name,Address")] Branch branch)
+        public ActionResult Edit([Bind(Include = "Sl,Name,Address,Status")] Branch branch)
         {
             if (ModelState.IsValid)
             {
+                string Address = Request["Address"].ToString();
+                branch.Address = Address;
                 db.Entry(branch).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(branch);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(branch);
         }
+        #endregion
 
+        #region Delete
         // GET: Branches/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -110,11 +127,14 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Branch branch = db.Branches.Find(id);
-            db.Branches.Remove(branch);
+            branch.Status = false;
+            db.Entry(branch).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -123,5 +143,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }
