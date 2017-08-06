@@ -26,8 +26,8 @@ namespace FTL_HRMS.Models
         public string Status { get; set; }
 
         [DataType(DataType.Date),
-         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
-         ApplyFormatInEditMode = true)]
+        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        ApplyFormatInEditMode = true)]
         public DateTime CreateDate { get; set; }
 
         public string UpdatedBy { get; set; }
@@ -43,6 +43,5 @@ namespace FTL_HRMS.Models
         public int EmployeeId { get; set; }
 
         public virtual Employee Employee { get; set; }
-
     }
 }
