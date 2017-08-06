@@ -1,0 +1,186 @@
+﻿@model FTL_HRMS.Models.Employee
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Employee</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FathersName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FathersName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MothersName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MothersName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PresentAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PresentAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PermanentAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PermanentAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Mobile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mobile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NIDorBirthCirtificate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NIDorBirthCirtificate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DrivingLicence)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DrivingLicence)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PassportNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PassportNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfJoining)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfJoining)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SourceOfHireId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SourceOfHireId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DesignationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DesignationId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GrossSalary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GrossSalary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdateDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdateDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Sl }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

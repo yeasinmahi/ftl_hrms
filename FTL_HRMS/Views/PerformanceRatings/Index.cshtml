@@ -1,0 +1,51 @@
+﻿@model IEnumerable<FTL_HRMS.Models.PerformanceRating>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Rating)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PerformanceIssueId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rating)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmployeeId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PerformanceIssueId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Sl }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Sl }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Sl })
+        </td>
+    </tr>
+}
+
+</table>

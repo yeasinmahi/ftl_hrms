@@ -41,5 +41,7 @@ namespace FTL_HRMS.Models
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
         }
+
+        public System.Data.Entity.DbSet<FTL_HRMS.Models.Branch> Branches { get; set; }
     }
 }
