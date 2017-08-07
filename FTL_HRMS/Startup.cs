@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Owin;
 using FTL_HRMS.Models;
 using Microsoft.AspNet.Identity;
@@ -15,15 +14,15 @@ namespace FTL_HRMS
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-            createRolesandUsers();
+            CreateRolesandUsers();
         }
 
-        private void createRolesandUsers()
+        private void CreateRolesandUsers()
         {
-            HRMSDbContext db_ctx = new HRMSDbContext();
+            HRMSDbContext dbCtx = new HRMSDbContext();
 
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db_ctx));
-            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db_ctx));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbCtx));
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbCtx));
 
 
             // In Startup creating first Admin Role and creating a default Admin User    
@@ -31,112 +30,128 @@ namespace FTL_HRMS
             {
 
                 // first we create System Admin role   
-                var role = new IdentityRole();
-                role.Name = "System Admin";
+                var role = new IdentityRole {Name = "System Admin"};
                 roleManager.Create(role);
 
                 //Here we create a System Admin super user who will maintain the website                  
 
-                var user = new ApplicationUser();
-                user.UserName = "futuristic";
-                user.Email = "systemadmin@futuristictech.xyz";
-                string userPWD = "futureRistic@2017Sys";
+                var user = new ApplicationUser
+                {
+                    UserName = "futuristic",
+                    Email = "systemadmin@futuristictech.xyz"
+                };
+                string userPwd = "futureRistic@2017Sys";
 
-                var chkUser = UserManager.Create(user, userPWD);
+                var chkUser = userManager.Create(user, userPwd);
 
                 //Add default User to Role Admin   
                 if (chkUser.Succeeded)
                 {
-                    var result1 = UserManager.AddToRole(user.Id, "System Admin");
+                    userManager.AddToRole(user.Id, "System Admin");
 
                 }
 
                 //first we create Admin role
-                var roleAdmin = new IdentityRole();
-                roleAdmin.Name = "Super Admin";
+                var roleAdmin = new IdentityRole {Name = "Super Admin"};
                 roleManager.Create(roleAdmin);
 
                 //Here we create a Admin super user who will maintain the website                  
-                var userAdmin = new ApplicationUser();
-                userAdmin.UserName = "admin";
-                userAdmin.Email = "admin@futuristictech.xyz";
-                userPWD = "futureRistic@2017Ad";
+                var userAdmin = new ApplicationUser
+                {
+                    UserName = "admin",
+                    Email = "admin@futuristictech.xyz"
+                };
+                userPwd = "futureRistic@2017Ad";
 
-                chkUser = UserManager.Create(userAdmin, userPWD);
+                chkUser = userManager.Create(userAdmin, userPwd);
 
                 //Add default User to Role Admin   
                 if (chkUser.Succeeded)
                 {
-                    var result2 = UserManager.AddToRole(user.Id, "Super Admin");
+                    userManager.AddToRole(user.Id, "Super Admin");
                 }
 
-                MenuItem MenuItem1 = new MenuItem();
-                MenuItem1.Name = "Manage Menu";
-                MenuItem1.ActionName = "Index";
-                MenuItem1.ControllerName = "MenuItems";
-                MenuItem1.IcnClass = "fa fa-file-archive-o";
-                db_ctx.MenuItem.Add(MenuItem1);
-                db_ctx.SaveChanges();
+                MenuItem menuItem1 = new MenuItem
+                {
+                    Name = "Manage Menu",
+                    ActionName = "Index",
+                    ControllerName = "MenuItems",
+                    IcnClass = "fa fa-file-archive-o"
+                };
+                dbCtx.MenuItem.Add(menuItem1);
+                dbCtx.SaveChanges();
 
-                MenuItem MenuItem2 = new MenuItem();
-                MenuItem2.Name = "Add Menu Item";
-                MenuItem2.ParentItemId = MenuItem1.Id;
-                MenuItem2.ActionName = "Create";
-                MenuItem2.ControllerName = "MenuItems";
-                db_ctx.MenuItem.Add(MenuItem2);
-                db_ctx.SaveChanges();
+                MenuItem menuItem2 = new MenuItem
+                {
+                    Name = "Add Menu Item",
+                    ParentItemId = menuItem1.Id,
+                    ActionName = "Create",
+                    ControllerName = "MenuItems"
+                };
+                dbCtx.MenuItem.Add(menuItem2);
+                dbCtx.SaveChanges();
 
-                MenuItem MenuItem3 = new MenuItem();
-                MenuItem3.Name = "Menu List";
-                MenuItem3.ParentItemId = MenuItem1.Id;
-                MenuItem3.ActionName = "Index";
-                MenuItem3.ControllerName = "MenuItems";
-                db_ctx.MenuItem.Add(MenuItem3);
-                db_ctx.SaveChanges();
+                MenuItem menuItem3 = new MenuItem
+                {
+                    Name = "Menu List",
+                    ParentItemId = menuItem1.Id,
+                    ActionName = "Index",
+                    ControllerName = "MenuItems"
+                };
+                dbCtx.MenuItem.Add(menuItem3);
+                dbCtx.SaveChanges();
 
 
-                MenuItem MenuItem4 = new MenuItem();
-                MenuItem4.Name = "Role Management";
-                MenuItem4.ActionName = "#";
-                MenuItem4.IcnClass = "fa fa-th";
-                MenuItem4.ControllerName = "MenuItems";
-                db_ctx.MenuItem.Add(MenuItem4);
-                db_ctx.SaveChanges();
+                MenuItem menuItem4 = new MenuItem
+                {
+                    Name = "Role Management",
+                    ActionName = "#",
+                    IcnClass = "fa fa-th",
+                    ControllerName = "MenuItems"
+                };
+                dbCtx.MenuItem.Add(menuItem4);
+                dbCtx.SaveChanges();
 
-                MenuItem MenuItem5 = new MenuItem();
-                MenuItem5.Name = "Add Role";
-                MenuItem5.ParentItemId = MenuItem4.Id;
-                MenuItem5.ActionName = "AddRole";
-                MenuItem5.ControllerName = "Roles";
-                db_ctx.MenuItem.Add(MenuItem5);
-                db_ctx.SaveChanges();
+                MenuItem menuItem5 = new MenuItem
+                {
+                    Name = "Add Role",
+                    ParentItemId = menuItem4.Id,
+                    ActionName = "AddRole",
+                    ControllerName = "Roles"
+                };
+                dbCtx.MenuItem.Add(menuItem5);
+                dbCtx.SaveChanges();
 
-                MenuItem MenuItem6 = new MenuItem();
-                MenuItem6.Name = "Role List";
-                MenuItem6.ParentItemId = MenuItem4.Id;
-                MenuItem6.ActionName = "RoleList";
-                MenuItem6.ControllerName = "Roles";
-                db_ctx.MenuItem.Add(MenuItem6);
-                db_ctx.SaveChanges();
+                MenuItem menuItem6 = new MenuItem
+                {
+                    Name = "Role List",
+                    ParentItemId = menuItem4.Id,
+                    ActionName = "RoleList",
+                    ControllerName = "Roles"
+                };
+                dbCtx.MenuItem.Add(menuItem6);
+                dbCtx.SaveChanges();
 
-                MenuItem MenuItem7 = new MenuItem();
-                MenuItem7.Name = "Add User";
-                MenuItem7.ParentItemId = MenuItem4.Id;
-                MenuItem7.ActionName = "UserManagement";
-                MenuItem7.ControllerName = "Roles";
-                db_ctx.MenuItem.Add(MenuItem7);
-                db_ctx.SaveChanges();
+                MenuItem menuItem7 = new MenuItem
+                {
+                    Name = "Add User",
+                    ParentItemId = menuItem4.Id,
+                    ActionName = "UserManagement",
+                    ControllerName = "Roles"
+                };
+                dbCtx.MenuItem.Add(menuItem7);
+                dbCtx.SaveChanges();
 
-                List<int> MenuItemList = new List<int>();
+                List<int> menuItemList = dbCtx.MenuItem.Select(t => t.Id).ToList();
 
-                MenuItemList = db_ctx.MenuItem.Select(t => t.Id).ToList();
+                RolePermission rolePermission = new RolePermission
+                {
+                    RoleId = roleManager.FindByName("System Admin").Id,
+                    MenuItemIdList = string.Join(",", menuItemList)
+                };
 
-                RolePermission RolePermission = new RolePermission();
-
-                RolePermission.RoleId = roleManager.FindByName("System Admin").Id;
-                RolePermission.MenuItemIdList = string.Join(",", MenuItemList);
-                db_ctx.RolePermission.Add(RolePermission);
-                db_ctx.SaveChanges();
+                dbCtx.RolePermission.Add(rolePermission);
+                dbCtx.SaveChanges();
             }
         }
     }
