@@ -27,8 +27,21 @@ namespace FTL_HRMS
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/AdminTamplate").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/pace-theme-flash.css",
+                      "~/Content/bootstrap.min.css",
+                      "~/Content/bootstrap-theme.min.css",
+                      "~/Content/font-awesome.css",
+                      "~/Content/animate.css",
+                      "~/Content/perfect-scrollbar.css"));
+            bundles.Add(new StyleBundle("~/Content/Others").Include(
+                      "~/Content/_all.css",
+                      "~/Content/morris.css",
+                      "~/Content/jquery-ui.min.css",
+                      "~/Content/jquery-jvectormap-2.0.1.css",
+                      "~/Content/white.css",
+                      "~/Content/datepicker.css",
+                      "~/Content/style.css",
+                      "~/Content/responsive.css"));
         }
     }
 }

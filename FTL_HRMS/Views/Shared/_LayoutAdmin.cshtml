@@ -14,29 +14,13 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/Content/AdminTemplate/assets/images/apple-touch-icon-72-precomposed.png">    <!-- For iPad -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/Content/AdminTemplate/assets/images/apple-touch-icon-144-precomposed.png">    <!-- For iPad Retina display -->
     <!-- CORE CSS FRAMEWORK - START -->
-    <link href="~/Content/AdminTemplate/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="~/Content/AdminTemplate/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/AdminTemplate/assets/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/AdminTemplate/assets/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/AdminTemplate/assets/css/animate.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/AdminTemplate/assets/plugins/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
+    @Styles.Render("~/Content/AdminTamplate")
     <!-- CORE CSS FRAMEWORK - END -->
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
-    <link href="~/Content/AdminTemplate/assets/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="~/Content/AdminTemplate/assets/plugins/morris-chart/css/morris.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="~/Content/AdminTemplate/assets/plugins/jquery-ui/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="~/Content/AdminTemplate/assets/plugins/jvectormap/jquery-jvectormap-2.0.1.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="~/Content/AdminTemplate/assets/plugins/icheck/skins/minimal/white.css" rel="stylesheet" type="text/css" media="screen" />        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
-    <link href="~/Content/AdminTemplate/assets/plugins/datepicker/css/datepicker.css" rel="stylesheet" type="text/css" media="screen" />
-    <!-- CORE CSS TEMPLATE - START -->
-    <link href="~/Content/AdminTemplate/assets/css/style.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/AdminTemplate/assets/css/responsive.css" rel="stylesheet" type="text/css" />
-    <!-- CORE CSS TEMPLATE - END -->
-
+    @Styles.Render("~/Content/Others")
+    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
     <script src="~/Content/assets/ckeditor/ckeditor.js" type="text/javascript"></script>
 
-
-    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
     <link href="~/Content/AdminTemplate/assets/plugins/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="~/Content/AdminTemplate/assets/plugins/datatables/extensions/TableTools/css/dataTables.tableTools.min.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="~/Content/AdminTemplate/assets/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
@@ -56,7 +40,7 @@
     <!-- START CONTAINER -->
     <div class="page-container row-fluid">
         <div class="page-sidebar ">
-            @using Microsoft.AspNet.Identity;
+            @using System.Web.Optimization            @using System.Web.UI.WebControls            @using Microsoft.AspNet.Identity;
 
             @if (Request.IsAuthenticated)
             {
