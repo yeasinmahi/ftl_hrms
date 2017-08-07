@@ -43,5 +43,11 @@ namespace FTL_HRMS.Models
         }
 
         public System.Data.Entity.DbSet<FTL_HRMS.Models.Branch> Branches { get; set; }
+
+        public System.Data.Entity.DbSet<FTL_HRMS.Models.LeaveType> LeaveTypes { get; set; }
+
+        public System.Data.Entity.DbSet<FTL_HRMS.Models.LeaveCount> LeaveCounts { get; set; }
+
+        public System.Data.Entity.DbSet<FTL_HRMS.Models.LeaveHistory> LeaveHistories { get; set; }
     }
 }

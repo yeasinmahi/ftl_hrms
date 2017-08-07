@@ -80,6 +80,9 @@ namespace FTL_HRMS.Models
         [Required(ErrorMessage = "Employee Type cannot be empty")]
         public int EmployeeTypeId { get; set; }
 
+        [Required(ErrorMessage = "Branch cannot be empty")]
+        public int BranchId { get; set; }
+
         public double GrossSalary { get; set; }
 
         public int CreatedBy { get; set; }
@@ -101,6 +104,7 @@ namespace FTL_HRMS.Models
         public virtual SourceOfHire SourceOfHire { get; set; }
         public virtual Designation Designation { get; set; }
         public virtual EmployeeType EmployeeType { get; set; }
+        public virtual Branch Branch { get; set; }
 
         public virtual ICollection<Education> Education { get; set; }
         public virtual ICollection<Experience> Experience { get; set; }
