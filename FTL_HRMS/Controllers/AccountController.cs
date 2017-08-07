@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -12,7 +10,6 @@ using Microsoft.Owin.Security;
 using System.Data.Entity;
 using FTL_HRMS.Models;
 using static FTL_HRMS.Models.AccountViewModels;
-using FTL_HRMS.ViewModels;
 
 namespace FTL_HRMS.Controllers
 {

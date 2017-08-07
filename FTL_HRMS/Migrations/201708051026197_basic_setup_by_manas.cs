@@ -1,6 +1,5 @@
 namespace FTL_HRMS.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
     public partial class basic_setup_by_manas : DbMigration

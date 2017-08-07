@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
 
@@ -14,12 +10,15 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext db = new HRMSDbContext();
 
+        #region List
         // GET: PerformanceIssues
         public ActionResult Index()
         {
             return View(db.PerformanceIssue.ToList());
         }
+        #endregion
 
+        #region Details
         // GET: PerformanceIssues/Details/5
         public ActionResult Details(int? id)
         {
@@ -34,7 +33,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(performanceIssue);
         }
+        #endregion
 
+        #region Create
         // GET: PerformanceIssues/Create
         public ActionResult Create()
         {
@@ -52,12 +53,15 @@ namespace FTL_HRMS.Controllers
             {
                 db.PerformanceIssue.Add(performanceIssue);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(performanceIssue);
         }
+        #endregion
 
+        #region Edit
         // GET: PerformanceIssues/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -84,11 +88,15 @@ namespace FTL_HRMS.Controllers
             {
                 db.Entry(performanceIssue).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(performanceIssue);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(performanceIssue);
         }
+        #endregion
 
+        #region Delete
         // GET: PerformanceIssues/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -114,7 +122,9 @@ namespace FTL_HRMS.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -123,5 +133,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

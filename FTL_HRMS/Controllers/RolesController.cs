@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 using Microsoft.AspNet.Identity;
@@ -9,7 +8,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using FTL_HRMS.Models;
 using FTL_HRMS.ViewModels;
 using System.Data.Entity;
-using System.Threading.Tasks;
 
 namespace FTL_HRMS.Controllers
 {
