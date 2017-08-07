@@ -1,21 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-
-using System.IO;
-using System.Drawing;
-using System.Drawing.Imaging;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Drawing.Drawing2D;
 using FTL_HRMS.Models;
-using FTL_HRMS.ViewModels;
-using System.Data.SqlClient;
-using System.Web.Script.Serialization;
-using System.Text;
-using System.Globalization;
 
 namespace FTL_HRMS.Controllers
 {
