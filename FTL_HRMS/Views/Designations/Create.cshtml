@@ -70,7 +70,7 @@
                             Department Name
                         </div>
                         <div>
-                            @Html.DropDownList("DepartmentId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
+                            @Html.DropDownList("DepartmentId", null, htmlAttributes: new { @class = "form-control", style = "width:50%"})
                             @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
                         </div>
                        
