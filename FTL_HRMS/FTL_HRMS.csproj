@@ -219,22 +219,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Microsoft.AI.Agent.Intercept.dll" />
-    <Content Include="bin\Microsoft.AI.DependencyCollector.dll" />
-    <Content Include="bin\Microsoft.AI.PerfCounterCollector.dll" />
-    <Content Include="bin\Microsoft.AI.ServerTelemetryChannel.dll" />
-    <Content Include="bin\Microsoft.AI.Web.dll" />
-    <Content Include="bin\Microsoft.AI.WindowsServer.dll" />
-    <Content Include="bin\Microsoft.ApplicationInsights.dll" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
-    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
-    <Content Include="bin\System.Web.Helpers.dll" />
-    <Content Include="bin\System.Web.Mvc.dll" />
-    <Content Include="bin\System.Web.Razor.dll" />
-    <Content Include="bin\System.Web.Webpages.Deployment.dll" />
-    <Content Include="bin\System.Web.Webpages.dll" />
-    <Content Include="bin\System.Web.Webpages.Razor.dll" />
     <Content Include="Content\AdminTemplate\assets\css\animate.min.css" />
     <Content Include="Content\AdminTemplate\assets\css\index.html" />
     <Content Include="Content\AdminTemplate\assets\css\responsive.css" />
@@ -2873,6 +2857,9 @@
     <Compile Include="Controllers\ExperiencesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
+    <Compile Include="Controllers\LeaveCountsController.cs" />
+    <Compile Include="Controllers\LeaveHistoriesController.cs" />
+    <Compile Include="Controllers\LeaveTypesController.cs" />
     <Compile Include="Controllers\MenuItemsController.cs" />
     <Compile Include="Controllers\PerformanceIssuesController.cs" />
     <Compile Include="Controllers\PerformanceRatingsController.cs" />
@@ -2906,8 +2893,15 @@
     <Compile Include="Migrations\201708061143340_update_status.Designer.cs">
       <DependentUpon>201708061143340_update_status.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708070706016_add_leave.cs" />
+    <Compile Include="Migrations\201708070706016_add_leave.Designer.cs">
+      <DependentUpon>201708070706016_add_leave.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\LeaveCount.cs" />
+    <Compile Include="Models\LeaveHistory.cs" />
+    <Compile Include="Models\LeaveType.cs" />
     <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\BranchTransfer.cs" />
     <Compile Include="Models\DepartmentTransfer.cs" />
@@ -3191,6 +3185,21 @@
     <Content Include="Views\Departments\Details.cshtml" />
     <Content Include="Views\Departments\Edit.cshtml" />
     <Content Include="Views\Departments\Index.cshtml" />
+    <Content Include="Views\LeaveTypes\Create.cshtml" />
+    <Content Include="Views\LeaveTypes\Delete.cshtml" />
+    <Content Include="Views\LeaveTypes\Details.cshtml" />
+    <Content Include="Views\LeaveTypes\Edit.cshtml" />
+    <Content Include="Views\LeaveTypes\Index.cshtml" />
+    <Content Include="Views\LeaveCounts\Create.cshtml" />
+    <Content Include="Views\LeaveCounts\Delete.cshtml" />
+    <Content Include="Views\LeaveCounts\Details.cshtml" />
+    <Content Include="Views\LeaveCounts\Edit.cshtml" />
+    <Content Include="Views\LeaveCounts\Index.cshtml" />
+    <Content Include="Views\LeaveHistories\Create.cshtml" />
+    <Content Include="Views\LeaveHistories\Delete.cshtml" />
+    <Content Include="Views\LeaveHistories\Details.cshtml" />
+    <Content Include="Views\LeaveHistories\Edit.cshtml" />
+    <Content Include="Views\LeaveHistories\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3222,6 +3231,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708061143340_update_status.resx">
       <DependentUpon>201708061143340_update_status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708070706016_add_leave.resx">
+      <DependentUpon>201708070706016_add_leave.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -10,12 +10,15 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext db = new HRMSDbContext();
 
+        #region List
         // GET: DisciplinaryActionTypes
         public ActionResult Index()
         {
             return View(db.DisciplinaryActionType.ToList());
         }
+        #endregion
 
+        #region Details
         // GET: DisciplinaryActionTypes/Details/5
         public ActionResult Details(int? id)
         {
@@ -30,7 +33,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(disciplinaryActionType);
         }
+        #endregion
 
+        #region Create
         // GET: DisciplinaryActionTypes/Create
         public ActionResult Create()
         {
@@ -48,12 +53,15 @@ namespace FTL_HRMS.Controllers
             {
                 db.DisciplinaryActionType.Add(disciplinaryActionType);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(disciplinaryActionType);
         }
+        #endregion
 
+        #region Edit
         // GET: DisciplinaryActionTypes/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -80,11 +88,15 @@ namespace FTL_HRMS.Controllers
             {
                 db.Entry(disciplinaryActionType).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(disciplinaryActionType);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(disciplinaryActionType);
         }
+        #endregion
 
+        #region Delete
         // GET: DisciplinaryActionTypes/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -110,7 +122,9 @@ namespace FTL_HRMS.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -119,5 +133,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

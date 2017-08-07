@@ -10,12 +10,15 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext db = new HRMSDbContext();
 
+        #region List
         // GET: DisciplinaryActions
         public ActionResult Index()
         {
-            return View(db.DisciplinaryAction.ToList());
+            return View(db.DisciplinaryAction.Include(i => i.DisciplinaryActionType).Include(i => i.Employee).ToList());
         }
+        #endregion
 
+        #region Details
         // GET: DisciplinaryActions/Details/5
         public ActionResult Details(int? id)
         {
@@ -30,10 +33,16 @@ namespace FTL_HRMS.Controllers
             }
             return View(disciplinaryAction);
         }
+        #endregion
 
+        #region Create
         // GET: DisciplinaryActions/Create
         public ActionResult Create()
         {
+            List<Employee> EmployeeList = new List<Employee>();
+            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
+            ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name");
             return View();
         }
 
@@ -44,16 +53,25 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,EmployeeId,DisciplinaryActionTypeId,Date,Remarks")] DisciplinaryAction disciplinaryAction)
         {
+            List<Employee> EmployeeList = new List<Employee>();
+            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
             if (ModelState.IsValid)
             {
                 db.DisciplinaryAction.Add(disciplinaryAction);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
+                ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name");
+                return RedirectToAction("Create");
             }
-
+            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
+            ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(disciplinaryAction);
         }
+        #endregion
 
+        #region Edit
         // GET: DisciplinaryActions/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -66,6 +84,10 @@ namespace FTL_HRMS.Controllers
             {
                 return HttpNotFound();
             }
+            List<Employee> EmployeeList = new List<Employee>();
+            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
+            ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
             return View(disciplinaryAction);
         }
 
@@ -76,15 +98,25 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,EmployeeId,DisciplinaryActionTypeId,Date,Remarks")] DisciplinaryAction disciplinaryAction)
         {
+            List<Employee> EmployeeList = new List<Employee>();
+            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
             if (ModelState.IsValid)
             {
                 db.Entry(disciplinaryAction).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
+                ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name");
+                return RedirectToAction("Create");
             }
+            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
+            ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(disciplinaryAction);
         }
+        #endregion
 
+        #region Delete
         // GET: DisciplinaryActions/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -110,7 +142,9 @@ namespace FTL_HRMS.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -119,5 +153,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

@@ -49,15 +49,14 @@
                             Employee Name
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                            @Html.DropDownList("EmployeeId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
                             @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
                         </div>
-
                         <div>
                             From Branch
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.FromBranchId, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                            @Html.DropDownList("FromBranchId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
                             @Html.ValidationMessageFor(model => model.FromBranchId, "", new { @class = "text-danger" })
                         </div>
 
@@ -65,9 +64,10 @@
                             To Branch
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.ToBranchId, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                            @Html.DropDownList("ToBranchId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
                             @Html.ValidationMessageFor(model => model.ToBranchId, "", new { @class = "text-danger" })
                         </div>
+                        
 
                         <div>
                             Transfer Date
