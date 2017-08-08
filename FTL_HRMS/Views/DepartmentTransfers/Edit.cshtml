@@ -50,7 +50,7 @@
                             Employee Name
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.DropDownList("EmployeeId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
                             @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
                         </div>
 
@@ -58,15 +58,16 @@
                             From Department
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.FromDepartmentId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.DropDownList("FromDepartmentId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
                             @Html.ValidationMessageFor(model => model.FromDepartmentId, "", new { @class = "text-danger" })
                         </div>
 
                         <div>
                             To Department
                         </div>
+
                         <div>
-                            @Html.EditorFor(model => model.ToDepartmentId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.DropDownList("ToDepartmentId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
                             @Html.ValidationMessageFor(model => model.ToDepartmentId, "", new { @class = "text-danger" })
                         </div>
 
