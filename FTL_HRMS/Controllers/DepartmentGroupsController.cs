@@ -50,7 +50,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] DepartmentGroup departmentGroup)
         {
-            if (ModelState.IsValid)
+            if (departmentGroup.Name != "")
             {
                 string UserName = User.Identity.Name;
                 int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();

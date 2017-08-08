@@ -49,7 +49,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Name,Status")] SourceOfHire sourceOfHire)
         {
-            if (ModelState.IsValid)
+            if (sourceOfHire.Name != "")
             {
                 sourceOfHire.Status = true;
                 db.SourceOfHire.Add(sourceOfHire);

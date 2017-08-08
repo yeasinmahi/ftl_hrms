@@ -49,7 +49,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Name,Address,Status")] Branch branch)
         {
-            if (ModelState.IsValid)
+            if (branch.Name != "")
             {
                 string Address = Request["Address"].ToString();
                 branch.Address = Address;

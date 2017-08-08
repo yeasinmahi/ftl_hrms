@@ -16,7 +16,7 @@ namespace FTL_HRMS.Controllers
         // GET: Departments
         public ActionResult Index()
         {
-            return View(db.Department.Include(i=>i.DepartmentGroup).Where(i=> i.Status == true).ToList());
+            return View(db.Department.Include(a=>a.DepartmentGroup).Where(i=> i.Status == true).ToList());
         }
         #endregion
 
@@ -34,6 +34,15 @@ namespace FTL_HRMS.Controllers
                 return HttpNotFound();
             }
             return View(department);
+        }
+        #endregion
+
+        #region Get Departments By Group
+        public ActionResult GetDepartmentByGroupId()
+        {
+            int DepartmentGroupId = Convert.ToInt32(Request["DepartmentGroupId"]);
+            List<Department> DepartmentList = db.Department.Where(t => t.DepartmentGroupId == DepartmentGroupId).ToList();
+            return Json(DepartmentList, JsonRequestBehavior.AllowGet);
         }
         #endregion
 
@@ -56,7 +65,7 @@ namespace FTL_HRMS.Controllers
         {
             List<DepartmentGroup> GroupList = new List<DepartmentGroup>();
             GroupList = db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            if (ModelState.IsValid)
+            if (department.Name != "")
             {
                 string UserName = User.Identity.Name;
                 int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();

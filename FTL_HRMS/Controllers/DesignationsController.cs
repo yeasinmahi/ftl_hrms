@@ -37,13 +37,22 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Get Designations By Department
+        public ActionResult GetDesignationByDeptId()
+        {
+            int DepartmentId = Convert.ToInt32(Request["DepartmentId"]);
+            List<Designation> DesignationList = db.Designation.Where(t => t.DepartmentId == DepartmentId).ToList();
+            return Json(DesignationList, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
         #region Create
         // GET: Designations/Create
         public ActionResult Create()
         {
-            List<Department> DepartmentList = new List<Department>();
-            DepartmentList = db.Department.Where(i => i.Status == true).ToList();
-            ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name");
+            List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();
+            DepartmentGroupList = db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
             return View();
         }
 
@@ -54,22 +63,23 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,DepartmentId,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
         {
-            List<Department> DepartmentList = new List<Department>();
-            DepartmentList = db.Department.Where(i => i.Status == true).ToList();
-            if (ModelState.IsValid)
+            List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();
+            DepartmentGroupList = db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            if (designation.Name != "")
             {
                 string UserName = User.Identity.Name;
                 int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
                 designation.CreatedBy = userId;
                 designation.CreateDate = DateTime.Now;
+                designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
                 designation.Status = true;
                 db.Designation.Add(designation);
                 db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
-                ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name");
+                ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name", designation.DepartmentId);
+            ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(designation);
         }
