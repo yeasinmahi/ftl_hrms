@@ -23,7 +23,7 @@
 <div class="content-body">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-            @using (Html.BeginForm())
+            @using (Html.BeginForm("Create", "Employees", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
 
@@ -131,7 +131,12 @@
                                         <div>
                                             @Html.DropDownList("DepartmentGroupId", null, "Select Group", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();", @tabindex = 19 })
                                         </div>
-                                        <br />
+                                        <div>
+                                            Image
+                                        </div>
+                                        <div>
+                                            <input type="file" name="image1" id="image1" class="form-control" style = "width:100%" tabindex="22"/>
+                                        </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div>
@@ -183,7 +188,12 @@
                                                 <option value="">Select Department</option>
                                             </select>
                                         </div>
-                                        <br />
+                                        <div>
+                                            Password
+                                        </div>
+                                        <div>
+                                            <input name="Password" type="password" class="form-control" style="width:100%" id="password" required="required" tabindex="23">
+                                        </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div>
@@ -235,7 +245,12 @@
                                                 <option value="" selected>Select Designation</option>
                                             </select>
                                         </div>
-                                        <br />
+                                        <div>
+                                            Confirm Password
+                                        </div>
+                                        <div>
+                                            <input name="ConfirmPassword" type="password" class="form-control" style="width:100%" id="confirmPass" required="required" tabindex="24">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -323,7 +338,7 @@
                         <div class="content-body">
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <table id="myTable" class="table table-bordered table-responsive">
+                                    <table id="myTable2" class="table table-bordered table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Institute</th>
@@ -442,6 +457,420 @@
                 for (var i = 0; i < response.length; i++) {
                     var opt = new Option(response[i].Name, response[i].Sl);
                     $('#ddl_designation').append(opt);
+                }
+            }
+        });
+    };
+
+    function addEducation() {
+        if ($('#edu_institute').val() != "") {
+            $.ajax({
+                url: '/Employees/GetSelectedEducation',
+                method: 'POST',
+                data: {
+                    Institute: $('#edu_institute').val(),
+                    Program: $('#edu_program').val(),
+                    FromDate: $('#edu_fromdate').val(),
+                    ToDate: $('#edu_todate').val(),
+                    Board: $('#edu_board').val(),
+                    Result: $('#edu_result').val(),
+                },
+                cache: false,
+                error: function () {
+                    alert("An error occoured!");
+                },
+                success: function (response) {
+                    $('#myTable tbody').empty();
+                    $('#myTable').find('tbody').append("<tr>" +
+                                "<th>" +
+                                    "<div class=\"input-group\">"+
+                                        "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"edu_institute\" name = \"EduInstitute\" placeholder = \"Institute\" />"+
+                                    "</div>"+                                
+                                "</th>" +
+                                "<th>" +
+                                     "<div class=\"input-group\">" +
+                                        "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"edu_program\" name = \"EduProgram\" placeholder = \"Program\" />" +
+                                    "</div>" +
+                                "</th>" +
+                                "<th>" +
+                                     "<div class=\"input-group\">" +
+                                        "<input type=\"date\" class = \"form-control\" style = \"width:100%\" id = \"edu_fromdate\" name = \"EduFromDate\" placeholder = \"FromDate\" />" +
+                                    "</div>" +
+                                "</th>" +
+                                "<th>" +
+                                    "<div class=\"input-group\">" +
+                                        "<input type=\"date\" class = \"form-control\" style = \"width:100%\" id = \"edu_todate\" name = \"EduToDate\" placeholder = \"ToDate\" />" +
+                                    "</div>" +
+                                "</th>" +
+                                "<th>" +
+                                     "<div class=\"input-group\">" +
+                                        "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"edu_board\" name = \"EduBoard\" placeholder = \"Board\" />" +
+                                    "</div>" +                                
+                                "</th>" +
+                                "<th>" +
+                                     "<div class=\"input-group\">" +
+                                        "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"edu_result\" name = \"EduResult\" placeholder = \"Result\" />" +
+                                    "</div>" +                                
+                                "</th>" +
+                                "<th>" +
+                                    "<button type=\"button\" class=\"btn btn-primary btn-sm\" aria-expanded=\"false\" onclick=\"addEducation()\"><i class=\"fa fa-plus-square\"></i></button>"+
+                                "</th>"+
+                            "</tr>")
+
+                    for(var i=0; i<response.length; i++){
+                        $('#myTable').find('tbody').append("<tr>"+
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].InstituteName +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].Program +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].FromDate +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].ToDate +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].Board +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].Result +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                        "<td class=\"action\">" +
+                                                            "<button type=\"button\" class=\"btn btn-primary btn-sm\" aria-expanded=\"false\" onclick=\"deleteFromEduList(" + response[i].Sl + ")\"><i class=\"fa fa-trash-o\"></i></button>"+
+                                                        "</td></tr>")
+                    }
+                    $('#edu_institute').val('');
+                    $('#edu_program').val('');
+                    $('#edu_fromdate').val('');
+                    $('#edu_todate').val('');
+                    $('#edu_board').val('');
+                    $('#edu_result').val('');
+                    $('#edu_institute').focus();
+                }
+            });
+        }
+        else {
+            alert('Must have to enter intitute name!');
+        }
+    };
+
+    function deleteFromEduList(sl) {
+        $.ajax({
+            url: '/Employees/DeleteFromEduList',
+            method: 'POST',
+            data: {
+                Sl: sl,
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                $('#myTable tbody').empty();
+                $('#myTable').find('tbody').append("<tr>" +
+                            "<th>" +
+                                "<div class=\"input-group\">"+
+                                    "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"edu_institute\" name = \"EduInstitute\" placeholder = \"Institute\" />"+
+                                "</div>"+                                
+                            "</th>" +
+                            "<th>" +
+                                 "<div class=\"input-group\">" +
+                                    "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"edu_program\" name = \"EduProgram\" placeholder = \"Program\" />" +
+                                "</div>" +
+                            "</th>" +
+                            "<th>" +
+                                 "<div class=\"input-group\">" +
+                                    "<input type=\"date\" class = \"form-control\" style = \"width:100%\" id = \"edu_fromdate\" name = \"EduFromDate\" placeholder = \"FromDate\" />" +
+                                "</div>" +
+                            "</th>" +
+                            "<th>" +
+                                "<div class=\"input-group\">" +
+                                    "<input type=\"date\" class = \"form-control\" style = \"width:100%\" id = \"edu_todate\" name = \"EduToDate\" placeholder = \"ToDate\" />" +
+                                "</div>" +
+                            "</th>" +
+                            "<th>" +
+                                 "<div class=\"input-group\">" +
+                                    "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"edu_board\" name = \"EduBoard\" placeholder = \"Board\" />" +
+                                "</div>" +                                
+                            "</th>" +
+                            "<th>" +
+                                 "<div class=\"input-group\">" +
+                                    "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"edu_result\" name = \"EduResult\" placeholder = \"Result\" />" +
+                                "</div>" +                                
+                            "</th>" +
+                            "<th>" +
+                                "<button type=\"button\" class=\"btn btn-primary btn-sm\" aria-expanded=\"false\" onclick=\"addEducation()\"><i class=\"fa fa-plus-square\"></i></button>"+
+                            "</th>"+
+                        "</tr>")
+
+                for(var i=0; i<response.length; i++){
+                    $('#myTable').find('tbody').append("<tr>"+
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].InstituteName +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].Program +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].FromDate +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].ToDate +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].Board +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].Result +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                    "<td class=\"action\">" +
+                                                        "<button type=\"button\" class=\"btn btn-primary btn-sm\" aria-expanded=\"false\" onclick=\"deleteFromEduList(" + response[i].Sl + ")\"><i class=\"fa fa-trash-o\"></i></button>"+
+                                                    "</td></tr>")
+                }
+            }
+        });
+    };
+
+    function addExperience() {
+        if ($('#exp_institute').val() != "") {
+            $.ajax({
+                url: '/Employees/GetSelectedExperience',
+                method: 'POST',
+                data: {
+                    Institute: $('#exp_institute').val(),
+                    Address: $('#exp_address').val(),
+                    FromDate: $('#exp_fromdate').val(),
+                    ToDate: $('#exp_todate').val(),
+                    Website: $('#exp_website').val(),
+                    Phone: $('#exp_phone').val(),
+                    Designation: $('#exp_designation').val(),
+                },
+                cache: false,
+                error: function () {
+                    alert("An error occoured!");
+                },
+                success: function (response) {
+                    $('#myTable2 tbody').empty();
+                    $('#myTable2').find('tbody').append("<tr>" +
+                                "<th>" +
+                                    "<div class=\"input-group\">"+
+                                        "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"exp_institute\" name = \"ExpInstitute\" placeholder = \"Institute\" />"+
+                                    "</div>"+                                
+                                "</th>" +
+                                "<th>" +
+                                     "<div class=\"input-group\">" +
+                                        "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"exp_address\" name = \"EduAddress\" placeholder = \"Address\" />" +
+                                    "</div>" +
+                                "</th>" +
+                                "<th>" +
+                                     "<div class=\"input-group\">" +
+                                        "<input type=\"date\" class = \"form-control\" style = \"width:100%\" id = \"exp_fromdate\" name = \"ExpFromDate\" placeholder = \"FromDate\" />" +
+                                    "</div>" +
+                                "</th>" +
+                                "<th>" +
+                                    "<div class=\"input-group\">" +
+                                        "<input type=\"date\" class = \"form-control\" style = \"width:100%\" id = \"exp_todate\" name = \"ExpToDate\" placeholder = \"ToDate\" />" +
+                                    "</div>" +
+                                "</th>" +
+                                "<th>" +
+                                     "<div class=\"input-group\">" +
+                                        "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"exp_website\" name = \"ExpWebsite\" placeholder = \"Website\" />" +
+                                    "</div>" +                                
+                                "</th>" +
+                                "<th>" +
+                                     "<div class=\"input-group\">" +
+                                        "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"exp_phone\" name = \"EduPhone\" placeholder = \"Phone\" />" +
+                                    "</div>" +                                
+                                "</th>" +
+                                "<th>" +
+                                     "<div class=\"input-group\">" +
+                                        "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"exp_designation\" name = \"EduDesignation\" placeholder = \"Designation\" />" +
+                                    "</div>" +                                
+                                "</th>" +
+                                "<th>" +
+                                    "<button type=\"button\" class=\"btn btn-primary btn-sm\" aria-expanded=\"false\" onclick=\"addExperience()\"><i class=\"fa fa-plus-square\"></i></button>"+
+                                "</th>"+
+                            "</tr>")
+
+                    for(var i=0; i<response.length; i++){
+                        $('#myTable2').find('tbody').append("<tr>"+
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].InstituteName +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].InstituteAddress +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].FromDate +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].ToDate +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].Website +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                        "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].Phone +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+                                                                                                                "<td>" +
+                                                            "<div class=\"input-group\">" +
+                                                                "<label class = \"form-control\" style = \"width:100%\">" + response[i].Designation +"</label>"+
+                                                            "</div>" +
+                                                        "</td>" +
+
+                                                        "<td class=\"action\">" +
+                                                            "<button type=\"button\" class=\"btn btn-primary btn-sm\" aria-expanded=\"false\" onclick=\"deleteFromExpList(" + response[i].Sl + ")\"><i class=\"fa fa-trash-o\"></i></button>"+
+                                                        "</td></tr>")
+                    }
+                    $('#exp_institute').val('');
+                    $('#exp_address').val('');
+                    $('#exp_fromdate').val('');
+                    $('#exp_todate').val('');
+                    $('#exp_website').val('');
+                    $('#exp_phone').val('');
+                    $('#exp_designation').val();
+                    $('#exp_institute').focus();
+                }
+            });
+        }
+        else {
+            alert('Must have to enter intitute name!');
+        }
+    };
+
+    function deleteFromExpList(sl) {
+        $.ajax({
+            url: '/Employees/DeleteFromExpList',
+            method: 'POST',
+            data: {
+                Sl: sl,
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                $('#myTable2 tbody').empty();
+                $('#myTable2').find('tbody').append("<tr>" +
+                            "<th>" +
+                                "<div class=\"input-group\">"+
+                                    "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"exp_institute\" name = \"ExpInstitute\" placeholder = \"Institute\" />"+
+                                "</div>"+                                
+                            "</th>" +
+                            "<th>" +
+                                 "<div class=\"input-group\">" +
+                                    "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"exp_address\" name = \"EduAddress\" placeholder = \"Address\" />" +
+                                "</div>" +
+                            "</th>" +
+                            "<th>" +
+                                 "<div class=\"input-group\">" +
+                                    "<input type=\"date\" class = \"form-control\" style = \"width:100%\" id = \"exp_fromdate\" name = \"ExpFromDate\" placeholder = \"FromDate\" />" +
+                                "</div>" +
+                            "</th>" +
+                            "<th>" +
+                                "<div class=\"input-group\">" +
+                                    "<input type=\"date\" class = \"form-control\" style = \"width:100%\" id = \"exp_todate\" name = \"ExpToDate\" placeholder = \"ToDate\" />" +
+                                "</div>" +
+                            "</th>" +
+                            "<th>" +
+                                 "<div class=\"input-group\">" +
+                                    "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"exp_website\" name = \"ExpWebsite\" placeholder = \"Website\" />" +
+                                "</div>" +                                
+                            "</th>" +
+                            "<th>" +
+                                 "<div class=\"input-group\">" +
+                                    "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"exp_phone\" name = \"EduPhone\" placeholder = \"Phone\" />" +
+                                "</div>" +                                
+                            "</th>" +
+                            "<th>" +
+                                 "<div class=\"input-group\">" +
+                                    "<input type=\"text\" class = \"form-control\" style = \"width:100%\" id = \"exp_designation\" name = \"EduDesignation\" placeholder = \"Designation\" />" +
+                                "</div>" +                                
+                            "</th>" +
+                            "<th>" +
+                                "<button type=\"button\" class=\"btn btn-primary btn-sm\" aria-expanded=\"false\" onclick=\"addExperience()\"><i class=\"fa fa-plus-square\"></i></button>"+
+                            "</th>"+
+                        "</tr>")
+
+                for(var i=0; i<response.length; i++){
+                    $('#myTable2').find('tbody').append("<tr>"+
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].InstituteName +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].InstituteAddress +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].FromDate +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].ToDate +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].Website +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                    "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].Phone +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+                                                                                                            "<td>" +
+                                                        "<div class=\"input-group\">" +
+                                                            "<label class = \"form-control\" style = \"width:100%\">" + response[i].Designation +"</label>"+
+                                                        "</div>" +
+                                                    "</td>" +
+
+                                                    "<td class=\"action\">" +
+                                                        "<button type=\"button\" class=\"btn btn-primary btn-sm\" aria-expanded=\"false\" onclick=\"deleteFromExpList(" + response[i].Sl + ")\"><i class=\"fa fa-trash-o\"></i></button>"+
+                                                    "</td></tr>")
                 }
             }
         });
