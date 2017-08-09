@@ -63,7 +63,7 @@
                             Name
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                         </div>
 
@@ -72,7 +72,7 @@
                             Department Group Name
                         </div>
                         <div>
-                            @Html.DropDownList("DepartmentGroupId", null, htmlAttributes: new { @class = "form-control", style = "width:50%"})
+                            @Html.DropDownList("DepartmentGroupId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
                             @Html.ValidationMessageFor(model => model.DepartmentGroupId, "", new { @class = "text-danger" })
                         </div>
                         <br />

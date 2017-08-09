@@ -49,7 +49,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Name,Status")] EmployeeType employeeType)
         {
-            if (ModelState.IsValid)
+            if (employeeType.Name != "")
             {
                 employeeType.Status = true;
                 db.EmployeeType.Add(employeeType);

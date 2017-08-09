@@ -4,10 +4,12 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
         <div class="pull-left">
             <h1 class="title">Employee</h1>
+
         </div>
     </div>
 </div>
@@ -18,196 +20,430 @@
         <i class="box_toggle fa fa-chevron-down"></i>
     </div>
 </header>
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Employee</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
-            </div>
-        </div>
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="row">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["SuccessMsg"]
+                        </div>
+                    }
+                    @if (TempData["WarningMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["WarningMsg"]
+                        </div>
+                    }
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Status)
+                    @Html.HiddenFor(model => model.CreateDate)
+                    @Html.HiddenFor(model => model.CreatedBy)
+                    @Html.HiddenFor(model => model.UpdateDate)
+                    @Html.HiddenFor(model => model.UpdatedBy)
+                    <div class="col-md-offset-8">
+                        <div class="btn-group col-md-offset-9">
+                            <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Employees" )'">Back To List</button>
+                        </div>
+                    </div>
+                    <section class="box ">
+                        <header class="panel_header">
+                            <h2 class="title pull-left">General Information</h2>
+                            <div class="actions panel_actions pull-right">
+                                <i class="box_toggle fa fa-chevron-down"></i>
+                            </div>
+                        </header>
+                        <div class="content-body">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-4">
+                                        <div>
+                                            Code
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 1 } })
+                                            @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Mother's Name
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.MothersName, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 4 } })
+                                            @Html.ValidationMessageFor(model => model.MothersName, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Gender
+                                        </div>
+                                        @{
+                                            List<SelectListItem> listItems = new List<SelectListItem>();
+                                            listItems.Add(new SelectListItem
+                                            {
+                                                Text = "Male",
+                                                Value = "Male",
+                                            });
+                                            listItems.Add(new SelectListItem
+                                            {
+                                                Text = "Female",
+                                                Value = "Female"
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.FathersName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FathersName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FathersName, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                                            });
+                                            listItems.Add(new SelectListItem
+                                            {
+                                                Text = "Others",
+                                                Value = "Others"
+                                            });
+                                        }
+                                        <div>
+                                            @Html.DropDownListFor(model => model.Gender, listItems, "Select Gender", new { @class = "form-control", style = "width:100%", @tabindex = 7 })
+                                            @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            NID / Birth Certificate
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.NIDorBirthCirtificate, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 10 } })
+                                            @Html.ValidationMessageFor(model => model.NIDorBirthCirtificate, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Date Of Birth
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13 } })
+                                            @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Employee Type
+                                        </div>
+                                        <div>
+                                            @Html.DropDownList("EmployeeTypeId", null, "Select Type", htmlAttributes: new { @class = "form-control", style = "width:100%", @tabindex = 16 })
+                                            @Html.ValidationMessageFor(model => model.EmployeeTypeId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Department Group
+                                        </div>
+                                        <div>
+                                            @Html.DropDownList("DepartmentGroupId", null, "Select Group", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();", @tabindex = 19 })
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div>
+                                            Name
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 2 } })
+                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Present Address
+                                        </div>
+                                        <div>
+                                            <textarea class="form-control autogrow" cols="5" name="PresentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:100%" id="present_address" required tabindex="5"></textarea>
+                                        </div>
+                                        <div>
+                                            Mobile
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 8 } })
+                                            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Diving Licence
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.DrivingLicence, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 11 } })
+                                            @Html.ValidationMessageFor(model => model.DrivingLicence, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Source Of Hire
+                                        </div>
+                                        <div>
+                                            @Html.DropDownList("SourceOfHireId", null, "Select Source", htmlAttributes: new { @class = "form-control", style = "width:100%", @tabindex = 14 })
+                                            @Html.ValidationMessageFor(model => model.SourceOfHireId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Date Of Joining
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 17 } })
+                                            @Html.ValidationMessageFor(model => model.DateOfJoining, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Department
+                                        </div>
+                                        <div>
+                                            <select class="form-control" style="width:100%" id="ddl_dept" name="ddl_dept" onchange="LoadDesignation();" tabindex=20>
+                                                <option value="">Select Department</option>
+                                            </select>
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div>
+                                            Father's Name
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.FathersName, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 3 } })
+                                            @Html.ValidationMessageFor(model => model.FathersName, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Permanent Address
+                                        </div>
+                                        <div>
+                                            <textarea class="form-control autogrow" cols="5" name="PermanentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:100%" id="permanent_address" required tabindex="6"></textarea>
+                                        </div>
+                                        <div>
+                                            Email
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 9 } })
+                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Passport Number
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.PassportNumber, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 12 } })
+                                            @Html.ValidationMessageFor(model => model.PassportNumber, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Branch
+                                        </div>
+                                        <div>
+                                            @Html.DropDownList("BranchId", null, "Select Branch", htmlAttributes: new { @class = "form-control", style = "width:100%", @tabindex = 15 })
+                                            @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Gross Salary
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.GrossSalary, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 18 } })
+                                            @Html.ValidationMessageFor(model => model.GrossSalary, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            Designation
+                                        </div>
+                                        <div>
+                                            <select class="form-control" style="width:100%" id="ddl_designation" name="ddl_designation" tabindex=21>
+                                                <option value="" selected>Select Designation</option>
+                                            </select>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="row">
+                <div class="col-md-12">
+                    <section class="box ">
+                        <header class="panel_header">
+                            <h2 class="title pull-left">Education Information</h2>
+                            <div class="actions panel_actions pull-right">
+                                <i class="box_toggle fa fa-chevron-down"></i>
+                            </div>
+                        </header>
+                        <div class="content-body">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <table id="myTable" class="table table-bordered table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Institute</th>
+                                                <th>Program</th>
+                                                <th>From Date</th>
+                                                <th>To Date</th>
+                                                <th>Board</th>
+                                                <th>Result</th>
+                                                <th class="action"><i class="fa fa-plus-square"></i>&nbsp;<i class="fa fa-trash-o"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" style="width:100%" id="edu_institute" name="Edu_Institute" placeholder="Institute" />
+                                                    </div>                                                    
+                                                </th>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" style="width:100%" id="edu_program" name="Edu_Program" placeholder="Program" />
+                                                    </div>                                                     
+                                                </th>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="date" class="form-control" style="width:100%" id="edu_fromdate" name="Edu_FromDate" placeholder="FromDate" />
+                                                    </div>                                                     
+                                                </th>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="date" class="form-control" style="width:100%" id="edu_todate" name="Edu_ToDate" placeholder="ToDate" />
+                                                    </div>                                                     
+                                                </th>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" style="width:100%" id="edu_board" name="Edu_Board" placeholder="Board" />
+                                                    </div>                                                    
+                                                </th>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" style="width:100%" id="edu_result" name="Edu_Result" placeholder="Result" />
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="addEducation()"><i class="fa fa-plus-square"></i></button>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MothersName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MothersName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MothersName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PresentAddress, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PresentAddress, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PresentAddress, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PermanentAddress, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PermanentAddress, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PermanentAddress, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.NIDorBirthCirtificate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NIDorBirthCirtificate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NIDorBirthCirtificate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DrivingLicence, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DrivingLicence, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DrivingLicence, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PassportNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PassportNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PassportNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateOfJoining, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateOfJoining, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SourceOfHireId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SourceOfHireId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SourceOfHireId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DesignationId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DesignationId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DesignationId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.GrossSalary, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.GrossSalary, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.GrossSalary, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreateDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreateDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UpdatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdateDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdateDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UpdateDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Status)
-                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="box ">
+                        <header class="panel_header">
+                            <h2 class="title pull-left">Experience Information</h2>
+                            <div class="actions panel_actions pull-right">
+                                <i class="box_toggle fa fa-chevron-down"></i>
+                            </div>
+                        </header>
+                        <div class="content-body">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <table id="myTable" class="table table-bordered table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Institute</th>
+                                                <th>Address</th>
+                                                <th>From Date</th>
+                                                <th>To Date</th>
+                                                <th>Website</th>
+                                                <th>Phone</th>
+                                                <th>Designation</th>
+                                                <th class="action"><i class="fa fa-plus-square"></i>&nbsp;<i class="fa fa-trash-o"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" style="width:100%" id="exp_institute" name="Exp_Institute" placeholder="Institute" />
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" style="width:100%" id="exp_address" name="Exp_Address" placeholder="Address" />
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="date" class="form-control" style="width:100%" id="exp_fromdate" name="Exp_FromDate" placeholder="FromDate" />
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="date" class="form-control" style="width:100%" id="exp_todate" name="Exp_ToDate" placeholder="ToDate" />
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" style="width:100%" id="exp_website" name="Exp_Website" placeholder="Website" />
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" style="width:100%" id="exp_phone" name="Exp_Phone" placeholder="Phone" />
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" style="width:100%" id="exp_designation" name="Exp_Designation" placeholder="Designation" />
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="addExperience()"><i class="fa fa-plus-square"></i></button>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                </div>
             </div>
-        </div>
+                    <div class="form-group">
+                        <div class="col-md-12" style="margin-left:45%;">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                  </div>
+                }
+           </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script>
+    function LoadDepartment() {
+        $.ajax({
+            url: '/Departments/GetDepartmentByGroupId',
+            method: 'POST',
+            data: {
+                DepartmentGroupId: $('#ddl_deptgroup').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                $('#ddl_dept').empty();
+                $('#ddl_dept').append($('<option>', {
+                    value: '',
+                    text: 'Select Department'
+                }));
+                for (var i = 0; i < response.length; i++) {
+                    var opt = new Option(response[i].Name, response[i].Sl);
+                    $('#ddl_dept').append(opt);
+                }
+            }
+        });
+    };
+
+    function LoadDesignation() {
+        $.ajax({
+            url: '/Designations/GetDesignationByDeptId',
+            method: 'POST',
+            data: {
+                DepartmentId: $('#ddl_dept').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                $('#ddl_designation').empty();
+                $('#ddl_designation').append($('<option>', {
+                    value: '',
+                    text: 'Select Designation'
+                }));
+                for (var i = 0; i < response.length; i++) {
+                    var opt = new Option(response[i].Name, response[i].Sl);
+                    $('#ddl_designation').append(opt);
+                }
+            }
+        });
+    };
+</script>

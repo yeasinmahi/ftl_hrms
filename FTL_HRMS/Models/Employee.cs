@@ -32,6 +32,10 @@ namespace FTL_HRMS.Models
         [MaxLength(250)]
         public string MothersName { get; set; }
 
+        [Required(ErrorMessage = "Gender cannot be empty")]
+        [MaxLength(250)]
+        public string Gender { get; set; }
+
         [Required(ErrorMessage = "Present Address cannot be empty")]
         [MaxLength(250)]
         public string PresentAddress { get; set; }

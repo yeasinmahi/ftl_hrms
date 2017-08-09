@@ -61,17 +61,24 @@
                             Name
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required=true } })
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                         </div>
 
-
                         <div>
-                            Department Name
+                            Department Group
                         </div>
                         <div>
-                            @Html.DropDownList("DepartmentId", null, htmlAttributes: new { @class = "form-control", style = "width:50%"})
-                            @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+                            @Html.DropDownList("DepartmentGroupId", null, "Select Group", htmlAttributes: new { @class = "form-control", style = "width:50%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();"})
+                        </div>
+
+                        <div>
+                            Department
+                        </div>
+                        <div>
+                            <select class="form-control" style="width:50%" id="ddl_dept" name="ddl_dept" required>
+                                <option value="">Select Department</option>
+                            </select>
                         </div>
                        
                         <br />
@@ -87,3 +94,29 @@
     </div>
 </div>
 
+<script>
+    function LoadDepartment() {
+        $.ajax({
+            url: '/Departments/GetDepartmentByGroupId',
+            method: 'POST',
+            data: {
+                DepartmentGroupId: $('#ddl_deptgroup').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                $('#ddl_dept').empty();
+                $('#ddl_dept').append($('<option>', {
+                    value: '',
+                    text: 'Select Department'
+                }));
+                for (var i = 0; i < response.length; i++) {
+                    var opt = new Option(response[i].Name, response[i].Sl);
+                    $('#ddl_dept').append(opt);
+                }
+            }
+        });
+    };
+</script>

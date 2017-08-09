@@ -1,6 +1,10 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
 
@@ -34,6 +38,22 @@ namespace FTL_HRMS.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
+            List<SourceOfHire> SourceOfHireList = new List<SourceOfHire>();
+            SourceOfHireList = db.SourceOfHire.Where(i => i.Status == true).ToList();
+            ViewBag.SourceOfHireId = new SelectList(SourceOfHireList, "Sl", "Name");
+
+            List<Branch> BranchList = new List<Branch>();
+            BranchList = db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name");
+
+            List<EmployeeType> EmployeeTypeList = new List<EmployeeType>();
+            EmployeeTypeList = db.EmployeeType.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeTypeId = new SelectList(EmployeeTypeList, "Sl", "Name");
+
+            List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();
+            DepartmentGroupList = db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
+
             return View();
         }
 
@@ -42,7 +62,7 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Employee employee)
+        public ActionResult Create([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +94,7 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Employee employee)
+        public ActionResult Edit([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Employee employee)
         {
             if (ModelState.IsValid)
             {
