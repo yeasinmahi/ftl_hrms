@@ -25,6 +25,14 @@ namespace FTL_HRMS
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+            bundles.Add(new ScriptBundle("~/bundles/AdminTamplate").Include(
+                      "~/Scripts/jquery-3.1.1.min.js",
+                      "~/Scripts/jquery-3.1.1.min.js",
+                      "~/Scripts/respond.js"));
+            bundles.Add(new ScriptBundle("~/bundles/Others").Include(
+                      "~/Scripts/d3.v3.js",
+                      "~/Scripts/jquery-3.1.1.min.js",
+                      "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/AdminTamplate").Include(
                       "~/Content/pace-theme-flash.css",
