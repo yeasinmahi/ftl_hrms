@@ -23,12 +23,15 @@ namespace FTL_HRMS.Controllers
 
         UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
 
+        #region List
         // GET: Employees
         public ActionResult Index()
         {
-            return View(db.Employee.ToList());
+            return View(db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true).ToList());
         }
+        #endregion
 
+        #region Details
         // GET: Employees/Details/5
         public ActionResult Details(int? id)
         {
@@ -43,6 +46,7 @@ namespace FTL_HRMS.Controllers
             }
             return View(employee);
         }
+        #endregion
 
         #region Get Information
         [AllowAnonymous]
@@ -197,6 +201,7 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Create
         // GET: Employees/Create
         public ActionResult Create()
         {
@@ -226,8 +231,7 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Employee employee,
-            [Bind(Include = "Id,IsActive,RoleId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,CustomUserId")] ApplicationUser user, HttpPostedFileBase image1)
+        public ActionResult Create([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Gender,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Employee employee, HttpPostedFileBase image1)
         {
             if (UserValidation(employee.Code, Request["Password"], Request["ConfirmPassword"]))
             {
@@ -245,39 +249,40 @@ namespace FTL_HRMS.Controllers
                 employee.CreateDate = DateTime.Now;
                 employee.Status = true;
                 db.Employee.Add(employee);
-                //db.SaveChanges();
+                db.SaveChanges();
 
-                //var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-                //var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-                //if (!roleManager.RoleExists("Employee"))
-                //{
-                //    // first we create Receptionist role   
-                //    var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
-                //    role.Name = "Employee";
-                //    roleManager.Create(role);
-                //}
-                ////Here we create a Receptionist user who will maintain the website                  
-                //user.IsActive = true;
-                //user.Email = employee.Email;
-                //user.EmailConfirmed = true;
-                //user.PhoneNumber = employee.Mobile;
-                //user.PhoneNumberConfirmed = true;
-                //user.TwoFactorEnabled = true;
-                //user.LockoutEnabled = true;
-                //user.AccessFailedCount = 0;
-                //user.UserName = employee.Code;
-                //user.CustomUserId = employee.Sl;
-                //string Password = Convert.ToString(Request["Password"]);
-                //string userPWD = Password;
+                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                if (!roleManager.RoleExists("Employee"))
+                {
+                    // first we create Employee role   
+                    var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                    role.Name = "Employee";
+                    roleManager.Create(role);
+                }
+                //Here we create a Employee user who will maintain the website
+                ApplicationUser user = new ApplicationUser();
+                user.IsActive = true;
+                user.Email = employee.Email;
+                user.EmailConfirmed = true;
+                user.PhoneNumber = employee.Mobile;
+                user.PhoneNumberConfirmed = true;
+                user.TwoFactorEnabled = true;
+                user.LockoutEnabled = true;
+                user.AccessFailedCount = 0;
+                user.UserName = employee.Code;
+                user.CustomUserId = employee.Sl;
+                string Password = Convert.ToString(Request["Password"]);
+                string userPWD = Password;
 
-                //var chkUser = UserManager.Create(user, userPWD);
+                var chkUser = UserManager.Create(user, userPWD);
 
-                ////Add default User to Role Customer   
-                //if (chkUser.Succeeded)
-                //{
-                //    var result1 = UserManager.AddToRole(user.Id, "Employee");
-                //}
-                //db.SaveChanges();
+                //Add default User to Role Customer   
+                if (chkUser.Succeeded)
+                {
+                    var result1 = UserManager.AddToRole(user.Id, "Employee");
+                }
+                db.SaveChanges();
                 #endregion
 
                 #region Add Education
@@ -295,7 +300,7 @@ namespace FTL_HRMS.Controllers
                     education.Result = EducationList[i].Result;
                     education.EmployeeId = employee.Sl;
                     db.Education.Add(education);
-                    //db.SaveChanges();
+                    db.SaveChanges();
                 }
                 #endregion
 
@@ -315,7 +320,7 @@ namespace FTL_HRMS.Controllers
                     experience.Designation = ExperienceList[i].Designation;
                     experience.EmployeeId = employee.Sl;
                     db.Experience.Add(experience);
-                    //db.SaveChanges();
+                    db.SaveChanges();
                 }
                 #endregion
 
@@ -326,7 +331,6 @@ namespace FTL_HRMS.Controllers
                     image.EmployeeId = employee.Sl;
                     image.Image = new byte[image1.ContentLength];
                     image1.InputStream.Read(image.Image, 0, image1.ContentLength);
-
                     db.Images.Add(image);
                     db.SaveChanges();
                 }
@@ -357,7 +361,9 @@ namespace FTL_HRMS.Controllers
                 return View(employee);
             }
         }
+        #endregion
 
+        #region Edit
         // GET: Employees/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -370,6 +376,11 @@ namespace FTL_HRMS.Controllers
             {
                 return HttpNotFound();
             }
+
+            List<SourceOfHire> SourceOfHireList = new List<SourceOfHire>();
+            SourceOfHireList = db.SourceOfHire.Where(i => i.Status == true).ToList();
+            ViewBag.SourceOfHireId = new SelectList(SourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
+
             return View(employee);
         }
 
@@ -378,17 +389,103 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Employee employee)
+        public ActionResult Edit([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Gender,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(employee).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var employeeCode = db.Employee.Where(c => c.Sl == employee.Sl).Select(i => i.Code).FirstOrDefault();
+                string userId = db.Users.Where(u => u.UserName == employeeCode).Select(i => i.Id).FirstOrDefault();
+                if (employeeCode != employee.Code)
+                {
+                    if (db.Users.Where(u => u.UserName == employee.Code).Count() > 0)
+                    {
+                        TempData["WarningMsg"] = "Username already exist!!!";
+                    }
+                    else
+                    {
+                        string PermanentAddress = Request["PermanentAddress"].ToString();
+                        string PresentAddress = Request["PresentAddress"].ToString();
+
+                        employee.PresentAddress = PresentAddress;
+                        employee.PermanentAddress = PermanentAddress;
+                        string UserName = User.Identity.Name;
+                        int UserId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                        employee.UpdatedBy = UserId;
+                        employee.UpdateDate = DateTime.Now;
+                        db.Entry(employee).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        //user table update
+                        ApplicationUser user = db.Users.Find(userId);
+                        user.IsActive = user.IsActive;
+                        user.RoleId = user.RoleId;
+                        user.Email = employee.Email;
+                        user.EmailConfirmed = user.EmailConfirmed;
+                        user.PasswordHash = user.PasswordHash;
+                        user.SecurityStamp = user.SecurityStamp;
+                        user.PhoneNumber = employee.Mobile;
+                        user.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
+                        user.TwoFactorEnabled = user.TwoFactorEnabled;
+                        user.LockoutEndDateUtc = user.LockoutEndDateUtc;
+                        user.LockoutEnabled = user.LockoutEnabled;
+                        user.AccessFailedCount = user.AccessFailedCount;
+                        user.UserName = employee.Code;
+                        user.CustomUserId = user.CustomUserId;
+                        db.Entry(user).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        TempData["SuccessMsg"] = "Information updated successfully!";
+                    }
+                }
+                else
+                {
+                    string PermanentAddress = Request["PermanentAddress"].ToString();
+                    string PresentAddress = Request["PresentAddress"].ToString();
+
+                    employee.PresentAddress = PresentAddress;
+                    employee.PermanentAddress = PermanentAddress;
+                    string UserName = User.Identity.Name;
+                    int UserId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                    employee.UpdatedBy = UserId;
+                    employee.UpdateDate = DateTime.Now;
+                    db.Entry(employee).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    //user table update
+                    ApplicationUser user = db.Users.Find(userId);
+                    user.IsActive = user.IsActive;
+                    user.RoleId = user.RoleId;
+                    user.Email = employee.Email;
+                    user.EmailConfirmed = user.EmailConfirmed;
+                    user.PasswordHash = user.PasswordHash;
+                    user.SecurityStamp = user.SecurityStamp;
+                    user.PhoneNumber = employee.Mobile;
+                    user.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
+                    user.TwoFactorEnabled = user.TwoFactorEnabled;
+                    user.LockoutEndDateUtc = user.LockoutEndDateUtc;
+                    user.LockoutEnabled = user.LockoutEnabled;
+                    user.AccessFailedCount = user.AccessFailedCount;
+                    user.UserName = employee.Code;
+                    user.CustomUserId = user.CustomUserId;
+                    db.Entry(user).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    TempData["SuccessMsg"] = "Information updated successfully!";
+                }
             }
+            else
+            {
+                TempData["WarningMsg"] = "Something went wrong !!";
+            }
+            List<SourceOfHire> SourceOfHireList = new List<SourceOfHire>();
+            SourceOfHireList = db.SourceOfHire.Where(i => i.Status == true).ToList();
+            ViewBag.SourceOfHireId = new SelectList(SourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
+          
             return View(employee);
         }
+        #endregion
 
+        #region Delete
         // GET: Employees/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -410,11 +507,14 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Employee employee = db.Employee.Find(id);
-            db.Employee.Remove(employee);
+            employee.Status = false;
+            db.Entry(employee).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -423,6 +523,7 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
 
         #region Validation
         public bool UserValidation(string Username, string Password, string ConfirmPassword)
