@@ -12,12 +12,12 @@ namespace FTL_HRMS.Controllers
 {
     public class EmployeesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: Employees
         public ActionResult Index()
         {
-            return View(db.Employee.ToList());
+            return View(_db.Employee.ToList());
         }
 
         // GET: Employees/Details/5
@@ -27,7 +27,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employee.Find(id);
+            Employee employee = _db.Employee.Find(id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -38,21 +38,21 @@ namespace FTL_HRMS.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-            List<SourceOfHire> SourceOfHireList = new List<SourceOfHire>();
-            SourceOfHireList = db.SourceOfHire.Where(i => i.Status == true).ToList();
-            ViewBag.SourceOfHireId = new SelectList(SourceOfHireList, "Sl", "Name");
+            List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
+            sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+            ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name");
 
-            List<Branch> BranchList = new List<Branch>();
-            BranchList = db.Branches.Where(i => i.Status == true).ToList();
-            ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name");
+            List<Branch> branchList = new List<Branch>();
+            branchList = _db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(branchList, "Sl", "Name");
 
-            List<EmployeeType> EmployeeTypeList = new List<EmployeeType>();
-            EmployeeTypeList = db.EmployeeType.Where(i => i.Status == true).ToList();
-            ViewBag.EmployeeTypeId = new SelectList(EmployeeTypeList, "Sl", "Name");
+            List<EmployeeType> employeeTypeList = new List<EmployeeType>();
+            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name");
 
-            List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();
-            DepartmentGroupList = db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
+            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
             return View();
         }
@@ -66,8 +66,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Employee.Add(employee);
-                db.SaveChanges();
+                _db.Employee.Add(employee);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -81,7 +81,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employee.Find(id);
+            Employee employee = _db.Employee.Find(id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -98,8 +98,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(employee).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(employee).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(employee);
@@ -112,7 +112,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employee.Find(id);
+            Employee employee = _db.Employee.Find(id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -125,9 +125,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Employee employee = db.Employee.Find(id);
-            db.Employee.Remove(employee);
-            db.SaveChanges();
+            Employee employee = _db.Employee.Find(id);
+            _db.Employee.Remove(employee);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -135,7 +135,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

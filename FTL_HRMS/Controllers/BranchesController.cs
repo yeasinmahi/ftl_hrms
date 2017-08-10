@@ -8,13 +8,13 @@ namespace FTL_HRMS.Controllers
 {
     public class BranchesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: Branches
         public ActionResult Index()
         {
-            return View(db.Branches.Where(i=> i.Status==true).ToList());
+            return View(_db.Branches.Where(i=> i.Status==true).ToList());
         }
         #endregion
 
@@ -26,7 +26,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Branch branch = db.Branches.Find(id);
+            Branch branch = _db.Branches.Find(id);
             if (branch == null)
             {
                 return HttpNotFound();
@@ -51,11 +51,11 @@ namespace FTL_HRMS.Controllers
         {
             if (branch.Name != "")
             {
-                string Address = Request["Address"].ToString();
-                branch.Address = Address;
+                string address = Request["Address"].ToString();
+                branch.Address = address;
                 branch.Status = true;
-                db.Branches.Add(branch);
-                db.SaveChanges();
+                _db.Branches.Add(branch);
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Create");
             }
@@ -72,7 +72,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Branch branch = db.Branches.Find(id);
+            Branch branch = _db.Branches.Find(id);
             if (branch == null)
             {
                 return HttpNotFound();
@@ -89,10 +89,10 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                string Address = Request["Address"].ToString();
-                branch.Address = Address;
-                db.Entry(branch).State = EntityState.Modified;
-                db.SaveChanges();
+                string address = Request["Address"].ToString();
+                branch.Address = address;
+                _db.Entry(branch).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return View(branch);
             }
@@ -109,7 +109,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Branch branch = db.Branches.Find(id);
+            Branch branch = _db.Branches.Find(id);
             if (branch == null)
             {
                 return HttpNotFound();
@@ -122,10 +122,10 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Branch branch = db.Branches.Find(id);
+            Branch branch = _db.Branches.Find(id);
             branch.Status = false;
-            db.Entry(branch).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Entry(branch).State = EntityState.Modified;
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -135,7 +135,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -8,12 +8,12 @@ namespace FTL_HRMS.Controllers
 {
     public class ExperiencesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: Experiences
         public ActionResult Index()
         {
-            return View(db.Experience.ToList());
+            return View(_db.Experience.ToList());
         }
 
         // GET: Experiences/Details/5
@@ -23,7 +23,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Experience experience = db.Experience.Find(id);
+            Experience experience = _db.Experience.Find(id);
             if (experience == null)
             {
                 return HttpNotFound();
@@ -46,8 +46,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Experience.Add(experience);
-                db.SaveChanges();
+                _db.Experience.Add(experience);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -61,7 +61,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Experience experience = db.Experience.Find(id);
+            Experience experience = _db.Experience.Find(id);
             if (experience == null)
             {
                 return HttpNotFound();
@@ -78,8 +78,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(experience).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(experience).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(experience);
@@ -92,7 +92,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Experience experience = db.Experience.Find(id);
+            Experience experience = _db.Experience.Find(id);
             if (experience == null)
             {
                 return HttpNotFound();
@@ -105,9 +105,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Experience experience = db.Experience.Find(id);
-            db.Experience.Remove(experience);
-            db.SaveChanges();
+            Experience experience = _db.Experience.Find(id);
+            _db.Experience.Remove(experience);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -115,7 +115,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

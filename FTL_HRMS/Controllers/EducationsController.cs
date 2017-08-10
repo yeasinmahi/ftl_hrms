@@ -8,12 +8,12 @@ namespace FTL_HRMS.Controllers
 {
     public class EducationsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: Educations
         public ActionResult Index()
         {
-            return View(db.Education.ToList());
+            return View(_db.Education.ToList());
         }
 
         // GET: Educations/Details/5
@@ -23,7 +23,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Education education = db.Education.Find(id);
+            Education education = _db.Education.Find(id);
             if (education == null)
             {
                 return HttpNotFound();
@@ -46,8 +46,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Education.Add(education);
-                db.SaveChanges();
+                _db.Education.Add(education);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -61,7 +61,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Education education = db.Education.Find(id);
+            Education education = _db.Education.Find(id);
             if (education == null)
             {
                 return HttpNotFound();
@@ -78,8 +78,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(education).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(education).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(education);
@@ -92,7 +92,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Education education = db.Education.Find(id);
+            Education education = _db.Education.Find(id);
             if (education == null)
             {
                 return HttpNotFound();
@@ -105,9 +105,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Education education = db.Education.Find(id);
-            db.Education.Remove(education);
-            db.SaveChanges();
+            Education education = _db.Education.Find(id);
+            _db.Education.Remove(education);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -115,7 +115,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

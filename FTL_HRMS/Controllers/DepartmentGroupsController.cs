@@ -9,13 +9,13 @@ namespace FTL_HRMS.Controllers
 {
     public class DepartmentGroupsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: DepartmentGroups
         public ActionResult Index()
         {
-            return View(db.DepartmentGroup.Where(i=> i.Status==true).ToList());
+            return View(_db.DepartmentGroup.Where(i=> i.Status==true).ToList());
         }
         #endregion
 
@@ -27,7 +27,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DepartmentGroup departmentGroup = db.DepartmentGroup.Find(id);
+            DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
             if (departmentGroup == null)
             {
                 return HttpNotFound();
@@ -52,13 +52,13 @@ namespace FTL_HRMS.Controllers
         {
             if (departmentGroup.Name != "")
             {
-                string UserName = User.Identity.Name;
-                int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                string userName = User.Identity.Name;
+                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
                 departmentGroup.CreatedBy = userId;
                 departmentGroup.CreateDate = DateTime.Now;
                 departmentGroup.Status = true;
-                db.DepartmentGroup.Add(departmentGroup);
-                db.SaveChanges();
+                _db.DepartmentGroup.Add(departmentGroup);
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Create");
             }
@@ -75,7 +75,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DepartmentGroup departmentGroup = db.DepartmentGroup.Find(id);
+            DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
             if (departmentGroup == null)
             {
                 return HttpNotFound();
@@ -92,12 +92,12 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                string UserName = User.Identity.Name;
-                int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                string userName = User.Identity.Name;
+                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
                 departmentGroup.UpdatedBy = userId;
                 departmentGroup.UpdateDate = DateTime.Now;
-                db.Entry(departmentGroup).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(departmentGroup).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return View(departmentGroup);
             }
@@ -114,7 +114,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DepartmentGroup departmentGroup = db.DepartmentGroup.Find(id);
+            DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
             if (departmentGroup == null)
             {
                 return HttpNotFound();
@@ -127,10 +127,10 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DepartmentGroup departmentGroup = db.DepartmentGroup.Find(id);
+            DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
             departmentGroup.Status = false;
-            db.Entry(departmentGroup).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Entry(departmentGroup).State = EntityState.Modified;
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -140,7 +140,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

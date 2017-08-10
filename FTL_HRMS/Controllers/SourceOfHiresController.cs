@@ -8,13 +8,13 @@ namespace FTL_HRMS.Controllers
 {
     public class SourceOfHiresController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: SourceOfHires
         public ActionResult Index()
         {
-            return View(db.SourceOfHire.Where(i => i.Status == true).ToList());
+            return View(_db.SourceOfHire.Where(i => i.Status == true).ToList());
         }
         #endregion
 
@@ -26,7 +26,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SourceOfHire sourceOfHire = db.SourceOfHire.Find(id);
+            SourceOfHire sourceOfHire = _db.SourceOfHire.Find(id);
             if (sourceOfHire == null)
             {
                 return HttpNotFound();
@@ -52,8 +52,8 @@ namespace FTL_HRMS.Controllers
             if (sourceOfHire.Name != "")
             {
                 sourceOfHire.Status = true;
-                db.SourceOfHire.Add(sourceOfHire);
-                db.SaveChanges();
+                _db.SourceOfHire.Add(sourceOfHire);
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Create");
             }
@@ -70,7 +70,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SourceOfHire sourceOfHire = db.SourceOfHire.Find(id);
+            SourceOfHire sourceOfHire = _db.SourceOfHire.Find(id);
             if (sourceOfHire == null)
             {
                 return HttpNotFound();
@@ -87,8 +87,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(sourceOfHire).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(sourceOfHire).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return View(sourceOfHire);
             }
@@ -105,7 +105,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SourceOfHire sourceOfHire = db.SourceOfHire.Find(id);
+            SourceOfHire sourceOfHire = _db.SourceOfHire.Find(id);
             if (sourceOfHire == null)
             {
                 return HttpNotFound();
@@ -118,10 +118,10 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SourceOfHire sourceOfHire = db.SourceOfHire.Find(id);
+            SourceOfHire sourceOfHire = _db.SourceOfHire.Find(id);
             sourceOfHire.Status = false;
-            db.Entry(sourceOfHire).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Entry(sourceOfHire).State = EntityState.Modified;
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -131,7 +131,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

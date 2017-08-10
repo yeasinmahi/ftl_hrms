@@ -12,12 +12,12 @@ namespace FTL_HRMS.Controllers
 {
     public class LeaveTypesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: LeaveTypes
         public ActionResult Index()
         {
-            return View(db.LeaveTypes.ToList());
+            return View(_db.LeaveTypes.ToList());
         }
 
         // GET: LeaveTypes/Details/5
@@ -27,7 +27,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LeaveType leaveType = db.LeaveTypes.Find(id);
+            LeaveType leaveType = _db.LeaveTypes.Find(id);
             if (leaveType == null)
             {
                 return HttpNotFound();
@@ -50,8 +50,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.LeaveTypes.Add(leaveType);
-                db.SaveChanges();
+                _db.LeaveTypes.Add(leaveType);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +65,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LeaveType leaveType = db.LeaveTypes.Find(id);
+            LeaveType leaveType = _db.LeaveTypes.Find(id);
             if (leaveType == null)
             {
                 return HttpNotFound();
@@ -82,8 +82,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(leaveType).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(leaveType).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(leaveType);
@@ -96,7 +96,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LeaveType leaveType = db.LeaveTypes.Find(id);
+            LeaveType leaveType = _db.LeaveTypes.Find(id);
             if (leaveType == null)
             {
                 return HttpNotFound();
@@ -109,9 +109,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            LeaveType leaveType = db.LeaveTypes.Find(id);
-            db.LeaveTypes.Remove(leaveType);
-            db.SaveChanges();
+            LeaveType leaveType = _db.LeaveTypes.Find(id);
+            _db.LeaveTypes.Remove(leaveType);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -119,7 +119,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

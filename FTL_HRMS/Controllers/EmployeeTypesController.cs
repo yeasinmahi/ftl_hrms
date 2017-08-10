@@ -8,13 +8,13 @@ namespace FTL_HRMS.Controllers
 {
     public class EmployeeTypesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: EmployeeTypes
         public ActionResult Index()
         {
-            return View(db.EmployeeType.Where(i => i.Status == true).ToList());
+            return View(_db.EmployeeType.Where(i => i.Status == true).ToList());
         }
         #endregion
 
@@ -26,7 +26,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EmployeeType employeeType = db.EmployeeType.Find(id);
+            EmployeeType employeeType = _db.EmployeeType.Find(id);
             if (employeeType == null)
             {
                 return HttpNotFound();
@@ -52,8 +52,8 @@ namespace FTL_HRMS.Controllers
             if (employeeType.Name != "")
             {
                 employeeType.Status = true;
-                db.EmployeeType.Add(employeeType);
-                db.SaveChanges();
+                _db.EmployeeType.Add(employeeType);
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Create");
             }
@@ -70,7 +70,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EmployeeType employeeType = db.EmployeeType.Find(id);
+            EmployeeType employeeType = _db.EmployeeType.Find(id);
             if (employeeType == null)
             {
                 return HttpNotFound();
@@ -87,8 +87,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(employeeType).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(employeeType).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return View(employeeType);
             }
@@ -105,7 +105,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EmployeeType employeeType = db.EmployeeType.Find(id);
+            EmployeeType employeeType = _db.EmployeeType.Find(id);
             if (employeeType == null)
             {
                 return HttpNotFound();
@@ -118,10 +118,10 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            EmployeeType employeeType = db.EmployeeType.Find(id);
+            EmployeeType employeeType = _db.EmployeeType.Find(id);
             employeeType.Status = false;
-            db.Entry(employeeType).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Entry(employeeType).State = EntityState.Modified;
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -131,7 +131,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

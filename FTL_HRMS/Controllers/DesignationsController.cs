@@ -10,13 +10,13 @@ namespace FTL_HRMS.Controllers
 {
     public class DesignationsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: Designations
         public ActionResult Index()
         {
-            return View(db.Designation.Include(i => i.Department).Where(i => i.Status == true).ToList());
+            return View(_db.Designation.Include(i => i.Department).Where(i => i.Status == true).ToList());
         }
         #endregion
 
@@ -28,7 +28,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Designation designation = db.Designation.Find(id);
+            Designation designation = _db.Designation.Find(id);
             if (designation == null)
             {
                 return HttpNotFound();
@@ -40,9 +40,9 @@ namespace FTL_HRMS.Controllers
         #region Get Designations By Department
         public ActionResult GetDesignationByDeptId()
         {
-            int DepartmentId = Convert.ToInt32(Request["DepartmentId"]);
-            List<Designation> DesignationList = db.Designation.Where(t => t.DepartmentId == DepartmentId).ToList();
-            return Json(DesignationList, JsonRequestBehavior.AllowGet);
+            int departmentId = Convert.ToInt32(Request["DepartmentId"]);
+            List<Designation> designationList = _db.Designation.Where(t => t.DepartmentId == departmentId).ToList();
+            return Json(designationList, JsonRequestBehavior.AllowGet);
         }
         #endregion
 
@@ -50,9 +50,9 @@ namespace FTL_HRMS.Controllers
         // GET: Designations/Create
         public ActionResult Create()
         {
-            List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();
-            DepartmentGroupList = db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
+            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
             return View();
         }
 
@@ -63,23 +63,23 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,DepartmentId,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
         {
-            List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();
-            DepartmentGroupList = db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             if (designation.Name != "")
             {
-                string UserName = User.Identity.Name;
-                int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                string userName = User.Identity.Name;
+                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
                 designation.CreatedBy = userId;
                 designation.CreateDate = DateTime.Now;
                 designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
                 designation.Status = true;
-                db.Designation.Add(designation);
-                db.SaveChanges();
+                _db.Designation.Add(designation);
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
-                ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
+                ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(designation);
         }
@@ -93,14 +93,14 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Designation designation = db.Designation.Find(id);
+            Designation designation = _db.Designation.Find(id);
             if (designation == null)
             {
                 return HttpNotFound();
             }
-            List<Department> DepartmentList = new List<Department>();
-            DepartmentList = db.Department.Where(i => i.Status == true).ToList();
-            ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name", designation.DepartmentId);
+            List<Department> departmentList = new List<Department>();
+            departmentList = _db.Department.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentId = new SelectList(departmentList, "Sl", "Name", designation.DepartmentId);
             return View(designation);
         }
 
@@ -111,22 +111,22 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,Code,Name,DepartmentId,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
         {
-            List<Department> DepartmentList = new List<Department>();
-            DepartmentList = db.Department.Where(i => i.Status == true).ToList();
+            List<Department> departmentList = new List<Department>();
+            departmentList = _db.Department.Where(i => i.Status == true).ToList();
             if (ModelState.IsValid)
             {
-                string UserName = User.Identity.Name;
-                int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                string userName = User.Identity.Name;
+                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
                 designation.UpdatedBy = userId;
                 designation.UpdateDate = DateTime.Now;
-                db.Entry(designation).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(designation).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
-                ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name", designation.DepartmentId);
+                ViewBag.DepartmentId = new SelectList(departmentList, "Sl", "Name", designation.DepartmentId);
                 return View(designation);
             }
             TempData["WarningMsg"] = "Something went wrong !!";
-            ViewBag.DepartmentId = new SelectList(DepartmentList, "Sl", "Name", designation.DepartmentId);
+            ViewBag.DepartmentId = new SelectList(departmentList, "Sl", "Name", designation.DepartmentId);
             return View(designation);
         }
         #endregion
@@ -139,7 +139,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Designation designation = db.Designation.Find(id);
+            Designation designation = _db.Designation.Find(id);
             if (designation == null)
             {
                 return HttpNotFound();
@@ -152,10 +152,10 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Designation designation = db.Designation.Find(id);
+            Designation designation = _db.Designation.Find(id);
             designation.Status = false;
-            db.Entry(designation).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Entry(designation).State = EntityState.Modified;
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -165,7 +165,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

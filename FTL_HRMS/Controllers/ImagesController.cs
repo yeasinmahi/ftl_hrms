@@ -8,12 +8,12 @@ namespace FTL_HRMS.Controllers
 {
     public class ImagesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: Images
         public ActionResult Index()
         {
-            return View(db.Images.ToList());
+            return View(_db.Images.ToList());
         }
 
         // GET: Images/Details/5
@@ -23,7 +23,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Images images = db.Images.Find(id);
+            Images images = _db.Images.Find(id);
             if (images == null)
             {
                 return HttpNotFound();
@@ -46,8 +46,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Images.Add(images);
-                db.SaveChanges();
+                _db.Images.Add(images);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -61,7 +61,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Images images = db.Images.Find(id);
+            Images images = _db.Images.Find(id);
             if (images == null)
             {
                 return HttpNotFound();
@@ -78,8 +78,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(images).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(images).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(images);
@@ -92,7 +92,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Images images = db.Images.Find(id);
+            Images images = _db.Images.Find(id);
             if (images == null)
             {
                 return HttpNotFound();
@@ -105,9 +105,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Images images = db.Images.Find(id);
-            db.Images.Remove(images);
-            db.SaveChanges();
+            Images images = _db.Images.Find(id);
+            _db.Images.Remove(images);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -115,7 +115,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

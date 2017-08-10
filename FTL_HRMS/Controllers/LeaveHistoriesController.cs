@@ -12,12 +12,12 @@ namespace FTL_HRMS.Controllers
 {
     public class LeaveHistoriesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: LeaveHistories
         public ActionResult Index()
         {
-            return View(db.LeaveHistories.ToList());
+            return View(_db.LeaveHistories.ToList());
         }
 
         // GET: LeaveHistories/Details/5
@@ -27,7 +27,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LeaveHistory leaveHistory = db.LeaveHistories.Find(id);
+            LeaveHistory leaveHistory = _db.LeaveHistories.Find(id);
             if (leaveHistory == null)
             {
                 return HttpNotFound();
@@ -50,8 +50,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.LeaveHistories.Add(leaveHistory);
-                db.SaveChanges();
+                _db.LeaveHistories.Add(leaveHistory);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +65,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LeaveHistory leaveHistory = db.LeaveHistories.Find(id);
+            LeaveHistory leaveHistory = _db.LeaveHistories.Find(id);
             if (leaveHistory == null)
             {
                 return HttpNotFound();
@@ -82,8 +82,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(leaveHistory).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(leaveHistory).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(leaveHistory);
@@ -96,7 +96,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LeaveHistory leaveHistory = db.LeaveHistories.Find(id);
+            LeaveHistory leaveHistory = _db.LeaveHistories.Find(id);
             if (leaveHistory == null)
             {
                 return HttpNotFound();
@@ -109,9 +109,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            LeaveHistory leaveHistory = db.LeaveHistories.Find(id);
-            db.LeaveHistories.Remove(leaveHistory);
-            db.SaveChanges();
+            LeaveHistory leaveHistory = _db.LeaveHistories.Find(id);
+            _db.LeaveHistories.Remove(leaveHistory);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -119,7 +119,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

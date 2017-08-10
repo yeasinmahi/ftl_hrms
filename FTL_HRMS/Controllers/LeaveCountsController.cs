@@ -12,12 +12,12 @@ namespace FTL_HRMS.Controllers
 {
     public class LeaveCountsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: LeaveCounts
         public ActionResult Index()
         {
-            return View(db.LeaveCounts.ToList());
+            return View(_db.LeaveCounts.ToList());
         }
 
         // GET: LeaveCounts/Details/5
@@ -27,7 +27,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LeaveCount leaveCount = db.LeaveCounts.Find(id);
+            LeaveCount leaveCount = _db.LeaveCounts.Find(id);
             if (leaveCount == null)
             {
                 return HttpNotFound();
@@ -50,8 +50,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.LeaveCounts.Add(leaveCount);
-                db.SaveChanges();
+                _db.LeaveCounts.Add(leaveCount);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +65,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LeaveCount leaveCount = db.LeaveCounts.Find(id);
+            LeaveCount leaveCount = _db.LeaveCounts.Find(id);
             if (leaveCount == null)
             {
                 return HttpNotFound();
@@ -82,8 +82,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(leaveCount).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(leaveCount).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(leaveCount);
@@ -96,7 +96,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LeaveCount leaveCount = db.LeaveCounts.Find(id);
+            LeaveCount leaveCount = _db.LeaveCounts.Find(id);
             if (leaveCount == null)
             {
                 return HttpNotFound();
@@ -109,9 +109,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            LeaveCount leaveCount = db.LeaveCounts.Find(id);
-            db.LeaveCounts.Remove(leaveCount);
-            db.SaveChanges();
+            LeaveCount leaveCount = _db.LeaveCounts.Find(id);
+            _db.LeaveCounts.Remove(leaveCount);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -119,7 +119,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

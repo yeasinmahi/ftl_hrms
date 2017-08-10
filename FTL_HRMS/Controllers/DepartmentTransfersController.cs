@@ -8,12 +8,12 @@ namespace FTL_HRMS.Controllers
 {
     public class DepartmentTransfersController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: DepartmentTransfers
         public ActionResult Index()
         {
-            return View(db.DepartmentTransfer.ToList());
+            return View(_db.DepartmentTransfer.ToList());
         }
 
         // GET: DepartmentTransfers/Details/5
@@ -23,7 +23,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DepartmentTransfer departmentTransfer = db.DepartmentTransfer.Find(id);
+            DepartmentTransfer departmentTransfer = _db.DepartmentTransfer.Find(id);
             if (departmentTransfer == null)
             {
                 return HttpNotFound();
@@ -46,8 +46,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.DepartmentTransfer.Add(departmentTransfer);
-                db.SaveChanges();
+                _db.DepartmentTransfer.Add(departmentTransfer);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -61,7 +61,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DepartmentTransfer departmentTransfer = db.DepartmentTransfer.Find(id);
+            DepartmentTransfer departmentTransfer = _db.DepartmentTransfer.Find(id);
             if (departmentTransfer == null)
             {
                 return HttpNotFound();
@@ -78,8 +78,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(departmentTransfer).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(departmentTransfer).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(departmentTransfer);
@@ -92,7 +92,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DepartmentTransfer departmentTransfer = db.DepartmentTransfer.Find(id);
+            DepartmentTransfer departmentTransfer = _db.DepartmentTransfer.Find(id);
             if (departmentTransfer == null)
             {
                 return HttpNotFound();
@@ -105,9 +105,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DepartmentTransfer departmentTransfer = db.DepartmentTransfer.Find(id);
-            db.DepartmentTransfer.Remove(departmentTransfer);
-            db.SaveChanges();
+            DepartmentTransfer departmentTransfer = _db.DepartmentTransfer.Find(id);
+            _db.DepartmentTransfer.Remove(departmentTransfer);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -115,7 +115,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

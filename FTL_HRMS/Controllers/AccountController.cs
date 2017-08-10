@@ -19,9 +19,9 @@ namespace FTL_HRMS.Controllers
         public UserManager<ApplicationUser> UserManager { get; private set; }
         public RoleManager<IdentityRole> RoleManager { get; private set; }
 
-        HRMSDbContext db_ctx = new HRMSDbContext();
+        HRMSDbContext _dbCtx = new HRMSDbContext();
 
-        UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+        UserManager<FTL_HRMS.Models.ApplicationUser> _userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
 
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new HRMSDbContext())), new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new HRMSDbContext())))
@@ -51,7 +51,7 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl, string CaptchaText)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl, string captchaText)
         {
             //if (ModelState.IsValid)
             //{
@@ -74,7 +74,7 @@ namespace FTL_HRMS.Controllers
             //return RedirectToAction("Login", "Account");
         }
 
-        protected string GetIPAddress()
+        protected string GetIpAddress()
         {
             System.Web.HttpContext context = System.Web.HttpContext.Current;
             string ipAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
@@ -358,7 +358,7 @@ namespace FTL_HRMS.Controllers
         [AllowAnonymous]
         public ActionResult AdminInformation()
         {
-            ApplicationUser user = db_ctx.Users.Find(User.Identity.GetUserId());
+            ApplicationUser user = _dbCtx.Users.Find(User.Identity.GetUserId());
             return View(user);
         }
 
@@ -369,25 +369,25 @@ namespace FTL_HRMS.Controllers
             if (ModelState.IsValid)
             {
                 string userId = User.Identity.GetUserId();
-                var userEmail = db_ctx.Users.Where(c => c.Id == userId).Select(i => i.Email).FirstOrDefault();
+                var userEmail = _dbCtx.Users.Where(c => c.Id == userId).Select(i => i.Email).FirstOrDefault();
                 if (userEmail != user.Email)
                 {
-                    if (db_ctx.Users.Where(u => u.Email == user.Email).Count() > 0)
+                    if (_dbCtx.Users.Where(u => u.Email == user.Email).Count() > 0)
                     {
                         TempData["WarningMsg"] = "Username already exist!!!";
                     }
                     else
                     {
-                        db_ctx.Entry(user).State = EntityState.Modified;
-                        db_ctx.SaveChanges();
+                        _dbCtx.Entry(user).State = EntityState.Modified;
+                        _dbCtx.SaveChanges();
 
                         TempData["SuccessMsg"] = "Information updated successfully!";
                     }
                 }
                 else
                 {
-                    db_ctx.Entry(user).State = EntityState.Modified;
-                    db_ctx.SaveChanges();
+                    _dbCtx.Entry(user).State = EntityState.Modified;
+                    _dbCtx.SaveChanges();
 
                     TempData["SuccessMsg"] = "Information updated successfully!";
                 }
@@ -543,31 +543,31 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        public bool UserValidation(string Username, string Password, string ConfirmPassword)
+        public bool UserValidation(string username, string password, string confirmPassword)
         {
-            bool IsValidate = true;
-            if (db_ctx.Users.Where(i => i.UserName == Username).Count() > 0)
+            bool isValidate = true;
+            if (_dbCtx.Users.Where(i => i.UserName == username).Count() > 0)
             {
-                IsValidate = false;
+                isValidate = false;
                 TempData["WarningMsg"] = "Username already exist!!!";
             }
             else
             {
-                if (!Password.Equals(ConfirmPassword))
+                if (!password.Equals(confirmPassword))
                 {
-                    IsValidate = false;
+                    isValidate = false;
                     TempData["WarningMsg"] = "Password does not match!!!";
                 }
             }
-            return IsValidate;
+            return isValidate;
         }
 
-        public async Task<Boolean> ChangePassword(ManageUserViewModel model, string OldPassword, string NewPassword, string ConfirmPassword)
+        public async Task<Boolean> ChangePassword(ManageUserViewModel model, string oldPassword, string newPassword, string confirmPassword)
         {
-            bool IsPassChangeSuccess = true;
-            model.OldPassword = OldPassword;
-            model.NewPassword = NewPassword;
-            model.ConfirmPassword = ConfirmPassword;
+            bool isPassChangeSuccess = true;
+            model.OldPassword = oldPassword;
+            model.NewPassword = newPassword;
+            model.ConfirmPassword = confirmPassword;
             bool hasPassword = HasPassword();
             ViewBag.HasLocalPassword = hasPassword;
             ViewBag.ReturnUrl = Url.Action("Manage");
@@ -578,12 +578,12 @@ namespace FTL_HRMS.Controllers
                     IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (!result.Succeeded)
                     {
-                        IsPassChangeSuccess = false;
+                        isPassChangeSuccess = false;
                     }
                 }
             }
             // If we got this far, something failed, redisplay form
-            return IsPassChangeSuccess;
+            return isPassChangeSuccess;
         }
 
     }
