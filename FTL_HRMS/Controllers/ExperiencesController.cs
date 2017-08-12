@@ -10,12 +10,16 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List
         // GET: Experiences
-        public ActionResult Index()
+        public ActionResult Index(int employeeId)
         {
-            return View(_db.Experience.ToList());
+            var experience = _db.Experience.Where(i => i.EmployeeId == employeeId).ToList();
+            return View(experience);
         }
+        #endregion
 
+        #region Details
         // GET: Experiences/Details/5
         public ActionResult Details(int? id)
         {
@@ -30,7 +34,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(experience);
         }
+        #endregion
 
+        #region Create (We don't use it)
         // GET: Experiences/Create
         public ActionResult Create()
         {
@@ -53,7 +59,9 @@ namespace FTL_HRMS.Controllers
 
             return View(experience);
         }
+        #endregion
 
+        #region Edit
         // GET: Experiences/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -80,11 +88,15 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Entry(experience).State = EntityState.Modified;
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(experience);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(experience);
         }
+        #endregion
 
+        #region Delete
         // GET: Experiences/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -110,7 +122,9 @@ namespace FTL_HRMS.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -119,5 +133,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

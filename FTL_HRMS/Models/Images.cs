@@ -10,7 +10,7 @@ namespace FTL_HRMS.Models
         public int Sl { get; set; }
 
         [Required(ErrorMessage = "Image cannot be empty")]
-        public byte Image { get; set; }
+        public byte[] Image { get; set; }
 
         [Required(ErrorMessage = "Employee cannot be empty")]
         public int EmployeeId { get; set; }
