@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
+using System.Web;
 
 namespace FTL_HRMS.Controllers
 {
@@ -10,12 +11,16 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext db = new HRMSDbContext();
 
+        #region List
         // GET: Images
-        public ActionResult Index()
+        public ActionResult Index(int employeeId)
         {
-            return View(db.Images.ToList());
+            var images = db.Images.Where(i => i.EmployeeId == employeeId).ToList();
+            return View(images);
         }
+        #endregion
 
+        #region Details (We don't use it)
         // GET: Images/Details/5
         public ActionResult Details(int? id)
         {
@@ -30,7 +35,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(images);
         }
+        #endregion
 
+        #region Create (We don't use it)
         // GET: Images/Create
         public ActionResult Create()
         {
@@ -53,7 +60,9 @@ namespace FTL_HRMS.Controllers
 
             return View(images);
         }
+        #endregion
 
+        #region Edit
         // GET: Images/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -74,17 +83,23 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Image,EmployeeId")] Images images)
+        public ActionResult Edit([Bind(Include = "Sl,Image,EmployeeId")] Images images, HttpPostedFileBase image1)
         {
-            if (ModelState.IsValid)
+            if (image1 != null)
             {
+                images.EmployeeId = images.EmployeeId;
+                images.Image = new byte[image1.ContentLength];
+                image1.InputStream.Read(images.Image, 0, image1.ContentLength);
                 db.Entry(images).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully !!";
+                return RedirectToAction("Index", "Images", new { employeeId = images.EmployeeId });
             }
             return View(images);
         }
+        #endregion
 
+        #region Delete
         // GET: Images/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -110,7 +125,9 @@ namespace FTL_HRMS.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -119,5 +136,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }
