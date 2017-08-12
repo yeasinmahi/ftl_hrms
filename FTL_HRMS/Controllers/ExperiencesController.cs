@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
+using System;
 
 namespace FTL_HRMS.Controllers
 {
@@ -15,6 +16,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult Index(int employeeId)
         {
             var experience = _db.Experience.Where(i => i.EmployeeId == employeeId).ToList();
+            ViewBag.EmployeeId = employeeId;
             return View(experience);
         }
         #endregion
@@ -36,10 +38,11 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Create (We don't use it)
+        #region Create
         // GET: Experiences/Create
-        public ActionResult Create()
+        public ActionResult Create(int employeeId)
         {
+            ViewBag.EmployeeId = employeeId;
             return View();
         }
 
@@ -52,11 +55,14 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                int EmpId = Convert.ToInt32(Request["EmployeeId"]);
+                experience.EmployeeId = EmpId;
                 _db.Experience.Add(experience);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create", "Experiences", new { employeeId = EmpId });
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(experience);
         }
         #endregion
@@ -118,9 +124,10 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Experience experience = _db.Experience.Find(id);
+            int EmployeeId = experience.EmployeeId;
             _db.Experience.Remove(experience);
             _db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Experiences", new { employeeId = EmployeeId });
         }
         #endregion
 
