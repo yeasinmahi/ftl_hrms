@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace FTL_HRMS.Models
 {
     [Table("tbl_Department")]
-    public sealed class Department
+    public class Department
     {
         public Department()
         {
@@ -40,7 +40,7 @@ namespace FTL_HRMS.Models
 
         public bool Status { get; set; }
 
-        public DepartmentGroup DepartmentGroup { get; set; }
+        public virtual DepartmentGroup DepartmentGroup { get; set; }
         public ICollection<Designation> Designation { get; set; }
     }
 }

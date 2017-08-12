@@ -16,6 +16,7 @@ namespace FTL_HRMS.Controllers
         // GET: Designations
         public ActionResult Index()
         {
+            var designatinList = _db.Designation.Include(i => i.Department).Where(i => i.Status == true).ToList();
             return View(_db.Designation.Include(i => i.Department).Where(i => i.Status == true).ToList());
         }
         #endregion
