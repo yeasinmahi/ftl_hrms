@@ -21,7 +21,7 @@ namespace FTL_HRMS.Controllers
         public UserManager<ApplicationUser> UserManager { get; private set; }
         public RoleManager<IdentityRole> RoleManager { get; private set; }
 
-        UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+        UserManager<FTL_HRMS.Models.ApplicationUser> _userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
 
         #region List
         // GET: Employees
@@ -56,41 +56,41 @@ namespace FTL_HRMS.Controllers
         {
             if (Request["Institute"].ToString() != "")
             {
-                string InstituteName = Request["Institute"].ToString();
-                string Program = Request["Program"].ToString();
-                string FromDate = Request["FromDate"].ToString();
-                string ToDate = Request["ToDate"].ToString();
-                string Board = Request["Board"].ToString();
-                string Result = Request["Result"].ToString();
+                string instituteName = Request["Institute"].ToString();
+                string program = Request["Program"].ToString();
+                string fromDate = Request["FromDate"].ToString();
+                string toDate = Request["ToDate"].ToString();
+                string board = Request["Board"].ToString();
+                string result = Request["Result"].ToString();
 
-                List<Education> EducationList = new List<Education>();
-                EducationList = (List<Education>)Session["EducationList"];
-                if (EducationList.Count > 0)
+                List<Education> educationList = new List<Education>();
+                educationList = (List<Education>)Session["EducationList"];
+                if (educationList.Count > 0)
                 {
                     Education education = new Education();
-                    education.Sl = EducationList.Count() + 1;
-                    education.InstituteName = InstituteName;
-                    education.Program = Program;
-                    education.FromDate = Convert.ToDateTime(FromDate);
-                    education.ToDate = Convert.ToDateTime(ToDate);
-                    education.Board = Board;
-                    education.Result = Result;
-                    EducationList.Add(education);
-                    Session["EducationList"] = EducationList;
+                    education.Sl = educationList.Count() + 1;
+                    education.InstituteName = instituteName;
+                    education.Program = program;
+                    education.FromDate = Convert.ToDateTime(fromDate);
+                    education.ToDate = Convert.ToDateTime(toDate);
+                    education.Board = board;
+                    education.Result = result;
+                    educationList.Add(education);
+                    Session["EducationList"] = educationList;
                 }
                 else
                 {
-                    List<Education> EducationLst = new List<Education>();
+                    List<Education> educationLst = new List<Education>();
                     Education education = new Education();
                     education.Sl = 1;
-                    education.InstituteName = InstituteName;
-                    education.Program = Program;
-                    education.FromDate = Convert.ToDateTime(FromDate);
-                    education.ToDate = Convert.ToDateTime(ToDate);
-                    education.Board = Board;
-                    education.Result = Result;
-                    EducationLst.Add(education);
-                    Session["EducationList"] = EducationLst;
+                    education.InstituteName = instituteName;
+                    education.Program = program;
+                    education.FromDate = Convert.ToDateTime(fromDate);
+                    education.ToDate = Convert.ToDateTime(toDate);
+                    education.Board = board;
+                    education.Result = result;
+                    educationLst.Add(education);
+                    Session["EducationList"] = educationLst;
                 }
             }
             return Json(Session["EducationList"], JsonRequestBehavior.AllowGet);
@@ -100,21 +100,21 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult DeleteFromEduList()
         {
-            int Sl = Convert.ToInt32(Request["Sl"]);
-            List<Education> EducationLst = new List<Education>();
-            EducationLst = (List<Education>)Session["EducationList"];
-            for (int i = 0; i < EducationLst.Count; i++)
+            int sl = Convert.ToInt32(Request["Sl"]);
+            List<Education> educationLst = new List<Education>();
+            educationLst = (List<Education>)Session["EducationList"];
+            for (int i = 0; i < educationLst.Count; i++)
             {
-                if (EducationLst[i].Sl == Sl)
+                if (educationLst[i].Sl == sl)
                 {
-                    EducationLst.Remove(EducationLst[i]);
+                    educationLst.Remove(educationLst[i]);
                 }
             }
             Session["EducationLst"] = null;
 
-            if (EducationLst.Count > 0)
+            if (educationLst.Count > 0)
             {
-                Session["EducationList"] = EducationLst;
+                Session["EducationList"] = educationLst;
             }
             else
             {
@@ -130,44 +130,44 @@ namespace FTL_HRMS.Controllers
         {
             if (Request["Institute"].ToString() != "")
             {
-                string InstituteName = Request["Institute"].ToString();
-                string Address = Request["Address"].ToString();
-                string FromDate = Request["FromDate"].ToString();
-                string ToDate = Request["ToDate"].ToString();
-                string Website = Request["Website"].ToString();
-                string Phone = Request["Phone"].ToString();
-                string Designation = Request["Designation"].ToString();
+                string instituteName = Request["Institute"].ToString();
+                string address = Request["Address"].ToString();
+                string fromDate = Request["FromDate"].ToString();
+                string toDate = Request["ToDate"].ToString();
+                string website = Request["Website"].ToString();
+                string phone = Request["Phone"].ToString();
+                string designation = Request["Designation"].ToString();
 
-                List<Experience> ExperienceList = new List<Experience>();
-                ExperienceList = (List<Experience>)Session["ExperienceList"];
-                if (ExperienceList.Count > 0)
+                List<Experience> experienceList = new List<Experience>();
+                experienceList = (List<Experience>)Session["ExperienceList"];
+                if (experienceList.Count > 0)
                 {
                     Experience experience = new Experience();
-                    experience.Sl = ExperienceList.Count() + 1;
-                    experience.InstituteName = InstituteName;
-                    experience.InstituteAddress = Address;
-                    experience.FromDate = Convert.ToDateTime(FromDate);
-                    experience.ToDate = Convert.ToDateTime(ToDate);
-                    experience.Website = Website;
-                    experience.Phone = Phone;
-                    experience.Designation = Designation;
-                    ExperienceList.Add(experience);
-                    Session["ExperienceList"] = ExperienceList;
+                    experience.Sl = experienceList.Count() + 1;
+                    experience.InstituteName = instituteName;
+                    experience.InstituteAddress = address;
+                    experience.FromDate = Convert.ToDateTime(fromDate);
+                    experience.ToDate = Convert.ToDateTime(toDate);
+                    experience.Website = website;
+                    experience.Phone = phone;
+                    experience.Designation = designation;
+                    experienceList.Add(experience);
+                    Session["ExperienceList"] = experienceList;
                 }
                 else
                 {
-                    List<Experience> ExperienceLst = new List<Experience>();
+                    List<Experience> experienceLst = new List<Experience>();
                     Experience experience = new Experience();
-                    experience.Sl = ExperienceList.Count() + 1;
-                    experience.InstituteName = InstituteName;
-                    experience.InstituteAddress = Address;
-                    experience.FromDate = Convert.ToDateTime(FromDate);
-                    experience.ToDate = Convert.ToDateTime(ToDate);
-                    experience.Website = Website;
-                    experience.Phone = Phone;
-                    experience.Designation = Designation;
-                    ExperienceLst.Add(experience);
-                    Session["ExperienceList"] = ExperienceLst;
+                    experience.Sl = experienceList.Count() + 1;
+                    experience.InstituteName = instituteName;
+                    experience.InstituteAddress = address;
+                    experience.FromDate = Convert.ToDateTime(fromDate);
+                    experience.ToDate = Convert.ToDateTime(toDate);
+                    experience.Website = website;
+                    experience.Phone = phone;
+                    experience.Designation = designation;
+                    experienceLst.Add(experience);
+                    Session["ExperienceList"] = experienceLst;
                 }
             }
             return Json(Session["ExperienceList"], JsonRequestBehavior.AllowGet);
@@ -177,21 +177,21 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult DeleteFromExpList()
         {
-            int Sl = Convert.ToInt32(Request["Sl"]);
-            List<Experience> ExperienceLst = new List<Experience>();
-            ExperienceLst = (List<Experience>)Session["ExperienceList"];
-            for (int i = 0; i < ExperienceLst.Count; i++)
+            int sl = Convert.ToInt32(Request["Sl"]);
+            List<Experience> experienceLst = new List<Experience>();
+            experienceLst = (List<Experience>)Session["ExperienceList"];
+            for (int i = 0; i < experienceLst.Count; i++)
             {
-                if (ExperienceLst[i].Sl == Sl)
+                if (experienceLst[i].Sl == sl)
                 {
-                    ExperienceLst.Remove(ExperienceLst[i]);
+                    experienceLst.Remove(experienceLst[i]);
                 }
             }
             Session["ExperienceLst"] = null;
 
-            if (ExperienceLst.Count > 0)
+            if (experienceLst.Count > 0)
             {
-                Session["ExperienceList"] = ExperienceLst;
+                Session["ExperienceList"] = experienceLst;
             }
             else
             {
@@ -237,15 +237,15 @@ namespace FTL_HRMS.Controllers
             if (UserValidation(employee.Code, Request["Password"], Request["ConfirmPassword"]))
             {
                 #region Add Employee
-                string PermanentAddress = Request["PermanentAddress"].ToString();
-                string PresentAddress = Request["PresentAddress"].ToString();
-                int DesignationId = Convert.ToInt32(Request["ddl_designation"]);
+                string permanentAddress = Request["PermanentAddress"].ToString();
+                string presentAddress = Request["PresentAddress"].ToString();
+                int designationId = Convert.ToInt32(Request["ddl_designation"]);
 
-                employee.PresentAddress = PresentAddress;
-                employee.PermanentAddress = PermanentAddress;
-                employee.DesignationId = DesignationId;
-                string UserName = User.Identity.Name;
-                int userId = _db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                employee.PresentAddress = presentAddress;
+                employee.PermanentAddress = permanentAddress;
+                employee.DesignationId = designationId;
+                string userName = User.Identity.Name;
+                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
                 employee.CreatedBy = userId;
                 employee.CreateDate = DateTime.Now;
                 employee.Status = true;
@@ -273,10 +273,10 @@ namespace FTL_HRMS.Controllers
                 user.AccessFailedCount = 0;
                 user.UserName = employee.Code;
                 user.CustomUserId = employee.Sl;
-                string Password = Convert.ToString(Request["Password"]);
-                string userPWD = Password;
+                string password = Convert.ToString(Request["Password"]);
+                string userPwd = password;
 
-                var chkUser = UserManager.Create(user, userPWD);
+                var chkUser = UserManager.Create(user, userPwd);
 
                 //Add default User to Role Customer   
                 if (chkUser.Succeeded)
@@ -287,18 +287,18 @@ namespace FTL_HRMS.Controllers
                 #endregion
 
                 #region Add Education
-                List<Education> EducationList = new List<Education>();
-                EducationList = (List<Education>)Session["EducationList"];
+                List<Education> educationList = new List<Education>();
+                educationList = (List<Education>)Session["EducationList"];
 
-                for (int i = 0; i < EducationList.Count; i++)
+                for (int i = 0; i < educationList.Count; i++)
                 {
                     Education education = new Education();
-                    education.InstituteName = EducationList[i].InstituteName;
-                    education.Program = EducationList[i].Program;
-                    education.FromDate = EducationList[i].FromDate;
-                    education.ToDate = EducationList[i].ToDate;
-                    education.Board = EducationList[i].Board;
-                    education.Result = EducationList[i].Result;
+                    education.InstituteName = educationList[i].InstituteName;
+                    education.Program = educationList[i].Program;
+                    education.FromDate = educationList[i].FromDate;
+                    education.ToDate = educationList[i].ToDate;
+                    education.Board = educationList[i].Board;
+                    education.Result = educationList[i].Result;
                     education.EmployeeId = employee.Sl;
                     _db.Education.Add(education);
                     _db.SaveChanges();
@@ -306,19 +306,19 @@ namespace FTL_HRMS.Controllers
                 #endregion
 
                 #region Add Experience
-                List<Experience> ExperienceList = new List<Experience>();
-                ExperienceList = (List<Experience>)Session["ExperienceList"];
+                List<Experience> experienceList = new List<Experience>();
+                experienceList = (List<Experience>)Session["ExperienceList"];
 
-                for (int i = 0; i < ExperienceList.Count; i++)
+                for (int i = 0; i < experienceList.Count; i++)
                 {
                     Experience experience = new Experience();
-                    experience.InstituteName = ExperienceList[i].InstituteName;
-                    experience.InstituteAddress = ExperienceList[i].InstituteAddress;
-                    experience.FromDate = ExperienceList[i].FromDate;
-                    experience.ToDate = ExperienceList[i].ToDate;
-                    experience.Website = ExperienceList[i].Website;
-                    experience.Phone = ExperienceList[i].Phone;
-                    experience.Designation = ExperienceList[i].Designation;
+                    experience.InstituteName = experienceList[i].InstituteName;
+                    experience.InstituteAddress = experienceList[i].InstituteAddress;
+                    experience.FromDate = experienceList[i].FromDate;
+                    experience.ToDate = experienceList[i].ToDate;
+                    experience.Website = experienceList[i].Website;
+                    experience.Phone = experienceList[i].Phone;
+                    experience.Designation = experienceList[i].Designation;
                     experience.EmployeeId = employee.Sl;
                     _db.Experience.Add(experience);
                     _db.SaveChanges();
@@ -342,21 +342,21 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                List<SourceOfHire> SourceOfHireList = new List<SourceOfHire>();
-                SourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
-                ViewBag.SourceOfHireId = new SelectList(SourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
+                List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
+                sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+                ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
 
-                List<Branch> BranchList = new List<Branch>();
-                BranchList = _db.Branches.Where(i => i.Status == true).ToList();
-                ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name", employee.BranchId);
+                List<Branch> branchList = new List<Branch>();
+                branchList = _db.Branches.Where(i => i.Status == true).ToList();
+                ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", employee.BranchId);
 
-                List<EmployeeType> EmployeeTypeList = new List<EmployeeType>();
-                EmployeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
-                ViewBag.EmployeeTypeId = new SelectList(EmployeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
+                List<EmployeeType> employeeTypeList = new List<EmployeeType>();
+                employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+                ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
 
-                List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();
-                DepartmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
-                ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
+                List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+                departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+                ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
                 TempData["WarningMsg"] = "Something went wrong !!";
                 return View(employee);
@@ -378,9 +378,9 @@ namespace FTL_HRMS.Controllers
                 return HttpNotFound();
             }
 
-            List<SourceOfHire> SourceOfHireList = new List<SourceOfHire>();
-            SourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
-            ViewBag.SourceOfHireId = new SelectList(SourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
+            List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
+            sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+            ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
 
             return View(employee);
         }
@@ -404,13 +404,13 @@ namespace FTL_HRMS.Controllers
                     }
                     else
                     {
-                        string PermanentAddress = Request["PermanentAddress"].ToString();
-                        string PresentAddress = Request["PresentAddress"].ToString();
+                        string permanentAddress = Request["PermanentAddress"].ToString();
+                        string presentAddress = Request["PresentAddress"].ToString();
 
-                        employee.PresentAddress = PresentAddress;
-                        employee.PermanentAddress = PermanentAddress;
-                        string UserName = User.Identity.Name;
-                        int UserId = _db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                        employee.PresentAddress = presentAddress;
+                        employee.PermanentAddress = permanentAddress;
+                        string userName = User.Identity.Name;
+                        int UserId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
                         employee.UpdatedBy = UserId;
                         employee.UpdateDate = DateTime.Now;
                         _db.Entry(employee).State = EntityState.Modified;
@@ -440,13 +440,13 @@ namespace FTL_HRMS.Controllers
                 }
                 else
                 {
-                    string PermanentAddress = Request["PermanentAddress"].ToString();
-                    string PresentAddress = Request["PresentAddress"].ToString();
+                    string permanentAddress = Request["PermanentAddress"].ToString();
+                    string presentAddress = Request["PresentAddress"].ToString();
 
-                    employee.PresentAddress = PresentAddress;
-                    employee.PermanentAddress = PermanentAddress;
-                    string UserName = User.Identity.Name;
-                    int UserId = _db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                    employee.PresentAddress = presentAddress;
+                    employee.PermanentAddress = permanentAddress;
+                    string userName = User.Identity.Name;
+                    int UserId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
                     employee.UpdatedBy = UserId;
                     employee.UpdateDate = DateTime.Now;
                     _db.Entry(employee).State = EntityState.Modified;
@@ -478,9 +478,9 @@ namespace FTL_HRMS.Controllers
             {
                 TempData["WarningMsg"] = "Something went wrong !!";
             }
-            List<SourceOfHire> SourceOfHireList = new List<SourceOfHire>();
-            SourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
-            ViewBag.SourceOfHireId = new SelectList(SourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
+            List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
+            sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+            ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
           
             return View(employee);
         }
@@ -527,31 +527,31 @@ namespace FTL_HRMS.Controllers
         #endregion
 
         #region Validation
-        public bool UserValidation(string Username, string Password, string ConfirmPassword)
+        public bool UserValidation(string username, string password, string confirmPassword)
         {
-            bool IsValidate = true;
-            if (_db.Users.Where(i => i.UserName == Username).Count() > 0)
+            bool isValidate = true;
+            if (_db.Users.Where(i => i.UserName == username).Count() > 0)
             {
-                IsValidate = false;
+                isValidate = false;
                 TempData["WarningMsg"] = "Username already exist!!!";
             }
             else
             {
-                if (!Password.Equals(ConfirmPassword))
+                if (!password.Equals(confirmPassword))
                 {
-                    IsValidate = false;
+                    isValidate = false;
                     TempData["WarningMsg"] = "Password does not match!!!";
                 }
             }
-            return IsValidate;
+            return isValidate;
         }
 
-        public async Task<Boolean> ChangePassword(ManageUserViewModel model, string OldPassword, string NewPassword, string ConfirmPassword)
+        public async Task<Boolean> ChangePassword(ManageUserViewModel model, string oldPassword, string newPassword, string confirmPassword)
         {
-            bool IsPassChangeSuccess = true;
-            model.OldPassword = OldPassword;
-            model.NewPassword = NewPassword;
-            model.ConfirmPassword = ConfirmPassword;
+            bool isPassChangeSuccess = true;
+            model.OldPassword = oldPassword;
+            model.NewPassword = newPassword;
+            model.ConfirmPassword = confirmPassword;
             bool hasPassword = HasPassword();
             ViewBag.HasLocalPassword = hasPassword;
             ViewBag.ReturnUrl = Url.Action("Manage", "Account");
@@ -562,12 +562,12 @@ namespace FTL_HRMS.Controllers
                     IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (!result.Succeeded)
                     {
-                        IsPassChangeSuccess = false;
+                        isPassChangeSuccess = false;
                     }
                 }
             }
             // If we got this far, something failed, redisplay form
-            return IsPassChangeSuccess;
+            return isPassChangeSuccess;
         }
 
         private bool HasPassword()

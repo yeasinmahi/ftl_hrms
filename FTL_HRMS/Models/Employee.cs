@@ -74,15 +74,19 @@ namespace FTL_HRMS.Models
         public DateTime DateOfJoining { get; set; }
 
         [Required(ErrorMessage = "Source Of Hire cannot be empty")]
+        [ForeignKey("SourceOfHire")]
         public int SourceOfHireId { get; set; }
 
         [Required(ErrorMessage = "Designation cannot be empty")]
+        [ForeignKey("Designation")]
         public int DesignationId { get; set; }
 
         [Required(ErrorMessage = "Employee Type cannot be empty")]
+        [ForeignKey("EmployeeType")]
         public int EmployeeTypeId { get; set; }
 
         [Required(ErrorMessage = "Branch cannot be empty")]
+        [ForeignKey("Branch")]
         public int BranchId { get; set; }
 
         public double GrossSalary { get; set; }

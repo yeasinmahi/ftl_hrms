@@ -119,8 +119,11 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             EmployeeType employeeType = _db.EmployeeType.Find(id);
-            employeeType.Status = false;
-            _db.Entry(employeeType).State = EntityState.Modified;
+            if (employeeType != null)
+            {
+                employeeType.Status = false;
+                _db.Entry(employeeType).State = EntityState.Modified;
+            }
             _db.SaveChanges();
             return RedirectToAction("Index");
         }

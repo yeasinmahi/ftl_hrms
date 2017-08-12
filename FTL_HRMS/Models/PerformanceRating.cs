@@ -18,9 +18,11 @@ namespace FTL_HRMS.Models
         public DateTime Date { get; set; }
 
         [Required(ErrorMessage = "Employee cannot be empty")]
+        [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
 
         [Required(ErrorMessage = "Performance Issue cannot be empty")]
+        [ForeignKey("PerformanceIssue")]
         public int PerformanceIssueId { get; set; }
 
         public virtual Employee Employee { get; set; }
