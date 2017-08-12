@@ -22,6 +22,7 @@ namespace FTL_HRMS.Models
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Department Group cannot be empty")]
+        [ForeignKey("DepartmentGroup")]
         public int DepartmentGroupId { get; set; }
 
         public int CreatedBy { get; set; }
@@ -41,6 +42,6 @@ namespace FTL_HRMS.Models
         public bool Status { get; set; }
 
         public virtual DepartmentGroup DepartmentGroup { get; set; }
-        public ICollection<Designation> Designation { get; set; }
+        public virtual ICollection<Designation> Designation { get; set; }
     }
 }
