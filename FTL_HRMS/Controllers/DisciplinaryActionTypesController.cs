@@ -8,13 +8,13 @@ namespace FTL_HRMS.Controllers
 {
     public class DisciplinaryActionTypesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: DisciplinaryActionTypes
         public ActionResult Index()
         {
-            return View(db.DisciplinaryActionType.ToList());
+            return View(_db.DisciplinaryActionType.ToList());
         }
         #endregion
 
@@ -26,7 +26,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DisciplinaryActionType disciplinaryActionType = db.DisciplinaryActionType.Find(id);
+            DisciplinaryActionType disciplinaryActionType = _db.DisciplinaryActionType.Find(id);
             if (disciplinaryActionType == null)
             {
                 return HttpNotFound();
@@ -51,8 +51,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.DisciplinaryActionType.Add(disciplinaryActionType);
-                db.SaveChanges();
+                _db.DisciplinaryActionType.Add(disciplinaryActionType);
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Create");
             }
@@ -69,7 +69,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DisciplinaryActionType disciplinaryActionType = db.DisciplinaryActionType.Find(id);
+            DisciplinaryActionType disciplinaryActionType = _db.DisciplinaryActionType.Find(id);
             if (disciplinaryActionType == null)
             {
                 return HttpNotFound();
@@ -86,8 +86,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(disciplinaryActionType).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(disciplinaryActionType).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return View(disciplinaryActionType);
             }
@@ -104,7 +104,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DisciplinaryActionType disciplinaryActionType = db.DisciplinaryActionType.Find(id);
+            DisciplinaryActionType disciplinaryActionType = _db.DisciplinaryActionType.Find(id);
             if (disciplinaryActionType == null)
             {
                 return HttpNotFound();
@@ -117,9 +117,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DisciplinaryActionType disciplinaryActionType = db.DisciplinaryActionType.Find(id);
-            db.DisciplinaryActionType.Remove(disciplinaryActionType);
-            db.SaveChanges();
+            DisciplinaryActionType disciplinaryActionType = _db.DisciplinaryActionType.Find(id);
+            _db.DisciplinaryActionType.Remove(disciplinaryActionType);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -129,7 +129,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

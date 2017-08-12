@@ -17,6 +17,7 @@ namespace FTL_HRMS.Models
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Department cannot be empty")]
+        [ForeignKey("Department")]
         public int DepartmentId { get; set; }
 
         public int CreatedBy { get; set; }
@@ -35,6 +36,6 @@ namespace FTL_HRMS.Models
 
         public bool Status { get; set; }
 
-        public virtual Department Department { get; set; }
+        public Department Department { get; set; }
     }
 }

@@ -16,10 +16,10 @@ namespace FTL_HRMS.Controllers
 {
     public class EmployeesController : Controller
     {
+        private HRMSDbContext _db = new HRMSDbContext();
+
         public UserManager<ApplicationUser> UserManager { get; private set; }
         public RoleManager<IdentityRole> RoleManager { get; private set; }
-
-        HRMSDbContext db = new HRMSDbContext();
 
         UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
 
@@ -27,7 +27,8 @@ namespace FTL_HRMS.Controllers
         // GET: Employees
         public ActionResult Index()
         {
-            return View(db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true).ToList());
+            return View(_db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true).ToList());
+
         }
         #endregion
 
@@ -39,7 +40,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employee.Find(id);
+            Employee employee = _db.Employee.Find(id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -205,21 +206,21 @@ namespace FTL_HRMS.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-            List<SourceOfHire> SourceOfHireList = new List<SourceOfHire>();
-            SourceOfHireList = db.SourceOfHire.Where(i => i.Status == true).ToList();
-            ViewBag.SourceOfHireId = new SelectList(SourceOfHireList, "Sl", "Name");
+            List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
+            sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+            ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name");
 
-            List<Branch> BranchList = new List<Branch>();
-            BranchList = db.Branches.Where(i => i.Status == true).ToList();
-            ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name");
+            List<Branch> branchList = new List<Branch>();
+            branchList = _db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(branchList, "Sl", "Name");
 
-            List<EmployeeType> EmployeeTypeList = new List<EmployeeType>();
-            EmployeeTypeList = db.EmployeeType.Where(i => i.Status == true).ToList();
-            ViewBag.EmployeeTypeId = new SelectList(EmployeeTypeList, "Sl", "Name");
+            List<EmployeeType> employeeTypeList = new List<EmployeeType>();
+            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name");
 
-            List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();
-            DepartmentGroupList = db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
+            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
             Session["EducationList"] = new List<Education>();
             Session["ExperienceList"] = new List<Experience>();
@@ -244,15 +245,15 @@ namespace FTL_HRMS.Controllers
                 employee.PermanentAddress = PermanentAddress;
                 employee.DesignationId = DesignationId;
                 string UserName = User.Identity.Name;
-                int userId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                int userId = _db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
                 employee.CreatedBy = userId;
                 employee.CreateDate = DateTime.Now;
                 employee.Status = true;
-                db.Employee.Add(employee);
-                db.SaveChanges();
+                _db.Employee.Add(employee);
+                _db.SaveChanges();
 
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
                 if (!roleManager.RoleExists("Employee"))
                 {
                     // first we create Employee role   
@@ -282,7 +283,7 @@ namespace FTL_HRMS.Controllers
                 {
                     var result1 = UserManager.AddToRole(user.Id, "Employee");
                 }
-                db.SaveChanges();
+                _db.SaveChanges();
                 #endregion
 
                 #region Add Education
@@ -299,8 +300,8 @@ namespace FTL_HRMS.Controllers
                     education.Board = EducationList[i].Board;
                     education.Result = EducationList[i].Result;
                     education.EmployeeId = employee.Sl;
-                    db.Education.Add(education);
-                    db.SaveChanges();
+                    _db.Education.Add(education);
+                    _db.SaveChanges();
                 }
                 #endregion
 
@@ -319,8 +320,8 @@ namespace FTL_HRMS.Controllers
                     experience.Phone = ExperienceList[i].Phone;
                     experience.Designation = ExperienceList[i].Designation;
                     experience.EmployeeId = employee.Sl;
-                    db.Experience.Add(experience);
-                    db.SaveChanges();
+                    _db.Experience.Add(experience);
+                    _db.SaveChanges();
                 }
                 #endregion
 
@@ -331,8 +332,8 @@ namespace FTL_HRMS.Controllers
                     image.EmployeeId = employee.Sl;
                     image.Image = new byte[image1.ContentLength];
                     image1.InputStream.Read(image.Image, 0, image1.ContentLength);
-                    db.Images.Add(image);
-                    db.SaveChanges();
+                    _db.Images.Add(image);
+                    _db.SaveChanges();
                 }
                 #endregion
 
@@ -342,19 +343,19 @@ namespace FTL_HRMS.Controllers
             else
             {
                 List<SourceOfHire> SourceOfHireList = new List<SourceOfHire>();
-                SourceOfHireList = db.SourceOfHire.Where(i => i.Status == true).ToList();
+                SourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
                 ViewBag.SourceOfHireId = new SelectList(SourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
 
                 List<Branch> BranchList = new List<Branch>();
-                BranchList = db.Branches.Where(i => i.Status == true).ToList();
+                BranchList = _db.Branches.Where(i => i.Status == true).ToList();
                 ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name", employee.BranchId);
 
                 List<EmployeeType> EmployeeTypeList = new List<EmployeeType>();
-                EmployeeTypeList = db.EmployeeType.Where(i => i.Status == true).ToList();
+                EmployeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
                 ViewBag.EmployeeTypeId = new SelectList(EmployeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
 
                 List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();
-                DepartmentGroupList = db.DepartmentGroup.Where(i => i.Status == true).ToList();
+                DepartmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
                 ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
 
                 TempData["WarningMsg"] = "Something went wrong !!";
@@ -371,14 +372,14 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employee.Find(id);
+            Employee employee = _db.Employee.Find(id);
             if (employee == null)
             {
                 return HttpNotFound();
             }
 
             List<SourceOfHire> SourceOfHireList = new List<SourceOfHire>();
-            SourceOfHireList = db.SourceOfHire.Where(i => i.Status == true).ToList();
+            SourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
             ViewBag.SourceOfHireId = new SelectList(SourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
 
             return View(employee);
@@ -393,11 +394,11 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var employeeCode = db.Employee.Where(c => c.Sl == employee.Sl).Select(i => i.Code).FirstOrDefault();
-                string userId = db.Users.Where(u => u.UserName == employeeCode).Select(i => i.Id).FirstOrDefault();
+                var employeeCode = _db.Employee.Where(c => c.Sl == employee.Sl).Select(i => i.Code).FirstOrDefault();
+                string userId = _db.Users.Where(u => u.UserName == employeeCode).Select(i => i.Id).FirstOrDefault();
                 if (employeeCode != employee.Code)
                 {
-                    if (db.Users.Where(u => u.UserName == employee.Code).Count() > 0)
+                    if (_db.Users.Where(u => u.UserName == employee.Code).Count() > 0)
                     {
                         TempData["WarningMsg"] = "Username already exist!!!";
                     }
@@ -409,14 +410,14 @@ namespace FTL_HRMS.Controllers
                         employee.PresentAddress = PresentAddress;
                         employee.PermanentAddress = PermanentAddress;
                         string UserName = User.Identity.Name;
-                        int UserId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                        int UserId = _db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
                         employee.UpdatedBy = UserId;
                         employee.UpdateDate = DateTime.Now;
-                        db.Entry(employee).State = EntityState.Modified;
-                        db.SaveChanges();
+                        _db.Entry(employee).State = EntityState.Modified;
+                        _db.SaveChanges();
 
                         //user table update
-                        ApplicationUser user = db.Users.Find(userId);
+                        ApplicationUser user = _db.Users.Find(userId);
                         user.IsActive = user.IsActive;
                         user.RoleId = user.RoleId;
                         user.Email = employee.Email;
@@ -431,8 +432,8 @@ namespace FTL_HRMS.Controllers
                         user.AccessFailedCount = user.AccessFailedCount;
                         user.UserName = employee.Code;
                         user.CustomUserId = user.CustomUserId;
-                        db.Entry(user).State = EntityState.Modified;
-                        db.SaveChanges();
+                        _db.Entry(user).State = EntityState.Modified;
+                        _db.SaveChanges();
 
                         TempData["SuccessMsg"] = "Information updated successfully!";
                     }
@@ -445,14 +446,14 @@ namespace FTL_HRMS.Controllers
                     employee.PresentAddress = PresentAddress;
                     employee.PermanentAddress = PermanentAddress;
                     string UserName = User.Identity.Name;
-                    int UserId = db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
+                    int UserId = _db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
                     employee.UpdatedBy = UserId;
                     employee.UpdateDate = DateTime.Now;
-                    db.Entry(employee).State = EntityState.Modified;
-                    db.SaveChanges();
+                    _db.Entry(employee).State = EntityState.Modified;
+                    _db.SaveChanges();
 
                     //user table update
-                    ApplicationUser user = db.Users.Find(userId);
+                    ApplicationUser user = _db.Users.Find(userId);
                     user.IsActive = user.IsActive;
                     user.RoleId = user.RoleId;
                     user.Email = employee.Email;
@@ -467,8 +468,8 @@ namespace FTL_HRMS.Controllers
                     user.AccessFailedCount = user.AccessFailedCount;
                     user.UserName = employee.Code;
                     user.CustomUserId = user.CustomUserId;
-                    db.Entry(user).State = EntityState.Modified;
-                    db.SaveChanges();
+                    _db.Entry(user).State = EntityState.Modified;
+                    _db.SaveChanges();
 
                     TempData["SuccessMsg"] = "Information updated successfully!";
                 }
@@ -478,7 +479,7 @@ namespace FTL_HRMS.Controllers
                 TempData["WarningMsg"] = "Something went wrong !!";
             }
             List<SourceOfHire> SourceOfHireList = new List<SourceOfHire>();
-            SourceOfHireList = db.SourceOfHire.Where(i => i.Status == true).ToList();
+            SourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
             ViewBag.SourceOfHireId = new SelectList(SourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
           
             return View(employee);
@@ -493,7 +494,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employee.Find(id);
+            Employee employee = _db.Employee.Find(id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -506,10 +507,10 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Employee employee = db.Employee.Find(id);
+            Employee employee = _db.Employee.Find(id);
             employee.Status = false;
-            db.Entry(employee).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Entry(employee).State = EntityState.Modified;
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -519,7 +520,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -529,7 +530,7 @@ namespace FTL_HRMS.Controllers
         public bool UserValidation(string Username, string Password, string ConfirmPassword)
         {
             bool IsValidate = true;
-            if (db.Users.Where(i => i.UserName == Username).Count() > 0)
+            if (_db.Users.Where(i => i.UserName == Username).Count() > 0)
             {
                 IsValidate = false;
                 TempData["WarningMsg"] = "Username already exist!!!";

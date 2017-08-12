@@ -4,6 +4,30 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+@section scripts {
+    <script type="text/javascript" language="javascript" >
+        $("#DepartmentGroupName").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/Departments/GetDepartmentGroup",
+                    type: "POST",
+                    dataType: "json",
+                    data: { DepartmentGroupName: $("#DepartmentGroupName").val() },
+                    success: function(data) {
+                        response($.map(data, function(item) {
+                            return { label: item.Name, value: item.SL }; //updated code
+                        }));
+                    }
+                });
+            },
+            select: function(event, ui) {
+                $("#DepartmentGroupId").val(ui.item.value);
+                $("#DepartmentGroupName").val(ui.item.label);
+                return false;
+            }
+        });
+    </script>
+}
 
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
@@ -63,7 +87,7 @@
                             Name
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required=true } })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                         </div>
 
@@ -71,11 +95,15 @@
                         <div>
                             Department Group Name
                         </div>
+                        <div class="editor-field">
+                            <input type="hidden" id="DepartmentGroupId" name="DepartmentGroupId" />
+                            <input type="text" id="DepartmentGroupName" value="" />
+                        </div>
                         <div>
-                            @Html.DropDownList("DepartmentGroupId", null, "Select Group" ,htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
+                            @Html.DropDownList("DepartmentGroupId", null, "Select Group", htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
                             @Html.ValidationMessageFor(model => model.DepartmentGroupId, "", new { @class = "text-danger" })
                         </div>
-                        
+
                         <br />
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
@@ -88,5 +116,3 @@
         </div>
     </div>
 </div>
-
-

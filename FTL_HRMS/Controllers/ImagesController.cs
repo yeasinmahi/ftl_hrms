@@ -9,13 +9,13 @@ namespace FTL_HRMS.Controllers
 {
     public class ImagesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: Images
         public ActionResult Index(int employeeId)
         {
-            var images = db.Images.Where(i => i.EmployeeId == employeeId).ToList();
+            var images = _db.Images.Where(i => i.EmployeeId == employeeId).ToList();
             return View(images);
         }
         #endregion
@@ -28,7 +28,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Images images = db.Images.Find(id);
+            Images images = _db.Images.Find(id);
             if (images == null)
             {
                 return HttpNotFound();
@@ -53,8 +53,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Images.Add(images);
-                db.SaveChanges();
+                _db.Images.Add(images);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -70,7 +70,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Images images = db.Images.Find(id);
+            Images images = _db.Images.Find(id);
             if (images == null)
             {
                 return HttpNotFound();
@@ -90,8 +90,8 @@ namespace FTL_HRMS.Controllers
                 images.EmployeeId = images.EmployeeId;
                 images.Image = new byte[image1.ContentLength];
                 image1.InputStream.Read(images.Image, 0, image1.ContentLength);
-                db.Entry(images).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(images).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully !!";
                 return RedirectToAction("Index", "Images", new { employeeId = images.EmployeeId });
             }
@@ -107,7 +107,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Images images = db.Images.Find(id);
+            Images images = _db.Images.Find(id);
             if (images == null)
             {
                 return HttpNotFound();
@@ -120,9 +120,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Images images = db.Images.Find(id);
-            db.Images.Remove(images);
-            db.SaveChanges();
+            Images images = _db.Images.Find(id);
+            _db.Images.Remove(images);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -132,7 +132,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

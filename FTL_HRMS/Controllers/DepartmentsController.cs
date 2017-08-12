@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using FTL_HRMS.Models;
 
 namespace FTL_HRMS.Controllers
@@ -45,6 +46,14 @@ namespace FTL_HRMS.Controllers
             return Json(DepartmentList, JsonRequestBehavior.AllowGet);
         }
         #endregion
+        #region Get Department Group
+        public ActionResult GetDepartmentGroup()
+        {
+            string DepartmentGroupName = Request["DepartmentGroupName"];
+            List<DepartmentGroup> GroupList = db.DepartmentGroup.Where(r => r.Name.Contains(DepartmentGroupName)).ToList();
+            return Json(GroupList, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
 
         #region Create
         // GET: Departments/Create
@@ -76,6 +85,7 @@ namespace FTL_HRMS.Controllers
                 db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 ViewBag.DepartmentGroupId = new SelectList(GroupList, "Sl", "Name");
+                ViewBag.Departments = GroupList;
                 return RedirectToAction("Create");
             }
             ViewBag.DepartmentGroupId = new SelectList(GroupList, "Sl", "Name",department.DepartmentGroupId);

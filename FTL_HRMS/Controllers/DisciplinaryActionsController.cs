@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -9,13 +10,13 @@ namespace FTL_HRMS.Controllers
 {
     public class DisciplinaryActionsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: DisciplinaryActions
         public ActionResult Index()
         {
-            return View(db.DisciplinaryAction.Include(i => i.DisciplinaryActionType).Include(i => i.Employee).ToList());
+            return View(_db.DisciplinaryAction.Include(i => i.DisciplinaryActionType).Include(i => i.Employee).ToList());
         }
         #endregion
 
@@ -27,7 +28,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DisciplinaryAction disciplinaryAction = db.DisciplinaryAction.Find(id);
+            DisciplinaryAction disciplinaryAction = _db.DisciplinaryAction.Find(id);
             if (disciplinaryAction == null)
             {
                 return HttpNotFound();
@@ -40,10 +41,10 @@ namespace FTL_HRMS.Controllers
         // GET: DisciplinaryActions/Create
         public ActionResult Create()
         {
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
-            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
-            ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name");
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name");
+            ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
             return View();
         }
 
@@ -54,19 +55,19 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,EmployeeId,DisciplinaryActionTypeId,Date,Remarks")] DisciplinaryAction disciplinaryAction)
         {
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
             if (ModelState.IsValid)
             {
-                db.DisciplinaryAction.Add(disciplinaryAction);
-                db.SaveChanges();
+                _db.DisciplinaryAction.Add(disciplinaryAction);
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
-                ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
-                ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name");
+                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name");
+                ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
-            ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
+            ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(disciplinaryAction);
         }
@@ -80,15 +81,15 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DisciplinaryAction disciplinaryAction = db.DisciplinaryAction.Find(id);
+            DisciplinaryAction disciplinaryAction = _db.DisciplinaryAction.Find(id);
             if (disciplinaryAction == null)
             {
                 return HttpNotFound();
             }
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
-            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
-            ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
+            ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
             return View(disciplinaryAction);
         }
 
@@ -99,19 +100,19 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,EmployeeId,DisciplinaryActionTypeId,Date,Remarks")] DisciplinaryAction disciplinaryAction)
         {
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
             if (ModelState.IsValid)
             {
-                db.Entry(disciplinaryAction).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(disciplinaryAction).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
-                ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
-                ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name");
+                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name");
+                ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
-            ViewBag.DisciplinaryActionTypeId = new SelectList(db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
+            ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(disciplinaryAction);
         }
@@ -125,7 +126,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DisciplinaryAction disciplinaryAction = db.DisciplinaryAction.Find(id);
+            DisciplinaryAction disciplinaryAction = _db.DisciplinaryAction.Find(id);
             if (disciplinaryAction == null)
             {
                 return HttpNotFound();
@@ -138,9 +139,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DisciplinaryAction disciplinaryAction = db.DisciplinaryAction.Find(id);
-            db.DisciplinaryAction.Remove(disciplinaryAction);
-            db.SaveChanges();
+            DisciplinaryAction disciplinaryAction = _db.DisciplinaryAction.Find(id);
+            _db.DisciplinaryAction.Remove(disciplinaryAction);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -150,7 +151,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

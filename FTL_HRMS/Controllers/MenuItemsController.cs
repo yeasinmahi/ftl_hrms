@@ -8,12 +8,12 @@ namespace FTL_HRMS.Controllers
 {
     public class MenuItemsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: MenuItems
         public ActionResult Index()
         {
-            return View(db.MenuItem.ToList());
+            return View(_db.MenuItem.ToList());
         }
 
         // GET: MenuItems/Details/5
@@ -23,7 +23,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MenuItem menuItem = db.MenuItem.Find(id);
+            MenuItem menuItem = _db.MenuItem.Find(id);
             if (menuItem == null)
             {
                 return HttpNotFound();
@@ -46,8 +46,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.MenuItem.Add(menuItem);
-                db.SaveChanges();
+                _db.MenuItem.Add(menuItem);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -61,7 +61,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MenuItem menuItem = db.MenuItem.Find(id);
+            MenuItem menuItem = _db.MenuItem.Find(id);
             if (menuItem == null)
             {
                 return HttpNotFound();
@@ -78,8 +78,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(menuItem).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(menuItem).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(menuItem);
@@ -92,7 +92,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MenuItem menuItem = db.MenuItem.Find(id);
+            MenuItem menuItem = _db.MenuItem.Find(id);
             if (menuItem == null)
             {
                 return HttpNotFound();
@@ -105,9 +105,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            MenuItem menuItem = db.MenuItem.Find(id);
-            db.MenuItem.Remove(menuItem);
-            db.SaveChanges();
+            MenuItem menuItem = _db.MenuItem.Find(id);
+            _db.MenuItem.Remove(menuItem);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -115,7 +115,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
