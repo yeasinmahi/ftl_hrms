@@ -11,9 +11,11 @@ namespace FTL_HRMS.Models
         public int Sl { get; set; }
 
         [Required(ErrorMessage = "Employee cannot be empty")]
+        [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
 
         [Required(ErrorMessage = "Disciplinary Action Type cannot be empty")]
+        [ForeignKey("DisciplinaryActionType")]
         public int DisciplinaryActionTypeId { get; set; }
 
         [DataType(DataType.Date),

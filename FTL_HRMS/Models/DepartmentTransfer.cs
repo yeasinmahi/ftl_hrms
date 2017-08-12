@@ -11,12 +11,15 @@ namespace FTL_HRMS.Models
         public int Sl { get; set; }
 
         [Required(ErrorMessage = "Employee cannot be empty")]
+        [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
 
         [Required(ErrorMessage = "From Designation cannot be empty")]
+        [ForeignKey("Department")]
         public int FromDepartmentId { get; set; }
 
         [Required(ErrorMessage = "To Designation cannot be empty")]
+        [ForeignKey("Department")]
         public int ToDepartmentId { get; set; }
 
         [DataType(DataType.Date),

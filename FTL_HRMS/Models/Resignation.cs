@@ -37,6 +37,7 @@ namespace FTL_HRMS.Models
         public string Remarks { get; set; }
 
         [Required(ErrorMessage = "Employee cannot be empty")]
+        [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
 
         public virtual Employee Employee { get; set; }
