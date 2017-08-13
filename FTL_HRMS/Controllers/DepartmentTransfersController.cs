@@ -37,11 +37,11 @@ namespace FTL_HRMS.Controllers
         public ActionResult Create()
         {
             List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
+            EmployeeList = _db.Employee.Where(i => i.Status == true).ToList();
             ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
 
             List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();
-            DepartmentGroupList = db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            DepartmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
             return View();
         }
@@ -55,24 +55,24 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                int FromDesignationId = db.Employee.Where(i => i.Sl == departmentTransfer.EmployeeId).Select(x => x.DesignationId).FirstOrDefault();
+                int FromDesignationId = _db.Employee.Where(i => i.Sl == departmentTransfer.EmployeeId).Select(x => x.DesignationId).FirstOrDefault();
                 int ToDesignationId = Convert.ToInt32(Request["ddl_designation"]);
 
                 departmentTransfer.FromDesignationId = FromDesignationId;
                 departmentTransfer.ToDesignationId = ToDesignationId;
-                db.DepartmentTransfer.Add(departmentTransfer);
-                db.SaveChanges();
-                db.DepartmentTransfer.Add(departmentTransfer);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                _db.DepartmentTransfer.Add(departmentTransfer);
+                _db.SaveChanges();
+                _db.DepartmentTransfer.Add(departmentTransfer);
+                _db.SaveChanges();
+               
+            
 
                 #region Edit Employee
 
-                Employee employee = db.Employee.Find(departmentTransfer.EmployeeId);
+                Employee employee = _db.Employee.Find(departmentTransfer.EmployeeId);
                 employee.DesignationId = ToDesignationId;
-                db.Entry(employee).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(employee).State = EntityState.Modified;
+                _db.SaveChanges();
 
                 #endregion
                 TempData["SuccessMsg"] = "Added Successfully !!";
@@ -90,16 +90,16 @@ namespace FTL_HRMS.Controllers
             if (Request["empId"].ToString() != "")
             {
                 int empId = Convert.ToInt32(Request["empId"]);
-                Employee employee = db.Employee.Find(empId);
+                Employee employee = _db.Employee.Find(empId);
 
-                int DesignationId = db.Employee.Where( i=> i.Sl == empId).Select(x=> x.DesignationId).FirstOrDefault();
-                EmployeeData[0] = db.Designation.Where(i => i.Sl == DesignationId).Select(x => x.Name).FirstOrDefault();
+                int DesignationId = _db.Employee.Where( i=> i.Sl == empId).Select(x=> x.DesignationId).FirstOrDefault();
+                EmployeeData[0] = _db.Designation.Where(i => i.Sl == DesignationId).Select(x => x.Name).FirstOrDefault();
 
-                int DepartmentId = db.Designation.Where(i => i.Sl == DesignationId).Select(x => x.DepartmentId).FirstOrDefault();
-                EmployeeData[1] = db.Department.Where(i => i.Sl == DepartmentId).Select(x => x.Name).FirstOrDefault();
+                int DepartmentId = _db.Designation.Where(i => i.Sl == DesignationId).Select(x => x.DepartmentId).FirstOrDefault();
+                EmployeeData[1] = _db.Department.Where(i => i.Sl == DepartmentId).Select(x => x.Name).FirstOrDefault();
 
-                int DepartmentGroupId = db.Department.Where(i => i.Sl == DepartmentId).Select(x => x.DepartmentGroupId).FirstOrDefault();
-                EmployeeData[2] = db.DepartmentGroup.Where(i => i.Sl == DepartmentGroupId).Select(x => x.Name).FirstOrDefault();
+                int DepartmentGroupId = _db.Department.Where(i => i.Sl == DepartmentId).Select(x => x.DepartmentGroupId).FirstOrDefault();
+                EmployeeData[2] = _db.DepartmentGroup.Where(i => i.Sl == DepartmentGroupId).Select(x => x.Name).FirstOrDefault();
             }
             else
             {
@@ -116,15 +116,15 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DepartmentTransfer departmentTransfer = db.DepartmentTransfer.Find(id);
-            ViewBag.Designation = db.Designation.Where(x => x.Sl == departmentTransfer.ToDesignationId).Select(t => t.Name).FirstOrDefault();
-            ViewBag.Department = db.Department.Where(x => x.Sl == departmentTransfer.ToDesignationId).Select(t=> t.Name).FirstOrDefault();
-            int Department = db.Department.Where(x => x.Sl == departmentTransfer.ToDesignationId).Select(t => t.Sl).FirstOrDefault();
-            ViewBag.DepartmentGroup = db.DepartmentGroup.Where(x => x.Sl == Department).Select(t => t.Name).FirstOrDefault();
+            DepartmentTransfer departmentTransfer = _db.DepartmentTransfer.Find(id);
+            ViewBag.Designation = _db.Designation.Where(x => x.Sl == departmentTransfer.ToDesignationId).Select(t => t.Name).FirstOrDefault();
+            ViewBag.Department = _db.Department.Where(x => x.Sl == departmentTransfer.ToDesignationId).Select(t=> t.Name).FirstOrDefault();
+            int Department = _db.Department.Where(x => x.Sl == departmentTransfer.ToDesignationId).Select(t => t.Sl).FirstOrDefault();
+            ViewBag.DepartmentGroup = _db.DepartmentGroup.Where(x => x.Sl == Department).Select(t => t.Name).FirstOrDefault();
             List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();
-            DepartmentGroupList = db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            DepartmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(DepartmentGroupList, "Sl", "Name");
-            DepartmentTransfer departmentTransfer = db.DepartmentTransfer.Find(id);
+           
             if (departmentTransfer == null)
             {
                 return HttpNotFound();
@@ -143,22 +143,22 @@ namespace FTL_HRMS.Controllers
             {
                 int ToDesignationId = Convert.ToInt32(Request["ddl_designation"]);
                 departmentTransfer.ToDesignationId = ToDesignationId;
-                int FromDesignationId = db.Employee.Where(i => i.Sl == departmentTransfer.EmployeeId).Select(x => x.DesignationId).FirstOrDefault();
+                int FromDesignationId = _db.Employee.Where(i => i.Sl == departmentTransfer.EmployeeId).Select(x => x.DesignationId).FirstOrDefault();
                 departmentTransfer.FromDesignationId = FromDesignationId;
-                db.Entry(departmentTransfer).State = EntityState.Modified;
-                db.SaveChanges();
+            _db.Entry(departmentTransfer).State = EntityState.Modified;
+            _db.SaveChanges();
 
                 #region Edit Employee
-                Employee employee = db.Employee.Find(departmentTransfer.EmployeeId);
+                Employee employee = _db.Employee.Find(departmentTransfer.EmployeeId);
                 employee.DesignationId = ToDesignationId;
-                db.Entry(employee).State = EntityState.Modified;
-                db.SaveChanges();
+            _db.Entry(employee).State = EntityState.Modified;
+            _db.SaveChanges();
                 #endregion
                 
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Edit");
-                db.Entry(departmentTransfer).State = EntityState.Modified;
-                db.SaveChanges();
+            _db.Entry(departmentTransfer).State = EntityState.Modified;
+            _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             TempData["WarningMsg"] = "Something went wrong !!";
@@ -172,7 +172,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DepartmentTransfer departmentTransfer = db.DepartmentTransfer.Find(id);
+            DepartmentTransfer departmentTransfer = _db.DepartmentTransfer.Find(id);
             if (departmentTransfer == null)
             {
                 return HttpNotFound();

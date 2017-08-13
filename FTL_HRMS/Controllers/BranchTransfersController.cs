@@ -37,11 +37,11 @@ namespace FTL_HRMS.Controllers
         public ActionResult Create()
         {
             List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
+            EmployeeList = _db.Employee.Where(i => i.Status == true).ToList();
             ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
 
             List<Branch> BranchList = new List<Branch>();
-            BranchList = db.Branches.Where(i => i.Status == true).ToList();
+            BranchList = _db.Branches.Where(i => i.Status == true).ToList();
             ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name");
             return View();
         }
@@ -55,19 +55,19 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                int FromBranchId = db.Employee.Where(i => i.Sl == branchTransfer.EmployeeId).Select(x => x.BranchId).FirstOrDefault();
+                int FromBranchId = _db.Employee.Where(i => i.Sl == branchTransfer.EmployeeId).Select(x => x.BranchId).FirstOrDefault();
                 int ToBranchId = Convert.ToInt32(Request["BranchId"]);
                 branchTransfer.FromBranchId = FromBranchId;
                 branchTransfer.ToBranchId = ToBranchId;
-                db.BranchTransfer.Add(branchTransfer);
-                db.SaveChanges();
+                _db.BranchTransfer.Add(branchTransfer);
+                _db.SaveChanges();
 
                 #region Edit Employee
 
-                Employee employee = db.Employee.Find(branchTransfer.EmployeeId);
+                Employee employee = _db.Employee.Find(branchTransfer.EmployeeId);
                 employee.BranchId = ToBranchId;
-                db.Entry(employee).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(employee).State = EntityState.Modified;
+                _db.SaveChanges();
 
                 #endregion
                 TempData["SuccessMsg"] = "Added Successfully !!";
@@ -90,10 +90,10 @@ namespace FTL_HRMS.Controllers
             if (Request["empId"].ToString() != "")
             {
                 int empId = Convert.ToInt32(Request["empId"]);
-                Employee employee = db.Employee.Find(empId);
+                Employee employee = _db.Employee.Find(empId);
 
-                int BranchId = db.Employee.Where(i => i.Sl == empId).Select(x => x.BranchId).FirstOrDefault();
-                EmployeeData[0] = db.Branches.Where(i => i.Sl == BranchId).Select(x => x.Name).FirstOrDefault();
+                int BranchId = _db.Employee.Where(i => i.Sl == empId).Select(x => x.BranchId).FirstOrDefault();
+                EmployeeData[0] = _db.Branches.Where(i => i.Sl == BranchId).Select(x => x.Name).FirstOrDefault();
             }
             else
             {
@@ -110,12 +110,12 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BranchTransfer branchTransfer = db.BranchTransfer.Find(id);
-            ViewBag.Branch = db.Branches.Where(x => x.Sl == branchTransfer.ToBranchId).Select(t => t.Name).FirstOrDefault();
-            List<Branch> BranchList = new List<Branch>();
-            BranchList = db.Branches.Where(i => i.Status == true).ToList();
-            ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name");
             BranchTransfer branchTransfer = _db.BranchTransfer.Find(id);
+            ViewBag.Branch = _db.Branches.Where(x => x.Sl == branchTransfer.ToBranchId).Select(t => t.Name).FirstOrDefault();
+            List<Branch> BranchList = new List<Branch>();
+            BranchList = _db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name");
+            
             if (branchTransfer == null)
             {
                 return HttpNotFound();
@@ -134,20 +134,20 @@ namespace FTL_HRMS.Controllers
             {
                 int ToBranchId = Convert.ToInt32(Request["BranchId"]);
                 branchTransfer.ToBranchId = ToBranchId;
-                int FromBranchId = db.Employee.Where(i => i.Sl == branchTransfer.EmployeeId).Select(x => x.BranchId).FirstOrDefault();
+                int FromBranchId = _db.Employee.Where(i => i.Sl == branchTransfer.EmployeeId).Select(x => x.BranchId).FirstOrDefault();
                 branchTransfer.FromBranchId = FromBranchId;
-                db.Entry(branchTransfer).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(branchTransfer).State = EntityState.Modified;
+                _db.SaveChanges();
                 #region Edit Employee
-                Employee employee = db.Employee.Find(branchTransfer.EmployeeId);
+                Employee employee = _db.Employee.Find(branchTransfer.EmployeeId);
                 employee.BranchId = ToBranchId;
-                db.Entry(employee).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(employee).State = EntityState.Modified;
+                _db.SaveChanges();
                 #endregion
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Edit");
-                db.Entry(branchTransfer).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(branchTransfer).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             TempData["WarningMsg"] = "Something went wrong !!";
