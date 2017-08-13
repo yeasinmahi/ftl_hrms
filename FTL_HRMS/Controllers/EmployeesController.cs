@@ -11,6 +11,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
 using static FTL_HRMS.Models.AccountViewModels;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
 
 namespace FTL_HRMS.Controllers
 {
@@ -373,27 +375,71 @@ namespace FTL_HRMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult EmployeeTypeReport(int? employeeTypeId)
+        public ActionResult EmployeeTypeReport(string employeeTypeId)
         {
-            int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
-            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
-            ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == employeeTypeId).Select(p => p.Name).FirstOrDefault();
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
-            ViewBag.Status = "SelectType";
-            return View(EmployeeList.ToList());
+            if (employeeTypeId== "")
+            {
+                List<Employee> EmployeeList = new List<Employee>();
+                EmployeeList = _db.Employee.ToList();
+                ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+                ViewBag.Status = "SelectType";
+                return View(EmployeeList.ToList());
+            }
+            else
+            {
+                int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
+                ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+                ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == EmployeeTypeId).Select(p => p.Name).FirstOrDefault();
+                List<Employee> EmployeeList = new List<Employee>();
+                EmployeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
+                ViewBag.Status = "SelectType";
+                return View(EmployeeList.ToList());
+            }
+            
         }
 
         public ActionResult PrintEmployeeList()
         {
+            ReportDocument Report = new ReportDocument();
+            Report.Load(Server.MapPath("~/Reports/test.rpt"));
+            Report.SetDatabaseLogon("sa", "sa2009", ".\\SQLEXPRESS", "FTL_HRMS");
+
+
+
+            ExportOptions CrExportOptions;
+            DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
+            PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
+            CrDiskFileDestinationOptions.DiskFileName = "f:\\test.pdf";
+            CrExportOptions = Report.ExportOptions;
+            {
+                CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
+                CrExportOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
+                CrExportOptions.DestinationOptions = CrDiskFileDestinationOptions;
+                CrExportOptions.FormatOptions = CrFormatTypeOptions;
+            }
+            Report.Export();
             return View();
         }
-              
+
        
-    #endregion
-    #region Edit
-    // GET: Employees/Edit/5
-    public ActionResult Edit(int? id)
+        public ActionResult ResignReport()
+        {
+            List<Employee> EmployeeList = new List<Employee>();
+            EmployeeList = _db.Employee.Where(v => v.Status == false).ToList();
+            return View(EmployeeList.ToList());
+        }
+
+        public ActionResult TransferReport()
+        {
+            List<DepartmentTransfer> DepartmentTransferList = new List<DepartmentTransfer>();
+            DepartmentTransferList = _db.DepartmentTransfer.ToList();
+            return View(DepartmentTransferList.ToList());
+        }
+
+        #endregion
+        #region Edit
+        // GET: Employees/Edit/5
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
