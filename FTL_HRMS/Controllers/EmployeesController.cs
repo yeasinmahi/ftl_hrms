@@ -364,9 +364,36 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Edit
-        // GET: Employees/Edit/5
-        public ActionResult Edit(int? id)
+        #region Print 
+
+        public ActionResult EmployeeTypeReport()
+        {
+            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult EmployeeTypeReport(int? employeeTypeId)
+        {
+            int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
+            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+            ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == employeeTypeId).Select(p => p.Name).FirstOrDefault();
+            List<Employee> EmployeeList = new List<Employee>();
+            EmployeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
+            ViewBag.Status = "SelectType";
+            return View(EmployeeList.ToList());
+        }
+
+        public ActionResult PrintEmployeeList()
+        {
+            return View();
+        }
+              
+       
+    #endregion
+    #region Edit
+    // GET: Employees/Edit/5
+    public ActionResult Edit(int? id)
         {
             if (id == null)
             {
