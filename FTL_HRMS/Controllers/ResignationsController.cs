@@ -8,12 +8,12 @@ namespace FTL_HRMS.Controllers
 {
     public class ResignationsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: Resignations
         public ActionResult Index()
         {
-            return View(db.Resignation.ToList());
+            return View(_db.Resignation.ToList());
         }
 
         // GET: Resignations/Details/5
@@ -23,7 +23,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resignation resignation = db.Resignation.Find(id);
+            Resignation resignation = _db.Resignation.Find(id);
             if (resignation == null)
             {
                 return HttpNotFound();
@@ -46,8 +46,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Resignation.Add(resignation);
-                db.SaveChanges();
+                _db.Resignation.Add(resignation);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -61,7 +61,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resignation resignation = db.Resignation.Find(id);
+            Resignation resignation = _db.Resignation.Find(id);
             if (resignation == null)
             {
                 return HttpNotFound();
@@ -78,8 +78,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(resignation).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(resignation).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(resignation);
@@ -92,7 +92,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resignation resignation = db.Resignation.Find(id);
+            Resignation resignation = _db.Resignation.Find(id);
             if (resignation == null)
             {
                 return HttpNotFound();
@@ -105,9 +105,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Resignation resignation = db.Resignation.Find(id);
-            db.Resignation.Remove(resignation);
-            db.SaveChanges();
+            Resignation resignation = _db.Resignation.Find(id);
+            _db.Resignation.Remove(resignation);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -115,7 +115,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

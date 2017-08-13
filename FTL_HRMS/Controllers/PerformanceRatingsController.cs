@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -9,13 +10,13 @@ namespace FTL_HRMS.Controllers
 {
     public class PerformanceRatingsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: PerformanceRatings
         public ActionResult Index()
         {
-            return View(db.PerformanceRating.Include(i => i.PerformanceIssue).Include(i => i.Employee).ToList());
+            return View(_db.PerformanceRating.Include(i => i.PerformanceIssue).Include(i => i.Employee).ToList());
         }
         #endregion
 
@@ -27,7 +28,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PerformanceRating performanceRating = db.PerformanceRating.Find(id);
+            PerformanceRating performanceRating = _db.PerformanceRating.Find(id);
             if (performanceRating == null)
             {
                 return HttpNotFound();
@@ -40,10 +41,10 @@ namespace FTL_HRMS.Controllers
         // GET: PerformanceRatings/Create
         public ActionResult Create()
         {
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
-            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
-            ViewBag.PerformanceIssueId = new SelectList(db.PerformanceIssue, "Sl", "Name");
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name");
+            ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name");
             return View();
         }
 
@@ -54,19 +55,19 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Rating,Date,EmployeeId,PerformanceIssueId")] PerformanceRating performanceRating)
         {
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
             if (ModelState.IsValid)
             {
-                db.PerformanceRating.Add(performanceRating);
-                db.SaveChanges();
+                _db.PerformanceRating.Add(performanceRating);
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
-                ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
-                ViewBag.PerformanceIssueId = new SelectList(db.PerformanceIssue, "Sl", "Name");
+                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name");
+                ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name", performanceRating.EmployeeId);
-            ViewBag.PerformanceIssueId = new SelectList(db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name", performanceRating.EmployeeId);
+            ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(performanceRating);
         }
@@ -80,15 +81,15 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PerformanceRating performanceRating = db.PerformanceRating.Find(id);
+            PerformanceRating performanceRating = _db.PerformanceRating.Find(id);
             if (performanceRating == null)
             {
                 return HttpNotFound();
             }
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
-            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name", performanceRating.EmployeeId);
-            ViewBag.PerformanceIssueId = new SelectList(db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name", performanceRating.EmployeeId);
+            ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
             return View(performanceRating);
         }
 
@@ -99,19 +100,19 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,Rating,Date,EmployeeId,PerformanceIssueId")] PerformanceRating performanceRating)
         {
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = db.Employee.Where(i => i.Status == true).ToList();
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
             if (ModelState.IsValid)
             {
-                db.Entry(performanceRating).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(performanceRating).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
-                ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
-                ViewBag.PerformanceIssueId = new SelectList(db.PerformanceIssue, "Sl", "Name");
+                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name");
+                ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name", performanceRating.EmployeeId);
-            ViewBag.PerformanceIssueId = new SelectList(db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name", performanceRating.EmployeeId);
+            ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(performanceRating);
         }
@@ -125,7 +126,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PerformanceRating performanceRating = db.PerformanceRating.Find(id);
+            PerformanceRating performanceRating = _db.PerformanceRating.Find(id);
             if (performanceRating == null)
             {
                 return HttpNotFound();
@@ -138,9 +139,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PerformanceRating performanceRating = db.PerformanceRating.Find(id);
-            db.PerformanceRating.Remove(performanceRating);
-            db.SaveChanges();
+            PerformanceRating performanceRating = _db.PerformanceRating.Find(id);
+            _db.PerformanceRating.Remove(performanceRating);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -150,7 +151,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

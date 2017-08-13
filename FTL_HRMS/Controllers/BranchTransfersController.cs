@@ -10,12 +10,12 @@ namespace FTL_HRMS.Controllers
 {
     public class BranchTransfersController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: BranchTransfers
         public ActionResult Index()
         {
-            return View(db.BranchTransfer.ToList());
+            return View(_db.BranchTransfer.ToList());
         }
 
         // GET: BranchTransfers/Details/5
@@ -25,7 +25,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BranchTransfer branchTransfer = db.BranchTransfer.Find(id);
+            BranchTransfer branchTransfer = _db.BranchTransfer.Find(id);
             if (branchTransfer == null)
             {
                 return HttpNotFound();
@@ -72,6 +72,9 @@ namespace FTL_HRMS.Controllers
                 #endregion
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Create");
+                _db.BranchTransfer.Add(branchTransfer);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
             }
             TempData["WarningMsg"] = "Something went wrong !!";
 
@@ -112,6 +115,7 @@ namespace FTL_HRMS.Controllers
             List<Branch> BranchList = new List<Branch>();
             BranchList = db.Branches.Where(i => i.Status == true).ToList();
             ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name");
+            BranchTransfer branchTransfer = _db.BranchTransfer.Find(id);
             if (branchTransfer == null)
             {
                 return HttpNotFound();
@@ -142,6 +146,9 @@ namespace FTL_HRMS.Controllers
                 #endregion
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Edit");
+                db.Entry(branchTransfer).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(branchTransfer);
@@ -154,7 +161,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BranchTransfer branchTransfer = db.BranchTransfer.Find(id);
+            BranchTransfer branchTransfer = _db.BranchTransfer.Find(id);
             if (branchTransfer == null)
             {
                 return HttpNotFound();
@@ -167,9 +174,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            BranchTransfer branchTransfer = db.BranchTransfer.Find(id);
-            db.BranchTransfer.Remove(branchTransfer);
-            db.SaveChanges();
+            BranchTransfer branchTransfer = _db.BranchTransfer.Find(id);
+            _db.BranchTransfer.Remove(branchTransfer);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -177,7 +184,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

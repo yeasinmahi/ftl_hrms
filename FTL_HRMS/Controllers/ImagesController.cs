@@ -3,19 +3,34 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
+using System.Web;
+using System;
 
 namespace FTL_HRMS.Controllers
 {
     public class ImagesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List
         // GET: Images
-        public ActionResult Index()
+        public ActionResult Index(int employeeId)
         {
-            return View(db.Images.ToList());
+            var images = _db.Images.Where(i => i.EmployeeId == employeeId).ToList();
+            if(images.Count() == 0)
+            {
+                ViewBag.NewImage = true;
+            }
+            else
+            {
+                ViewBag.NewImage = false;
+            }
+            ViewBag.EmployeeId = employeeId;
+            return View(images);
         }
+        #endregion
 
+        #region Details (We don't use it)
         // GET: Images/Details/5
         public ActionResult Details(int? id)
         {
@@ -23,17 +38,20 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Images images = db.Images.Find(id);
+            Images images = _db.Images.Find(id);
             if (images == null)
             {
                 return HttpNotFound();
             }
             return View(images);
         }
+        #endregion
 
+        #region Create
         // GET: Images/Create
-        public ActionResult Create()
+        public ActionResult Create(int employeeId)
         {
+            ViewBag.EmployeeId = employeeId;
             return View();
         }
 
@@ -42,18 +60,25 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,Image,EmployeeId")] Images images)
+        public ActionResult Create([Bind(Include = "Sl,Image,EmployeeId")] Images images, HttpPostedFileBase image1)
         {
-            if (ModelState.IsValid)
+            if (image1 != null)
             {
-                db.Images.Add(images);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                images.Image = new byte[image1.ContentLength];
+                image1.InputStream.Read(images.Image, 0, image1.ContentLength);
+                int EmpId = Convert.ToInt32(Request["EmployeeId"]);
+                images.EmployeeId = EmpId;
+                _db.Images.Add(images);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create", "Images", new { employeeId = EmpId });
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(images);
         }
+        #endregion
 
+        #region Edit
         // GET: Images/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -61,7 +86,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Images images = db.Images.Find(id);
+            Images images = _db.Images.Find(id);
             if (images == null)
             {
                 return HttpNotFound();
@@ -74,17 +99,23 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Image,EmployeeId")] Images images)
+        public ActionResult Edit([Bind(Include = "Sl,Image,EmployeeId")] Images images, HttpPostedFileBase image1)
         {
-            if (ModelState.IsValid)
+            if (image1 != null)
             {
-                db.Entry(images).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                images.EmployeeId = images.EmployeeId;
+                images.Image = new byte[image1.ContentLength];
+                image1.InputStream.Read(images.Image, 0, image1.ContentLength);
+                _db.Entry(images).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Updated Successfully !!";
+                return RedirectToAction("Index", "Images", new { employeeId = images.EmployeeId });
             }
             return View(images);
         }
+        #endregion
 
+        #region Delete
         // GET: Images/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -92,7 +123,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Images images = db.Images.Find(id);
+            Images images = _db.Images.Find(id);
             if (images == null)
             {
                 return HttpNotFound();
@@ -105,19 +136,23 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Images images = db.Images.Find(id);
-            db.Images.Remove(images);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Images images = _db.Images.Find(id);
+            int EmployeeId = images.EmployeeId;
+            _db.Images.Remove(images);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Images", new { employeeId = EmployeeId });
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

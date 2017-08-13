@@ -11,6 +11,7 @@ namespace FTL_HRMS.Models
         public int Sl { get; set; }
 
         [Required(ErrorMessage = "Employee cannot be empty")]
+        [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
 
         [Required(ErrorMessage = "From Branch cannot be empty")]

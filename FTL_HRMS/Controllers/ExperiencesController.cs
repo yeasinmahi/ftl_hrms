@@ -3,18 +3,20 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
+using System;
 
 namespace FTL_HRMS.Controllers
 {
     public class ExperiencesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: Experiences
         public ActionResult Index(int employeeId)
         {
-            var experience = db.Experience.Where(i => i.EmployeeId == employeeId).ToList();
+            var experience = _db.Experience.Where(i => i.EmployeeId == employeeId).ToList();
+            ViewBag.EmployeeId = employeeId;
             return View(experience);
         }
         #endregion
@@ -27,7 +29,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Experience experience = db.Experience.Find(id);
+            Experience experience = _db.Experience.Find(id);
             if (experience == null)
             {
                 return HttpNotFound();
@@ -36,10 +38,11 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Create (We don't use it)
+        #region Create
         // GET: Experiences/Create
-        public ActionResult Create()
+        public ActionResult Create(int employeeId)
         {
+            ViewBag.EmployeeId = employeeId;
             return View();
         }
 
@@ -52,11 +55,14 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Experience.Add(experience);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                int EmpId = Convert.ToInt32(Request["EmployeeId"]);
+                experience.EmployeeId = EmpId;
+                _db.Experience.Add(experience);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create", "Experiences", new { employeeId = EmpId });
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(experience);
         }
         #endregion
@@ -69,7 +75,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Experience experience = db.Experience.Find(id);
+            Experience experience = _db.Experience.Find(id);
             if (experience == null)
             {
                 return HttpNotFound();
@@ -86,8 +92,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(experience).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(experience).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return View(experience);
             }
@@ -104,7 +110,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Experience experience = db.Experience.Find(id);
+            Experience experience = _db.Experience.Find(id);
             if (experience == null)
             {
                 return HttpNotFound();
@@ -117,10 +123,11 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Experience experience = db.Experience.Find(id);
-            db.Experience.Remove(experience);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Experience experience = _db.Experience.Find(id);
+            int EmployeeId = experience.EmployeeId;
+            _db.Experience.Remove(experience);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Experiences", new { employeeId = EmployeeId });
         }
         #endregion
 
@@ -129,7 +136,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

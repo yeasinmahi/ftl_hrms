@@ -3,18 +3,20 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
+using System;
 
 namespace FTL_HRMS.Controllers
 {
     public class EducationsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: Educations
         public ActionResult Index(int employeeId)
         {
-            var education = db.Education.Where(i => i.EmployeeId == employeeId).ToList();
+            var education = _db.Education.Where(i => i.EmployeeId == employeeId).ToList();
+            ViewBag.EmployeeId = employeeId;
             return View(education);
         }
         #endregion
@@ -27,7 +29,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Education education = db.Education.Find(id);
+            Education education = _db.Education.Find(id);
             if (education == null)
             {
                 return HttpNotFound();
@@ -36,10 +38,11 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Create (We don't use it)
+        #region Create
         // GET: Educations/Create
-        public ActionResult Create()
+        public ActionResult Create(int employeeId)
         {
+            ViewBag.EmployeeId = employeeId;
             return View();
         }
 
@@ -52,11 +55,14 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Education.Add(education);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                int EmpId = Convert.ToInt32(Request["EmployeeId"]);
+                education.EmployeeId = EmpId;
+                _db.Education.Add(education);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create", "Educations", new { employeeId = EmpId});
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(education);
         }
         #endregion
@@ -69,7 +75,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Education education = db.Education.Find(id);
+            Education education = _db.Education.Find(id);
             if (education == null)
             {
                 return HttpNotFound();
@@ -86,8 +92,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(education).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(education).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return View(education);
             }
@@ -104,7 +110,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Education education = db.Education.Find(id);
+            Education education = _db.Education.Find(id);
             if (education == null)
             {
                 return HttpNotFound();
@@ -117,10 +123,11 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Education education = db.Education.Find(id);
-            db.Education.Remove(education);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Education education = _db.Education.Find(id);
+            int EmployeeId = education.EmployeeId;
+            if (education != null) _db.Education.Remove(education);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Educations", new { employeeId = EmployeeId });
         }
         #endregion
 
@@ -129,7 +136,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

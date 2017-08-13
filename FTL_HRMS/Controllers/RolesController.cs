@@ -16,9 +16,9 @@ namespace FTL_HRMS.Controllers
         public UserManager<ApplicationUser> UserManager { get; private set; }
         public RoleManager<IdentityRole> RoleManager { get; private set; }
 
-        HRMSDbContext db_ctx = new HRMSDbContext();
+        HRMSDbContext _dbCtx = new HRMSDbContext();
 
-        UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+        UserManager<FTL_HRMS.Models.ApplicationUser> _userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
 
         public RolesController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new HRMSDbContext())), new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new HRMSDbContext())))
@@ -35,7 +35,7 @@ namespace FTL_HRMS.Controllers
         // GET: /Roles/
         public ActionResult Index()
         {
-            var roles = db_ctx.Roles.ToList();
+            var roles = _dbCtx.Roles.ToList();
             return View(roles);
         }
 
@@ -53,11 +53,11 @@ namespace FTL_HRMS.Controllers
         {
             try
             {
-                db_ctx.Roles.Add(new Microsoft.AspNet.Identity.EntityFramework.IdentityRole()
+                _dbCtx.Roles.Add(new Microsoft.AspNet.Identity.EntityFramework.IdentityRole()
                 {
                     Name = collection["RoleName"]
                 });
-                db_ctx.SaveChanges();
+                _dbCtx.SaveChanges();
                 ViewBag.ResultMessage = "Role created successfully !";
                 return RedirectToAction("Index");
             }
@@ -71,7 +71,7 @@ namespace FTL_HRMS.Controllers
         // GET: /Roles/Edit/5
         public ActionResult Edit(string roleName)
         {
-            var thisRole = db_ctx.Roles.Where(r => r.Name.Equals(roleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            var thisRole = _dbCtx.Roles.Where(r => r.Name.Equals(roleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
 
             return View(thisRole);
         }
@@ -84,8 +84,8 @@ namespace FTL_HRMS.Controllers
         {
             try
             {
-                db_ctx.Entry(role).State = System.Data.Entity.EntityState.Modified;
-                db_ctx.SaveChanges();
+                _dbCtx.Entry(role).State = System.Data.Entity.EntityState.Modified;
+                _dbCtx.SaveChanges();
 
                 return RedirectToAction("Index");
             }
@@ -97,33 +97,33 @@ namespace FTL_HRMS.Controllers
 
         //
         // GET: /Roles/Delete/5
-        public ActionResult Delete(string RoleName)
+        public ActionResult Delete(string roleName)
         {
-            var thisRole = db_ctx.Roles.Where(r => r.Name.Equals(RoleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-            db_ctx.Roles.Remove(thisRole);
-            db_ctx.SaveChanges();
+            var thisRole = _dbCtx.Roles.Where(r => r.Name.Equals(roleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            _dbCtx.Roles.Remove(thisRole);
+            _dbCtx.SaveChanges();
             return RedirectToAction("Index");
         }
 
         public ActionResult ManageUserRoles()
         {
-            var list = db_ctx.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            var list = _dbCtx.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
             ViewBag.Roles = list;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RoleAddToUser(string UserName, string RoleName)
+        public ActionResult RoleAddToUser(string userName, string roleName)
         {
-            ApplicationUser user = db_ctx.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            ApplicationUser user = _dbCtx.Users.Where(u => u.UserName.Equals(userName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
             var account = new AccountController();
-            account.UserManager.AddToRole(user.Id, RoleName);
+            account.UserManager.AddToRole(user.Id, roleName);
 
             ViewBag.ResultMessage = "Role created successfully !";
 
             // prepopulat roles for the view dropdown
-            var list = db_ctx.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            var list = _dbCtx.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
             ViewBag.Roles = list;
 
             return View("ManageUserRoles");
@@ -131,17 +131,17 @@ namespace FTL_HRMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult GetRoles(string UserName)
+        public ActionResult GetRoles(string userName)
         {
-            if (!string.IsNullOrWhiteSpace(UserName))
+            if (!string.IsNullOrWhiteSpace(userName))
             {
-                ApplicationUser user = db_ctx.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                ApplicationUser user = _dbCtx.Users.Where(u => u.UserName.Equals(userName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                 var account = new AccountController();
 
                 ViewBag.RolesForThisUser = account.UserManager.GetRoles(user.Id);
 
                 // prepopulat roles for the view dropdown
-                var list = db_ctx.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+                var list = _dbCtx.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
                 ViewBag.Roles = list;
             }
 
@@ -150,14 +150,14 @@ namespace FTL_HRMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteRoleForUser(string UserName, string RoleName)
+        public ActionResult DeleteRoleForUser(string userName, string roleName)
         {
             var account = new AccountController();
-            ApplicationUser user = db_ctx.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            ApplicationUser user = _dbCtx.Users.Where(u => u.UserName.Equals(userName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
 
-            if (account.UserManager.IsInRole(user.Id, RoleName))
+            if (account.UserManager.IsInRole(user.Id, roleName))
             {
-                account.UserManager.RemoveFromRole(user.Id, RoleName);
+                account.UserManager.RemoveFromRole(user.Id, roleName);
                 ViewBag.ResultMessage = "Role removed from this user successfully !";
             }
             else
@@ -165,7 +165,7 @@ namespace FTL_HRMS.Controllers
                 ViewBag.ResultMessage = "This user doesn't belong to selected role.";
             }
             // prepopulat roles for the view dropdown
-            var list = db_ctx.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            var list = _dbCtx.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
             ViewBag.Roles = list;
 
             return View("ManageUserRoles");
@@ -180,43 +180,43 @@ namespace FTL_HRMS.Controllers
 
             string rolll = userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
 
-            List<IdentityRole> RoleList = new List<IdentityRole>();
+            List<IdentityRole> roleList = new List<IdentityRole>();
             if (rolll == "System Admin")
             {
-                RoleList = RoleManager.Roles.ToList();
+                roleList = RoleManager.Roles.ToList();
             }
             else
             {
-                RoleList = RoleManager.Roles.Where(t => t.Name != "System Admin").ToList();
+                roleList = RoleManager.Roles.Where(t => t.Name != "System Admin").ToList();
             }
 
 
 
 
-            return View("~/Views/RoleManagement/RoleList.cshtml", RoleList);
+            return View("~/Views/RoleManagement/RoleList.cshtml", roleList);
         }
 
 
         [HttpGet]
         public ActionResult AddRole()
         {
-            FTL_HRMS.Models.HRMSDbContext db_ctx = new FTL_HRMS.Models.HRMSDbContext();
-            List<FTL_HRMS.ViewModels.VMMenuByRole> MenuItemsForRole = new List<FTL_HRMS.ViewModels.VMMenuByRole>();
+            FTL_HRMS.Models.HRMSDbContext dbCtx = new FTL_HRMS.Models.HRMSDbContext();
+            List<FTL_HRMS.ViewModels.VMMenuByRole> menuItemsForRole = new List<FTL_HRMS.ViewModels.VMMenuByRole>();
 
-            string rolll = userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
+            string rolll = _userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
 
-            string role_id = db_ctx.Roles.Where(t => t.Name == rolll).Select(g => g.Id).FirstOrDefault();
+            string roleId = dbCtx.Roles.Where(t => t.Name == rolll).Select(g => g.Id).FirstOrDefault();
 
-            FTL_HRMS.Models.RolePermission RolePermissions = db_ctx.RolePermission.Where(t => t.RoleId == role_id).FirstOrDefault();
-            List<FTL_HRMS.Models.MenuItem> MenuItems = new List<FTL_HRMS.Models.MenuItem>();
+            FTL_HRMS.Models.RolePermission rolePermissions = dbCtx.RolePermission.Where(t => t.RoleId == roleId).FirstOrDefault();
+            List<FTL_HRMS.Models.MenuItem> menuItems = new List<FTL_HRMS.Models.MenuItem>();
 
-            FTL_HRMS.Models.MenuItem MenuItemsForCurrentUser = new FTL_HRMS.Models.MenuItem();
+            FTL_HRMS.Models.MenuItem menuItemsForCurrentUser = new FTL_HRMS.Models.MenuItem();
 
-            Dictionary<int, string> ParentMenuName = new Dictionary<int, string>();
+            Dictionary<int, string> parentMenuName = new Dictionary<int, string>();
             //string[] MenuIds = null;
 
 
-            if (RolePermissions != null)
+            if (rolePermissions != null)
             {
                 //MenuIds = RolePermissions.MenuItemIdList.Split(',');
                 //MenuIds = comfortEMSContext.MenuItems.Select(t => t.Id).FirstOrDefault().ToString();
@@ -227,39 +227,39 @@ namespace FTL_HRMS.Controllers
                 //    IntMenuIds.Add(Convert.ToInt32(s));
                 //}
 
-                List<MenuItem> MnuItemList = db_ctx.MenuItem.ToList();
+                List<MenuItem> mnuItemList = dbCtx.MenuItem.ToList();
 
 
 
-                foreach (MenuItem mId in MnuItemList)
+                foreach (MenuItem mId in mnuItemList)
                 {
-                    MenuItemsForCurrentUser = db_ctx.MenuItem.Where(t => t.Id == mId.Id).FirstOrDefault();
-                    if (MenuItemsForCurrentUser.ParentItemId != null)
+                    menuItemsForCurrentUser = dbCtx.MenuItem.Where(t => t.Id == mId.Id).FirstOrDefault();
+                    if (menuItemsForCurrentUser.ParentItemId != null)
                     {
-                        ParentMenuName.Add(mId.Id, db_ctx.MenuItem.Where(w => w.Id == MenuItemsForCurrentUser.ParentItemId).FirstOrDefault().Name);
+                        parentMenuName.Add(mId.Id, dbCtx.MenuItem.Where(w => w.Id == menuItemsForCurrentUser.ParentItemId).FirstOrDefault().Name);
 
                     }
 
-                    MenuItems.Add(MenuItemsForCurrentUser);
+                    menuItems.Add(menuItemsForCurrentUser);
                 }
             }
-            foreach (var mi in MenuItems)
+            foreach (var mi in menuItems)
             {
-                FTL_HRMS.ViewModels.VMMenuByRole MenuByRole = new FTL_HRMS.ViewModels.VMMenuByRole();
-                MenuByRole.ActionName = mi.ActionName;
-                MenuByRole.ControllerName = mi.ControllerName;
-                MenuByRole.MenuItemName = mi.Name;
-                MenuByRole.Id = mi.Id;
-                MenuByRole.ParentId = mi.ParentItemId;
-                MenuByRole.FunctionNames = mi.AllFunctions;
-                MenuByRole.ViewNames = mi.ViewNames;
+                FTL_HRMS.ViewModels.VMMenuByRole menuByRole = new FTL_HRMS.ViewModels.VMMenuByRole();
+                menuByRole.ActionName = mi.ActionName;
+                menuByRole.ControllerName = mi.ControllerName;
+                menuByRole.MenuItemName = mi.Name;
+                menuByRole.Id = mi.Id;
+                menuByRole.ParentId = mi.ParentItemId;
+                menuByRole.FunctionNames = mi.AllFunctions;
+                menuByRole.ViewNames = mi.ViewNames;
                 // MenuByRole.MenuOrder = mi.MenuOrder;
-                MenuByRole.ParentMenuName = mi.ParentItemId != null ? ParentMenuName[mi.Id] : "";
-                MenuItemsForRole.Add(MenuByRole);
+                menuByRole.ParentMenuName = mi.ParentItemId != null ? parentMenuName[mi.Id] : "";
+                menuItemsForRole.Add(menuByRole);
             }
 
 
-            return View("~/Views/RoleManagement/AddRole.cshtml", MenuItemsForRole);
+            return View("~/Views/RoleManagement/AddRole.cshtml", menuItemsForRole);
 
         }
 
@@ -271,205 +271,205 @@ namespace FTL_HRMS.Controllers
         {
 
             //var res = Request.Form["MenuItems[2].Id"];
-            string StatusMsg = string.Empty;
+            string statusMsg = string.Empty;
 
-            string RoleName = Convert.ToString(Request["RoleName"]);
-            string TotalSelectedItem = Convert.ToString(Request["TotalMnuItem"]);
-            bool CanEdit = Convert.ToBoolean(Request["CanEdit"]);
-            bool CanDelete = Convert.ToBoolean(Request["CanDelete"]);
+            string roleName = Convert.ToString(Request["RoleName"]);
+            string totalSelectedItem = Convert.ToString(Request["TotalMnuItem"]);
+            bool canEdit = Convert.ToBoolean(Request["CanEdit"]);
+            bool canDelete = Convert.ToBoolean(Request["CanDelete"]);
 
             RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new HRMSDbContext()));
 
-            if (!RoleManager.RoleExists(RoleName))
+            if (!RoleManager.RoleExists(roleName))
             {
                 var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
-                role.Name = RoleName;
+                role.Name = roleName;
                 RoleManager.Create(role);
 
-                RolePermission RolePermission = new FTL_HRMS.Models.RolePermission();
-                RolePermission.RoleId = role.Id;
-                RolePermission.MenuItemIdList = TotalSelectedItem;
-                RolePermission.CanEdit = CanEdit;
-                RolePermission.CanDelete = CanDelete;
+                RolePermission rolePermission = new FTL_HRMS.Models.RolePermission();
+                rolePermission.RoleId = role.Id;
+                rolePermission.MenuItemIdList = totalSelectedItem;
+                rolePermission.CanEdit = canEdit;
+                rolePermission.CanDelete = canDelete;
 
-                db_ctx.RolePermission.Add(RolePermission);
-                int count = db_ctx.SaveChanges();
+                _dbCtx.RolePermission.Add(rolePermission);
+                int count = _dbCtx.SaveChanges();
 
                 if (count == 1)
                 {
-                    StatusMsg = "Role is successfully added.";
+                    statusMsg = "Role is successfully added.";
                 }
                 else
                 {
-                    StatusMsg = "Role add failed.";
+                    statusMsg = "Role add failed.";
                 }
 
             }
             else
             {
-                StatusMsg = "Role already exist.";
+                statusMsg = "Role already exist.";
             }
-            return Json(StatusMsg, JsonRequestBehavior.AllowGet);
+            return Json(statusMsg, JsonRequestBehavior.AllowGet);
         }
 
 
         [HttpGet]
-        public ActionResult EditRole(string RoleId)
+        public ActionResult EditRole(string roleId)
         {
 
-            List<FTL_HRMS.ViewModels.VMMenuByRole> MenuItemsForRole = new List<FTL_HRMS.ViewModels.VMMenuByRole>();
+            List<FTL_HRMS.ViewModels.VMMenuByRole> menuItemsForRole = new List<FTL_HRMS.ViewModels.VMMenuByRole>();
 
 
-            string[] MenuIds = null;
-            Dictionary<int, string> ParentMenuName = new Dictionary<int, string>();
-            List<int> IntMenuIds = new List<int>();
-            List<VMMenuByRole> MenuByRoleVMList = new List<VMMenuByRole>();
-            List<MenuItem> AllMenues = null;
-            List<int> AllSelectedMenues = null;
+            string[] menuIds = null;
+            Dictionary<int, string> parentMenuName = new Dictionary<int, string>();
+            List<int> intMenuIds = new List<int>();
+            List<VMMenuByRole> menuByRoleVmList = new List<VMMenuByRole>();
+            List<MenuItem> allMenues = null;
+            List<int> allSelectedMenues = null;
 
-            string RoleName = db_ctx.Roles.Where(t => t.Id == RoleId).Select(t => t.Name).ToString();
+            string roleName = _dbCtx.Roles.Where(t => t.Id == roleId).Select(t => t.Name).ToString();
             //string RoleName = userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
             // get all menu ids for this role
-            string PermittedMenuIds = db_ctx.RolePermission.Where(t => t.RoleId == RoleId).Select(p => p.MenuItemIdList).FirstOrDefault();
+            string permittedMenuIds = _dbCtx.RolePermission.Where(t => t.RoleId == roleId).Select(p => p.MenuItemIdList).FirstOrDefault();
 
 
 
-            if (PermittedMenuIds != null && PermittedMenuIds.Length > 0)
+            if (permittedMenuIds != null && permittedMenuIds.Length > 0)
             {
-                MenuIds = PermittedMenuIds.Split(',');
+                menuIds = permittedMenuIds.Split(',');
 
 
-                if (MenuIds != null)
+                if (menuIds != null)
                 {
-                    foreach (string s in MenuIds)
+                    foreach (string s in menuIds)
                     {
-                        IntMenuIds.Add(Convert.ToInt32(s));
+                        intMenuIds.Add(Convert.ToInt32(s));
                     }
                 }
 
             }
 
-            if (IntMenuIds.Count > 0)
+            if (intMenuIds.Count > 0)
             {
 
-                AllSelectedMenues = db_ctx.MenuItem.Where(t => IntMenuIds.Contains(t.Id)).Select(rr => rr.Id).ToList();
+                allSelectedMenues = _dbCtx.MenuItem.Where(t => intMenuIds.Contains(t.Id)).Select(rr => rr.Id).ToList();
             }
 
-            if (RoleName == "System Admin")
+            if (roleName == "System Admin")
             {
-                AllMenues = db_ctx.MenuItem.ToList();
+                allMenues = _dbCtx.MenuItem.ToList();
             }
             else
             {
-                AllMenues = db_ctx.MenuItem.Where(t => t.Id > 3).ToList();
+                allMenues = _dbCtx.MenuItem.Where(t => t.Id > 3).ToList();
             }
 
 
 
 
-            foreach (MenuItem menu in AllMenues)
+            foreach (MenuItem menu in allMenues)
             {
-                VMMenuByRole MenuByRoleVM = new VMMenuByRole();
+                VMMenuByRole menuByRoleVm = new VMMenuByRole();
 
-                if(AllSelectedMenues != null)
+                if(allSelectedMenues != null)
                 {
-                    if (AllSelectedMenues.Contains(menu.Id))
+                    if (allSelectedMenues.Contains(menu.Id))
                     {
-                        MenuByRoleVM.IsSelected = true;
+                        menuByRoleVm.IsSelected = true;
                     }
                     else
                     {
-                        MenuByRoleVM.IsSelected = false;
+                        menuByRoleVm.IsSelected = false;
                     }
                 }
                 else
                 {
-                    MenuByRoleVM.IsSelected = false;
+                    menuByRoleVm.IsSelected = false;
                 }
                 
 
-                MenuByRoleVM.ActionName = menu.ActionName;
-                MenuByRoleVM.ControllerName = menu.ControllerName;
-                MenuByRoleVM.ParentId = menu.ParentItemId;
-                MenuByRoleVM.Id = menu.Id;
+                menuByRoleVm.ActionName = menu.ActionName;
+                menuByRoleVm.ControllerName = menu.ControllerName;
+                menuByRoleVm.ParentId = menu.ParentItemId;
+                menuByRoleVm.Id = menu.Id;
                 //MenuByRoleVM.MenuOrder = menu.MenuOrder;
-                MenuByRoleVM.MenuItemName = menu.Name;
+                menuByRoleVm.MenuItemName = menu.Name;
                 // MenuByRoleVM.ParentMenuName = menu.ParentItemId != null ? ParentMenuName[menu.Id] : "";
 
                 if (menu.ParentItemId != null)
                 {
-                    ParentMenuName.Add(menu.Id, db_ctx.MenuItem.Where(w => w.Id == menu.ParentItemId).FirstOrDefault().Name);
+                    parentMenuName.Add(menu.Id, _dbCtx.MenuItem.Where(w => w.Id == menu.ParentItemId).FirstOrDefault().Name);
 
                 }
 
 
 
-                MenuByRoleVMList.Add(MenuByRoleVM);
+                menuByRoleVmList.Add(menuByRoleVm);
 
             }
 
             //ViewBag.RoleName = RoleName;
-            ViewBag.total_selected = PermittedMenuIds;
-            ViewBag.RoleName = RoleManager.FindById(RoleId).Name;
-            ViewBag.RoleId = RoleId;
-            return View("~/Views/RoleManagement/EditRole.cshtml", MenuByRoleVMList);
+            ViewBag.total_selected = permittedMenuIds;
+            ViewBag.RoleName = RoleManager.FindById(roleId).Name;
+            ViewBag.RoleId = roleId;
+            return View("~/Views/RoleManagement/EditRole.cshtml", menuByRoleVmList);
         }
 
 
         [HttpPost]
         public ActionResult EditRole()
         {
-            string StatusMsg = string.Empty;
+            string statusMsg = string.Empty;
             try
             {
 
-                string RoleId = Convert.ToString(Request["RoleId"]);
-                string TotalSelectedItem = Convert.ToString(Request["TotalMnuItem"]);
-                bool CanEdit = Convert.ToBoolean(Request["CanEdit"]);
-                bool CanDelete = Convert.ToBoolean(Request["CanDelete"]);
+                string roleId = Convert.ToString(Request["RoleId"]);
+                string totalSelectedItem = Convert.ToString(Request["TotalMnuItem"]);
+                bool canEdit = Convert.ToBoolean(Request["CanEdit"]);
+                bool canDelete = Convert.ToBoolean(Request["CanDelete"]);
 
-                RolePermission RolePermission = db_ctx.RolePermission.Where(rr => rr.RoleId == RoleId).FirstOrDefault();
+                RolePermission rolePermission = _dbCtx.RolePermission.Where(rr => rr.RoleId == roleId).FirstOrDefault();
 
                 
-                if(RolePermission == null)
+                if(rolePermission == null)
                 {
                     RolePermission r = new RolePermission();
-                    r.CanDelete = CanDelete;
-                    r.CanEdit = CanEdit;
-                    r.MenuItemIdList = TotalSelectedItem;
-                    r.RoleId = RoleId;
+                    r.CanDelete = canDelete;
+                    r.CanEdit = canEdit;
+                    r.MenuItemIdList = totalSelectedItem;
+                    r.RoleId = roleId;
                     r.CanView = true;
-                    db_ctx.RolePermission.Add(r);
+                    _dbCtx.RolePermission.Add(r);
                 }
                 else
                 {
-                    RolePermission.MenuItemIdList = TotalSelectedItem;
-                    RolePermission.CanEdit = CanEdit;
-                    RolePermission.CanDelete = CanDelete;
+                    rolePermission.MenuItemIdList = totalSelectedItem;
+                    rolePermission.CanEdit = canEdit;
+                    rolePermission.CanDelete = canDelete;
 
-                    db_ctx.RolePermission.Attach(RolePermission);
-                    var entry = db_ctx.Entry(RolePermission);
+                    _dbCtx.RolePermission.Attach(rolePermission);
+                    var entry = _dbCtx.Entry(rolePermission);
                     entry.State = EntityState.Modified;
                 }
                 
 
-                int resultCount = db_ctx.SaveChanges();
+                int resultCount = _dbCtx.SaveChanges();
 
                 if (resultCount > 0)
                 {
-                    StatusMsg = "Data is successfully updated";
+                    statusMsg = "Data is successfully updated";
                 }
 
                 else
                 {
-                    StatusMsg = "Data update failed. There is something wrong!!!";
+                    statusMsg = "Data update failed. There is something wrong!!!";
                 }
-                return Json(StatusMsg, JsonRequestBehavior.AllowGet);
+                return Json(statusMsg, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
-                StatusMsg = "Data update failed. There is something wrong!!!";
-                return Json(StatusMsg, JsonRequestBehavior.AllowGet);
+                statusMsg = "Data update failed. There is something wrong!!!";
+                return Json(statusMsg, JsonRequestBehavior.AllowGet);
             }
 
         }
@@ -483,23 +483,23 @@ namespace FTL_HRMS.Controllers
             RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new HRMSDbContext()));
 
             List<IdentityRole> r = RoleManager.Roles.ToList();
-            List<VMRoleList> VMRoleList = new List<VMRoleList>();
+            List<VMRoleList> vmRoleList = new List<VMRoleList>();
             int count = 0;
             foreach (IdentityRole p in r)
             {
                 if (p.Name == "System Admin")
                     continue;
                 count++;
-                var VMRole = new VMRoleList()
+                var vmRole = new VMRoleList()
                 {
                     Id = count,
                     RoleName = p.Name
                 };
 
-                VMRoleList.Add(VMRole);
+                vmRoleList.Add(vmRole);
             }
 
-            ViewBag.RoleName = new SelectList(VMRoleList, "RoleName", "RoleName");
+            ViewBag.RoleName = new SelectList(vmRoleList, "RoleName", "RoleName");
 
             return View("~/Views/RoleManagement/AddUser.cshtml");
 
@@ -508,20 +508,20 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult UserManagement_Add()
         {
-            string UserName = Request["UserName"].ToString();
-            string RoleName = Request["RoleName"].ToString();
-            string UserPass = Request["UserPassword"].ToString();
-            string UserPhone = Request["UserMobileNo"].ToString();
+            string userName = Request["UserName"].ToString();
+            string roleName = Request["RoleName"].ToString();
+            string userPass = Request["UserPassword"].ToString();
+            string userPhone = Request["UserMobileNo"].ToString();
 
-            ApplicationUser AppUser = new ApplicationUser();
+            ApplicationUser appUser = new ApplicationUser();
 
-            AppUser.UserName = UserName;
-            AppUser.PhoneNumber = UserPhone;
+            appUser.UserName = userName;
+            appUser.PhoneNumber = userPhone;
 
-            var result = UserManager.Create(AppUser, UserPass);
+            var result = UserManager.Create(appUser, userPass);
             if (result.Succeeded)
             {
-                var result2 = this.UserManager.AddToRole(AppUser.Id, RoleName);
+                var result2 = this.UserManager.AddToRole(appUser.Id, roleName);
             }
 
             TempData["SucMessage"] = "User added successfully.";

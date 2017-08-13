@@ -8,13 +8,13 @@ namespace FTL_HRMS.Controllers
 {
     public class PerformanceIssuesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: PerformanceIssues
         public ActionResult Index()
         {
-            return View(db.PerformanceIssue.ToList());
+            return View(_db.PerformanceIssue.ToList());
         }
         #endregion
 
@@ -26,7 +26,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PerformanceIssue performanceIssue = db.PerformanceIssue.Find(id);
+            PerformanceIssue performanceIssue = _db.PerformanceIssue.Find(id);
             if (performanceIssue == null)
             {
                 return HttpNotFound();
@@ -51,8 +51,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.PerformanceIssue.Add(performanceIssue);
-                db.SaveChanges();
+                _db.PerformanceIssue.Add(performanceIssue);
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Create");
             }
@@ -69,7 +69,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PerformanceIssue performanceIssue = db.PerformanceIssue.Find(id);
+            PerformanceIssue performanceIssue = _db.PerformanceIssue.Find(id);
             if (performanceIssue == null)
             {
                 return HttpNotFound();
@@ -86,8 +86,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(performanceIssue).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(performanceIssue).State = EntityState.Modified;
+                _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return View(performanceIssue);
             }
@@ -104,7 +104,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PerformanceIssue performanceIssue = db.PerformanceIssue.Find(id);
+            PerformanceIssue performanceIssue = _db.PerformanceIssue.Find(id);
             if (performanceIssue == null)
             {
                 return HttpNotFound();
@@ -117,9 +117,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PerformanceIssue performanceIssue = db.PerformanceIssue.Find(id);
-            db.PerformanceIssue.Remove(performanceIssue);
-            db.SaveChanges();
+            PerformanceIssue performanceIssue = _db.PerformanceIssue.Find(id);
+            _db.PerformanceIssue.Remove(performanceIssue);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -129,7 +129,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
