@@ -9,7 +9,8 @@ namespace FTL_HRMS.Models
     {
         [Key]
         public int Sl { get; set; }
-        
+
+        [Range(0, 5, ErrorMessage = "Can only be between 0 to 5")]
         public double Rating { get; set; }
 
         [DataType(DataType.Date),

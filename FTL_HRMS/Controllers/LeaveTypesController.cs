@@ -52,9 +52,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.LeaveTypes.Add(leaveType);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(leaveType);
         }
 
@@ -84,8 +85,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Entry(leaveType).State = EntityState.Modified;
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(leaveType);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(leaveType);
         }
 
