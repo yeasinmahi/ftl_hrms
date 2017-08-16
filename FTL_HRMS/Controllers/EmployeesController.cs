@@ -241,6 +241,8 @@ namespace FTL_HRMS.Controllers
                 string presentAddress = Request["PresentAddress"].ToString();
                 int designationId = Convert.ToInt32(Request["ddl_designation"]);
 
+                string role = _db.Designation.Where(i => i.Sl == designationId).Select(i => i.RoleName).FirstOrDefault();
+
                 employee.PresentAddress = presentAddress;
                 employee.PermanentAddress = permanentAddress;
                 employee.DesignationId = designationId;
@@ -254,14 +256,7 @@ namespace FTL_HRMS.Controllers
 
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
                 var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
-                if (!roleManager.RoleExists("Employee"))
-                {
-                    // first we create Employee role   
-                    var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
-                    role.Name = "Employee";
-                    roleManager.Create(role);
-                }
-                //Here we create a Employee user who will maintain the website
+
                 ApplicationUser user = new ApplicationUser();
                 user.IsActive = true;
                 user.Email = employee.Email;
@@ -281,7 +276,7 @@ namespace FTL_HRMS.Controllers
                 //Add default User to Role Customer   
                 if (chkUser.Succeeded)
                 {
-                    var result1 = UserManager.AddToRole(user.Id, "Employee");
+                    var result1 = UserManager.AddToRole(user.Id, role);
                 }
                 _db.SaveChanges();
                 #endregion

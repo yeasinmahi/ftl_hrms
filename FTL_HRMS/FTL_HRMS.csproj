@@ -2863,6 +2863,10 @@
     <Compile Include="Migrations\201708091243206_update_image_type.Designer.cs">
       <DependentUpon>201708091243206_update_image_type.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708160620596_update_multiple.cs" />
+    <Compile Include="Migrations\201708160620596_update_multiple.Designer.cs">
+      <DependentUpon>201708160620596_update_multiple.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LeaveCount.cs" />
@@ -3166,6 +3170,7 @@
     <Content Include="Views\Employees\Details.cshtml" />
     <Content Include="Views\Employees\Edit.cshtml" />
     <Content Include="Views\Employees\Index.cshtml" />
+    <Content Include="Views\Resignations\ResignationApproval.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3206,6 +3211,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708091243206_update_image_type.resx">
       <DependentUpon>201708091243206_update_image_type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708160620596_update_multiple.resx">
+      <DependentUpon>201708160620596_update_multiple.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

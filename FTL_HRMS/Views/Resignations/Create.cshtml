@@ -13,7 +13,7 @@
 </div>
 
 <header class="panel_header">
-    <h2 class="title pull-left">Add Resign Applocation</h2>
+    <h2 class="title pull-left">Resignation Application</h2>
     <div class="actions panel_actions pull-right">
         <i class="box_toggle fa fa-chevron-down"></i>
     </div>
@@ -45,6 +45,7 @@
                     @Html.HiddenFor(model => model.CreateDate)
                     @Html.HiddenFor(model => model.UpdateDate)
                     @Html.HiddenFor(model => model.UpdatedBy)
+                    @Html.HiddenFor(model => model.EmployeeId)
                     <div class="col-md-offset-3">
                         <div class="btn-group col-md-offset-5">
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Resignations" )'">Back To List</button>
@@ -53,7 +54,7 @@
                             Resign Date
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.ResignDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.ResignDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.ResignDate, "", new { @class = "text-danger" })
                         </div>
 
@@ -61,26 +62,17 @@
                             Reason
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.Reason, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+                            <div>
+                                <textarea class="form-control autogrow" cols="5" name="Reason" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:50%" id="reason" required></textarea>
+                            </div>
                         </div>
 
                         <div>
                             Suggestion
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.Suggestion, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Suggestion, "", new { @class = "text-danger" })
+                            <textarea class="form-control autogrow" cols="5" name="Suggestion" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:50%" id="suggestion" required></textarea>
                         </div>
-
-                        <div>
-                            Employee Name
-                        </div>
-                        <div>
-                            @Html.DropDownList("EmployeeId", null, htmlAttributes: new { @class = "form-control", style = "width:50%" })
-                            @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
-                        </div>
-
                         <br />
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
@@ -93,4 +85,3 @@
         </div>
     </div>
 </div>
-

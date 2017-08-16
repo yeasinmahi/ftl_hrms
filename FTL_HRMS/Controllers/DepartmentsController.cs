@@ -46,6 +46,7 @@ namespace FTL_HRMS.Controllers
             return Json(departmentList, JsonRequestBehavior.AllowGet);
         }
         #endregion
+
         #region Get Department Group
         public ActionResult GetDepartmentGroup()
         {

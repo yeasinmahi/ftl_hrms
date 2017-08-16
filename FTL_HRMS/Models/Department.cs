@@ -22,7 +22,6 @@ namespace FTL_HRMS.Models
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Department Group cannot be empty")]
-        [ForeignKey("DepartmentGroup")]
         public int DepartmentGroupId { get; set; }
 
         public int CreatedBy { get; set; }
