@@ -52,11 +52,11 @@ namespace FTL_HRMS.Utility
                     _dbContext.SaveChanges();
                     return DbUtility.GetStatusMessage(DbUtility.Status.Success);
                 }
-                catch (DbUpdateException dbEx)
+                catch (DbUpdateException)
                 {
                     return "Db Update Failed";
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return DbUtility.GetStatusMessage(DbUtility.Status.Fail);
                 }

@@ -10,6 +10,7 @@ using FTL_HRMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
+using System.Web.UI.HtmlControls;
 using static FTL_HRMS.Models.AccountViewModels;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
@@ -363,6 +364,7 @@ namespace FTL_HRMS.Controllers
 
         #region Print 
 
+        
         public ActionResult EmployeeTypeReport()
         {
             ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
@@ -378,6 +380,7 @@ namespace FTL_HRMS.Controllers
                 EmployeeList = _db.Employee.ToList();
                 ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
                 ViewBag.Status = "SelectType";
+                ViewBag.SourceName = "asd";
                 return View(EmployeeList.ToList());
             }
             else
@@ -395,25 +398,7 @@ namespace FTL_HRMS.Controllers
 
         public ActionResult PrintEmployeeList()
         {
-            ReportDocument Report = new ReportDocument();
-            Report.Load(Server.MapPath("~/Reports/test.rpt"));
-            Report.SetDatabaseLogon("sa", "sa2009", ".\\SQLEXPRESS", "FTL_HRMS");
-
-
-
-            ExportOptions CrExportOptions;
-            DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
-            PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
-            CrDiskFileDestinationOptions.DiskFileName = "f:\\test.pdf";
-            CrExportOptions = Report.ExportOptions;
-            {
-                CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
-                CrExportOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
-                CrExportOptions.DestinationOptions = CrDiskFileDestinationOptions;
-                CrExportOptions.FormatOptions = CrFormatTypeOptions;
-            }
-            Report.Export();
-            return View();
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName="ER", selectedFormula = "{tbl_Employee.Code} = 'E001'" });
         }
 
        
