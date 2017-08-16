@@ -398,18 +398,18 @@ namespace FTL_HRMS.Controllers
             
         }
 
-        public ActionResult PrintEmployeeList()
+        public void PrintEmployeeList()
         {
             ReportDocument Report = new ReportDocument();
-            Report.Load(Server.MapPath("~/Reports/test.rpt"));
+            Report.Load(Server.MapPath("~/Reports/EmployeeReport.rpt"));
             Report.SetDatabaseLogon("sa", "sa2009", ".\\SQLEXPRESS", "FTL_HRMS");
 
-
+            
 
             ExportOptions CrExportOptions;
             DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
             PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
-            CrDiskFileDestinationOptions.DiskFileName = "f:\\test.pdf";
+            CrDiskFileDestinationOptions.DiskFileName = "E:\\test.pdf";
             CrExportOptions = Report.ExportOptions;
             {
                 CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
@@ -418,7 +418,6 @@ namespace FTL_HRMS.Controllers
                 CrExportOptions.FormatOptions = CrFormatTypeOptions;
             }
             Report.Export();
-            return View();
         }
 
        
@@ -434,6 +433,13 @@ namespace FTL_HRMS.Controllers
             List<DepartmentTransfer> DepartmentTransferList = new List<DepartmentTransfer>();
             DepartmentTransferList = _db.DepartmentTransfer.ToList();
             return View(DepartmentTransferList.ToList());
+        }
+
+        public ActionResult LeaveReport()
+        {
+            List<LeaveHistory> DepartmentLeaveList = new List<LeaveHistory>();
+            DepartmentLeaveList = _db.LeaveHistories.ToList();
+            return View(DepartmentLeaveList.ToList());
         }
 
         #endregion
