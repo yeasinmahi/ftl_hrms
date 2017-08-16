@@ -2870,6 +2870,14 @@
     <Compile Include="Migrations\201708160620596_update_multiple.Designer.cs">
       <DependentUpon>201708160620596_update_multiple.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708160923389_update_leave.cs" />
+    <Compile Include="Migrations\201708160923389_update_leave.Designer.cs">
+      <DependentUpon>201708160923389_update_leave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708160954422_update_leave_2.cs" />
+    <Compile Include="Migrations\201708160954422_update_leave_2.Designer.cs">
+      <DependentUpon>201708160954422_update_leave_2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LeaveCount.cs" />
@@ -3183,6 +3191,7 @@
     <Content Include="Views\Employees\EmployeeTypeReport.cshtml" />
     <Content Include="Views\Employees\ResignReport.cshtml" />
     <Content Include="Views\Employees\TransferReport.cshtml" />
+    <Content Include="Views\LeaveHistories\LeaveApproval.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3226,6 +3235,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708160620596_update_multiple.resx">
       <DependentUpon>201708160620596_update_multiple.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708160923389_update_leave.resx">
+      <DependentUpon>201708160923389_update_leave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708160954422_update_leave_2.resx">
+      <DependentUpon>201708160954422_update_leave_2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\EmployeeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
