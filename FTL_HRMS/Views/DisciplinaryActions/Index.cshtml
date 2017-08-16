@@ -2,50 +2,106 @@
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+</script>
+<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class="page-title">
+        <div class="pull-left">
+            <h1 class="title">Disciplinary Action</h1>
+        </div>
+    </div>
+</div>
+<header class="panel_header">
+    <h2 class="title pull-left">Disciplinary Action List</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
 
-<h2>Index</h2>
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @{int rowNo = 0;}
+            <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>Action</th>
+                        <th>
+                            Employee Name
+                        </th>
+                        <th>
+                            Type Name
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Remarks
+                        </th>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.EmployeeId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DisciplinaryActionTypeId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Remarks)
-        </th>
-        <th></th>
-    </tr>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>SL</th>
+                        <th>Action</th>
+                        <th>
+                            Employee Name
+                        </th>
+                        <th>
+                            Type Name
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Remarks
+                        </th>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployeeId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DisciplinaryActionTypeId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Remarks)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Sl }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Sl }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Sl })
-        </td>
-    </tr>
-}
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td align="center" width="5%">
+                                @(rowNo += 1)
+                            </td>
+                            <td align="center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>@Html.ActionLink("Edit", "Edit", new { id = item.Sl })</li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EmployeeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DisciplinaryActionTypeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Remarks)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-</table>
+<script>
+$(document).ready(function(){
+    $('#myTable').DataTable();
+});
+</script>

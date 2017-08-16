@@ -1,0 +1,74 @@
+﻿@model IEnumerable<FTL_HRMS.Models.DepartmentTransfer>
+
+@{
+    ViewBag.Title = "Employee List";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<header class="panel_header">
+    <h2 class="title pull-left">List Of Employee</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
+<br /> <br />
+@using (Html.BeginForm())
+{
+
+
+    <div class="content-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive" data-pattern="priority-columns">
+
+                    <div class="btn-group">
+                        @using (Html.BeginForm("PrintEmployeeList", "Employees", FormMethod.Post, new { @target = "_blank", @role = "form", @enctype = "multipart/form-data" }))
+                        {
+                            <button type="submit" class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-print"></span> Print
+                            </button>
+                        }
+                    </div>
+                    <br />
+                    <table cellspacing="0" id="tech-companies-1" class="table table-small-font table-bordered table-striped">
+                        @{int rowNo = 0;}
+                        <thead>
+                            <tr>
+                                <th style="text-align:center">SL</th>
+                                <th data-priority="1" style="text-align:center">Employee Name</th>
+                                <th data-priority="1" style="text-align:center">From Designation</th>
+                                <th data-priority="3" style="text-align:center">To Designation</th>
+                                <th data-priority="1" style="text-align:center">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td align="center" width="5%">
+                                        @(rowNo += 1)
+                                    </td>
+                                    <td width="10%" align="center">
+                                        @Html.DisplayFor(modelItem => item.EmployeeId)
+                                    </td>
+                                    <td width="20%" align="center">
+                                        @Html.DisplayFor(modelItem => item.FromDesignationId)
+                                    </td>
+                                    <td width="10%" align="center">
+                                        @Html.DisplayFor(modelItem => item.ToDesignationId)
+                                    </td>
+
+                                    <td width="10%" align="center">
+                                        @Html.DisplayFor(modelItem => item.TransferDate)
+                                    </td>
+                                   
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+                            }

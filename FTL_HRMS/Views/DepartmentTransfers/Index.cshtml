@@ -11,12 +11,12 @@
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
         <div class="pull-left">
-            <h1 class="title">Branch Transfer</h1>
+            <h1 class="title">Department Transfer</h1>
         </div>
     </div>
 </div>
 <header class="panel_header">
-    <h2 class="title pull-left">Branch Transfer List</h2>
+    <h2 class="title pull-left">Department Transfer List</h2>
     <div class="actions panel_actions pull-right">
         <i class="box_toggle fa fa-chevron-down"></i>
     </div>
@@ -34,12 +34,7 @@
                         <th>
                             Employee Name
                         </th>
-                        <th>
-                            From Department
-                        </th>
-                        <th>
-                            To Department
-                        </th>
+
                         <th>
                             Transfer Date
                         </th>
@@ -52,12 +47,7 @@
                         <th>
                             Employee Name
                         </th>
-                        <th>
-                            From Department
-                        </th>
-                        <th>
-                            To Department
-                        </th>
+
                         <th>
                             Transfer Date
                         </th>
@@ -76,20 +66,15 @@
                                     <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li>@Html.ActionLink("Edit", "Edit", new { id = item.Sl })</li>
-                                        <li>@Html.ActionLink("Details", "Details", new { id = item.Sl })</li>
-                                        <li>@Html.ActionLink("Delete", "Delete", new { id = item.Sl })</li>
+                                       
                                     </ul>
                                 </div>
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Employee.Name)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Department.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Department.Name)
-                            </td>
+                            
+                            
                             <td>
                                 @Html.DisplayFor(modelItem => item.TransferDate)
                             </td>
