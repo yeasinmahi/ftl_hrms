@@ -80,7 +80,14 @@
                                 <option value="">Select Department</option>
                             </select>
                         </div>
-                       
+
+                        <div>
+                            Role Name
+                        </div>
+                        <div>
+                            @Html.DropDownList("RoleName", null, "Select Role", htmlAttributes: new { @class = "form-control", style = "width:50%", @required=true })
+                        </div>
+                                               
                         <br />
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">

@@ -41,8 +41,8 @@
                         </div>
                     }
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="col-md-offset-3">
-                        <div class="btn-group col-md-offset-5">
+                    <div class="col-md-offset-1">
+                        <div class="btn-group col-md-offset-11">
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "DepartmentTransfers" )'">Back To List</button>
                         </div>
                         <div>
@@ -50,35 +50,78 @@
                         </div>
 
                         <div>
-                            @Html.DropDownList("EmployeeId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
+                            @Html.DropDownList("EmployeeId", null, "--Select Employee--",htmlAttributes: new { @class = "form-control", style = "width:50%", @name = "Employee", @id = "employee", @onchange = "GetDesignation()" })
                             @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
                         </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div>
+                                    Department Group
+                                </div>
 
-                        <div>
-                            From Department
-                        </div>
-                        
-                        <div>
-                            @Html.DropDownList("FromDepartmentId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
-                            @Html.ValidationMessageFor(model => model.FromDepartmentId, "", new { @class = "text-danger" })
-                        </div>
+                                <div>
+                                    @Html.Editor("Department Group", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "departmentGroupName", @placeholder = "Department Group", @required = true } })
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div>
+                                    Department
+                                </div>
 
-                        <div>
-                            To Department
-                        </div>
-                        
-                        <div>
-                            @Html.DropDownList("ToDepartmentId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
-                            @Html.ValidationMessageFor(model => model.ToDepartmentId, "", new { @class = "text-danger" })
-                        </div>
+                                <div>
+                                    @Html.Editor("Department", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "departmentName", @placeholder = "Department", @required = true } })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    Designation
+                                </div>
 
+                                <div>
+                                    @Html.Editor("Designation", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "designationName", @placeholder = "Designation", @required = true } })
+                                    @Html.ValidationMessageFor(model => model.FromDesignationId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div>
+                                    Department Group
+                                </div>
+
+                                <div>
+                                    @Html.DropDownList("DepartmentGroupId", null, "Select Group", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div>
+                                    Department
+                                </div>
+
+                                <select class="form-control" style="width:100%" id="ddl_dept" name="ddl_dept" onchange="LoadDesignation();" tabindex=20>
+                                    <option value="">Select Department</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    Designation
+                                </div>
+
+                                <select class="form-control" style="width:100%" id="ddl_designation" name="ddl_designation">
+                                    <option value="" selected>Select Designation</option>
+                                </select>
+                            </div>
+                        </div>
                         <div>
                             Transfer Date
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.TransferDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.TransferDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
                             @Html.ValidationMessageFor(model => model.TransferDate, "", new { @class = "text-danger" })
                         </div>
+                       
 
                         <br />
                         <div class="form-group">
@@ -92,4 +135,92 @@
         </div>
     </div>
 </div>
+
+<script>
+    function GetDesignation() {
+        $.ajax({
+            url: '/DepartmentTransfers/GetDesignation',
+            method: 'POST',
+            data: {
+                empId: $('#employee').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                if (response[0] == "") {
+                    $('#designationName').val("");
+                    $('#departmentName').val("");
+                    $('#departmentGroupName').val("");
+
+                    document.getElementById("designationName").removeAttribute("readonly", true);
+                    document.getElementById("departmentName").removeAttribute("readonly", true);
+                    document.getElementById("departmentGroupName").removeAttribute("readonly", true);
+                }
+                else {
+                    $('#designationName').val(response[0]);
+                    $('#departmentName').val(response[1]);
+                    $('#departmentGroupName').val(response[2]);
+
+                    document.getElementById("designationName").setAttribute("readonly", true);
+                    document.getElementById("departmentName").setAttribute("readonly", true);
+                    document.getElementById("departmentGroupName").setAttribute("readonly", true);
+                }
+
+            }
+        });
+    };
+
+    function LoadDepartment() {
+        $.ajax({
+            url: '/Departments/GetDepartmentByGroupId',
+            method: 'POST',
+            data: {
+                DepartmentGroupId: $('#ddl_deptgroup').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                $('#ddl_dept').empty();
+                $('#ddl_dept').append($('<option>', {
+                    value: '',
+                    text: 'Select Department'
+                }));
+                for (var i = 0; i < response.length; i++) {
+                    var opt = new Option(response[i].Name, response[i].Sl);
+                    $('#ddl_dept').append(opt);
+                }
+            }
+        });
+    };
+
+    function LoadDesignation() {
+        $.ajax({
+            url: '/Designations/GetDesignationByDeptId',
+            method: 'POST',
+            data: {
+                DepartmentId: $('#ddl_dept').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                $('#ddl_designation').empty();
+                $('#ddl_designation').append($('<option>', {
+                    value: '',
+                    text: 'Select Designation'
+                }));
+                for (var i = 0; i < response.length; i++) {
+                    var opt = new Option(response[i].Name, response[i].Sl);
+                    $('#ddl_designation').append(opt);
+                }
+            }
+        });
+    };
+
+</script>
 

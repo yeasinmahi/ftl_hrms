@@ -2869,6 +2869,10 @@
     <Compile Include="Migrations\201708091243206_update_image_type.Designer.cs">
       <DependentUpon>201708091243206_update_image_type.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708160620596_update_multiple.cs" />
+    <Compile Include="Migrations\201708160620596_update_multiple.Designer.cs">
+      <DependentUpon>201708160620596_update_multiple.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LeaveCount.cs" />
@@ -2903,6 +2907,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>test.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\EmployeeReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmployeeReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Startup.cs" />
@@ -3186,6 +3196,10 @@
     <Content Include="Views\Employees\Edit.cshtml" />
     <Content Include="Views\Employees\Index.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
+    <Content Include="Views\Resignations\ResignationApproval.cshtml" />
+    <Content Include="Views\Employees\EmployeeTypeReport.cshtml" />
+    <Content Include="Views\Employees\ResignReport.cshtml" />
+    <Content Include="Views\Employees\TransferReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3230,6 +3244,13 @@
     <EmbeddedResource Include="Reports\test.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>test.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708160620596_update_multiple.resx">
+      <DependentUpon>201708160620596_update_multiple.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\EmployeeReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>EmployeeReport.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

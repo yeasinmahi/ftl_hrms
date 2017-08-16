@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
 using System.Web;
+using System;
 
 namespace FTL_HRMS.Controllers
 {
@@ -16,6 +17,15 @@ namespace FTL_HRMS.Controllers
         public ActionResult Index(int employeeId)
         {
             var images = _db.Images.Where(i => i.EmployeeId == employeeId).ToList();
+            if(images.Count() == 0)
+            {
+                ViewBag.NewImage = true;
+            }
+            else
+            {
+                ViewBag.NewImage = false;
+            }
+            ViewBag.EmployeeId = employeeId;
             return View(images);
         }
         #endregion
@@ -37,10 +47,11 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Create (We don't use it)
+        #region Create
         // GET: Images/Create
-        public ActionResult Create()
+        public ActionResult Create(int employeeId)
         {
+            ViewBag.EmployeeId = employeeId;
             return View();
         }
 
@@ -49,15 +60,20 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,Image,EmployeeId")] Images images)
+        public ActionResult Create([Bind(Include = "Sl,Image,EmployeeId")] Images images, HttpPostedFileBase image1)
         {
-            if (ModelState.IsValid)
+            if (image1 != null)
             {
+                images.Image = new byte[image1.ContentLength];
+                image1.InputStream.Read(images.Image, 0, image1.ContentLength);
+                int EmpId = Convert.ToInt32(Request["EmployeeId"]);
+                images.EmployeeId = EmpId;
                 _db.Images.Add(images);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create", "Images", new { employeeId = EmpId });
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(images);
         }
         #endregion
@@ -121,9 +137,10 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Images images = _db.Images.Find(id);
+            int EmployeeId = images.EmployeeId;
             _db.Images.Remove(images);
             _db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Images", new { employeeId = EmployeeId });
         }
         #endregion
 

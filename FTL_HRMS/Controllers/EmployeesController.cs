@@ -11,6 +11,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
 using static FTL_HRMS.Models.AccountViewModels;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
 
 namespace FTL_HRMS.Controllers
 {
@@ -241,6 +243,8 @@ namespace FTL_HRMS.Controllers
                 string presentAddress = Request["PresentAddress"].ToString();
                 int designationId = Convert.ToInt32(Request["ddl_designation"]);
 
+                string role = _db.Designation.Where(i => i.Sl == designationId).Select(i => i.RoleName).FirstOrDefault();
+
                 employee.PresentAddress = presentAddress;
                 employee.PermanentAddress = permanentAddress;
                 employee.DesignationId = designationId;
@@ -254,14 +258,7 @@ namespace FTL_HRMS.Controllers
 
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
                 var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
-                if (!roleManager.RoleExists("Employee"))
-                {
-                    // first we create Employee role   
-                    var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
-                    role.Name = "Employee";
-                    roleManager.Create(role);
-                }
-                //Here we create a Employee user who will maintain the website
+
                 ApplicationUser user = new ApplicationUser();
                 user.IsActive = true;
                 user.Email = employee.Email;
@@ -281,7 +278,7 @@ namespace FTL_HRMS.Controllers
                 //Add default User to Role Customer   
                 if (chkUser.Succeeded)
                 {
-                    var result1 = UserManager.AddToRole(user.Id, "Employee");
+                    var result1 = UserManager.AddToRole(user.Id, role);
                 }
                 _db.SaveChanges();
                 #endregion
@@ -364,6 +361,77 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Print 
+
+        public ActionResult EmployeeTypeReport()
+        {
+            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult EmployeeTypeReport(string employeeTypeId)
+        {
+            if (employeeTypeId== "")
+            {
+                List<Employee> EmployeeList = new List<Employee>();
+                EmployeeList = _db.Employee.ToList();
+                ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+                ViewBag.Status = "SelectType";
+                return View(EmployeeList.ToList());
+            }
+            else
+            {
+                int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
+                ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+                ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == EmployeeTypeId).Select(p => p.Name).FirstOrDefault();
+                List<Employee> EmployeeList = new List<Employee>();
+                EmployeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
+                ViewBag.Status = "SelectType";
+                return View(EmployeeList.ToList());
+            }
+            
+        }
+
+        public ActionResult PrintEmployeeList()
+        {
+            ReportDocument Report = new ReportDocument();
+            Report.Load(Server.MapPath("~/Reports/test.rpt"));
+            Report.SetDatabaseLogon("sa", "sa2009", ".\\SQLEXPRESS", "FTL_HRMS");
+
+
+
+            ExportOptions CrExportOptions;
+            DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
+            PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
+            CrDiskFileDestinationOptions.DiskFileName = "f:\\test.pdf";
+            CrExportOptions = Report.ExportOptions;
+            {
+                CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
+                CrExportOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
+                CrExportOptions.DestinationOptions = CrDiskFileDestinationOptions;
+                CrExportOptions.FormatOptions = CrFormatTypeOptions;
+            }
+            Report.Export();
+            return View();
+        }
+
+       
+        public ActionResult ResignReport()
+        {
+            List<Employee> EmployeeList = new List<Employee>();
+            EmployeeList = _db.Employee.Where(v => v.Status == false).ToList();
+            return View(EmployeeList.ToList());
+        }
+
+        public ActionResult TransferReport()
+        {
+            List<DepartmentTransfer> DepartmentTransferList = new List<DepartmentTransfer>();
+            DepartmentTransferList = _db.DepartmentTransfer.ToList();
+            return View(DepartmentTransferList.ToList());
+        }
+
+        #endregion
         #region Edit
         // GET: Employees/Edit/5
         public ActionResult Edit(int? id)

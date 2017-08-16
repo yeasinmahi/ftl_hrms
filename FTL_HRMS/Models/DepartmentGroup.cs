@@ -8,11 +8,7 @@ namespace FTL_HRMS.Models
     [Table("tbl_DepartmentGroup")]
     public class DepartmentGroup
     {
-        public DepartmentGroup()
-        {
-            Department = new HashSet<Department>();
-        }
-
+       
         [Key]
         public int Sl { get; set; }
 

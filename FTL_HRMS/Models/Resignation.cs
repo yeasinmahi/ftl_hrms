@@ -27,12 +27,12 @@ namespace FTL_HRMS.Models
         ApplyFormatInEditMode = true)]
         public DateTime CreateDate { get; set; }
 
-        public string UpdatedBy { get; set; }
+        public int? UpdatedBy { get; set; }
 
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
         ApplyFormatInEditMode = true)]
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
         
         public string Remarks { get; set; }
 

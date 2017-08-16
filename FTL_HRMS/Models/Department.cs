@@ -8,10 +8,7 @@ namespace FTL_HRMS.Models
     [Table("tbl_Department")]
     public class Department
     {
-        public Department()
-        {
-            Designation = new HashSet<Designation>();
-        }
+       
         [Key]
         public int Sl { get; set; }
 
@@ -22,7 +19,6 @@ namespace FTL_HRMS.Models
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Department Group cannot be empty")]
-        [ForeignKey("DepartmentGroup")]
         public int DepartmentGroupId { get; set; }
 
         public int CreatedBy { get; set; }

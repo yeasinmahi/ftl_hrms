@@ -49,14 +49,14 @@
                             Employee Name
                         </div>
                         <div>
-                            @Html.DropDownList("EmployeeId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
+                            @Html.DropDownList("EmployeeId", null, "--Select Employee--", htmlAttributes: new { @class = "form-control", style = "width:50%", @name = "Employee", @id = "employee", @onchange = "GetBranch()" })
                             @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
                         </div>
                         <div>
                             From Branch
                         </div>
                         <div>
-                            @Html.DropDownList("FromBranchId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
+                            @Html.Editor("Branch Name", new { htmlAttributes = new { @class = "form-control", style = "width:50%", @id = "branchname", @placeholder = "Branch Name", @required = true } })
                             @Html.ValidationMessageFor(model => model.FromBranchId, "", new { @class = "text-danger" })
                         </div>
 
@@ -64,7 +64,7 @@
                             To Branch
                         </div>
                         <div>
-                            @Html.DropDownList("ToBranchId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @readonly = true })
+                            @Html.DropDownList("BranchId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @name="ddl_branch", @id = "ddl_branch" })
                             @Html.ValidationMessageFor(model => model.ToBranchId, "", new { @class = "text-danger" })
                         </div>
                         
@@ -88,5 +88,30 @@
         </div>
     </div>
 </div>
+<script>
+    function GetBranch() {
+        $.ajax({
+            url: '/BranchTransfers/GetBranch',
+            method: 'POST',
+            data: {
+                empId: $('#employee').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                if (response[0] == "") {
+                    $('#branchname').val("");
+                    document.getElementById("branchname").removeAttribute("readonly", true);
+                }
+                else {
+                    $('#branchname').val(response[0]);
+                    document.getElementById("branchname").setAttribute("readonly", true);
+                }
 
+            }
+        });
+    };
+    </script>
 
