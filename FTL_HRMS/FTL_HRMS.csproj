@@ -2916,6 +2916,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="Utility\DbUtility.cs" />
+    <Compile Include="Utility\GenericData.cs" />
     <Compile Include="ViewModels\VMMenuByRole.cs" />
     <Compile Include="ViewModels\VMRoleList.cs" />
     <Compile Include="WebForm1.aspx.cs">
