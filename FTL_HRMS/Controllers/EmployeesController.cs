@@ -374,30 +374,34 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult EmployeeTypeReport(string employeeTypeId)
         {
-            if (employeeTypeId== "")
+            List<Employee> EmployeeList = new List<Employee>();
+            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+            ViewBag.Status = "SelectType";
+            if (String.IsNullOrWhiteSpace(employeeTypeId))
             {
-                List<Employee> EmployeeList = new List<Employee>();
                 EmployeeList = _db.Employee.ToList();
-                ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
-                ViewBag.Status = "SelectType";
-                return View(EmployeeList.ToList());
             }
             else
             {
                 int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
-                ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+                ViewBag.EmployeesTypeId = EmployeeTypeId;
                 ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == EmployeeTypeId).Select(p => p.Name).FirstOrDefault();
-                List<Employee> EmployeeList = new List<Employee>();
                 EmployeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
-                ViewBag.Status = "SelectType";
-                return View(EmployeeList.ToList());
+                
             }
-            
+            return View(EmployeeList);
+
         }
 
         public ActionResult PrintEmployeeList()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName="ER", selectedFormula = "{tbl_Employee.Code} = 'E001'" });
+            int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
+            string selectedFormula = "";
+            if (EmployeeTypeId > 0)
+            {
+                selectedFormula = "{tbl_Employee.EmployeeTypeId} = " + EmployeeTypeId;
+            }
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName = "ER", selectedFormula = selectedFormula});
         }
 
        
