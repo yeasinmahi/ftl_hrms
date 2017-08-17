@@ -3202,6 +3202,7 @@
     <Content Include="Views\Employees\EmployeeTypeReport.cshtml" />
     <Content Include="Views\Employees\ResignReport.cshtml" />
     <Content Include="Views\Employees\TransferReport.cshtml" />
+    <Content Include="Views\Employees\LeaveReport.cshtml" />
     <Content Include="Views\LeaveHistories\LeaveApproval.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

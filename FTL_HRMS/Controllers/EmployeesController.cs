@@ -380,7 +380,6 @@ namespace FTL_HRMS.Controllers
                 EmployeeList = _db.Employee.ToList();
                 ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
                 ViewBag.Status = "SelectType";
-                ViewBag.SourceName = "asd";
                 return View(EmployeeList.ToList());
             }
             else
@@ -414,6 +413,13 @@ namespace FTL_HRMS.Controllers
             List<DepartmentTransfer> DepartmentTransferList = new List<DepartmentTransfer>();
             DepartmentTransferList = _db.DepartmentTransfer.ToList();
             return View(DepartmentTransferList.ToList());
+        }
+
+        public ActionResult LeaveReport()
+        {
+            List<LeaveHistory> DepartmentLeaveList = new List<LeaveHistory>();
+            DepartmentLeaveList = _db.LeaveHistories.ToList();
+            return View(DepartmentLeaveList.ToList());
         }
 
         #endregion
