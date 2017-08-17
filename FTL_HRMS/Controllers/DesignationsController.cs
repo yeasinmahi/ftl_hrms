@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FTL_HRMS.Controllers
 {
@@ -54,6 +55,11 @@ namespace FTL_HRMS.Controllers
             List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
+
+            List<IdentityRole> RoleList = new List<IdentityRole>();
+            RoleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
+            ViewBag.RoleName = new SelectList(RoleList, "Name", "Name");
+
             return View();
         }
 
@@ -62,10 +68,8 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,Code,Name,DepartmentId,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
+        public ActionResult Create([Bind(Include = "Sl,Code,Name,DepartmentId,RoleName,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
         {
-            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
-            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             if (designation.Name != "")
             {
                 string userName = User.Identity.Name;
@@ -77,10 +81,14 @@ namespace FTL_HRMS.Controllers
                 _db.Designation.Add(designation);
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
-                ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
                 return RedirectToAction("Create");
             }
+            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
+            List<IdentityRole> RoleList = new List<IdentityRole>();
+            RoleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
+            ViewBag.RoleName = new SelectList(RoleList, "Name", "Name");
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(designation);
         }
@@ -102,6 +110,9 @@ namespace FTL_HRMS.Controllers
             List<Department> departmentList = new List<Department>();
             departmentList = _db.Department.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentId = new SelectList(departmentList, "Sl", "Name", designation.DepartmentId);
+            List<IdentityRole> RoleList = new List<IdentityRole>();
+            RoleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
+            ViewBag.RoleName = new SelectList(RoleList, "Name", "Name", designation.RoleName);
             return View(designation);
         }
 
@@ -110,10 +121,12 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Code,Name,DepartmentId,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
+        public ActionResult Edit([Bind(Include = "Sl,Code,Name,DepartmentId,RoleName,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
         {
             List<Department> departmentList = new List<Department>();
             departmentList = _db.Department.Where(i => i.Status == true).ToList();
+            List<IdentityRole> RoleList = new List<IdentityRole>();
+            RoleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
             if (ModelState.IsValid)
             {
                 string userName = User.Identity.Name;
@@ -124,10 +137,12 @@ namespace FTL_HRMS.Controllers
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 ViewBag.DepartmentId = new SelectList(departmentList, "Sl", "Name", designation.DepartmentId);
+                ViewBag.RoleName = new SelectList(RoleList, "Name", "Name", designation.RoleName);
                 return View(designation);
             }
             TempData["WarningMsg"] = "Something went wrong !!";
             ViewBag.DepartmentId = new SelectList(departmentList, "Sl", "Name", designation.DepartmentId);
+            ViewBag.RoleName = new SelectList(RoleList, "Name", "Name", designation.RoleName);
             return View(designation);
         }
         #endregion

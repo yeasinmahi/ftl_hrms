@@ -24,6 +24,11 @@ namespace FTL_HRMS.Models
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
         ApplyFormatInEditMode = true)]
+        public DateTime CreateDate { get; set; }
+
+        [DataType(DataType.Date),
+        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        ApplyFormatInEditMode = true)]
         public DateTime FromDate { get; set; }
 
         [DataType(DataType.Date),
@@ -46,6 +51,8 @@ namespace FTL_HRMS.Models
         public DateTime? UpdateDate { get; set; }
 
         public string Status { get; set; }
+
+        public string Remarks { get; set; }
 
         public virtual Employee Employee { get; set; }
         public virtual LeaveType LeaveType { get; set; }

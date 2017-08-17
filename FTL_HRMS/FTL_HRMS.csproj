@@ -50,6 +50,7 @@
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -2824,6 +2825,7 @@
     <Compile Include="Controllers\MenuItemsController.cs" />
     <Compile Include="Controllers\PerformanceIssuesController.cs" />
     <Compile Include="Controllers\PerformanceRatingsController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\ResignationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SourceOfHiresController.cs" />
@@ -2866,6 +2868,18 @@
     <Compile Include="Migrations\201708091243206_update_image_type.Designer.cs">
       <DependentUpon>201708091243206_update_image_type.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708160620596_update_multiple.cs" />
+    <Compile Include="Migrations\201708160620596_update_multiple.Designer.cs">
+      <DependentUpon>201708160620596_update_multiple.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708160923389_update_leave.cs" />
+    <Compile Include="Migrations\201708160923389_update_leave.Designer.cs">
+      <DependentUpon>201708160923389_update_leave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708160954422_update_leave_2.cs" />
+    <Compile Include="Migrations\201708160954422_update_leave_2.Designer.cs">
+      <DependentUpon>201708160954422_update_leave_2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LeaveCount.cs" />
@@ -2896,6 +2910,12 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\test.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>test.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\EmployeeReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2903,6 +2923,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="Utility\DbUtility.cs" />
+    <Compile Include="Utility\GenericData.cs" />
     <Compile Include="ViewModels\VMMenuByRole.cs" />
     <Compile Include="ViewModels\VMRoleList.cs" />
   </ItemGroup>
@@ -3175,10 +3197,13 @@
     <Content Include="Views\Employees\Details.cshtml" />
     <Content Include="Views\Employees\Edit.cshtml" />
     <Content Include="Views\Employees\Index.cshtml" />
+    <Content Include="Views\Reports\Index.cshtml" />
+    <Content Include="Views\Resignations\ResignationApproval.cshtml" />
     <Content Include="Views\Employees\EmployeeTypeReport.cshtml" />
     <Content Include="Views\Employees\ResignReport.cshtml" />
     <Content Include="Views\Employees\TransferReport.cshtml" />
     <Content Include="Views\Employees\LeaveReport.cshtml" />
+    <Content Include="Views\LeaveHistories\LeaveApproval.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3220,6 +3245,19 @@
     <EmbeddedResource Include="Migrations\201708091243206_update_image_type.resx">
       <DependentUpon>201708091243206_update_image_type.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\test.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>test.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708160620596_update_multiple.resx">
+      <DependentUpon>201708160620596_update_multiple.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708160923389_update_leave.resx">
+      <DependentUpon>201708160923389_update_leave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708160954422_update_leave_2.resx">
+      <DependentUpon>201708160954422_update_leave_2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\EmployeeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EmployeeReport.cs</LastGenOutput>
@@ -3239,7 +3277,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49660</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -15,7 +15,7 @@
                     data: { DepartmentGroupName: $("#DepartmentGroupName").val() },
                     success: function(data) {
                         response($.map(data, function(item) {
-                            return { label: item.Name, value: item.SL }; //updated code
+                            return { label: item.Name, value: item.Sl }; //updated code
                         }));
                     }
                 });

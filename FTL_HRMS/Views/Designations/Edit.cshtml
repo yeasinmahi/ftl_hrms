@@ -73,6 +73,13 @@
                             @Html.DropDownList("DepartmentId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
                             @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
                         </div>
+
+                        <div>
+                            Role Name
+                        </div>
+                        <div>
+                            @Html.DropDownList("RoleName", null, "Select Role", htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
+                        </div>
                         <br />
                         <div>
                             @Html.CheckBoxFor(model => model.Status)

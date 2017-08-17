@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -42,8 +43,10 @@ namespace FTL_HRMS.Controllers
         public ActionResult GetDepartmentByGroupId()
         {
             int departmentGroupId = Convert.ToInt32(Request["DepartmentGroupId"]);
-            List<Department> departmentList = _db.Department.Where(t => t.DepartmentGroupId == departmentGroupId).ToList();
-            return Json(departmentList, JsonRequestBehavior.AllowGet);
+            var s = from p in _db.Department.AsEnumerable()
+                   where p.DepartmentGroupId == departmentGroupId
+                   select new Department { Sl = p.Sl, Name = p.Name };
+            return Json(s, JsonRequestBehavior.AllowGet);
         }
         #endregion
 
@@ -51,8 +54,11 @@ namespace FTL_HRMS.Controllers
         public ActionResult GetDepartmentGroup()
         {
             string departmentGroupName = Request["DepartmentGroupName"];
-            List<DepartmentGroup> groupList = _db.DepartmentGroup.Where(r => r.Name.Contains(departmentGroupName)).ToList();
-            return Json(groupList, JsonRequestBehavior.AllowGet);
+            var s= from p in _db.DepartmentGroup.AsEnumerable()
+                   where p.Name.Contains(departmentGroupName)
+                   select new DepartmentGroup { Sl = p.Sl, Name = p.Name };
+            
+            return Json(s, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

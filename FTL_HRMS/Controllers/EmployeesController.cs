@@ -10,6 +10,7 @@ using FTL_HRMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
+using System.Web.UI.HtmlControls;
 using static FTL_HRMS.Models.AccountViewModels;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
@@ -243,6 +244,8 @@ namespace FTL_HRMS.Controllers
                 string presentAddress = Request["PresentAddress"].ToString();
                 int designationId = Convert.ToInt32(Request["ddl_designation"]);
 
+                string role = _db.Designation.Where(i => i.Sl == designationId).Select(i => i.RoleName).FirstOrDefault();
+
                 employee.PresentAddress = presentAddress;
                 employee.PermanentAddress = permanentAddress;
                 employee.DesignationId = designationId;
@@ -256,14 +259,7 @@ namespace FTL_HRMS.Controllers
 
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
                 var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
-                if (!roleManager.RoleExists("Employee"))
-                {
-                    // first we create Employee role   
-                    var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
-                    role.Name = "Employee";
-                    roleManager.Create(role);
-                }
-                //Here we create a Employee user who will maintain the website
+
                 ApplicationUser user = new ApplicationUser();
                 user.IsActive = true;
                 user.Email = employee.Email;
@@ -283,7 +279,7 @@ namespace FTL_HRMS.Controllers
                 //Add default User to Role Customer   
                 if (chkUser.Succeeded)
                 {
-                    var result1 = UserManager.AddToRole(user.Id, "Employee");
+                    var result1 = UserManager.AddToRole(user.Id, role);
                 }
                 _db.SaveChanges();
                 #endregion
@@ -368,6 +364,7 @@ namespace FTL_HRMS.Controllers
 
         #region Print 
 
+        
         public ActionResult EmployeeTypeReport()
         {
             ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
@@ -398,26 +395,9 @@ namespace FTL_HRMS.Controllers
             
         }
 
-        public void PrintEmployeeList()
+        public ActionResult PrintEmployeeList()
         {
-            ReportDocument Report = new ReportDocument();
-            Report.Load(Server.MapPath("~/Reports/EmployeeReport.rpt"));
-            Report.SetDatabaseLogon("sa", "sa2009", ".\\SQLEXPRESS", "FTL_HRMS");
-
-            
-
-            ExportOptions CrExportOptions;
-            DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
-            PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
-            CrDiskFileDestinationOptions.DiskFileName = "E:\\test.pdf";
-            CrExportOptions = Report.ExportOptions;
-            {
-                CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
-                CrExportOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
-                CrExportOptions.DestinationOptions = CrDiskFileDestinationOptions;
-                CrExportOptions.FormatOptions = CrFormatTypeOptions;
-            }
-            Report.Export();
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName="ER", selectedFormula = "{tbl_Employee.Code} = 'E001'" });
         }
 
        
