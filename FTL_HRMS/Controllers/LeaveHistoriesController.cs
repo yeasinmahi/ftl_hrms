@@ -81,7 +81,10 @@ namespace FTL_HRMS.Controllers
         // GET: Resignations
         public ActionResult LeaveApproval()
         {
-            return View(_db.LeaveHistories.Include(i=>i.Employee).Include(i => i.LeaveType).ToList());
+            string userName = User.Identity.Name;
+            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            List<LeaveHistory> leaveHistoryList = _db.LeaveHistories.Include(i => i.Employee).Include(i => i.LeaveType).Where(x => x.EmployeeId != userId).ToList();
+            return View(leaveHistoryList);
         }
 
         [AllowAnonymous]
@@ -104,10 +107,10 @@ namespace FTL_HRMS.Controllers
                 _db.Entry(leaveHistory).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
-                return View(leaveHistory);
+                return RedirectToAction("LeaveApproval", "LeaveHistories");
             }
             TempData["WarningMsg"] = "Something went wrong !!";
-            return View(leaveHistory);
+            return RedirectToAction("LeaveApproval", "LeaveHistories");
         }
         #endregion
 

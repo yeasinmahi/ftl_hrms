@@ -76,7 +76,10 @@ namespace FTL_HRMS.Controllers
         // GET: Resignations
         public ActionResult ResignationApproval()
         {
-            return View(_db.Resignation.ToList());
+            string userName = User.Identity.Name;
+            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            List<Resignation> resignationList = _db.Resignation.Where(x => x.EmployeeId != userId).ToList();
+            return View(resignationList);
         }
 
         [AllowAnonymous]
@@ -99,10 +102,10 @@ namespace FTL_HRMS.Controllers
                 _db.Entry(resignation).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
-                return View(resignation);
+                return RedirectToAction("ResignationApproval", "Resignations");
             }
             TempData["WarningMsg"] = "Something went wrong !!";
-            return View(resignation);
+            return RedirectToAction("ResignationApproval", "Resignations");
         }
         #endregion
 
