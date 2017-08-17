@@ -361,7 +361,7 @@ namespace FTL_HRMS.Controllers
             }
         }
         #endregion
-
+      
         #region Print         
         public ActionResult EmployeeTypeReport()
         {
