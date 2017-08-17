@@ -11,9 +11,6 @@
     </div>
 </header>
 <br /> <br />
-@using (Html.BeginForm())
-{
-
 
     <div class="content-body">
         <div class="row">
@@ -21,12 +18,10 @@
                 <div class="table-responsive" data-pattern="priority-columns">
 
                     <div class="btn-group">
-                        @using (Html.BeginForm("PrintEmployeeList", "Employees", FormMethod.Post, new { @target = "_blank", @role = "form", @enctype = "multipart/form-data" }))
-                        {
-                            <button type="submit" class="btn btn-info btn-sm">
+                       
+                            <button type="submit" class="btn btn-info btn-sm"  onclick="location.href='@Url.Action("PrintTransferReport", "Reports")'" target="_blank">
                                 <span class="glyphicon glyphicon-print"></span> Print
                             </button>
-                        }
                     </div>
                     <br />
                     <table cellspacing="0" id="tech-companies-1" class="table table-small-font table-bordered table-striped">
@@ -71,4 +66,3 @@
             </div>
         </div>
     </div>
-                            }

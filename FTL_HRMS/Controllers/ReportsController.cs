@@ -42,9 +42,6 @@ namespace FTL_HRMS.Controllers
             return View(EmployeeList);
 
         }
-
-        #endregion
-
         public ActionResult PrintEmployeeList()
         {
             int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
@@ -53,8 +50,10 @@ namespace FTL_HRMS.Controllers
             {
                 selectedFormula = "{tbl_Employee.EmployeeTypeId} = " + EmployeeTypeId;
             }
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName = "ER", selectedFormula = selectedFormula });
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName = "Employee Report", selectedFormula = selectedFormula });
         }
+        #endregion
+
 
         #region Resign Report
         public ActionResult ResignReport()
@@ -63,14 +62,23 @@ namespace FTL_HRMS.Controllers
             EmployeeList = _db.Employee.Where(v => v.Status == false).ToList();
             return View(EmployeeList.ToList());
         }
+        public ActionResult PrintResignReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "ResignReport", fileName = "Resign Report", selectedFormula = "{tbl_Employee.Status} = False" });
+        }
+
         #endregion
 
-        #region Transfer Report
+        #region Department Transfer Report
         public ActionResult TransferReport()
         {
             List<DepartmentTransfer> DepartmentTransferList = new List<DepartmentTransfer>();
             DepartmentTransferList = _db.DepartmentTransfer.ToList();
             return View(DepartmentTransferList.ToList());
+        }
+        public ActionResult PrintTransferReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "TransferReport", fileName = "Transfer Report" });
         }
         #endregion
 
@@ -80,6 +88,10 @@ namespace FTL_HRMS.Controllers
             List<LeaveHistory> DepartmentLeaveList = new List<LeaveHistory>();
             DepartmentLeaveList = _db.LeaveHistories.ToList();
             return View(DepartmentLeaveList.ToList());
+        }
+        public ActionResult PrintLeaveReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "LeaveReport", fileName = "Leave Report" });
         }
         #endregion
 
