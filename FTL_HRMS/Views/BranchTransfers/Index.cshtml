@@ -33,7 +33,7 @@
                         <th>SL</th>
                         <th>Action</th>
                         <th>
-                            Employee Name
+                            Employee Code
                         </th>
                         <th>
                             From Branch
@@ -51,7 +51,7 @@
                         <th>SL</th>
                         <th>Action</th>
                         <th>
-                            Employee Name
+                            Employee Code
                         </th>
                         <th>
                             From Branch
@@ -72,22 +72,19 @@
                             <td align="center" width="5%">
                                 @(rowNo += 1)
                             </td>
-                            <td align="center">
+                            <td align="center" width="5%">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>@Html.ActionLink("Edit", "Edit", new { id = item.Sl })</li>
-                                    </ul>
+                                    <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Edit", "BranchTransfers", new { id = item.Sl })'">Edit</button>
                                 </div>
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Employee.Name)
+                                @Html.DisplayFor(modelItem => item.Employee.Code)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Branch.Name)
+                                @Html.DisplayFor(modelItem => item.FromBranchId)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Branch.Name)
+                                @Html.DisplayFor(modelItem => item.ToBranchId)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.TransferDate)
@@ -100,9 +97,9 @@
         </div>
     </div>
 
-    <script>
+<script>
 $(document).ready(function(){
     $('#myTable').DataTable();
 });
-    </script>
+</script>
 

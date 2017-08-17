@@ -107,9 +107,16 @@ namespace FTL_HRMS.Controllers
             {
                 return HttpNotFound();
             }
-            List<Department> departmentList = new List<Department>();
-            departmentList = _db.Department.Where(i => i.Status == true).ToList();
-            ViewBag.DepartmentId = new SelectList(departmentList, "Sl", "Name", designation.DepartmentId);
+
+            int DepartmentId = _db.Designation.Where(x => x.Sl == designation.Sl).Select(t => t.DepartmentId).FirstOrDefault();
+            ViewBag.DepartmentId = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.Sl).FirstOrDefault();
+            ViewBag.DepartmentName = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.Name).FirstOrDefault();
+            int DepartmentGroupId = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.DepartmentGroupId).FirstOrDefault();
+
+            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name", DepartmentGroupId);
+
             List<IdentityRole> RoleList = new List<IdentityRole>();
             RoleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
             ViewBag.RoleName = new SelectList(RoleList, "Name", "Name", designation.RoleName);
@@ -123,8 +130,8 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,Code,Name,DepartmentId,RoleName,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
         {
-            List<Department> departmentList = new List<Department>();
-            departmentList = _db.Department.Where(i => i.Status == true).ToList();
+            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             List<IdentityRole> RoleList = new List<IdentityRole>();
             RoleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
             if (ModelState.IsValid)
@@ -133,15 +140,20 @@ namespace FTL_HRMS.Controllers
                 int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
                 designation.UpdatedBy = userId;
                 designation.UpdateDate = DateTime.Now;
+                designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
                 _db.Entry(designation).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
-                ViewBag.DepartmentId = new SelectList(departmentList, "Sl", "Name", designation.DepartmentId);
-                ViewBag.RoleName = new SelectList(RoleList, "Name", "Name", designation.RoleName);
-                return View(designation);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
-            ViewBag.DepartmentId = new SelectList(departmentList, "Sl", "Name", designation.DepartmentId);
+            else
+            {
+                TempData["WarningMsg"] = "Something went wrong !!";
+            }
+            int DepartmentId = designation.DepartmentId;
+            ViewBag.DepartmentId = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.Sl).FirstOrDefault();
+            ViewBag.DepartmentName = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.Name).FirstOrDefault();
+            int DepartmentGroupId = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.DepartmentGroupId).FirstOrDefault();
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name", DepartmentGroupId);
             ViewBag.RoleName = new SelectList(RoleList, "Name", "Name", designation.RoleName);
             return View(designation);
         }

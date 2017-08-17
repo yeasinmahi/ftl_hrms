@@ -43,11 +43,21 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.Sl)
                     @Html.HiddenFor(model => model.EmployeeId)
-                    <div class="col-md-offset-1">
+                    <div class="col-md-offset-0">
                         <div class="btn-group col-md-offset-11">
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "DepartmentTransfers" )'">Back To List</button>
                         </div>
-                       
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div>
+                                    Transfer Date
+                                </div>
+                                <div>
+                                    @Html.EditorFor(model => model.TransferDate, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @required = true } })
+                                    @Html.ValidationMessageFor(model => model.TransferDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <div>
@@ -55,7 +65,7 @@
                                 </div>
 
                                 <div>
-                                    @Html.Editor("Department Group", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "departmentGroupName", @placeholder = "Department Group", @required = true, @Value = ViewBag.DepartmentGroup } })
+                                    @Html.Editor("Department Group", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "departmentGroupName", @placeholder = "Department Group", @required = true, @Value = ViewBag.DepartmentGroup, @readonly=true } })
                                 </div>
                             </div>
 
@@ -65,7 +75,7 @@
                                 </div>
 
                                 <div>
-                                    @Html.Editor("Department", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "departmentName", @placeholder = "Department", @required = true, @Value = ViewBag.Department } })
+                                    @Html.Editor("Department", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "departmentName", @placeholder = "Department", @required = true, @Value = ViewBag.Department, @readonly = true } })
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -74,7 +84,7 @@
                                 </div>
 
                                 <div>
-                                    @Html.Editor("Designation", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "designationName", @placeholder = "Designation", @required = true, @Value = ViewBag.Designation } })
+                                    @Html.Editor("Designation", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "designationName", @placeholder = "Designation", @required = true, @Value = ViewBag.Designation, @readonly = true } })
                                     @Html.ValidationMessageFor(model => model.FromDesignationId, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -86,7 +96,7 @@
                                 </div>
 
                                 <div>
-                                    @Html.DropDownList("DepartmentGroupId", null, "Select Group", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();" })
+                                    @Html.DropDownList("DepartmentGroupId", null, "Select Group", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();", @required = true })
                                 </div>
                             </div>
 
@@ -95,7 +105,7 @@
                                     Department
                                 </div>
 
-                                <select class="form-control" style="width:100%" id="ddl_dept" name="ddl_dept" onchange="LoadDesignation();" tabindex=20>
+                                <select class="form-control" style="width:100%" id="ddl_dept" name="ddl_dept" onchange="LoadDesignation();" tabindex=20 required>
                                     <option value="">Select Department</option>
                                 </select>
                             </div>
@@ -104,26 +114,20 @@
                                     Designation
                                 </div>
 
-                                <select class="form-control" style="width:100%" id="ddl_designation" name="ddl_designation" tabindex=21>
+                                <select class="form-control" style="width:100%" id="ddl_designation" name="ddl_designation" tabindex=21 required>
                                     <option value="" selected>Select Designation</option>
                                 </select>
                             </div>
                         </div>
-                        <div>
-                            Transfer Date
-                        </div>
-                        <div>
-                            @Html.EditorFor(model => model.TransferDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
-                            @Html.ValidationMessageFor(model => model.TransferDate, "", new { @class = "text-danger" })
-                        </div>
-
 
                         <br />
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
-                                <input type="submit" value="Create" class="btn btn-primary" />
+                        <center>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
+                                    <input type="submit" value="Update" class="btn btn-primary" />
+                                </div>
                             </div>
-                        </div>
+                        </center>
                     </div>
                 </div>
             }

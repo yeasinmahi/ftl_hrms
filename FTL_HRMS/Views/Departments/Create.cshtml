@@ -4,7 +4,7 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-@section scripts {
+@*@section scripts {
     <script type="text/javascript" language="javascript" >
         $("#DepartmentGroupName").autocomplete({
             source: function(request, response) {
@@ -27,7 +27,7 @@
             }
         });
     </script>
-}
+}*@
 
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
@@ -95,10 +95,10 @@
                         <div>
                             Department Group Name
                         </div>
-                        <div class="editor-field">
+                        @*<div class="editor-field">
                             <input type="hidden" id="DepartmentGroupId" name="DepartmentGroupId" />
                             <input type="text" id="DepartmentGroupName" value="" />
-                        </div>
+                        </div>*@
                         <div>
                             @Html.DropDownList("DepartmentGroupId", null, "Select Group", htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
                             @Html.ValidationMessageFor(model => model.DepartmentGroupId, "", new { @class = "text-danger" })

@@ -46,10 +46,10 @@
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "DisciplinaryActions" )'">Back To List</button>
                         </div>
                         <div>
-                            Employee Name
+                            Employee Code
                         </div>
                         <div>
-                            @Html.DropDownList("EmployeeId", null, "--Select Employee--", htmlAttributes: new { @class = "form-control", style = "width:50%" })
+                            @Html.DropDownList("EmployeeId", null, "--Select Employee--", htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
                             @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
                         </div>
 
@@ -57,7 +57,7 @@
                             Disciplinary Action Type
                         </div>
                         <div>
-                            @Html.DropDownList("DisciplinaryActionTypeId", null, "--Select Type--", htmlAttributes: new { @class = "form-control", style = "width:50%" })
+                            @Html.DropDownList("DisciplinaryActionTypeId", null, "--Select Type--", htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
                             @Html.ValidationMessageFor(model => model.DisciplinaryActionTypeId, "", new { @class = "text-danger" })
                         </div>
 
@@ -65,7 +65,7 @@
                             Date
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                            @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                         </div>
 
@@ -73,7 +73,7 @@
                             Remarks
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                            @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
                         </div>
 

@@ -50,7 +50,7 @@
                             Name
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                         </div>
 
@@ -59,7 +59,7 @@
                             Day
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.Day, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                            @Html.EditorFor(model => model.Day, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.Day, "", new { @class = "text-danger" })
                         </div>
 

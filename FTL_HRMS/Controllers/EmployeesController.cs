@@ -362,9 +362,7 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Print 
-
-        
+        #region Print         
         public ActionResult EmployeeTypeReport()
         {
             ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
@@ -421,8 +419,8 @@ namespace FTL_HRMS.Controllers
             DepartmentLeaveList = _db.LeaveHistories.ToList();
             return View(DepartmentLeaveList.ToList());
         }
-
         #endregion
+
         #region Edit
         // GET: Employees/Edit/5
         public ActionResult Edit(int? id)

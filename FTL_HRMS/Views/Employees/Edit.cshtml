@@ -73,14 +73,14 @@
                                             Code
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 1 } })
+                                            @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 1, @required = true } })
                                             @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
                                             Mother's Name
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.MothersName, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 4 } })
+                                            @Html.EditorFor(model => model.MothersName, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 4, @required = true } })
                                             @Html.ValidationMessageFor(model => model.MothersName, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
@@ -106,21 +106,21 @@
                                             });
                                         }
                                         <div>
-                                            @Html.DropDownListFor(model => model.Gender, listItems, "Select Gender", new { @class = "form-control", style = "width:100%", @tabindex = 7 })
+                                            @Html.DropDownListFor(model => model.Gender, listItems, "Select Gender", new { @class = "form-control", style = "width:100%", @tabindex = 7, @required = true })
                                             @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
                                             NID / Birth Certificate
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.NIDorBirthCirtificate, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 10 } })
+                                            @Html.EditorFor(model => model.NIDorBirthCirtificate, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 10, @required = true } })
                                             @Html.ValidationMessageFor(model => model.NIDorBirthCirtificate, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
                                             Date Of Birth
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13 } })
+                                            @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -129,20 +129,20 @@
                                             Name
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 2 } })
+                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 2, @required = true } })
                                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
                                             Present Address
                                         </div>
                                         <div>
-                                            <textarea class="form-control autogrow" cols="5" name="PresentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:100%" id="present_address" required tabindex="5"></textarea>
+                                            <textarea class="form-control autogrow" cols="5" name="PresentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:100%" id="present_address" required tabindex="5">@Model.PresentAddress</textarea>
                                         </div>
                                         <div>
                                             Mobile
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 8 } })
+                                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 8, @required = true } })
                                             @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
@@ -156,7 +156,7 @@
                                             Date Of Joining
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 14 } })
+                                            @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 14, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfJoining, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -165,14 +165,14 @@
                                             Father's Name
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.FathersName, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 3 } })
+                                            @Html.EditorFor(model => model.FathersName, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 3, @required = true } })
                                             @Html.ValidationMessageFor(model => model.FathersName, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
                                             Permanent Address
                                         </div>
                                         <div>
-                                            <textarea class="form-control autogrow" cols="5" name="PermanentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:100%" id="permanent_address" required tabindex="6"></textarea>
+                                            <textarea class="form-control autogrow" cols="5" name="PermanentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:100%" id="permanent_address" required tabindex="6">@Model.PermanentAddress</textarea>
                                         </div>
                                         <div>
                                             Email
@@ -192,7 +192,7 @@
                                             Source Of Hire
                                         </div>
                                         <div>
-                                            @Html.DropDownList("SourceOfHireId", null, "Select Source", htmlAttributes: new { @class = "form-control", style = "width:100%", @tabindex = 15 })
+                                            @Html.DropDownList("SourceOfHireId", null, "Select Source", htmlAttributes: new { @class = "form-control", style = "width:100%", @tabindex = 15, @required = true })
                                             @Html.ValidationMessageFor(model => model.SourceOfHireId, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
