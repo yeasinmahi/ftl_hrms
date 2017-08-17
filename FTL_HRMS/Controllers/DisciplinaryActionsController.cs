@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
-using System.Collections.Generic;
 
 namespace FTL_HRMS.Controllers
 {
@@ -20,7 +19,7 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Details
+        #region Details (We don't use it)
         // GET: DisciplinaryActions/Details/5
         public ActionResult Details(int? id)
         {
@@ -43,7 +42,7 @@ namespace FTL_HRMS.Controllers
         {
             List<Employee> employeeList = new List<Employee>();
             employeeList = _db.Employee.Where(i => i.Status == true).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name");
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
             return View();
         }
@@ -62,11 +61,11 @@ namespace FTL_HRMS.Controllers
                 _db.DisciplinaryAction.Add(disciplinaryAction);
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
-                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name");
+                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
                 ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", disciplinaryAction.EmployeeId);
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(disciplinaryAction);
@@ -88,7 +87,7 @@ namespace FTL_HRMS.Controllers
             }
             List<Employee> employeeList = new List<Employee>();
             employeeList = _db.Employee.Where(i => i.Status == true).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", disciplinaryAction.EmployeeId);
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
             return View(disciplinaryAction);
         }
@@ -107,18 +106,18 @@ namespace FTL_HRMS.Controllers
                 _db.Entry(disciplinaryAction).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
-                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name");
+                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
                 ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Name", disciplinaryAction.EmployeeId);
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", disciplinaryAction.EmployeeId);
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(disciplinaryAction);
         }
         #endregion
 
-        #region Delete
+        #region Delete (We don't use it)
         // GET: DisciplinaryActions/Delete/5
         public ActionResult Delete(int? id)
         {

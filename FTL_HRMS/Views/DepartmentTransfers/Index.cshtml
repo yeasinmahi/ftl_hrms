@@ -32,9 +32,14 @@
                         <th>SL</th>
                         <th>Action</th>
                         <th>
-                            Employee Name
+                            Employee Code
                         </th>
-
+                        <th>
+                            From Designation
+                        </th>
+                        <th>
+                            To Designation
+                        </th>
                         <th>
                             Transfer Date
                         </th>
@@ -45,9 +50,14 @@
                         <th>SL</th>
                         <th>Action</th>
                         <th>
-                            Employee Name
+                            Employee Code
                         </th>
-
+                        <th>
+                            From Designation
+                        </th>
+                        <th>
+                            To Designation
+                        </th>
                         <th>
                             Transfer Date
                         </th>
@@ -61,20 +71,20 @@
                             <td align="center" width="5%">
                                 @(rowNo += 1)
                             </td>
-                            <td align="center">
+                            <td align="center" width="5%">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>@Html.ActionLink("Edit", "Edit", new { id = item.Sl })</li>
-                                       
-                                    </ul>
+                                    <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Edit", "DepartmentTransfers", new { id = item.Sl })'">Edit</button>
                                 </div>
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Employee.Name)
+                                @Html.DisplayFor(modelItem => item.Employee.Code)
                             </td>
-                            
-                            
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FromDesignationId)
+                            </td>                            
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ToDesignationId)
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.TransferDate)
                             </td>

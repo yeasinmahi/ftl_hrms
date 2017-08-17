@@ -13,7 +13,7 @@
 </div>
 
 <header class="panel_header">
-    <h2 class="title pull-left">Add New Branch Transfer</h2>
+    <h2 class="title pull-left">Edit Branch Transfer</h2>
     <div class="actions panel_actions pull-right">
         <i class="box_toggle fa fa-chevron-down"></i>
     </div>
@@ -52,7 +52,7 @@
                             From Branch
                         </div>
                         <div>
-                            @Html.Editor("Branch Name", new { htmlAttributes = new { @class = "form-control", style = "width:50%", @id = "branchname", @placeholder = "Branch Name", @required = true , @Value = ViewBag.Branch } })
+                            @Html.Editor("Branch Name", new { htmlAttributes = new { @class = "form-control", style = "width:50%", @id = "branchname", @placeholder = "Branch Name", @required = true , @Value = ViewBag.Branch, @readonly = true } })
                             @Html.ValidationMessageFor(model => model.FromBranchId, "", new { @class = "text-danger" })
                         </div>
 

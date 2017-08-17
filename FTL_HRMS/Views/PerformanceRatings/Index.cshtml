@@ -11,12 +11,12 @@
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
         <div class="pull-left">
-            <h1 class="title">Disciplinary Action</h1>
+            <h1 class="title">Performance Ratings</h1>
         </div>
     </div>
 </div>
 <header class="panel_header">
-    <h2 class="title pull-left">Disciplinary Action List</h2>
+    <h2 class="title pull-left">Performance Ratings List</h2>
     <div class="actions panel_actions pull-right">
         <i class="box_toggle fa fa-chevron-down"></i>
     </div>
@@ -32,7 +32,7 @@
                         <th>SL</th>
                         <th>Action</th>
                         <th>
-                            Employee Name
+                            Employee Code
                         </th>
                         <th>
                             Performance Issue
@@ -51,7 +51,7 @@
                         <th>SL</th>
                         <th>Action</th>
                         <th>
-                            Employee Name
+                            Employee Code
                         </th>
                         <th>
                             Performance Issue
@@ -71,19 +71,16 @@
                             <td align="center" width="5%">
                                 @(rowNo += 1)
                             </td>
-                            <td align="center">
+                            <td align="center" width="5%">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>@Html.ActionLink("Edit", "Edit", new { id = item.Sl })</li>
-                                    </ul>
+                                    <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Edit", "PerformanceRatings", new { id = item.Sl })'">Edit</button>
                                 </div>
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.EmployeeId)
+                                @Html.DisplayFor(modelItem => item.Employee.Code)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.PerformanceIssueId)
+                                @Html.DisplayFor(modelItem => item.PerformanceIssue.Name)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Rating)
