@@ -3,26 +3,95 @@ using System.IO;
 using System.Text;
 using System.Web.Mvc;
 using CrystalDecisions.CrystalReports.Engine;
+using FTL_HRMS.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FTL_HRMS.Controllers
 {
     public class ReportsController : Controller
     {
+        private HRMSDbContext _db = new HRMSDbContext();
         // GET: Reports
-        public ActionResult Index()
+      
+        #region Employee Report Print 
+        public ActionResult EmployeeTypeReport()
         {
-            ReportDocument rd = GetReport("test");
-            SetResponceProperty();
-            return ExportReport(rd, "test");
+            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+            return View();
         }
-        
-        public ActionResult PrintReport(string sourceName, string fileName,string selectedFormula)
+
+        [HttpPost]
+        public ActionResult EmployeeTypeReport(string employeeTypeId)
         {
-            if (String.IsNullOrEmpty(sourceName)&& String.IsNullOrEmpty(fileName))
+            List<Employee> EmployeeList = new List<Employee>();
+            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+            ViewBag.Status = "SelectType";
+            if (String.IsNullOrWhiteSpace(employeeTypeId))
+            {
+                EmployeeList = _db.Employee.ToList();
+            }
+            else
+            {
+                int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
+                ViewBag.EmployeesTypeId = EmployeeTypeId;
+                ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == EmployeeTypeId).Select(p => p.Name).FirstOrDefault();
+                EmployeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
+
+            }
+            return View(EmployeeList);
+
+        }
+
+        #endregion
+
+        public ActionResult PrintEmployeeList()
+        {
+            int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
+            string selectedFormula = "";
+            if (EmployeeTypeId > 0)
+            {
+                selectedFormula = "{tbl_Employee.EmployeeTypeId} = " + EmployeeTypeId;
+            }
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName = "ER", selectedFormula = selectedFormula });
+        }
+
+        #region Resign Report
+        public ActionResult ResignReport()
+        {
+            List<Employee> EmployeeList = new List<Employee>();
+            EmployeeList = _db.Employee.Where(v => v.Status == false).ToList();
+            return View(EmployeeList.ToList());
+        }
+        #endregion
+
+        #region Transfer Report
+        public ActionResult TransferReport()
+        {
+            List<DepartmentTransfer> DepartmentTransferList = new List<DepartmentTransfer>();
+            DepartmentTransferList = _db.DepartmentTransfer.ToList();
+            return View(DepartmentTransferList.ToList());
+        }
+        #endregion
+
+        #region Leave Report
+        public ActionResult LeaveReport()
+        {
+            List<LeaveHistory> DepartmentLeaveList = new List<LeaveHistory>();
+            DepartmentLeaveList = _db.LeaveHistories.ToList();
+            return View(DepartmentLeaveList.ToList());
+        }
+        #endregion
+
+        #region Common
+        public ActionResult PrintReport(string sourceName, string fileName, string selectedFormula)
+        {
+            if (String.IsNullOrEmpty(sourceName) && String.IsNullOrEmpty(fileName))
             {
                 sourceName = "test";
                 fileName = "test";
-            }else if (String.IsNullOrEmpty(fileName))
+            }
+            else if (String.IsNullOrEmpty(fileName))
             {
                 fileName = sourceName;
             }
@@ -43,7 +112,7 @@ namespace FTL_HRMS.Controllers
         private ReportDocument GetReport(string reportName)
         {
             ReportDocument rd = new ReportDocument();
-            rd.Load(Path.Combine(Server.MapPath("~/Reports"), reportName+".rpt"));
+            rd.Load(Path.Combine(Server.MapPath("~/Reports"), reportName + ".rpt"));
             rd.SetDatabaseLogon("sa", "sa2009", ".\\SQLEXPRESS", "FTL_HRMS");
             return rd;
         }
@@ -54,7 +123,7 @@ namespace FTL_HRMS.Controllers
             Response.ClearContent();
             Response.ClearHeaders();
         }
-        
+
 
         private ActionResult ExportReport(ReportDocument rd, string reportName)
         {
@@ -62,7 +131,7 @@ namespace FTL_HRMS.Controllers
             {
                 Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
                 stream.Seek(0, SeekOrigin.Begin);
-                return File(stream, "application/pdf", reportName+".pdf");
+                return File(stream, "application/pdf", reportName + ".pdf");
             }
             catch (Exception exception)
             {
@@ -72,5 +141,7 @@ namespace FTL_HRMS.Controllers
                 return File(stream, "application/pdf", "Error.pdf");
             }
         }
+
+        #endregion
     }
 }

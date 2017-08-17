@@ -3197,13 +3197,12 @@
     <Content Include="Views\Employees\Details.cshtml" />
     <Content Include="Views\Employees\Edit.cshtml" />
     <Content Include="Views\Employees\Index.cshtml" />
-    <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Resignations\ResignationApproval.cshtml" />
-    <Content Include="Views\Employees\EmployeeTypeReport.cshtml" />
-    <Content Include="Views\Employees\ResignReport.cshtml" />
-    <Content Include="Views\Employees\TransferReport.cshtml" />
-    <Content Include="Views\Employees\LeaveReport.cshtml" />
     <Content Include="Views\LeaveHistories\LeaveApproval.cshtml" />
+    <Content Include="Views\Reports\EmployeeTypeReport.cshtml" />
+    <Content Include="Views\Reports\ResignReport.cshtml" />
+    <Content Include="Views\Reports\LeaveReport.cshtml" />
+    <Content Include="Views\Reports\TransferReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

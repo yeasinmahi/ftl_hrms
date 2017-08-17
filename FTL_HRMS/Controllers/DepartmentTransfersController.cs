@@ -62,10 +62,6 @@ namespace FTL_HRMS.Controllers
                 departmentTransfer.ToDesignationId = ToDesignationId;
                 _db.DepartmentTransfer.Add(departmentTransfer);
                 _db.SaveChanges();
-                _db.DepartmentTransfer.Add(departmentTransfer);
-                _db.SaveChanges();
-               
-            
 
                 #region Edit Employee
 

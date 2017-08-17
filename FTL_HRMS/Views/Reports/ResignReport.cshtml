@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FTL_HRMS.Models.DepartmentTransfer>
+﻿@model IEnumerable<FTL_HRMS.Models.Employee>
 
 @{
     ViewBag.Title = "Employee List";
@@ -34,10 +34,13 @@
                         <thead>
                             <tr>
                                 <th style="text-align:center">SL</th>
-                                <th data-priority="1" style="text-align:center">Employee Name</th>
-                                <th data-priority="1" style="text-align:center">From Designation</th>
-                                <th data-priority="3" style="text-align:center">To Designation</th>
-                                <th data-priority="1" style="text-align:center">Date</th>
+                                <th data-priority="1" style="text-align:center">Code</th>
+                                <th data-priority="1" style="text-align:center">Name</th>
+                                <th data-priority="3" style="text-align:center">Phone</th>
+                                <th data-priority="1" style="text-align:center">Email</th>
+                                <th data-priority="3" style="text-align:center">Date Of Joining</th>
+                                <th data-priority="6" style="text-align:center">Branch</th>
+                                <th data-priority="1" style="text-align:center">Designation</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,19 +51,27 @@
                                         @(rowNo += 1)
                                     </td>
                                     <td width="10%" align="center">
-                                        @Html.DisplayFor(modelItem => item.EmployeeId)
+                                        @Html.DisplayFor(modelItem => item.Code)
                                     </td>
                                     <td width="20%" align="center">
-                                        @Html.DisplayFor(modelItem => item.FromDesignationId)
+                                        @Html.DisplayFor(modelItem => item.Name)
                                     </td>
                                     <td width="10%" align="center">
-                                        @Html.DisplayFor(modelItem => item.ToDesignationId)
+                                        @Html.DisplayFor(modelItem => item.Mobile)
                                     </td>
 
                                     <td width="10%" align="center">
-                                        @Html.DisplayFor(modelItem => item.TransferDate)
+                                        @Html.DisplayFor(modelItem => item.Email)
                                     </td>
-                                   
+                                    <td width="10%" align="center">
+                                        @Html.DisplayFor(modelItem => item.DateOfJoining)
+                                    </td>
+                                    <td width="10%" align="center">
+                                        @Html.DisplayFor(modelItem => item.BranchId)
+                                    </td>
+                                    <td width="10%" align="center">
+                                        @Html.DisplayFor(modelItem => item.DesignationId)
+                                    </td>
                                 </tr>
                             }
 

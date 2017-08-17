@@ -361,72 +361,7 @@ namespace FTL_HRMS.Controllers
             }
         }
         #endregion
-
-        #region Print 
-
-        
-        public ActionResult EmployeeTypeReport()
-        {
-            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult EmployeeTypeReport(string employeeTypeId)
-        {
-            List<Employee> EmployeeList = new List<Employee>();
-            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
-            ViewBag.Status = "SelectType";
-            if (String.IsNullOrWhiteSpace(employeeTypeId))
-            {
-                EmployeeList = _db.Employee.ToList();
-            }
-            else
-            {
-                int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
-                ViewBag.EmployeesTypeId = EmployeeTypeId;
-                ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == EmployeeTypeId).Select(p => p.Name).FirstOrDefault();
-                EmployeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
-                
-            }
-            return View(EmployeeList);
-
-        }
-
-        public ActionResult PrintEmployeeList()
-        {
-            int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
-            string selectedFormula = "";
-            if (EmployeeTypeId > 0)
-            {
-                selectedFormula = "{tbl_Employee.EmployeeTypeId} = " + EmployeeTypeId;
-            }
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName = "ER", selectedFormula = selectedFormula});
-        }
-
        
-        public ActionResult ResignReport()
-        {
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = _db.Employee.Where(v => v.Status == false).ToList();
-            return View(EmployeeList.ToList());
-        }
-
-        public ActionResult TransferReport()
-        {
-            List<DepartmentTransfer> DepartmentTransferList = new List<DepartmentTransfer>();
-            DepartmentTransferList = _db.DepartmentTransfer.ToList();
-            return View(DepartmentTransferList.ToList());
-        }
-
-        public ActionResult LeaveReport()
-        {
-            List<LeaveHistory> DepartmentLeaveList = new List<LeaveHistory>();
-            DepartmentLeaveList = _db.LeaveHistories.ToList();
-            return View(DepartmentLeaveList.ToList());
-        }
-
-        #endregion
         #region Edit
         // GET: Employees/Edit/5
         public ActionResult Edit(int? id)
