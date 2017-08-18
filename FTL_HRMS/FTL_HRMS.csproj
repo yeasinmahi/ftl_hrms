@@ -2772,6 +2772,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="Properties\PublishProfiles\hrms.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\datepicker.js" />
     <Content Include="Scripts\icheck.min.js" />
@@ -2910,9 +2911,6 @@
     <Compile Include="Models\Designation.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\RolePermission.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\test.cs">
       <AutoGen>True</AutoGen>
@@ -3078,8 +3076,6 @@
     <Content Include="Content\assets\lib\jquery.bxslider\bower.json" />
     <Content Include="Content\assets\lib\jquery.bxslider\readme.md" />
     <Content Include="Content\assets\lib\jqzoom\index.php" />
-    <Content Include="obj\Debug\build.force" />
-    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <Content Include="Views\Account\AdminInformation.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\MenuItems\Create.cshtml" />
@@ -3218,7 +3214,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\AdminTemplate\assets\plugins\data-table\" />
     <Folder Include="Content\assets\data\images\" />
-    <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201708031103462_InitialCreate.resx">
