@@ -15,7 +15,10 @@ namespace FTL_HRMS.Controllers
         // GET: DisciplinaryActions
         public ActionResult Index()
         {
-            return View(_db.DisciplinaryAction.Include(i => i.DisciplinaryActionType).Include(i => i.Employee).ToList());
+            string userName = User.Identity.Name;
+            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            List<DisciplinaryAction> DisciplinaryActionList = _db.DisciplinaryAction.Include(i => i.DisciplinaryActionType).Include(i => i.Employee).Where(i => i.EmployeeId != userId).ToList();
+            return View(DisciplinaryActionList);
         }
         #endregion
 
@@ -40,8 +43,11 @@ namespace FTL_HRMS.Controllers
         // GET: DisciplinaryActions/Create
         public ActionResult Create()
         {
+            string userName = User.Identity.Name;
+            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+
             List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.Sl != userId).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
             return View();

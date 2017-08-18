@@ -16,7 +16,10 @@ namespace FTL_HRMS.Controllers
         // GET: BranchTransfers
         public ActionResult Index()
         {
-            return View(_db.BranchTransfer.ToList());
+            string userName = User.Identity.Name;
+            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            List<BranchTransfer> BranchTransferList = _db.BranchTransfer.Where(i => i.EmployeeId != userId).ToList();
+            return View(BranchTransferList);
         }
         #endregion
 
@@ -41,8 +44,11 @@ namespace FTL_HRMS.Controllers
         // GET: BranchTransfers/Create
         public ActionResult Create()
         {
+            string userName = User.Identity.Name;
+            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+
             List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            EmployeeList = _db.Employee.Where(i => i.Status == true && i.Sl != userId).ToList();
             ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Code");
 
             List<Branch> BranchList = new List<Branch>();

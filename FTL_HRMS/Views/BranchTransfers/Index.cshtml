@@ -36,6 +36,9 @@
                             Employee Code
                         </th>
                         <th>
+                            Employee Name
+                        </th>
+                        <th>
                             From Branch
                         </th>
                         <th>
@@ -52,6 +55,9 @@
                         <th>Action</th>
                         <th>
                             Employee Code
+                        </th>
+                        <th>
+                            Employee Name
                         </th>
                         <th>
                             From Branch
@@ -81,7 +87,10 @@
                                 @Html.DisplayFor(modelItem => item.Employee.Code)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.FromBranch.Name)
+                                @Html.DisplayFor(modelItem => item.Employee.Name)
+                            </td>
+                            <td>
+                               @Html.DisplayFor(modelItem => item.FromBranch.Name)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ToBranch.Name)
