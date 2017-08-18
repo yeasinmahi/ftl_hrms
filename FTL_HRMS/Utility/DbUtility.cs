@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FTL_HRMS.Models;
 
 namespace FTL_HRMS.Utility
 {
@@ -64,5 +66,20 @@ namespace FTL_HRMS.Utility
             
             
         }
+
+        public static void ExecuteSeedOperation(HRMSDbContext context, List<string> scripts)
+        {
+            foreach (string script in scripts)
+            {
+                context.Database.ExecuteSqlCommand(script);
+            }
+            
+        }
+
+        public static string GetViewCheckQuery(string viewName)
+        {
+            string view = @"IF OBJECT_ID('dbo."+viewName+"', 'V') IS NOT NULL DROP VIEW dbo."+viewName;
+            return view;
+        } 
     }
 }
