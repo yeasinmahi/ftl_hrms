@@ -53,8 +53,7 @@ namespace FTL_HRMS.Controllers
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName = "Employee Report", selectedFormula = selectedFormula });
         }
         #endregion
-
-
+        
         #region Resign Report
         public ActionResult ResignReport()
         {
