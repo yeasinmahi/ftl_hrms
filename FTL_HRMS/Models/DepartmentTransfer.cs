@@ -15,9 +15,11 @@ namespace FTL_HRMS.Models
         public int EmployeeId { get; set; }
 
         [Required(ErrorMessage = "From Designation cannot be empty")]
+        [ForeignKey("FromDesignation")]
         public int FromDesignationId { get; set; }
 
         [Required(ErrorMessage = "To Designation cannot be empty")]
+        [ForeignKey("ToDesignation")]
         public int ToDesignationId { get; set; }
 
         [DataType(DataType.Date),
@@ -26,6 +28,8 @@ namespace FTL_HRMS.Models
         public DateTime TransferDate { get; set; }
 
         public virtual Employee Employee { get; set; }
+        public virtual Designation FromDesignation { get; set; }
+        public virtual Designation ToDesignation { get; set; }
 
     }
 }

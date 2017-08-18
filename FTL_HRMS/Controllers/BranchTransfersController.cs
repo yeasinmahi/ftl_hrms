@@ -16,7 +16,7 @@ namespace FTL_HRMS.Controllers
         // GET: BranchTransfers
         public ActionResult Index()
         {
-            return View(_db.BranchTransfer.Include(i=> i.Branch).Include(i=> i.Employee).ToList());
+            return View(_db.BranchTransfer.ToList());
         }
         #endregion
 

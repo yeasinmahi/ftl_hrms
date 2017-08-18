@@ -15,9 +15,11 @@ namespace FTL_HRMS.Models
         public int EmployeeId { get; set; }
 
         [Required(ErrorMessage = "From Branch cannot be empty")]
+        [ForeignKey("FromBranch")]
         public int FromBranchId { get; set; }
 
         [Required(ErrorMessage = "To Branch cannot be empty")]
+        [ForeignKey("ToBranch")]
         public int ToBranchId { get; set; }
 
         [DataType(DataType.Date),
@@ -26,6 +28,7 @@ namespace FTL_HRMS.Models
         public DateTime TransferDate { get; set; }
 
         public virtual Employee Employee { get; set; }
-        public virtual Branch Branch { get; set; }
+        public virtual Branch FromBranch { get; set; }
+        public virtual Branch ToBranch { get; set; }
     }
 }
