@@ -18,7 +18,10 @@ namespace FTL_HRMS.Controllers
         // GET: DepartmentTransfers
         public ActionResult Index()
         {
-            return View(_db.DepartmentTransfer.ToList());
+            string userName = User.Identity.Name;
+            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            List<DepartmentTransfer> DepartmentTransferList = _db.DepartmentTransfer.Include(a => a.Employee).Where(i => i.EmployeeId != userId).ToList();
+            return View(DepartmentTransferList);
         }
         #endregion
 
@@ -43,8 +46,11 @@ namespace FTL_HRMS.Controllers
         // GET: DepartmentTransfers/Create
         public ActionResult Create()
         {
+            string userName = User.Identity.Name;
+            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+
             List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            EmployeeList = _db.Employee.Where(i => i.Status == true && i.Sl != userId).ToList();
             ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Code");
 
             List<DepartmentGroup> DepartmentGroupList = new List<DepartmentGroup>();

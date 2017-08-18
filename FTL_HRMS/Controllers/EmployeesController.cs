@@ -30,8 +30,10 @@ namespace FTL_HRMS.Controllers
         // GET: Employees
         public ActionResult Index()
         {
-            return View(_db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true).ToList());
-
+            string userName = User.Identity.Name;
+            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            List<Employee> EmployeeList = _db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true && i.Sl != userId).ToList();
+            return View(EmployeeList);
         }
         #endregion
 
