@@ -7,13 +7,13 @@ namespace FTL_HRMS.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class update_image_type : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(update_image_type));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201708091243206_update_image_type"; }
+            get { return "201708181143265_Initial"; }
         }
         
         string IMigrationMetadata.Source

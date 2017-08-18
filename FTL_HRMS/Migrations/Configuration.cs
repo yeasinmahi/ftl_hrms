@@ -1,6 +1,9 @@
 namespace FTL_HRMS.Migrations
 {
+    using System;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<FTL_HRMS.Models.HRMSDbContext>
     {

@@ -2833,57 +2833,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708031103462_InitialCreate.cs" />
-    <Compile Include="Migrations\201708031103462_InitialCreate.Designer.cs">
-      <DependentUpon>201708031103462_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708051026197_basic_setup_by_manas.cs" />
-    <Compile Include="Migrations\201708051026197_basic_setup_by_manas.Designer.cs">
-      <DependentUpon>201708051026197_basic_setup_by_manas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708051105464_add_new_tables.cs" />
-    <Compile Include="Migrations\201708051105464_add_new_tables.Designer.cs">
-      <DependentUpon>201708051105464_add_new_tables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708051127026_update_tables.cs" />
-    <Compile Include="Migrations\201708051127026_update_tables.Designer.cs">
-      <DependentUpon>201708051127026_update_tables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708060945434_update_branch.cs" />
-    <Compile Include="Migrations\201708060945434_update_branch.Designer.cs">
-      <DependentUpon>201708060945434_update_branch.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708061143340_update_status.cs" />
-    <Compile Include="Migrations\201708061143340_update_status.Designer.cs">
-      <DependentUpon>201708061143340_update_status.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708070706016_add_leave.cs" />
-    <Compile Include="Migrations\201708070706016_add_leave.Designer.cs">
-      <DependentUpon>201708070706016_add_leave.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708080747186_update_leave_and_gender.cs" />
-    <Compile Include="Migrations\201708080747186_update_leave_and_gender.Designer.cs">
-      <DependentUpon>201708080747186_update_leave_and_gender.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708091243206_update_image_type.cs" />
-    <Compile Include="Migrations\201708091243206_update_image_type.Designer.cs">
-      <DependentUpon>201708091243206_update_image_type.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708160620596_update_multiple.cs" />
-    <Compile Include="Migrations\201708160620596_update_multiple.Designer.cs">
-      <DependentUpon>201708160620596_update_multiple.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708160923389_update_leave.cs" />
-    <Compile Include="Migrations\201708160923389_update_leave.Designer.cs">
-      <DependentUpon>201708160923389_update_leave.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708160954422_update_leave_2.cs" />
-    <Compile Include="Migrations\201708160954422_update_leave_2.Designer.cs">
-      <DependentUpon>201708160954422_update_leave_2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708170917571_add foreign key.cs" />
-    <Compile Include="Migrations\201708170917571_add foreign key.Designer.cs">
-      <DependentUpon>201708170917571_add foreign key.cs</DependentUpon>
+    <Compile Include="Migrations\201708181143265_Initial.cs" />
+    <Compile Include="Migrations\201708181143265_Initial.Designer.cs">
+      <DependentUpon>201708181143265_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -3234,32 +3186,8 @@
     <Folder Include="Content\assets\data\images\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708031103462_InitialCreate.resx">
-      <DependentUpon>201708031103462_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708051026197_basic_setup_by_manas.resx">
-      <DependentUpon>201708051026197_basic_setup_by_manas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708051105464_add_new_tables.resx">
-      <DependentUpon>201708051105464_add_new_tables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708051127026_update_tables.resx">
-      <DependentUpon>201708051127026_update_tables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708060945434_update_branch.resx">
-      <DependentUpon>201708060945434_update_branch.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708061143340_update_status.resx">
-      <DependentUpon>201708061143340_update_status.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708070706016_add_leave.resx">
-      <DependentUpon>201708070706016_add_leave.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708080747186_update_leave_and_gender.resx">
-      <DependentUpon>201708080747186_update_leave_and_gender.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708091243206_update_image_type.resx">
-      <DependentUpon>201708091243206_update_image_type.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708181143265_Initial.resx">
+      <DependentUpon>201708181143265_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\LeaveReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -3269,21 +3197,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ResignReport.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708170917571_add foreign key.resx">
-      <DependentUpon>201708170917571_add foreign key.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Reports\test.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>test.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708160620596_update_multiple.resx">
-      <DependentUpon>201708160620596_update_multiple.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708160923389_update_leave.resx">
-      <DependentUpon>201708160923389_update_leave.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708160954422_update_leave_2.resx">
-      <DependentUpon>201708160954422_update_leave_2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\EmployeeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
