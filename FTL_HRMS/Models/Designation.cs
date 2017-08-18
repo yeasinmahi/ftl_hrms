@@ -17,6 +17,7 @@ namespace FTL_HRMS.Models
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Department cannot be empty")]
+        [ForeignKey("Department")]
         public int DepartmentId { get; set; }
 
         [Required(ErrorMessage = "Role Name cannot be empty")]

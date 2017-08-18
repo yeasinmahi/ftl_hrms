@@ -12,12 +12,15 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List
         // GET: BranchTransfers
         public ActionResult Index()
         {
-            return View(_db.BranchTransfer.ToList());
+            return View(_db.BranchTransfer.Include(i=> i.Branch).Include(i=> i.Employee).ToList());
         }
+        #endregion
 
+        #region Details (We don't use it)
         // GET: BranchTransfers/Details/5
         public ActionResult Details(int? id)
         {
@@ -32,13 +35,15 @@ namespace FTL_HRMS.Controllers
             }
             return View(branchTransfer);
         }
+        #endregion
 
+        #region Branch Transfer
         // GET: BranchTransfers/Create
         public ActionResult Create()
         {
             List<Employee> EmployeeList = new List<Employee>();
             EmployeeList = _db.Employee.Where(i => i.Status == true).ToList();
-            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Name");
+            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Code");
 
             List<Branch> BranchList = new List<Branch>();
             BranchList = _db.Branches.Where(i => i.Status == true).ToList();
@@ -63,23 +68,28 @@ namespace FTL_HRMS.Controllers
                 _db.SaveChanges();
 
                 #region Edit Employee
-
                 Employee employee = _db.Employee.Find(branchTransfer.EmployeeId);
                 employee.BranchId = ToBranchId;
                 _db.Entry(employee).State = EntityState.Modified;
                 _db.SaveChanges();
-
                 #endregion
-                TempData["SuccessMsg"] = "Added Successfully !!";
+
+                TempData["SuccessMsg"] = "Transfered Successfully !!";
                 return RedirectToAction("Create");
-                _db.BranchTransfer.Add(branchTransfer);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
             }
             TempData["WarningMsg"] = "Something went wrong !!";
 
+            List<Employee> EmployeeList = new List<Employee>();
+            EmployeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeId = new SelectList(EmployeeList, "Sl", "Code", branchTransfer.EmployeeId);
+
+            List<Branch> BranchList = new List<Branch>();
+            BranchList = _db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name", branchTransfer.ToBranchId);
+
             return View(branchTransfer);
         }
+        #endregion
 
         #region Get Information
         [AllowAnonymous]
@@ -103,6 +113,7 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Edit
         // GET: BranchTransfers/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -115,7 +126,7 @@ namespace FTL_HRMS.Controllers
             List<Branch> BranchList = new List<Branch>();
             BranchList = _db.Branches.Where(i => i.Status == true).ToList();
             ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name");
-            
+
             if (branchTransfer == null)
             {
                 return HttpNotFound();
@@ -138,22 +149,30 @@ namespace FTL_HRMS.Controllers
                 branchTransfer.FromBranchId = FromBranchId;
                 _db.Entry(branchTransfer).State = EntityState.Modified;
                 _db.SaveChanges();
+
                 #region Edit Employee
                 Employee employee = _db.Employee.Find(branchTransfer.EmployeeId);
                 employee.BranchId = ToBranchId;
                 _db.Entry(employee).State = EntityState.Modified;
                 _db.SaveChanges();
                 #endregion
-                TempData["SuccessMsg"] = "Added Successfully !!";
-                return RedirectToAction("Edit");
-                _db.Entry(branchTransfer).State = EntityState.Modified;
-                _db.SaveChanges();
-                return RedirectToAction("Index");
+
+                TempData["SuccessMsg"] = "Updated Successfully !!";
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            else
+            {
+                TempData["WarningMsg"] = "Something went wrong !!";
+            }
+            BranchTransfer BranchTransfer = _db.BranchTransfer.Find(branchTransfer.Sl);
+            ViewBag.Branch = _db.Branches.Where(x => x.Sl == BranchTransfer.ToBranchId).Select(t => t.Name).FirstOrDefault();
+            List<Branch> BranchList = new List<Branch>();
+            BranchList = _db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(BranchList, "Sl", "Name");
             return View(branchTransfer);
         }
+        #endregion
 
+        #region Delete (We don't use it)
         // GET: BranchTransfers/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -179,7 +198,9 @@ namespace FTL_HRMS.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -188,5 +209,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }
