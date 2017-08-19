@@ -360,12 +360,7 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
       
-        #region Print         
-        public ActionResult EmployeeTypeReport()
-        {
-            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
-            return View();
-        }
+        #region Print        
 
         [HttpPost]
         public ActionResult EmployeeTypeReport(string employeeTypeId)

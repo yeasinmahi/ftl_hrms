@@ -10,9 +10,11 @@ namespace FTL_HRMS.Models
         public int Sl { get; set; }
 
         [Required(ErrorMessage = "Employee cannot be empty")]
+        [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
 
         [Required(ErrorMessage = "Leave Type cannot be empty")]
+        [ForeignKey("LeaveType")]
         public int LeaveTypeId { get; set; }
 
         [Required(ErrorMessage = "Day cannot be empty")]
