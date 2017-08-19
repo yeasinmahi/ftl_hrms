@@ -49,7 +49,7 @@
                         </div>
 
                         <div>
-                            Disciplinary Action Type
+                            @Html.LabelFor(model => model.DisciplinaryActionTypeId, "Disciplinary Action Type", new { @class = "required" })
                         </div>
                         <div>
                             @Html.DropDownList("DisciplinaryActionTypeId", null, "--Select Type--", htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
@@ -57,7 +57,7 @@
                         </div>
 
                         <div>
-                            Date
+                            @Html.LabelFor(model => model.Date, new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -65,7 +65,7 @@
                         </div>
 
                         <div>
-                            Remarks
+                            @Html.LabelFor(model => model.Remarks, new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -85,3 +85,11 @@
         </div>
     </div>
 </div>
+
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>

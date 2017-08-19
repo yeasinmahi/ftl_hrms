@@ -47,7 +47,7 @@
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "SourceOfHires" )'">Back To List</button>
                         </div>
                         <div>
-                            Name
+                            @Html.LabelFor(model => model.Name, new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -73,3 +73,11 @@
         </div>
     </div>
 </div>
+
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>

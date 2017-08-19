@@ -70,21 +70,21 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="col-md-4">
                                         <div>
-                                            Code
+                                            @Html.LabelFor(model => model.Code, new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 1, @required = true } })
                                             @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Mother's Name
+                                            @Html.LabelFor(model => model.MothersName, "Mother's Name", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.MothersName, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 4, @required = true } })
                                             @Html.ValidationMessageFor(model => model.MothersName, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Gender
+                                            @Html.LabelFor(model => model.Gender, new { @class = "required" })
                                         </div>
                                         @{
                                             List<SelectListItem> listItems = new List<SelectListItem>();
@@ -110,14 +110,14 @@
                                             @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            NID / Birth Certificate
+                                            @Html.LabelFor(model => model.NIDorBirthCirtificate, "NID / Birth Certificate", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.NIDorBirthCirtificate, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 10, @required = true } })
                                             @Html.ValidationMessageFor(model => model.NIDorBirthCirtificate, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Date Of Birth
+                                            @Html.LabelFor(model => model.DateOfBirth, "Date Of Birth", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
@@ -126,34 +126,34 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div>
-                                            Name
+                                            @Html.LabelFor(model => model.Name, new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 2, @required = true } })
                                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Present Address
+                                            @Html.LabelFor(model => model.PresentAddress, "Present Address", new { @class = "required" })
                                         </div>
                                         <div>
-                                            <textarea class="form-control autogrow" cols="5" name="PresentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:100%" id="present_address" required tabindex="5">@Model.PresentAddress</textarea>
+                                            <textarea class="form-control autogrow" cols="5" name="PresentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 35px;width:100%" id="present_address" required tabindex="5">@Model.PresentAddress</textarea>
                                         </div>
                                         <div>
-                                            Mobile
+                                            @Html.LabelFor(model => model.Mobile, new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 8, @required = true } })
                                             @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Diving Licence
+                                            @Html.LabelFor(model => model.DrivingLicence, "Driving Licence")
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.DrivingLicence, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 11 } })
                                             @Html.ValidationMessageFor(model => model.DrivingLicence, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Date Of Joining
+                                            @Html.LabelFor(model => model.DateOfJoining, "Date Of Joining", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 14, @required = true } })
@@ -162,34 +162,34 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div>
-                                            Father's Name
+                                            @Html.LabelFor(model => model.FathersName, "Father's Name", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.FathersName, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 3, @required = true } })
                                             @Html.ValidationMessageFor(model => model.FathersName, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Permanent Address
+                                            @Html.LabelFor(model => model.PermanentAddress, "Permanent Address", new { @class = "required" })
                                         </div>
                                         <div>
-                                            <textarea class="form-control autogrow" cols="5" name="PermanentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:100%" id="permanent_address" required tabindex="6">@Model.PermanentAddress</textarea>
+                                            <textarea class="form-control autogrow" cols="5" name="PermanentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 35px;width:100%" id="permanent_address" required tabindex="6">@Model.PermanentAddress</textarea>
                                         </div>
                                         <div>
-                                            Email
+                                            @Html.LabelFor(model => model.Email)
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 9 } })
                                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Passport Number
+                                            @Html.Label("Passport Number")
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.PassportNumber, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 12 } })
                                             @Html.ValidationMessageFor(model => model.PassportNumber, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Source Of Hire
+                                            @Html.LabelFor(model => model.SourceOfHireId, "Source Of Hire", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.DropDownList("SourceOfHireId", null, "Select Source", htmlAttributes: new { @class = "form-control", style = "width:100%", @tabindex = 15, @required = true })
@@ -210,3 +210,11 @@
         </div>
     </div>
 </div>
+
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>

@@ -76,7 +76,7 @@
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Departments" )'">Back To List</button>
                         </div>
                         <div>
-                            Code
+                            @Html.LabelFor(model => model.Code)
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
@@ -84,7 +84,7 @@
                         </div>
 
                         <div>
-                            Name
+                            @Html.LabelFor(model => model.Name, new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -93,7 +93,7 @@
 
 
                         <div>
-                            Department Group Name
+                            @Html.LabelFor(model => model.DepartmentGroupId,"Department Group", new { @class = "required" })
                         </div>
                         @*<div class="editor-field">
                             <input type="hidden" id="DepartmentGroupId" name="DepartmentGroupId" />
@@ -116,3 +116,11 @@
         </div>
     </div>
 </div>
+
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>

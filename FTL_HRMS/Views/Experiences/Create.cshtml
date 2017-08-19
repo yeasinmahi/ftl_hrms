@@ -47,7 +47,7 @@
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Experiences", new { employeeId = ViewBag.EmployeeId})'">Back To List</button>
                         </div>
                         <div>
-                            Institute Name
+                            @Html.LabelFor(model => model.InstituteName, "Institute Name", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.InstituteName, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -55,7 +55,7 @@
                         </div>
 
                         <div>
-                            Institute Address
+                            @Html.LabelFor(model => model.InstituteAddress, "Institute Address", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.InstituteAddress, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -63,7 +63,7 @@
                         </div>
 
                         <div>
-                            From Date
+                            @Html.LabelFor(model => model.FromDate, "From Date", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -71,7 +71,7 @@
                         </div>
 
                         <div>
-                            To Date
+                            @Html.LabelFor(model => model.ToDate, "To Date", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -79,7 +79,7 @@
                         </div>
 
                         <div>
-                            Website
+                            @Html.LabelFor(model => model.Website)
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Website, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
@@ -87,7 +87,7 @@
                         </div>
 
                         <div>
-                            Phone
+                            @Html.LabelFor(model => model.Phone)
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
@@ -95,7 +95,7 @@
                         </div>
 
                         <div>
-                            Designation
+                            @Html.LabelFor(model => model.Designation, new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -113,3 +113,11 @@
         </div>
     </div>
 </div>
+
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>

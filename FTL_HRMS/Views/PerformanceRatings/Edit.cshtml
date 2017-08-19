@@ -49,14 +49,14 @@
                         </div>
 
                         <div>
-                            Performance Issue
+                            @Html.LabelFor(model => model.PerformanceIssueId, "Performance Issue", new { @class = "required" })
                         </div>
                         <div>
                             @Html.DropDownList("PerformanceIssueId", null, "--Select Type--", htmlAttributes: new { @class = "form-control", style = "width:50%", @required=true })
                             @Html.ValidationMessageFor(model => model.PerformanceIssueId, "", new { @class = "text-danger" })
                         </div>
                         <div>
-                            Rating
+                            @Html.LabelFor(model => model.Rating, new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -64,7 +64,7 @@
                         </div>
 
                         <div>
-                            Date
+                            @Html.LabelFor(model => model.Date, new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -83,3 +83,11 @@
         </div>
     </div>
 </div>
+
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>

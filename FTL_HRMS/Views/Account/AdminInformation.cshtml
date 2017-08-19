@@ -70,7 +70,7 @@
                     <div class="col-md-offset-3">
                         <div>
                             <div>
-                                @Html.LabelFor(model => model.UserName)
+                                @Html.LabelFor(model => model.UserName, new { @class = "required" })
                             </div>
                             <div>
                                 @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -78,7 +78,7 @@
                             </div>
 
                             <div>
-                                @Html.LabelFor(model => model.PhoneNumber, "Mobile")
+                                @Html.LabelFor(model => model.PhoneNumber, "Mobile", new { @class = "required" })
                             </div>
                             <div>
                                 @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -86,7 +86,7 @@
                             </div>
 
                             <div>
-                                @Html.LabelFor(model => model.Email)
+                                @Html.LabelFor(model => model.Email, new { @class = "required" })
                             </div>
                             <div>
                                 @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -129,3 +129,12 @@
         }
     });
 </script>
+
+<style>
+.required:after 
+{
+    content: " *";
+    font-weight: bold;
+    color: red; 
+}
+</style>

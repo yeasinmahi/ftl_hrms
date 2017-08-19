@@ -50,7 +50,7 @@
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Designations" )'">Back To List</button>
                         </div>
                         <div>
-                            Code
+                            @Html.LabelFor(model => model.Code)
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
@@ -58,7 +58,7 @@
                         </div>
 
                         <div>
-                            Name
+                            @Html.LabelFor(model => model.Name, new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required=true } })
@@ -66,14 +66,14 @@
                         </div>
 
                         <div>
-                            Department Group
+                            @Html.Label("Department Group", new { @class = "required" })
                         </div>
                         <div>
                             @Html.DropDownList("DepartmentGroupId", null, "Select Group", htmlAttributes: new { @class = "form-control", style = "width:50%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();", @required = true })
                         </div>
 
                         <div>
-                            Department
+                            @Html.LabelFor(model => model.DepartmentId, "Department", new { @class = "required" })
                         </div>
                         <div>
                             <select class="form-control" style="width:50%" id="ddl_dept" name="ddl_dept" required>
@@ -82,7 +82,7 @@
                         </div>
 
                         <div>
-                            Role Name
+                            @Html.LabelFor(model => model.RoleName, "Role Name", new { @class = "required" })
                         </div>
                         <div>
                             @Html.DropDownList("RoleName", null, "Select Role", htmlAttributes: new { @class = "form-control", style = "width:50%", @required=true })
@@ -127,3 +127,11 @@
         });
     };
 </script>
+
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>

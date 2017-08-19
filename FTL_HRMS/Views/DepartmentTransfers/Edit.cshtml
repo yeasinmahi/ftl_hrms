@@ -50,7 +50,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div>
-                                    Transfer Date
+                                    @Html.LabelFor(model => model.TransferDate, "Transfer Date", new { @class = "required" })
                                 </div>
                                 <div>
                                     @Html.EditorFor(model => model.TransferDate, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @required = true } })
@@ -61,7 +61,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div>
-                                    Department Group
+                                    @Html.Label("From Department Group", new { @class = "required" })
                                 </div>
 
                                 <div>
@@ -71,7 +71,7 @@
 
                             <div class="col-md-4">
                                 <div>
-                                    Department
+                                    @Html.Label("From Department", new { @class = "required" })
                                 </div>
 
                                 <div>
@@ -80,7 +80,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div>
-                                    Designation
+                                    @Html.Label("From Designation", new { @class = "required" })
                                 </div>
 
                                 <div>
@@ -92,7 +92,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div>
-                                    Department Group
+                                    @Html.Label("To Department Group", new { @class = "required" })
                                 </div>
 
                                 <div>
@@ -102,7 +102,7 @@
 
                             <div class="col-md-4">
                                 <div>
-                                    Department
+                                    @Html.Label("To Department", new { @class = "required" })
                                 </div>
 
                                 <select class="form-control" style="width:100%" id="ddl_dept" name="ddl_dept" onchange="LoadDesignation();" tabindex=20 required>
@@ -111,7 +111,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div>
-                                    Designation
+                                    @Html.Label("To Designation", new { @class = "required" })
                                 </div>
 
                                 <select class="form-control" style="width:100%" id="ddl_designation" name="ddl_designation" tabindex=21 required>
@@ -189,3 +189,10 @@
 
 </script>
 
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>
