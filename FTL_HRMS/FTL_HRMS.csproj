@@ -2837,6 +2837,10 @@
     <Compile Include="Migrations\201708181143265_Initial.Designer.cs">
       <DependentUpon>201708181143265_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708190806343_adding foreign key.cs" />
+    <Compile Include="Migrations\201708190806343_adding foreign key.Designer.cs">
+      <DependentUpon>201708190806343_adding foreign key.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LeaveCount.cs" />
@@ -3188,6 +3192,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201708181143265_Initial.resx">
       <DependentUpon>201708181143265_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708190806343_adding foreign key.resx">
+      <DependentUpon>201708190806343_adding foreign key.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\LeaveReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
