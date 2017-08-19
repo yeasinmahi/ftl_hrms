@@ -17,8 +17,8 @@ namespace FTL_HRMS.Controllers
         {
             string userName = User.Identity.Name;
             int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-            List<PerformanceRating> PerformanceRatingList = _db.PerformanceRating.Include(i => i.PerformanceIssue).Include(i => i.Employee).Where(i => i.EmployeeId != userId).ToList();
-            return View(PerformanceRatingList);
+            List<PerformanceRating> performanceRatingList = _db.PerformanceRating.Include(i => i.PerformanceIssue).Include(i => i.Employee).Where(i => i.EmployeeId != userId).ToList();
+            return View(performanceRatingList);
         }
         #endregion
 

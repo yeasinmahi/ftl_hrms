@@ -32,8 +32,8 @@ namespace FTL_HRMS.Controllers
         {
             string userName = User.Identity.Name;
             int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-            List<Employee> EmployeeList = _db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true && i.Sl != userId).ToList();
-            return View(EmployeeList);
+            List<Employee> employeeList = _db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true && i.Sl != userId).ToList();
+            return View(employeeList);
         }
         #endregion
 
@@ -260,7 +260,7 @@ namespace FTL_HRMS.Controllers
                 _db.SaveChanges();
 
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
 
                 ApplicationUser user = new ApplicationUser();
                 user.IsActive = true;
@@ -276,12 +276,12 @@ namespace FTL_HRMS.Controllers
                 string password = Convert.ToString(Request["Password"]);
                 string userPwd = password;
 
-                var chkUser = UserManager.Create(user, userPwd);
+                var chkUser = userManager.Create(user, userPwd);
 
                 //Add default User to Role Customer   
                 if (chkUser.Succeeded)
                 {
-                    var result1 = UserManager.AddToRole(user.Id, role);
+                    var result1 = userManager.AddToRole(user.Id, role);
                 }
                 _db.SaveChanges();
                 #endregion
@@ -376,21 +376,21 @@ namespace FTL_HRMS.Controllers
         {
             if (employeeTypeId== "")
             {
-                List<Employee> EmployeeList = new List<Employee>();
-                EmployeeList = _db.Employee.ToList();
+                List<Employee> employeeList = new List<Employee>();
+                employeeList = _db.Employee.ToList();
                 ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
                 ViewBag.Status = "SelectType";
-                return View(EmployeeList.ToList());
+                return View(employeeList.ToList());
             }
             else
             {
                 int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
                 ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
                 ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == EmployeeTypeId).Select(p => p.Name).FirstOrDefault();
-                List<Employee> EmployeeList = new List<Employee>();
-                EmployeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
+                List<Employee> employeeList = new List<Employee>();
+                employeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
                 ViewBag.Status = "SelectType";
-                return View(EmployeeList.ToList());
+                return View(employeeList.ToList());
             }
             
         }
@@ -403,23 +403,23 @@ namespace FTL_HRMS.Controllers
        
         public ActionResult ResignReport()
         {
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = _db.Employee.Where(v => v.Status == false).ToList();
-            return View(EmployeeList.ToList());
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(v => v.Status == false).ToList();
+            return View(employeeList.ToList());
         }
 
         public ActionResult TransferReport()
         {
-            List<DepartmentTransfer> DepartmentTransferList = new List<DepartmentTransfer>();
-            DepartmentTransferList = _db.DepartmentTransfer.ToList();
-            return View(DepartmentTransferList.ToList());
+            List<DepartmentTransfer> departmentTransferList = new List<DepartmentTransfer>();
+            departmentTransferList = _db.DepartmentTransfer.ToList();
+            return View(departmentTransferList.ToList());
         }
 
         public ActionResult LeaveReport()
         {
-            List<LeaveHistory> DepartmentLeaveList = new List<LeaveHistory>();
-            DepartmentLeaveList = _db.LeaveHistories.ToList();
-            return View(DepartmentLeaveList.ToList());
+            List<LeaveHistory> departmentLeaveList = new List<LeaveHistory>();
+            departmentLeaveList = _db.LeaveHistories.ToList();
+            return View(departmentLeaveList.ToList());
         }
         #endregion
 

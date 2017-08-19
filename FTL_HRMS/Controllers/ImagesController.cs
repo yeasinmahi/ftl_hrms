@@ -66,12 +66,12 @@ namespace FTL_HRMS.Controllers
             {
                 images.Image = new byte[image1.ContentLength];
                 image1.InputStream.Read(images.Image, 0, image1.ContentLength);
-                int EmpId = Convert.ToInt32(Request["EmployeeId"]);
-                images.EmployeeId = EmpId;
+                int empId = Convert.ToInt32(Request["EmployeeId"]);
+                images.EmployeeId = empId;
                 _db.Images.Add(images);
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
-                return RedirectToAction("Create", "Images", new { employeeId = EmpId });
+                return RedirectToAction("Create", "Images", new { employeeId = empId });
             }
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(images);
@@ -137,10 +137,10 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Images images = _db.Images.Find(id);
-            int EmployeeId = images.EmployeeId;
+            int employeeId = images.EmployeeId;
             _db.Images.Remove(images);
             _db.SaveChanges();
-            return RedirectToAction("Index", "Images", new { employeeId = EmployeeId });
+            return RedirectToAction("Index", "Images", new { employeeId = employeeId });
         }
         #endregion
 

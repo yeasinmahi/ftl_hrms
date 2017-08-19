@@ -17,8 +17,8 @@ namespace FTL_HRMS.Controllers
         {
             string userName = User.Identity.Name;
             int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-            List<DisciplinaryAction> DisciplinaryActionList = _db.DisciplinaryAction.Include(i => i.DisciplinaryActionType).Include(i => i.Employee).Where(i => i.EmployeeId != userId).ToList();
-            return View(DisciplinaryActionList);
+            List<DisciplinaryAction> disciplinaryActionList = _db.DisciplinaryAction.Include(i => i.DisciplinaryActionType).Include(i => i.Employee).Where(i => i.EmployeeId != userId).ToList();
+            return View(disciplinaryActionList);
         }
         #endregion
 

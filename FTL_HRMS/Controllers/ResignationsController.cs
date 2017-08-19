@@ -18,9 +18,9 @@ namespace FTL_HRMS.Controllers
         {
             string userName = User.Identity.Name;
             int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-            List<Resignation> ResignationList = new List<Resignation>();
-            ResignationList = _db.Resignation.Where(i => i.EmployeeId == userId).ToList();
-            return View(ResignationList);
+            List<Resignation> resignationList = new List<Resignation>();
+            resignationList = _db.Resignation.Where(i => i.EmployeeId == userId).ToList();
+            return View(resignationList);
         }
         #endregion
 
@@ -87,16 +87,16 @@ namespace FTL_HRMS.Controllers
         public ActionResult ResignationApproval([Bind(Include = "Sl,ResignDate,Reason,Suggestion,Status,CreateDate,UpdatedBy,UpdateDate,Remarks,EmployeeId")] Resignation resignation)
         {
             int id = Convert.ToInt32(Request["field-1"]);
-            string Status = Convert.ToString(Request["field-2"]);
-            string Remarks = Convert.ToString(Request["field-3"]);
+            string status = Convert.ToString(Request["field-2"]);
+            string remarks = Convert.ToString(Request["field-3"]);
             string userName = User.Identity.Name;
             int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
 
             resignation = _db.Resignation.Find(id);
             if (resignation != null)
             {
-                resignation.Status = Status;
-                resignation.Remarks = Remarks;
+                resignation.Status = status;
+                resignation.Remarks = remarks;
                 resignation.UpdatedBy = userId;
                 resignation.UpdateDate = DateTime.Now;
                 _db.Entry(resignation).State = EntityState.Modified;

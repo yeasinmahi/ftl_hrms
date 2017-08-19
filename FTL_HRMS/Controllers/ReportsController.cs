@@ -24,31 +24,31 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult EmployeeTypeReport(string employeeTypeId)
         {
-            List<Employee> EmployeeList = new List<Employee>();
+            List<Employee> employeeList = new List<Employee>();
             ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
             ViewBag.Status = "SelectType";
             if (String.IsNullOrWhiteSpace(employeeTypeId))
             {
-                EmployeeList = _db.Employee.ToList();
+                employeeList = _db.Employee.ToList();
             }
             else
             {
                 int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
                 ViewBag.EmployeesTypeId = EmployeeTypeId;
                 ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == EmployeeTypeId).Select(p => p.Name).FirstOrDefault();
-                EmployeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
+                employeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
 
             }
-            return View(EmployeeList);
+            return View(employeeList);
 
         }
         public ActionResult PrintEmployeeList()
         {
-            int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
+            int employeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
             string selectedFormula = "";
-            if (EmployeeTypeId > 0)
+            if (employeeTypeId > 0)
             {
-                selectedFormula = "{tbl_Employee.EmployeeTypeId} = " + EmployeeTypeId;
+                selectedFormula = "{tbl_Employee.EmployeeTypeId} = " + employeeTypeId;
             }
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName = "Employee Report", selectedFormula = selectedFormula });
         }
@@ -57,9 +57,9 @@ namespace FTL_HRMS.Controllers
         #region Resign Report
         public ActionResult ResignReport()
         {
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = _db.Employee.Where(v => v.Status == false).ToList();
-            return View(EmployeeList.ToList());
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(v => v.Status == false).ToList();
+            return View(employeeList.ToList());
         }
         public ActionResult PrintResignReport()
         {
@@ -69,24 +69,24 @@ namespace FTL_HRMS.Controllers
         #endregion
 
         #region Department Transfer Report
-        public ActionResult TransferReport()
+        public ActionResult DepartmentTransferReport()
         {
-            List<DepartmentTransfer> DepartmentTransferList = new List<DepartmentTransfer>();
-            DepartmentTransferList = _db.DepartmentTransfer.ToList();
-            return View(DepartmentTransferList.ToList());
+            List<DepartmentTransfer> departmentTransferList = new List<DepartmentTransfer>();
+            departmentTransferList = _db.DepartmentTransfer.ToList();
+            return View(departmentTransferList.ToList());
         }
         public ActionResult PrintTransferReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "TransferReport", fileName = "Transfer Report" });
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DepartmentTransferReport", fileName = "Transfer Report" });
         }
         #endregion
 
         #region Leave Report
         public ActionResult LeaveReport()
         {
-            List<LeaveHistory> DepartmentLeaveList = new List<LeaveHistory>();
-            DepartmentLeaveList = _db.LeaveHistories.ToList();
-            return View(DepartmentLeaveList.ToList());
+            List<LeaveHistory> departmentLeaveList = new List<LeaveHistory>();
+            departmentLeaveList = _db.LeaveHistories.ToList();
+            return View(departmentLeaveList.ToList());
         }
         public ActionResult PrintLeaveReport()
         {

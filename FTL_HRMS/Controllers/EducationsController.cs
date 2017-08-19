@@ -55,12 +55,12 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                int EmpId = Convert.ToInt32(Request["EmployeeId"]);
-                education.EmployeeId = EmpId;
+                int empId = Convert.ToInt32(Request["EmployeeId"]);
+                education.EmployeeId = empId;
                 _db.Education.Add(education);
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
-                return RedirectToAction("Create", "Educations", new { employeeId = EmpId});
+                return RedirectToAction("Create", "Educations", new { employeeId = empId});
             }
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(education);
@@ -124,10 +124,10 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Education education = _db.Education.Find(id);
-            int EmployeeId = education.EmployeeId;
+            int employeeId = education.EmployeeId;
             if (education != null) _db.Education.Remove(education);
             _db.SaveChanges();
-            return RedirectToAction("Index", "Educations", new { employeeId = EmployeeId });
+            return RedirectToAction("Index", "Educations", new { employeeId = employeeId });
         }
         #endregion
 

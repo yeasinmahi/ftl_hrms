@@ -56,9 +56,9 @@ namespace FTL_HRMS.Controllers
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
-            List<IdentityRole> RoleList = new List<IdentityRole>();
-            RoleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
-            ViewBag.RoleName = new SelectList(RoleList, "Name", "Name");
+            List<IdentityRole> roleList = new List<IdentityRole>();
+            roleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
+            ViewBag.RoleName = new SelectList(roleList, "Name", "Name");
 
             return View();
         }
@@ -86,9 +86,9 @@ namespace FTL_HRMS.Controllers
             List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
-            List<IdentityRole> RoleList = new List<IdentityRole>();
-            RoleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
-            ViewBag.RoleName = new SelectList(RoleList, "Name", "Name");
+            List<IdentityRole> roleList = new List<IdentityRole>();
+            roleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
+            ViewBag.RoleName = new SelectList(roleList, "Name", "Name");
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(designation);
         }
@@ -108,18 +108,18 @@ namespace FTL_HRMS.Controllers
                 return HttpNotFound();
             }
 
-            int DepartmentId = _db.Designation.Where(x => x.Sl == designation.Sl).Select(t => t.DepartmentId).FirstOrDefault();
-            ViewBag.DepartmentId = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.Sl).FirstOrDefault();
-            ViewBag.DepartmentName = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.Name).FirstOrDefault();
-            int DepartmentGroupId = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.DepartmentGroupId).FirstOrDefault();
+            int departmentId = _db.Designation.Where(x => x.Sl == designation.Sl).Select(t => t.DepartmentId).FirstOrDefault();
+            ViewBag.DepartmentId = _db.Department.Where(x => x.Sl == departmentId).Select(t => t.Sl).FirstOrDefault();
+            ViewBag.DepartmentName = _db.Department.Where(x => x.Sl == departmentId).Select(t => t.Name).FirstOrDefault();
+            int departmentGroupId = _db.Department.Where(x => x.Sl == departmentId).Select(t => t.DepartmentGroupId).FirstOrDefault();
 
             List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name", DepartmentGroupId);
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name", departmentGroupId);
 
-            List<IdentityRole> RoleList = new List<IdentityRole>();
-            RoleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
-            ViewBag.RoleName = new SelectList(RoleList, "Name", "Name", designation.RoleName);
+            List<IdentityRole> roleList = new List<IdentityRole>();
+            roleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
+            ViewBag.RoleName = new SelectList(roleList, "Name", "Name", designation.RoleName);
             return View(designation);
         }
 
@@ -132,8 +132,8 @@ namespace FTL_HRMS.Controllers
         {
             List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            List<IdentityRole> RoleList = new List<IdentityRole>();
-            RoleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
+            List<IdentityRole> roleList = new List<IdentityRole>();
+            roleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
             if (ModelState.IsValid)
             {
                 string userName = User.Identity.Name;
@@ -149,12 +149,12 @@ namespace FTL_HRMS.Controllers
             {
                 TempData["WarningMsg"] = "Something went wrong !!";
             }
-            int DepartmentId = designation.DepartmentId;
-            ViewBag.DepartmentId = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.Sl).FirstOrDefault();
-            ViewBag.DepartmentName = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.Name).FirstOrDefault();
-            int DepartmentGroupId = _db.Department.Where(x => x.Sl == DepartmentId).Select(t => t.DepartmentGroupId).FirstOrDefault();
-            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name", DepartmentGroupId);
-            ViewBag.RoleName = new SelectList(RoleList, "Name", "Name", designation.RoleName);
+            int departmentId = designation.DepartmentId;
+            ViewBag.DepartmentId = _db.Department.Where(x => x.Sl == departmentId).Select(t => t.Sl).FirstOrDefault();
+            ViewBag.DepartmentName = _db.Department.Where(x => x.Sl == departmentId).Select(t => t.Name).FirstOrDefault();
+            int departmentGroupId = _db.Department.Where(x => x.Sl == departmentId).Select(t => t.DepartmentGroupId).FirstOrDefault();
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name", departmentGroupId);
+            ViewBag.RoleName = new SelectList(roleList, "Name", "Name", designation.RoleName);
             return View(designation);
         }
         #endregion
