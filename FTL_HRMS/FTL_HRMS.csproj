@@ -2864,6 +2864,12 @@
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\RolePermission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\BranchTransferReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchTransferReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\LeaveReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3172,7 +3178,8 @@
     <Content Include="Views\Reports\EmployeeTypeReport.cshtml" />
     <Content Include="Views\Reports\ResignReport.cshtml" />
     <Content Include="Views\Reports\LeaveReport.cshtml" />
-    <Content Include="Views\Reports\TransferReport.cshtml" />
+    <Content Include="Views\Reports\DepartmentTransferReport.cshtml" />
+    <Content Include="Views\Reports\BranchTransferReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3188,6 +3195,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201708181143265_Initial.resx">
       <DependentUpon>201708181143265_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BranchTransferReport.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\LeaveReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

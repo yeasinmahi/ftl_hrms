@@ -1,15 +1,15 @@
 ﻿@{
-    ViewBag.Title = "Resign Report By Date Range";
+    ViewBag.Title = "Branch Transfer By Date Range";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 <header class="panel_header">
-    <h2 class="title pull-left">Resign Report List</h2>
+    <h2 class="title pull-left">Branch Transfer List</h2>
     <div class="actions panel_actions pull-right">
         <i class="box_toggle fa fa-chevron-down"></i>
     </div>
 </header>
 <br /> <br />
-@using (Html.BeginForm("ResignReportDateView", "Reports"))
+@using (Html.BeginForm("BranchTransferReportDateView", "Reports"))
 {
     <div class="row">
         <div class="col-md-4" style="margin-left:15%">
@@ -47,38 +47,36 @@
                     {
                         <div class="btn-group">
 
-                            <button type="button" onclick="location.href='@Url.Action("PrintResignReport", "Reports")'" target="_blank" class="btn btn-info btn-sm">
+                            <button type="button" onclick="location.href='@Url.Action("PrintBranchTransferReport", "Reports")'" target="_blank" class="btn btn-info btn-sm">
                                 <span class="glyphicon glyphicon-print"></span> Download PDF
                             </button>
 
                         </div>
 
-                        <table cellspacing="0" id="tech-companies-1" class="table table-small-font table-bordered table-striped">
+                            <table cellspacing="0" id="tech-companies-1" class="table table-small-font table-bordered table-striped">
 
-                            <thead>
-                                <tr>
-                                    <th style="text-align:center">SL</th>
-                                    <th data-priority="1" style="text-align:center">Employee Name</th>
-                                    <th data-priority="1" style="text-align:center">Reason</th>
-                                    <th data-priority="3" style="text-align:center">Suggestion</th>
-                                    <th data-priority="3" style="text-align:center">Status</th>
-                                    <th data-priority="1" style="text-align:center">Resign Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (int i = 0; i < Model.Count; i++)
-                                {
+                                <thead>
                                     <tr>
-                                        <td align="center">@i</td>
-                                        <td align="center">@Model[i].Employee.Name</td>
-                                        <td align="center">@Model[i].Reason</td>
-                                        <td align="center">@Model[i].Suggestion</td>
-                                        <td align="center">@Model[i].Status</td>
-                                        <td align="center">@Model[i].ResignDate.ToString("dd-MM-yyyy")</td>
+                                        <th style="text-align:center">SL</th>
+                                        <th data-priority="1" style="text-align:center">Employee Name</th>
+                                        <th data-priority="1" style="text-align:center">From Branch</th>
+                                        <th data-priority="3" style="text-align:center">To Branch</th>
+                                        <th data-priority="1" style="text-align:center">Transfer Date</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td align="center">@i</td>
+                                            <td align="center">@Model[i].Employee.Name</td>
+                                            <td align="center">@Model[i].FromBranch.Name</td>
+                                            <td align="center">@Model[i].ToBranch.Name</td>
+                                            <td align="center">@Model[i].TransferDate.ToString("dd-MM-yyyy")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                     }
                 </div>
             </div>
