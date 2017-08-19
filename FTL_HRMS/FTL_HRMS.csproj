@@ -2888,10 +2888,10 @@
       <DependentUpon>EmployeeReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\TransferReport.cs">
+    <Compile Include="Reports\DepartmentTransferReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TransferReport.rpt</DependentUpon>
+      <DependentUpon>DepartmentTransferReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Startup.cs" />
@@ -3205,9 +3205,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EmployeeReport.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\TransferReport.rpt">
+    <EmbeddedResource Include="Reports\DepartmentTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>TransferReport.cs</LastGenOutput>
+      <LastGenOutput>DepartmentTransferReport.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
