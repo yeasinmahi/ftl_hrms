@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using FTL_HRMS.Models;
 using System;
 using System.Collections.Generic;
+using FTL_HRMS.Utility;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
 
@@ -19,7 +20,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult Index()
         {
             string userName = User.Identity.Name;
-            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            int userId = DbUtility.GetUserId(_db, userName);
             List<DepartmentTransfer> departmentTransferList = _db.DepartmentTransfer.Include(a => a.Employee).Where(i => i.EmployeeId != userId).ToList();
             return View(departmentTransferList);
         }
@@ -47,7 +48,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult Create()
         {
             string userName = User.Identity.Name;
-            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            int userId = DbUtility.GetUserId(_db, userName);
 
             List<Employee> employeeList = new List<Employee>();
             employeeList = _db.Employee.Where(i => i.Status == true && i.Sl != userId).ToList();

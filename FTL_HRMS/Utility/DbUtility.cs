@@ -67,6 +67,10 @@ namespace FTL_HRMS.Utility
             
         }
 
+        public static int GetUserId(HRMSDbContext db, string userName)
+        {   
+            return db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+        }
         public static void ExecuteSeedOperation(HRMSDbContext context, List<string> scripts)
         {
             foreach (string script in scripts)

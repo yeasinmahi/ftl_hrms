@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
+using FTL_HRMS.Utility;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FTL_HRMS.Controllers
@@ -73,7 +74,7 @@ namespace FTL_HRMS.Controllers
             if (designation.Name != "")
             {
                 string userName = User.Identity.Name;
-                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                int userId = DbUtility.GetUserId(_db, userName);
                 designation.CreatedBy = userId;
                 designation.CreateDate = DateTime.Now;
                 designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
@@ -137,7 +138,7 @@ namespace FTL_HRMS.Controllers
             if (ModelState.IsValid)
             {
                 string userName = User.Identity.Name;
-                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                int userId = DbUtility.GetUserId(_db, userName);
                 designation.UpdatedBy = userId;
                 designation.UpdateDate = DateTime.Now;
                 designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
