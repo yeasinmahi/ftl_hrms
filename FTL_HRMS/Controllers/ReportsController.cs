@@ -64,12 +64,16 @@ namespace FTL_HRMS.Controllers
         {
             DateTime FromDate = Convert.ToDateTime(Request["FromDate"]);
             DateTime ToDate = Convert.ToDateTime(Request["ToDate"]);
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
             List<Resignation> ResignEmployeeList = _db.Resignation.Where(t => t.ResignDate >= FromDate && t.ResignDate <= ToDate).ToList();
             return View("ResignReport", ResignEmployeeList);
         }
         public ActionResult PrintResignReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "ResignReport", fileName = "Resign Report", selectedFormula = "{tbl_Employee.Status} = False" });
+            DateTime FromDate = Convert.ToDateTime(Request["fromDate"]);
+            DateTime ToDate = Convert.ToDateTime(Request["toDate"]);
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "ResignReport", fileName = "Resign Report", selectedFormula = "{tbl_Resignation.ResignDate}>=Date ("+FromDate.ToString("yyyy,MM,dd")+ ") and {tbl_Resignation.ResignDate}<= Date (" + ToDate.ToString("yyyy,MM,dd") + " )" });
         }
 
         #endregion
@@ -84,13 +88,17 @@ namespace FTL_HRMS.Controllers
         {
             DateTime FromDate = Convert.ToDateTime(Request["FromDate"]);
             DateTime ToDate = Convert.ToDateTime(Request["ToDate"]);
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
             List<DepartmentTransfer> DepartmentTransferList = _db.DepartmentTransfer.Where(t => t.TransferDate >= FromDate && t.TransferDate <= ToDate).ToList();
             return View("DepartmentTransferReport", DepartmentTransferList);
         }
 
         public ActionResult PrintDepartmentTransferReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DepartmentTransferReport", fileName = "Department Transfer Report" });
+            DateTime FromDate = Convert.ToDateTime(Request["fromDate"]);
+            DateTime ToDate = Convert.ToDateTime(Request["toDate"]);
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DepartmentTransferReport", fileName = "Department Transfer Report", selectedFormula = "{DepartmentTransferView.TransferDate}>=Date (" + FromDate.ToString("yyyy,MM,dd") + ") and {DepartmentTransferView.TransferDate}<= Date (" + ToDate.ToString("yyyy,MM,dd") + " )" });
         }
         #endregion
 
@@ -104,12 +112,16 @@ namespace FTL_HRMS.Controllers
         {
             DateTime FromDate = Convert.ToDateTime(Request["FromDate"]);
             DateTime ToDate = Convert.ToDateTime(Request["ToDate"]);
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
             List<BranchTransfer> BranchTransferList = _db.BranchTransfer.Where(t => t.TransferDate >= FromDate && t.TransferDate <= ToDate).ToList();
             return View("BranchTransferReport", BranchTransferList);
         }
         public ActionResult PrintBranchTransferReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BranchTransferReport", fileName = "Branch Transfer Report" });
+            DateTime FromDate = Convert.ToDateTime(Request["fromDate"]);
+            DateTime ToDate = Convert.ToDateTime(Request["toDate"]);
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BranchTransferReport", fileName = "Branch Transfer Report", selectedFormula = "{BranchTransferView.TransferDate}>=Date (" + FromDate.ToString("yyyy,MM,dd") + ") and {BranchTransferView.TransferDate}<= Date (" + ToDate.ToString("yyyy,MM,dd") + " )" });
 
         }
         #endregion
@@ -124,13 +136,17 @@ namespace FTL_HRMS.Controllers
         {
             DateTime FromDate = Convert.ToDateTime(Request["FromDate"]);
             DateTime ToDate = Convert.ToDateTime(Request["ToDate"]);
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
             List<LeaveHistory> LeaveList = _db.LeaveHistories.Where(t => t.FromDate >= FromDate && t.FromDate <= ToDate).ToList();
             return View("LeaveReport", LeaveList);
 
         }
         public ActionResult PrintLeaveReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "LeaveReport", fileName = "Leave Report" });
+            DateTime FromDate = Convert.ToDateTime(Request["fromDate"]);
+            DateTime ToDate = Convert.ToDateTime(Request["toDate"]);
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "LeaveReport", fileName = "Leave Report", selectedFormula = "{tbl_LeaveHistory.FromDate}>=Date (" + FromDate.ToString("yyyy,MM,dd") + ") and {tbl_LeaveHistory.FromDate}<= Date (" + ToDate.ToString("yyyy,MM,dd") + " )" });
         }
         #endregion
 
