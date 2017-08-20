@@ -17,7 +17,7 @@ namespace FTL_HRMS.Controllers
         // GET: Departments
         public ActionResult Index()
         {
-            return View(_db.Department.Include(a=>a.DepartmentGroup).Where(i=> i.Status == true).ToList());
+            return View(_db.Department.Include(a => a.DepartmentGroup).Where(i => i.Status == true).ToList());
         }
         #endregion
 
@@ -43,8 +43,8 @@ namespace FTL_HRMS.Controllers
         {
             int departmentGroupId = Convert.ToInt32(Request["DepartmentGroupId"]);
             var s = from p in _db.Department.AsEnumerable()
-                   where p.DepartmentGroupId == departmentGroupId
-                   select new Department { Sl = p.Sl, Name = p.Name };
+                    where p.DepartmentGroupId == departmentGroupId
+                    select new Department { Sl = p.Sl, Name = p.Name };
             return Json(s, JsonRequestBehavior.AllowGet);
         }
         #endregion
@@ -53,9 +53,9 @@ namespace FTL_HRMS.Controllers
         public ActionResult GetDepartmentGroup()
         {
             string departmentGroupName = Request["DepartmentGroupName"];
-            var s= from p in _db.DepartmentGroup.AsEnumerable()
-                   where p.Name.Contains(departmentGroupName)
-                   select new DepartmentGroup { Sl = p.Sl, Name = p.Name };
+            var s = from p in _db.DepartmentGroup.AsEnumerable()
+                    where p.Name.Contains(departmentGroupName) || p.Code.Contains(departmentGroupName)
+                    select new DepartmentGroup { Sl = p.Sl, Name = p.Name, Code=p.Code };
             
             return Json(s, JsonRequestBehavior.AllowGet);
         }
