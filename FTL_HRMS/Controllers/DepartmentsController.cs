@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 using FTL_HRMS.Models;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -84,7 +83,7 @@ namespace FTL_HRMS.Controllers
             if (department.Name != "")
             {
                 string userName = User.Identity.Name;
-                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                int userId = DbUtility.GetUserId(_db, userName);
                 department.CreatedBy = userId;
                 department.CreateDate = DateTime.Now;
                 department.Status = true;
@@ -132,7 +131,7 @@ namespace FTL_HRMS.Controllers
             if (ModelState.IsValid)
             {
                 string userName = User.Identity.Name;
-                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                int userId = DbUtility.GetUserId(_db, userName);
                 department.UpdatedBy = userId;
                 department.UpdateDate = DateTime.Now;
                 _db.Entry(department).State = EntityState.Modified;

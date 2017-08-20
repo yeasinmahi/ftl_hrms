@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -16,9 +17,9 @@ namespace FTL_HRMS.Controllers
         public ActionResult Index()
         {
             string userName = User.Identity.Name;
-            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-            List<PerformanceRating> PerformanceRatingList = _db.PerformanceRating.Include(i => i.PerformanceIssue).Include(i => i.Employee).Where(i => i.EmployeeId != userId).ToList();
-            return View(PerformanceRatingList);
+            int userId = DbUtility.GetUserId(_db, userName);
+            List<PerformanceRating> performanceRatingList = _db.PerformanceRating.Include(i => i.PerformanceIssue).Include(i => i.Employee).Where(i => i.EmployeeId != userId).ToList();
+            return View(performanceRatingList);
         }
         #endregion
 
@@ -44,7 +45,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult Create()
         {
             string userName = User.Identity.Name;
-            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            int userId = DbUtility.GetUserId(_db, userName);
 
             List<Employee> employeeList = new List<Employee>();
             employeeList = _db.Employee.Where(i => i.Status == true && i.Sl != userId).ToList();

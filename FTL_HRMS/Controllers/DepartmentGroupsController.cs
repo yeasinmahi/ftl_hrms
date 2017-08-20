@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -53,7 +54,7 @@ namespace FTL_HRMS.Controllers
             if (departmentGroup.Name != "")
             {
                 string userName = User.Identity.Name;
-                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                int userId = DbUtility.GetUserId(_db, userName);
                 departmentGroup.CreatedBy = userId;
                 departmentGroup.CreateDate = DateTime.Now;
                 departmentGroup.Status = true;
@@ -93,7 +94,7 @@ namespace FTL_HRMS.Controllers
             if (ModelState.IsValid)
             {
                 string userName = User.Identity.Name;
-                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                int userId = DbUtility.GetUserId(_db, userName);
                 departmentGroup.UpdatedBy = userId;
                 departmentGroup.UpdateDate = DateTime.Now;
                 _db.Entry(departmentGroup).State = EntityState.Modified;

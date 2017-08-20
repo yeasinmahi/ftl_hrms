@@ -24,31 +24,31 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult EmployeeTypeReport(string employeeTypeId)
         {
-            List<Employee> EmployeeList = new List<Employee>();
+            List<Employee> employeeList = new List<Employee>();
             ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
             ViewBag.Status = "SelectType";
             if (String.IsNullOrWhiteSpace(employeeTypeId))
             {
-                EmployeeList = _db.Employee.ToList();
+                employeeList = _db.Employee.ToList();
             }
             else
             {
                 int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
                 ViewBag.EmployeesTypeId = EmployeeTypeId;
                 ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == EmployeeTypeId).Select(p => p.Name).FirstOrDefault();
-                EmployeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
+                employeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
 
             }
-            return View(EmployeeList);
+            return View(employeeList);
 
         }
         public ActionResult PrintEmployeeList()
         {
-            int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
+            int employeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
             string selectedFormula = "";
-            if (EmployeeTypeId > 0)
+            if (employeeTypeId > 0)
             {
-                selectedFormula = "{tbl_Employee.EmployeeTypeId} = " + EmployeeTypeId;
+                selectedFormula = "{tbl_Employee.EmployeeTypeId} = " + employeeTypeId;
             }
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName = "Employee Report", selectedFormula = selectedFormula });
         }
@@ -110,6 +110,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult PrintBranchTransferReport()
         {
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "BranchTransferReport", fileName = "Branch Transfer Report" });
+
         }
         #endregion
 
@@ -125,6 +126,7 @@ namespace FTL_HRMS.Controllers
             DateTime ToDate = Convert.ToDateTime(Request["ToDate"]);
             List<LeaveHistory> LeaveList = _db.LeaveHistories.Where(t => t.FromDate >= FromDate && t.FromDate <= ToDate).ToList();
             return View("LeaveReport", LeaveList);
+
         }
         public ActionResult PrintLeaveReport()
         {

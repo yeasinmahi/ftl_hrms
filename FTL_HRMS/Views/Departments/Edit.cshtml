@@ -52,7 +52,7 @@
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Departments" )'">Back To List</button>
                         </div>
                         <div>
-                            Code
+                            @Html.LabelFor(model => model.Code)
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
@@ -60,7 +60,7 @@
                         </div>
 
                         <div>
-                            Name
+                            @Html.LabelFor(model => model.Name, new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -69,7 +69,7 @@
 
 
                         <div>
-                            Department Group Name
+                            @Html.LabelFor(model => model.DepartmentGroupId, "Department Group", new { @class = "required" })
                         </div>
                         <div>
                             @Html.DropDownList("DepartmentGroupId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
@@ -79,7 +79,7 @@
                         <div>
                             @Html.CheckBoxFor(model => model.Status)
                             @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                            @Html.LabelFor(model => model.Status, "Status")
+                            @Html.LabelFor(model => model.Status)
                         </div>
 
                         <br />
@@ -95,5 +95,11 @@
     </div>
 </div>
 
-
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>
 

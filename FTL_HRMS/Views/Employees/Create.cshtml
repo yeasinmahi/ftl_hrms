@@ -65,21 +65,21 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="col-md-4">
                                         <div>
-                                            Code
+                                            @Html.LabelFor(model => model.Code, new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 1, @required = true } })
                                             @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Mother's Name
+                                            @Html.LabelFor(model => model.MothersName, "Mother's Name", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.MothersName, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 4, @required = true } })
                                             @Html.ValidationMessageFor(model => model.MothersName, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Gender
+                                            @Html.LabelFor(model => model.Gender, new { @class = "required" })
                                         </div>
                                         @{
                                             List<SelectListItem> listItems = new List<SelectListItem>();
@@ -105,34 +105,34 @@
                                             @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            NID / Birth Certificate
+                                            @Html.LabelFor(model => model.NIDorBirthCirtificate, "NID / Birth Certificate", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.NIDorBirthCirtificate, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 10, @required = true } })
                                             @Html.ValidationMessageFor(model => model.NIDorBirthCirtificate, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Date Of Birth
+                                            @Html.LabelFor(model => model.DateOfBirth, "Date Of Birth", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Employee Type
+                                            @Html.LabelFor(model => model.EmployeeTypeId, "Employee Type", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.DropDownList("EmployeeTypeId", null, "Select Type", htmlAttributes: new { @class = "form-control", style = "width:100%", @tabindex = 16, @required = true })
                                             @Html.ValidationMessageFor(model => model.EmployeeTypeId, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Department Group
+                                            @Html.Label("Department Group", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.DropDownList("DepartmentGroupId", null, "Select Group", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();", @tabindex = 19, @required = true })
                                         </div>
                                         <div>
-                                            Image
+                                            @Html.Label("Image")
                                         </div>
                                         <div>
                                             <input type="file" name="image1" id="image1" class="form-control" style = "width:100%" tabindex="22"/>
@@ -140,48 +140,48 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div>
-                                            Name
+                                            @Html.LabelFor(model => model.Name, new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 2, @required = true } })
                                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Present Address
+                                            @Html.LabelFor(model => model.PresentAddress,"Present Address", new { @class = "required" })
                                         </div>
                                         <div>
-                                            <textarea class="form-control autogrow" cols="5" name="PresentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:100%" id="present_address" required tabindex="5"></textarea>
+                                            <textarea class="form-control autogrow" cols="5" name="PresentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 35px; width:100%"  id="present_address" required tabindex="5"></textarea>
                                         </div>
                                         <div>
-                                            Mobile
+                                            @Html.LabelFor(model => model.Mobile, new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 8, @required = true } })
                                             @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Diving Licence
+                                            @Html.LabelFor(model => model.DrivingLicence, "Driving Licence")
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.DrivingLicence, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 11 } })
                                             @Html.ValidationMessageFor(model => model.DrivingLicence, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Source Of Hire
+                                            @Html.LabelFor(model => model.SourceOfHireId, "Source Of Hire", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.DropDownList("SourceOfHireId", null, "Select Source", htmlAttributes: new { @class = "form-control", style = "width:100%", @tabindex = 14, @required = true })
                                             @Html.ValidationMessageFor(model => model.SourceOfHireId, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Date Of Joining
+                                            @Html.LabelFor(model => model.DateOfJoining, "Date Of Joining", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 17, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfJoining, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Department
+                                            @Html.Label("Department", new { @class = "required" })
                                         </div>
                                         <div>
                                             <select class="form-control" style="width:100%" id="ddl_dept" name="ddl_dept" onchange="LoadDesignation();" tabindex=20 required>
@@ -189,7 +189,7 @@
                                             </select>
                                         </div>
                                         <div>
-                                            Password
+                                            @Html.Label("Password", new { @class = "required" })
                                         </div>
                                         <div>
                                             <input name="Password" type="password" class="form-control" style="width:100%" id="password" required="required" tabindex="23">
@@ -197,48 +197,48 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div>
-                                            Father's Name
+                                            @Html.LabelFor(model => model.FathersName, "Father's Name", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.FathersName, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 3, @required = true } })
                                             @Html.ValidationMessageFor(model => model.FathersName, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Permanent Address
+                                            @Html.LabelFor(model => model.PermanentAddress, "Permanent Address", new { @class = "required" })
                                         </div>
                                         <div>
-                                            <textarea class="form-control autogrow" cols="5" name="PermanentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:100%" id="permanent_address" required tabindex="6"></textarea>
+                                            <textarea class="form-control autogrow" cols="5" name="PermanentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 35px; width:100%" id="permanent_address" required tabindex="6"></textarea>
                                         </div>
                                         <div>
-                                            Email
+                                            @Html.LabelFor(model => model.Email)
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 9 } })
                                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Passport Number
+                                            @Html.Label("Passport Number")
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.PassportNumber, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 12 } })
                                             @Html.ValidationMessageFor(model => model.PassportNumber, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Branch
+                                            @Html.LabelFor(model => model.BranchId, "Branch", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.DropDownList("BranchId", null, "Select Branch", htmlAttributes: new { @class = "form-control", style = "width:100%", @tabindex = 15, @required = true })
                                             @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Gross Salary
+                                            @Html.LabelFor(model => model.GrossSalary, "Gross Salary", new { @class = "required" })
                                         </div>
                                         <div>
                                             @Html.EditorFor(model => model.GrossSalary, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 18, @required = true } })
                                             @Html.ValidationMessageFor(model => model.GrossSalary, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
-                                            Designation
+                                            @Html.LabelFor(model => model.DesignationId, "Designation", new { @class = "required" })
                                         </div>
                                         <div>
                                             <select class="form-control" style="width:100%" id="ddl_designation" name="ddl_designation" required tabindex=21>
@@ -246,7 +246,7 @@
                                             </select>
                                         </div>
                                         <div>
-                                            Confirm Password
+                                            @Html.Label("Confirm Password", new { @class = "required" })
                                         </div>
                                         <div>
                                             <input name="ConfirmPassword" type="password" class="form-control" style="width:100%" id="confirmPass" required="required" tabindex="24">
@@ -272,12 +272,12 @@
                                     <table id="myTable" class="table table-bordered table-responsive">
                                         <thead>
                                             <tr>
-                                                <th>Institute</th>
-                                                <th>Program</th>
-                                                <th>From Date</th>
-                                                <th>To Date</th>
+                                                <th class = "required">Institute</th>
+                                                <th class = "required">Program</th>
+                                                <th class = "required">From Date</th>
+                                                <th class = "required">To Date</th>
                                                 <th>Board</th>
-                                                <th>Result</th>
+                                                <th class = "required">Result</th>
                                                 <th class="action"><i class="fa fa-plus-square"></i>&nbsp;<i class="fa fa-trash-o"></i></th>
                                             </tr>
                                         </thead>
@@ -341,13 +341,13 @@
                                     <table id="myTable2" class="table table-bordered table-responsive">
                                         <thead>
                                             <tr>
-                                                <th>Institute</th>
-                                                <th>Address</th>
-                                                <th>From Date</th>
-                                                <th>To Date</th>
+                                                <th class = "required">Institute</th>
+                                                <th class = "required">Address</th>
+                                                <th class = "required">From Date</th>
+                                                <th class = "required">To Date</th>
                                                 <th>Website</th>
                                                 <th>Phone</th>
-                                                <th>Designation</th>
+                                                <th class = "required">Designation</th>
                                                 <th class="action"><i class="fa fa-plus-square"></i>&nbsp;<i class="fa fa-trash-o"></i></th>
                                             </tr>
                                         </thead>
@@ -876,3 +876,11 @@
         });
     };
 </script>
+
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>

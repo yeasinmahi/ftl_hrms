@@ -46,14 +46,14 @@
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "BranchTransfers" )'">Back To List</button>
                         </div>
                         <div>
-                            Employee Name
+                            @Html.LabelFor(model => model.EmployeeId, "Employee Code", new { @class = "required" })
                         </div>
                         <div>
                             @Html.DropDownList("EmployeeId", null, "--Select Employee--", htmlAttributes: new { @class = "form-control", style = "width:50%", @name = "Employee", @id = "employee", @onchange = "GetBranch()", @required = true })
                             @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
                         </div>
                         <div>
-                            From Branch
+                            @Html.LabelFor(model => model.FromBranchId, "From Branch", new { @class = "required" })
                         </div>
                         <div>
                             @Html.Editor("Branch Name", new { htmlAttributes = new { @class = "form-control", style = "width:50%", @id = "branchname", @placeholder = "Branch Name", @required = true } })
@@ -61,7 +61,7 @@
                         </div>
 
                         <div>
-                            To Branch
+                            @Html.LabelFor(model => model.ToBranchId, "To Branch", new { @class = "required" })
                         </div>
                         <div>
                             @Html.DropDownList("BranchId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @name="ddl_branch", @id = "ddl_branch", @required = true })
@@ -70,7 +70,7 @@
                         
 
                         <div>
-                            Transfer Date
+                            @Html.LabelFor(model => model.TransferDate, "Transfer Date", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.TransferDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -115,3 +115,10 @@
     };
     </script>
 
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>

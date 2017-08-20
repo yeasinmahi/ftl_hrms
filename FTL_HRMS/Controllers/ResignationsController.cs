@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using FTL_HRMS.Models;
 using System;
 using System.Collections.Generic;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -17,10 +18,10 @@ namespace FTL_HRMS.Controllers
         public ActionResult Index()
         {
             string userName = User.Identity.Name;
-            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-            List<Resignation> ResignationList = new List<Resignation>();
-            ResignationList = _db.Resignation.Where(i => i.EmployeeId == userId).ToList();
-            return View(ResignationList);
+            int userId = DbUtility.GetUserId(_db, userName);
+            List<Resignation> resignationList = new List<Resignation>();
+            resignationList = _db.Resignation.Where(i => i.EmployeeId == userId).ToList();
+            return View(resignationList);
         }
         #endregion
 
@@ -58,7 +59,7 @@ namespace FTL_HRMS.Controllers
             if (resignation.ResignDate != null)
             {
                 string userName = User.Identity.Name;
-                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                int userId = DbUtility.GetUserId(_db, userName);
                 resignation.EmployeeId = userId;
                 resignation.CreateDate = DateTime.Now;
                 resignation.Status = "Pending";
@@ -77,7 +78,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult ResignationApproval()
         {
             string userName = User.Identity.Name;
-            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            int userId = DbUtility.GetUserId(_db, userName);
             List<Resignation> resignationList = _db.Resignation.Where(x => x.EmployeeId != userId).ToList();
             return View(resignationList);
         }
@@ -87,16 +88,16 @@ namespace FTL_HRMS.Controllers
         public ActionResult ResignationApproval([Bind(Include = "Sl,ResignDate,Reason,Suggestion,Status,CreateDate,UpdatedBy,UpdateDate,Remarks,EmployeeId")] Resignation resignation)
         {
             int id = Convert.ToInt32(Request["field-1"]);
-            string Status = Convert.ToString(Request["field-2"]);
-            string Remarks = Convert.ToString(Request["field-3"]);
+            string status = Convert.ToString(Request["field-2"]);
+            string remarks = Convert.ToString(Request["field-3"]);
             string userName = User.Identity.Name;
-            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            int userId = DbUtility.GetUserId(_db, userName);
 
             resignation = _db.Resignation.Find(id);
             if (resignation != null)
             {
-                resignation.Status = Status;
-                resignation.Remarks = Remarks;
+                resignation.Status = status;
+                resignation.Remarks = remarks;
                 resignation.UpdatedBy = userId;
                 resignation.UpdateDate = DateTime.Now;
                 _db.Entry(resignation).State = EntityState.Modified;

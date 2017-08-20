@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -19,10 +18,10 @@ namespace FTL_HRMS.Controllers
         public ActionResult Index()
         {
             string userName = User.Identity.Name;
-            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-            List<LeaveHistory> LeaveHistoryList = new List<LeaveHistory>();
-            LeaveHistoryList = _db.LeaveHistories.Where(i => i.EmployeeId == userId).Include(i=> i.LeaveType).ToList();
-            return View(LeaveHistoryList);
+            int userId = DbUtility.GetUserId(_db, userName);
+            List<LeaveHistory> leaveHistoryList = new List<LeaveHistory>();
+            leaveHistoryList = _db.LeaveHistories.Where(i => i.EmployeeId == userId).Include(i=> i.LeaveType).ToList();
+            return View(leaveHistoryList);
         }
         #endregion
 
@@ -61,7 +60,7 @@ namespace FTL_HRMS.Controllers
             if (leaveHistory.Cause != null)
             {
                 string userName = User.Identity.Name;
-                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                int userId = DbUtility.GetUserId(_db, userName);
                 leaveHistory.EmployeeId = userId;
                 leaveHistory.CreateDate = DateTime.Now;
                 leaveHistory.Day = (leaveHistory.ToDate - leaveHistory.FromDate.AddDays(-1)).Days;
@@ -82,7 +81,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult LeaveApproval()
         {
             string userName = User.Identity.Name;
-            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            int userId = DbUtility.GetUserId(_db, userName);
             List<LeaveHistory> leaveHistoryList = _db.LeaveHistories.Include(i => i.Employee).Include(i => i.LeaveType).Where(x => x.EmployeeId != userId).ToList();
             return View(leaveHistoryList);
         }
@@ -92,16 +91,16 @@ namespace FTL_HRMS.Controllers
         public ActionResult LeaveApproval([Bind(Include = "Sl,EmployeeId,LeaveTypeId,CreateDate,FromDate,ToDate,Day,Cause,UpdatedBy,UpdateDate,Status,Remarks")] LeaveHistory leaveHistory)
         {
             int id = Convert.ToInt32(Request["field-1"]);
-            string Status = Convert.ToString(Request["field-2"]);
-            string Remarks = Convert.ToString(Request["field-3"]);
+            string status = Convert.ToString(Request["field-2"]);
+            string remarks = Convert.ToString(Request["field-3"]);
             string userName = User.Identity.Name;
-            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            int userId = DbUtility.GetUserId(_db, userName);
 
             leaveHistory = _db.LeaveHistories.Find(id);
             if (leaveHistory != null)
             {
-                leaveHistory.Status = Status;
-                leaveHistory.Remarks = Remarks;
+                leaveHistory.Status = status;
+                leaveHistory.Remarks = remarks;
                 leaveHistory.UpdatedBy = userId;
                 leaveHistory.UpdateDate = DateTime.Now;
                 _db.Entry(leaveHistory).State = EntityState.Modified;

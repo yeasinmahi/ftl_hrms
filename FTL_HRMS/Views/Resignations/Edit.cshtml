@@ -53,7 +53,7 @@
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Resignations" )'">Back To List</button>
                         </div>
                         <div>
-                            Resign Date
+                            @Html.LabelFor(model => model.ResignDate, "Resign Date", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.ResignDate, new { htmlAttributes = new { @class = "form-control", @type="date", style = "width:50%", @required = true } })
@@ -61,19 +61,19 @@
                         </div>
 
                         <div>
-                            Reason
+                            @Html.LabelFor(model => model.Reason, new { @class = "required" })
                         </div>
                         <div>
                             <div>
-                                <textarea class="form-control autogrow" cols="5" name="Reason" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:50%" id="reason" required>@Model.Reason</textarea>
+                                <textarea class="form-control autogrow" cols="5" name="Reason" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height:35px;width:50%" id="reason" required>@Model.Reason</textarea>
                             </div>
                         </div>
 
                         <div>
-                            Suggestion
+                            @Html.LabelFor(model => model.Suggestion, new { @class = "required" })
                         </div>
                         <div>
-                            <textarea class="form-control autogrow" cols="5" name="Suggestion" style="overflow: hidden; word-wrap: break-word; resize: horizontal; width:50%" id="suggestion" required>@Model.Suggestion</textarea>
+                            <textarea class="form-control autogrow" cols="5" name="Suggestion" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height:35px;width:50%" id="suggestion" required>@Model.Suggestion</textarea>
                         </div>
                         <br />
                         <div class="form-group">
@@ -87,3 +87,11 @@
         </div>
     </div>
 </div>
+
+<style>
+    .required:after {
+        content: " *";
+        font-weight: bold;
+        color: red;
+    }
+</style>

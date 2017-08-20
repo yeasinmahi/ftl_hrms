@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -10,10 +9,8 @@ using FTL_HRMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
-using System.Web.UI.HtmlControls;
+using FTL_HRMS.Utility;
 using static FTL_HRMS.Models.AccountViewModels;
-using CrystalDecisions.CrystalReports.Engine;
-using CrystalDecisions.Shared;
 
 namespace FTL_HRMS.Controllers
 {
@@ -31,9 +28,9 @@ namespace FTL_HRMS.Controllers
         public ActionResult Index()
         {
             string userName = User.Identity.Name;
-            int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-            List<Employee> EmployeeList = _db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true && i.Sl != userId).ToList();
-            return View(EmployeeList);
+            int userId = DbUtility.GetUserId(_db, userName);
+            List<Employee> employeeList = _db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true && i.Sl != userId).ToList();
+            return View(employeeList);
         }
         #endregion
 
@@ -252,7 +249,7 @@ namespace FTL_HRMS.Controllers
                 employee.PermanentAddress = permanentAddress;
                 employee.DesignationId = designationId;
                 string userName = User.Identity.Name;
-                int userId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                int userId = DbUtility.GetUserId(_db, userName);
                 employee.CreatedBy = userId;
                 employee.CreateDate = DateTime.Now;
                 employee.Status = true;
@@ -260,7 +257,7 @@ namespace FTL_HRMS.Controllers
                 _db.SaveChanges();
 
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
 
                 ApplicationUser user = new ApplicationUser();
                 user.IsActive = true;
@@ -276,12 +273,12 @@ namespace FTL_HRMS.Controllers
                 string password = Convert.ToString(Request["Password"]);
                 string userPwd = password;
 
-                var chkUser = UserManager.Create(user, userPwd);
+                var chkUser = userManager.Create(user, userPwd);
 
                 //Add default User to Role Customer   
                 if (chkUser.Succeeded)
                 {
-                    var result1 = UserManager.AddToRole(user.Id, role);
+                    var result1 = userManager.AddToRole(user.Id, role);
                 }
                 _db.SaveChanges();
                 #endregion
@@ -364,65 +361,6 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
       
-        #region Print         
-        public ActionResult EmployeeTypeReport()
-        {
-            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult EmployeeTypeReport(string employeeTypeId)
-        {
-            if (employeeTypeId== "")
-            {
-                List<Employee> EmployeeList = new List<Employee>();
-                EmployeeList = _db.Employee.ToList();
-                ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
-                ViewBag.Status = "SelectType";
-                return View(EmployeeList.ToList());
-            }
-            else
-            {
-                int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
-                ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
-                ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == EmployeeTypeId).Select(p => p.Name).FirstOrDefault();
-                List<Employee> EmployeeList = new List<Employee>();
-                EmployeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
-                ViewBag.Status = "SelectType";
-                return View(EmployeeList.ToList());
-            }
-            
-        }
-
-        public ActionResult PrintEmployeeList()
-        {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName="ER", selectedFormula = "{tbl_Employee.Code} = 'E001'" });
-        }
-
-       
-        public ActionResult ResignReport()
-        {
-            List<Employee> EmployeeList = new List<Employee>();
-            EmployeeList = _db.Employee.Where(v => v.Status == false).ToList();
-            return View(EmployeeList.ToList());
-        }
-
-        public ActionResult TransferReport()
-        {
-            List<DepartmentTransfer> DepartmentTransferList = new List<DepartmentTransfer>();
-            DepartmentTransferList = _db.DepartmentTransfer.ToList();
-            return View(DepartmentTransferList.ToList());
-        }
-
-        public ActionResult LeaveReport()
-        {
-            List<LeaveHistory> DepartmentLeaveList = new List<LeaveHistory>();
-            DepartmentLeaveList = _db.LeaveHistories.ToList();
-            return View(DepartmentLeaveList.ToList());
-        }
-        #endregion
-
         #region Edit
         // GET: Employees/Edit/5
         public ActionResult Edit(int? id)
@@ -469,7 +407,7 @@ namespace FTL_HRMS.Controllers
                         employee.PresentAddress = presentAddress;
                         employee.PermanentAddress = permanentAddress;
                         string userName = User.Identity.Name;
-                        int UserId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                        int UserId = DbUtility.GetUserId(_db, userName);
                         employee.UpdatedBy = UserId;
                         employee.UpdateDate = DateTime.Now;
                         _db.Entry(employee).State = EntityState.Modified;
@@ -505,7 +443,7 @@ namespace FTL_HRMS.Controllers
                     employee.PresentAddress = presentAddress;
                     employee.PermanentAddress = permanentAddress;
                     string userName = User.Identity.Name;
-                    int UserId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                    int UserId = DbUtility.GetUserId(_db, userName);
                     employee.UpdatedBy = UserId;
                     employee.UpdateDate = DateTime.Now;
                     _db.Entry(employee).State = EntityState.Modified;
