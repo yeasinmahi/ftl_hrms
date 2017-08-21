@@ -126,6 +126,20 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Department
+        public ActionResult PrintDepartmentReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DepartmentReport", fileName = "Department Report"});
+        }
+        #endregion
+
+        #region Designation
+        public ActionResult PrintDesignationReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DesignationReport", fileName = "Designation Report" });
+        }
+        #endregion
+
         #region Leave Report
         public ActionResult LeaveReport()
         {
