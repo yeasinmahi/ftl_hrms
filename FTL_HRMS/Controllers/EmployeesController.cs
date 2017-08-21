@@ -508,6 +508,12 @@ namespace FTL_HRMS.Controllers
             employee.Status = false;
             _db.Entry(employee).State = EntityState.Modified;
             _db.SaveChanges();
+
+            string employeeUserId = _db.Users.Where(u => u.UserName == employee.Code).Select(i => i.Id).FirstOrDefault();
+            ApplicationUser user = _db.Users.Find(employeeUserId);
+            _db.Users.Remove(user);
+            _db.SaveChanges();
+
             return RedirectToAction("Index");
         }
         #endregion
