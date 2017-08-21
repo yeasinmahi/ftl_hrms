@@ -39,8 +39,9 @@ namespace FTL_HRMS
                       "~/Content/bootstrap.min.css",
                       "~/Content/bootstrap-theme.min.css",
                       "~/Content/font-awesome.css",
-                      "~/Content/animate.css",
-                      "~/Content/perfect-scrollbar.css"));
+                      "~/Content/animate.min.css",
+                      "~/Content/perfect-scrollbar.css"
+                      ));
             bundles.Add(new StyleBundle("~/Content/Others").Include(
                       "~/Content/_all.css",
                       "~/Content/morris.css",
@@ -49,7 +50,8 @@ namespace FTL_HRMS
                       "~/Content/white.css",
                       "~/Content/datepicker.css",
                       "~/Content/style.css",
-                      "~/Content/responsive.css"));
+                      "~/Content/responsive.css",
+                      "~/Content/myStyle.css.css"));
         }
     }
 }
