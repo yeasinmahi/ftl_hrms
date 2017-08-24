@@ -29,10 +29,10 @@ namespace FTL_HRMS.Utility
                 case Status.Null:
                     return "Not Found";
                 default:
-                    return "cannot get the error";
+                    return "Cannot get the error";
             }
         }
-
+        
         public static PropertyInfo GetPropertyInfo(object o, string property)
         {
             Type myObjOriginalType = o.GetType();
