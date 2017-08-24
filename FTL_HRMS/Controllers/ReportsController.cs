@@ -18,22 +18,25 @@ namespace FTL_HRMS.Controllers
         public ActionResult EmployeeTypeReport()
         {
             ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+            ViewBag.DepartmentGroupId = new SelectList(_db.DepartmentGroup, "Sl", "Name");
             return View();
         }
 
         [HttpPost]
-        public ActionResult EmployeeTypeReport(string employeeTypeId)
+        public ActionResult EmployeeTypeReport(string employeeTypeId, string departmentGroupId,string departmentId, string designationId)
         {
             List<Employee> employeeList = new List<Employee>();
             ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
+            ViewBag.DepartmentGroupId = new SelectList(_db.DepartmentGroup, "Sl", "Name");
             ViewBag.Status = "SelectType";
-            if (String.IsNullOrWhiteSpace(employeeTypeId))
+            if (String.IsNullOrWhiteSpace(employeeTypeId) && String.IsNullOrWhiteSpace(departmentGroupId))
             {
                 employeeList = _db.Employee.ToList();
             }
             else
             {
                 int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
+
                 ViewBag.EmployeesTypeId = EmployeeTypeId;
                 ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == EmployeeTypeId).Select(p => p.Name).FirstOrDefault();
                 employeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
