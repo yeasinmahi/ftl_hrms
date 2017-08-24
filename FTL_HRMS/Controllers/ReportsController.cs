@@ -23,27 +23,76 @@ namespace FTL_HRMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult EmployeeTypeReport(string employeeTypeId, string departmentGroupId,string departmentId, string designationId)
+        public ActionResult EmployeeTypeReport(string employeeTypeId, string departmentGroupId,string ddl_dept, string ddl_designation)
         {
-            List<Employee> employeeList = new List<Employee>();
+            int etid, dgid, did, dsid;
+            Int32.TryParse(employeeTypeId, out etid);
+            Int32.TryParse(departmentGroupId, out dgid);
+            Int32.TryParse(ddl_dept, out did);
+            Int32.TryParse(ddl_designation, out dsid);
             ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
             ViewBag.DepartmentGroupId = new SelectList(_db.DepartmentGroup, "Sl", "Name");
             ViewBag.Status = "SelectType";
-            if (String.IsNullOrWhiteSpace(employeeTypeId) && String.IsNullOrWhiteSpace(departmentGroupId))
+
+            List<Employee> employeeList = GetEmployeeList(etid, dgid, did, dsid);
+            return View(employeeList);
+
+        }
+
+        public List<Employee> GetEmployeeList(int employeeTypeId, int departmentGroupId, int departmentId, int designationId)
+        {
+            List<Employee> employeeList = new List<Employee>();
+            if (employeeTypeId>0)
             {
-                employeeList = _db.Employee.ToList();
+                if (departmentGroupId>0)
+                {
+                    if (departmentId>0)
+                    {
+                        if (designationId>0)
+                        {
+                            employeeList = _db.Employee.Where(x => x.EmployeeTypeId.Equals(employeeTypeId)).Where(x => x.Designation.Department.DepartmentGroup.Sl.Equals(departmentGroupId)).Where(x => x.Designation.Department.Sl.Equals(departmentId)).Where(x => x.Designation.Sl.Equals(designationId)).ToList();
+                        }
+                        else
+                        {
+                            employeeList = _db.Employee.Where(x => x.EmployeeTypeId.Equals(employeeTypeId)).Where(x => x.Designation.Department.DepartmentGroup.Sl.Equals(departmentGroupId)).Where(x => x.Designation.Department.Sl.Equals(departmentId)).ToList();
+                        }
+                    }
+                    else
+                    {
+                        employeeList = _db.Employee.Where(x => x.EmployeeTypeId.Equals(employeeTypeId)).Where(x => x.Designation.Department.DepartmentGroup.Sl.Equals(departmentGroupId)).ToList();
+                    }
+                }
+                else
+                {
+                    employeeList = _db.Employee.Where(x => x.EmployeeTypeId.Equals(employeeTypeId)).ToList();
+                }
             }
             else
             {
-                int EmployeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
-
-                ViewBag.EmployeesTypeId = EmployeeTypeId;
-                ViewBag.TypeName = _db.EmployeeType.Where(i => i.Sl == EmployeeTypeId).Select(p => p.Name).FirstOrDefault();
-                employeeList = _db.Employee.Where(v => v.EmployeeTypeId == EmployeeTypeId).ToList();
-
+                if (departmentGroupId > 0)
+                {
+                    if (departmentId > 0)
+                    {
+                        if (designationId > 0)
+                        {
+                            employeeList = _db.Employee.Where(x => x.Designation.Department.DepartmentGroup.Sl.Equals(departmentGroupId)).Where(x => x.Designation.Department.Sl.Equals(departmentId)).Where(x => x.Designation.Sl.Equals(designationId)).ToList();
+                        }
+                        else
+                        {
+                            employeeList = _db.Employee.Where(x => x.Designation.Department.DepartmentGroup.Sl.Equals(departmentGroupId)).Where(x => x.Designation.Department.Sl.Equals(departmentId)).ToList();
+                        }
+                    }
+                    else
+                    {
+                        employeeList = _db.Employee.Where(x => x.Designation.Department.DepartmentGroup.Sl.Equals(departmentGroupId)).ToList();
+                    }
+                }
+                else
+                {
+                    employeeList = _db.Employee.ToList();
+                }
             }
-            return View(employeeList);
-
+            return employeeList;
         }
         public ActionResult PrintEmployeeList()
         {
@@ -60,23 +109,23 @@ namespace FTL_HRMS.Controllers
         #region Resign Report
         public ActionResult ResignReport()
         {
-            List<Resignation> ResignEmployeeList = new List<Resignation>();
-            return View(ResignEmployeeList);
+            List<Resignation> resignEmployeeList = new List<Resignation>();
+            return View(resignEmployeeList);
         }
         public ActionResult ResignReportDateView()
         {
-            DateTime FromDate = Convert.ToDateTime(Request["FromDate"]);
-            DateTime ToDate = Convert.ToDateTime(Request["ToDate"]);
-            ViewBag.FromDate = FromDate;
-            ViewBag.ToDate = ToDate;
-            List<Resignation> ResignEmployeeList = _db.Resignation.Where(t => t.ResignDate >= FromDate && t.ResignDate <= ToDate).ToList();
-            return View("ResignReport", ResignEmployeeList);
+            DateTime fromDate = Convert.ToDateTime(Request["FromDate"]);
+            DateTime toDate = Convert.ToDateTime(Request["ToDate"]);
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
+            List<Resignation> resignEmployeeList = _db.Resignation.Where(t => t.ResignDate >= fromDate && t.ResignDate <= toDate).ToList();
+            return View("ResignReport", resignEmployeeList);
         }
         public ActionResult PrintResignReport()
         {
-            DateTime FromDate = Convert.ToDateTime(Request["fromDate"]);
-            DateTime ToDate = Convert.ToDateTime(Request["toDate"]);
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "ResignReport", fileName = "Resign Report", selectedFormula = "{tbl_Resignation.ResignDate}>=Date ("+FromDate.ToString("yyyy,MM,dd")+ ") and {tbl_Resignation.ResignDate}<= Date (" + ToDate.ToString("yyyy,MM,dd") + " )" });
+            DateTime fromDate = Convert.ToDateTime(Request["fromDate"]);
+            DateTime toDate = Convert.ToDateTime(Request["toDate"]);
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "ResignReport", fileName = "Resign Report", selectedFormula = "{tbl_Resignation.ResignDate}>=Date ("+fromDate.ToString("yyyy,MM,dd")+ ") and {tbl_Resignation.ResignDate}<= Date (" + toDate.ToString("yyyy,MM,dd") + " )" });
         }
 
         #endregion
@@ -84,47 +133,47 @@ namespace FTL_HRMS.Controllers
         #region Department Transfer Report
         public ActionResult DepartmentTransferReport()
         {
-            List<DepartmentTransfer> DepartmentTransferList = new List<DepartmentTransfer>();
-            return View(DepartmentTransferList);
+            List<DepartmentTransfer> departmentTransferList = new List<DepartmentTransfer>();
+            return View(departmentTransferList);
         }
         public ActionResult DepartmentTransferReportDateView()
         {
-            DateTime FromDate = Convert.ToDateTime(Request["FromDate"]);
-            DateTime ToDate = Convert.ToDateTime(Request["ToDate"]);
-            ViewBag.FromDate = FromDate;
-            ViewBag.ToDate = ToDate;
-            List<DepartmentTransfer> DepartmentTransferList = _db.DepartmentTransfer.Where(t => t.TransferDate >= FromDate && t.TransferDate <= ToDate).ToList();
-            return View("DepartmentTransferReport", DepartmentTransferList);
+            DateTime fromDate = Convert.ToDateTime(Request["FromDate"]);
+            DateTime toDate = Convert.ToDateTime(Request["ToDate"]);
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
+            List<DepartmentTransfer> departmentTransferList = _db.DepartmentTransfer.Where(t => t.TransferDate >= fromDate && t.TransferDate <= toDate).ToList();
+            return View("DepartmentTransferReport", departmentTransferList);
         }
 
         public ActionResult PrintDepartmentTransferReport()
         {
-            DateTime FromDate = Convert.ToDateTime(Request["fromDate"]);
-            DateTime ToDate = Convert.ToDateTime(Request["toDate"]);
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DepartmentTransferReport", fileName = "Department Transfer Report", selectedFormula = "{DepartmentTransferView.TransferDate}>=Date (" + FromDate.ToString("yyyy,MM,dd") + ") and {DepartmentTransferView.TransferDate}<= Date (" + ToDate.ToString("yyyy,MM,dd") + " )" });
+            DateTime fromDate = Convert.ToDateTime(Request["fromDate"]);
+            DateTime toDate = Convert.ToDateTime(Request["toDate"]);
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DepartmentTransferReport", fileName = "Department Transfer Report", selectedFormula = "{DepartmentTransferView.TransferDate}>=Date (" + fromDate.ToString("yyyy,MM,dd") + ") and {DepartmentTransferView.TransferDate}<= Date (" + toDate.ToString("yyyy,MM,dd") + " )" });
         }
         #endregion
 
         #region Branch Transfer Report
         public ActionResult BranchTransferReport()
         {
-            List<BranchTransfer>  BranchTransferList = new List<BranchTransfer>();
-            return View(BranchTransferList);
+            List<BranchTransfer>  branchTransferList = new List<BranchTransfer>();
+            return View(branchTransferList);
         }
         public ActionResult BranchTransferReportDateView()
         {
-            DateTime FromDate = Convert.ToDateTime(Request["FromDate"]);
-            DateTime ToDate = Convert.ToDateTime(Request["ToDate"]);
-            ViewBag.FromDate = FromDate;
-            ViewBag.ToDate = ToDate;
-            List<BranchTransfer> BranchTransferList = _db.BranchTransfer.Where(t => t.TransferDate >= FromDate && t.TransferDate <= ToDate).ToList();
-            return View("BranchTransferReport", BranchTransferList);
+            DateTime fromDate = Convert.ToDateTime(Request["FromDate"]);
+            DateTime toDate = Convert.ToDateTime(Request["ToDate"]);
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
+            List<BranchTransfer> branchTransferList = _db.BranchTransfer.Where(t => t.TransferDate >= fromDate && t.TransferDate <= toDate).ToList();
+            return View("BranchTransferReport", branchTransferList);
         }
         public ActionResult PrintBranchTransferReport()
         {
-            DateTime FromDate = Convert.ToDateTime(Request["fromDate"]);
-            DateTime ToDate = Convert.ToDateTime(Request["toDate"]);
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BranchTransferReport", fileName = "Branch Transfer Report", selectedFormula = "{BranchTransferView.TransferDate}>=Date (" + FromDate.ToString("yyyy,MM,dd") + ") and {BranchTransferView.TransferDate}<= Date (" + ToDate.ToString("yyyy,MM,dd") + " )" });
+            DateTime fromDate = Convert.ToDateTime(Request["fromDate"]);
+            DateTime toDate = Convert.ToDateTime(Request["toDate"]);
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BranchTransferReport", fileName = "Branch Transfer Report", selectedFormula = "{BranchTransferView.TransferDate}>=Date (" + fromDate.ToString("yyyy,MM,dd") + ") and {BranchTransferView.TransferDate}<= Date (" + toDate.ToString("yyyy,MM,dd") + " )" });
 
         }
         #endregion
@@ -146,24 +195,24 @@ namespace FTL_HRMS.Controllers
         #region Leave Report
         public ActionResult LeaveReport()
         {
-            List<LeaveHistory> LeaveList = new List<LeaveHistory>();
-            return View(LeaveList);
+            List<LeaveHistory> leaveList = new List<LeaveHistory>();
+            return View(leaveList);
         }
         public ActionResult LeaveReportDateView()
         {
-            DateTime FromDate = Convert.ToDateTime(Request["FromDate"]);
-            DateTime ToDate = Convert.ToDateTime(Request["ToDate"]);
-            ViewBag.FromDate = FromDate;
-            ViewBag.ToDate = ToDate;
-            List<LeaveHistory> LeaveList = _db.LeaveHistories.Where(t => t.FromDate >= FromDate && t.FromDate <= ToDate).ToList();
-            return View("LeaveReport", LeaveList);
+            DateTime fromDate = Convert.ToDateTime(Request["FromDate"]);
+            DateTime toDate = Convert.ToDateTime(Request["ToDate"]);
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
+            List<LeaveHistory> leaveList = _db.LeaveHistories.Where(t => t.FromDate >= fromDate && t.FromDate <= toDate).ToList();
+            return View("LeaveReport", leaveList);
 
         }
         public ActionResult PrintLeaveReport()
         {
-            DateTime FromDate = Convert.ToDateTime(Request["fromDate"]);
-            DateTime ToDate = Convert.ToDateTime(Request["toDate"]);
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "LeaveReport", fileName = "Leave Report", selectedFormula = "{tbl_LeaveHistory.FromDate}>=Date (" + FromDate.ToString("yyyy,MM,dd") + ") and {tbl_LeaveHistory.FromDate}<= Date (" + ToDate.ToString("yyyy,MM,dd") + " )" });
+            DateTime fromDate = Convert.ToDateTime(Request["fromDate"]);
+            DateTime toDate = Convert.ToDateTime(Request["toDate"]);
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "LeaveReport", fileName = "Leave Report", selectedFormula = "{tbl_LeaveHistory.FromDate}>=Date (" + fromDate.ToString("yyyy,MM,dd") + ") and {tbl_LeaveHistory.FromDate}<= Date (" + toDate.ToString("yyyy,MM,dd") + " )" });
         }
         #endregion
 

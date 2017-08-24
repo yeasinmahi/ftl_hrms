@@ -43,9 +43,12 @@ namespace FTL_HRMS.Controllers
         #region Get Designations By Department
         public ActionResult GetDesignationByDeptId()
         {
-            int departmentId = Convert.ToInt32(Request["DepartmentId"]);
-            List<Designation> designationList = _db.Designation.Where(t => t.DepartmentId == departmentId).ToList();
-            return Json(designationList, JsonRequestBehavior.AllowGet);
+            int departmentId;
+            Int32.TryParse(Request["DepartmentId"],out departmentId);
+            var s = from p in _db.Designation.AsEnumerable()
+                    where p.DepartmentId == departmentId
+                    select new Designation { Sl = p.Sl, Name = p.Name };
+            return Json(s, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

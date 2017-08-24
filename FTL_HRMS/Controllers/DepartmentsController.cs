@@ -41,7 +41,8 @@ namespace FTL_HRMS.Controllers
         #region Get Departments By Group
         public ActionResult GetDepartmentByGroupId()
         {
-            int departmentGroupId = Convert.ToInt32(Request["DepartmentGroupId"]);
+            int departmentGroupId;
+            Int32.TryParse(Request["DepartmentGroupId"],out departmentGroupId);
             var s = from p in _db.Department.AsEnumerable()
                     where p.DepartmentGroupId == departmentGroupId
                     select new Department { Sl = p.Sl, Name = p.Name };

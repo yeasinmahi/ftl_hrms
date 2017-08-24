@@ -39,6 +39,6 @@ namespace FTL_HRMS.Models
 
         public bool Status { get; set; }
 
-        public Department Department { get; set; }
+        public virtual Department Department { get; set; }
     }
 }

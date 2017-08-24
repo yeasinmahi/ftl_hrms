@@ -38,7 +38,7 @@ namespace FTL_HRMS.Models
 
         public bool Status { get; set; }
 
-        public DepartmentGroup DepartmentGroup { get; set; }
+        public virtual DepartmentGroup DepartmentGroup { get; set; }
         public ICollection<Designation> Designation { get; set; }
     }
 }
