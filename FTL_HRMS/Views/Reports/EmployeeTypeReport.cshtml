@@ -13,159 +13,166 @@
 <br /> <br />
 @using (Html.BeginForm())
 {
-    <div class="row">
-        <div class="form-group">
-            <div><h5> Select Type: </h5></div>
-            <div style="width:50%;">@Html.DropDownList("EmployeeTypeId", null, "--All--", htmlAttributes: new { @class = "form-control", style = "width:100%", @name = "name" })</div>
-            <div><h5> Select Department Group: </h5></div>
-            <div style="width:50%">@Html.DropDownList("DepartmentGroupId", null, "--All--", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();" })</div>
-            <div><h5> Select Department: </h5></div>
-            <div>
-                <select class="form-control" style="width:50%" id="ddl_dept" name="ddl_dept" onchange="LoadDesignation();" tabindex=20 >
-                    <option value="">Select Department</option>
-                </select>
-            </div>
-            <div><h5> Select Designation: </h5></div>
-            <div>
-                <select class="form-control" style="width:50%" id="ddl_designation" name="ddl_designation">
-                    <option value="" selected>Select Designation</option>
-                </select>
-            </div>
-                <div>
-                    <input type="submit" value="Submit" name="Submit" class="btn btn-info" />
+    <div class="content-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <div class="col-md-offset-3">
+                        <div><h5> Select Type: </h5></div>
+                        <div style="width:50%;">@Html.DropDownList("EmployeeTypeId", null, "--All--", htmlAttributes: new { @class = "form-control", style = "width:100%", @name = "name" })</div>
+                        <div><h5> Select Department Group: </h5></div>
+                        <div style="width:50%">@Html.DropDownList("DepartmentGroupId", null, "--All--", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();" })</div>
+                        <div><h5> Select Department: </h5></div>
+                        <div>
+                            <select class="form-control" style="width:50%" id="ddl_dept" name="ddl_dept" onchange="LoadDesignation();" tabindex=20>
+                                <option value="">Select Department</option>
+                            </select>
+                        </div>
+                        <div><h5> Select Designation: </h5></div>
+                        <div>
+                            <select class="form-control" style="width:50%" id="ddl_designation" name="ddl_designation">
+                                <option value="" selected>Select Designation</option>
+                            </select>
+                        </div>
+                        <br />
+                        <div class="col-md-offset-2" style="margin-left:22%">
+                            <input type="submit" value="Submit" name="Submit" class="btn btn-info" />
+                        </div>
+                    </div>
                 </div>
             </div>
-    </div>
-}
-<div class="content-body">
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="table-responsive" data-pattern="priority-columns">
-                @if (ViewBag.Status != null)
+        </div>
+        </div>
+        }
+        <div class="content-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="table-responsive" data-pattern="priority-columns">
+                        @if (ViewBag.Status != null)
                 {
                     if (ViewBag.TypeName == null)
                     {
-                        <div align="center">
-                            <p><b>Type Name : </b> All Employee's List</p>
-                        </div>
-                    }
-                    else
-                    {
-                        <div align="center">
-                            <p><b>Type Name : </b> @ViewBag.TypeName</p>
-                        </div>
-                    }
+                                <div align="center">
+                                    <p><b>Type Name : </b> All Employee's List</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div align="center">
+                                    <p><b>Type Name : </b> @ViewBag.TypeName</p>
+                                </div>
+                            }
 
 
-                    <div class="btn-group">
+                            <div class="btn-group">
 
-                        <button type="submit" class="btn btn-info btn-sm" onclick="location.href='@Url.Action("PrintEmployeeList", "Reports", new { employeeTypeId=@ViewBag.EmployeesTypeId })'" target="_blank">
-                            <span class="glyphicon glyphicon-print"></span> Download PDF
-                        </button>
+                                <button type="submit" class="btn btn-info btn-sm" onclick="location.href='@Url.Action("PrintEmployeeList", "Reports", new { employeeTypeId=@ViewBag.EmployeesTypeId })'" target="_blank">
+                                    <span class="glyphicon glyphicon-print"></span> Download PDF
+                                </button>
 
-                    </div>
-                    <br />
-                        <table cellspacing="0" id="tech-companies-1" class="table table-small-font table-bordered table-striped">
-                            @{int rowNo = 0;}
-                            <thead>
-                                <tr>
-                                    <th style="text-align:center">SL</th>
-                                    <th data-priority="1" style="text-align:center">Code</th>
-                                    <th data-priority="1" style="text-align:center">Name</th>
-                                    <th data-priority="3" style="text-align:center">Phone</th>
-                                    <th data-priority="1" style="text-align:center">Email</th>
-                                    <th data-priority="3" style="text-align:center">Date Of Joining</th>
-                                    <th data-priority="6" style="text-align:center">Branch</th>
-                                    <th data-priority="1" style="text-align:center">Designation</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
+                            </div>
+                            <br />
+                            <table cellspacing="0" id="tech-companies-1" class="table table-small-font table-bordered table-striped">
+                                @{int rowNo = 0;}
+                                <thead>
                                     <tr>
-                                        <td align="center" width="5%">
-                                            @(rowNo += 1)
-                                        </td>
-                                        <td width="10%" align="center">
-                                            @Html.DisplayFor(modelItem => item.Code)
-                                        </td>
-                                        <td width="20%" align="center">
-                                            @Html.DisplayFor(modelItem => item.Name)
-                                        </td>
-                                        <td width="10%" align="center">
-                                            @Html.DisplayFor(modelItem => item.Mobile)
-                                        </td>
-
-                                        <td width="10%" align="center">
-                                            @Html.DisplayFor(modelItem => item.Email)
-                                        </td>
-                                        <td width="10%" align="center">
-                                            @Html.DisplayFor(modelItem => item.DateOfJoining)
-                                        </td>
-                                        <td width="10%" align="center">
-                                            @Html.DisplayFor(modelItem => item.Branch.Name)
-                                        </td>
-                                        <td width="10%" align="center">
-                                            @Html.DisplayFor(modelItem => item.Designation.Name)
-                                        </td>
+                                        <th style="text-align:center">SL</th>
+                                        <th data-priority="1" style="text-align:center">Code</th>
+                                        <th data-priority="1" style="text-align:center">Name</th>
+                                        <th data-priority="3" style="text-align:center">Phone</th>
+                                        <th data-priority="1" style="text-align:center">Email</th>
+                                        <th data-priority="3" style="text-align:center">Date Of Joining</th>
+                                        <th data-priority="6" style="text-align:center">Branch</th>
+                                        <th data-priority="1" style="text-align:center">Designation</th>
                                     </tr>
-                                }
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td align="center" width="5%">
+                                                @(rowNo += 1)
+                                            </td>
+                                            <td width="10%" align="center">
+                                                @Html.DisplayFor(modelItem => item.Code)
+                                            </td>
+                                            <td width="20%" align="center">
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td width="10%" align="center">
+                                                @Html.DisplayFor(modelItem => item.Mobile)
+                                            </td>
 
-                            </tbody>
-                        </table>
-                                }
+                                            <td width="10%" align="center">
+                                                @Html.DisplayFor(modelItem => item.Email)
+                                            </td>
+                                            <td width="10%" align="center">
+                                                @Html.DisplayFor(modelItem => item.DateOfJoining)
+                                            </td>
+                                            <td width="10%" align="center">
+                                                @Html.DisplayFor(modelItem => item.Branch.Name)
+                                            </td>
+                                            <td width="10%" align="center">
+                                                @Html.DisplayFor(modelItem => item.Designation.Name)
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                                    }
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<script>
-    function LoadDepartment() {
-        $.ajax({
-            url: '/Departments/GetDepartmentByGroupId',
-            method: 'POST',
-            data: {
-                DepartmentGroupId: $('#ddl_deptgroup').val(),
-            },
-            cache: false,
-            error: function () {
-                alert("An error occoured!");
-            },
-            success: function (response) {
-                $('#ddl_dept').empty();
-                $('#ddl_dept').append($('<option>', {
-                    value: '',
-                    text: 'Select Department'
-                }));
-                for (var i = 0; i < response.length; i++) {
-                    var opt = new Option(response[i].Name, response[i].Sl);
-                    $('#ddl_dept').append(opt);
-                }
-            }
-        });
-    };
+        <script>
+            function LoadDepartment() {
+                $.ajax({
+                    url: '/Departments/GetDepartmentByGroupId',
+                    method: 'POST',
+                    data: {
+                        DepartmentGroupId: $('#ddl_deptgroup').val(),
+                    },
+                    cache: false,
+                    error: function () {
+                        alert("An error occoured!");
+                    },
+                    success: function (response) {
+                        $('#ddl_dept').empty();
+                        $('#ddl_dept').append($('<option>', {
+                            value: '',
+                            text: 'Select Department'
+                        }));
+                        for (var i = 0; i < response.length; i++) {
+                            var opt = new Option(response[i].Name, response[i].Sl);
+                            $('#ddl_dept').append(opt);
+                        }
+                    }
+                });
+            };
 
-    function LoadDesignation() {
-        $.ajax({
-            url: '/Designations/GetDesignationByDeptId',
-            method: 'POST',
-            data: {
-                DepartmentId: $('#ddl_dept').val(),
-            },
-            cache: false,
-            error: function () {
-                alert("An error occoured!");
-            },
-            success: function (response) {
-                $('#ddl_designation').empty();
-                $('#ddl_designation').append($('<option>', {
-                    value: '',
-                    text: 'Select Designation'
-                }));
-                for (var i = 0; i < response.length; i++) {
-                    var opt = new Option(response[i].Name, response[i].Sl);
-                    $('#ddl_designation').append(opt);
-                }
-            }
-        });
-    };
-</script>
+            function LoadDesignation() {
+                $.ajax({
+                    url: '/Designations/GetDesignationByDeptId',
+                    method: 'POST',
+                    data: {
+                        DepartmentId: $('#ddl_dept').val(),
+                    },
+                    cache: false,
+                    error: function () {
+                        alert("An error occoured!");
+                    },
+                    success: function (response) {
+                        $('#ddl_designation').empty();
+                        $('#ddl_designation').append($('<option>', {
+                            value: '',
+                            text: 'Select Designation'
+                        }));
+                        for (var i = 0; i < response.length; i++) {
+                            var opt = new Option(response[i].Name, response[i].Sl);
+                            $('#ddl_designation').append(opt);
+                        }
+                    }
+                });
+            };
+        </script>
