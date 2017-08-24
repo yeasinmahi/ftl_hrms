@@ -224,6 +224,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\AdminTemplate\assets\css\animate.min.css" />
+    <Content Include="Content\animate.min.css" />
     <Content Include="Content\AdminTemplate\assets\css\index.html" />
     <Content Include="Content\AdminTemplate\assets\css\responsive.css" />
     <Content Include="Content\AdminTemplate\assets\css\style.css" />
@@ -2706,6 +2707,7 @@
     <Content Include="Content\datepicker.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\jquery-jvectormap-2.0.1.css" />
+    <Content Include="Content\myStyle.css" />
     <Content Include="Content\responsive.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\_all.css" />

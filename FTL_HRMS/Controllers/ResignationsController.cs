@@ -102,6 +102,19 @@ namespace FTL_HRMS.Controllers
                 resignation.UpdateDate = DateTime.Now;
                 _db.Entry(resignation).State = EntityState.Modified;
                 _db.SaveChanges();
+                if(status == "Approved")
+                {
+                    Employee employee = _db.Employee.Find(resignation.EmployeeId);
+                    employee.Status = false;
+                    _db.Entry(employee).State = EntityState.Modified;
+                    _db.SaveChanges();
+
+                    var employeeCode = _db.Employee.Where(c => c.Sl == resignation.EmployeeId).Select(i => i.Code).FirstOrDefault();
+                    string employeeUserId = _db.Users.Where(u => u.UserName == employeeCode).Select(i => i.Id).FirstOrDefault();
+                    ApplicationUser user = _db.Users.Find(employeeUserId);
+                    _db.Users.Remove(user);
+                    _db.SaveChanges();
+                }
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return RedirectToAction("ResignationApproval", "Resignations");
             }

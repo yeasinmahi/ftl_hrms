@@ -10,12 +10,15 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List
         // GET: LeaveTypes
         public ActionResult Index()
         {
             return View(_db.LeaveTypes.ToList());
         }
+        #endregion
 
+        #region Details
         // GET: LeaveTypes/Details/5
         public ActionResult Details(int? id)
         {
@@ -30,7 +33,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(leaveType);
         }
+        #endregion
 
+        #region Create
         // GET: LeaveTypes/Create
         public ActionResult Create()
         {
@@ -54,7 +59,9 @@ namespace FTL_HRMS.Controllers
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(leaveType);
         }
+        #endregion
 
+        #region Edit
         // GET: LeaveTypes/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -87,7 +94,9 @@ namespace FTL_HRMS.Controllers
             TempData["WarningMsg"] = "Something went wrong !!";
             return View(leaveType);
         }
+        #endregion
 
+        #region Delete
         // GET: LeaveTypes/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -113,7 +122,9 @@ namespace FTL_HRMS.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -122,5 +133,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }
