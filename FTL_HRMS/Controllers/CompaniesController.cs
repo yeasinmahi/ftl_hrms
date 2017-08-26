@@ -12,14 +12,17 @@ namespace FTL_HRMS.Controllers
 {
     public class CompaniesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List (We don't use it)
         // GET: Companies
         public ActionResult Index()
         {
-            return View(db.Company.ToList());
+            return View(_db.Company.ToList());
         }
+        #endregion
 
+        #region Details (We don't use it)
         // GET: Companies/Details/5
         public ActionResult Details(int? id)
         {
@@ -27,14 +30,16 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.Company.Find(id);
+            Company company = _db.Company.Find(id);
             if (company == null)
             {
                 return HttpNotFound();
             }
             return View(company);
         }
+        #endregion
 
+        #region Create (We don't use it)
         // GET: Companies/Create
         public ActionResult Create()
         {
@@ -48,29 +53,37 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Name,Address,Email,Website,Phone,Mobile,AlternativeMobile,RegistrationNo,RegistrationDate,TINNumber,StartingDate")] Company company)
         {
-            if (ModelState.IsValid)
+            if (company.Name != "")
             {
-                db.Company.Add(company);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                _db.Company.Add(company);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(company);
         }
+        #endregion
 
+        #region Edit
         // GET: Companies/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit()
         {
-            if (id == null)
+            if(_db.Company.Select(i=> i.Sl).Count() > 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                int id = _db.Company.Select(i => i.Sl).FirstOrDefault();
+                Company company = _db.Company.Find(id);
+                if (company == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.Address = company.Address;
+                return View(company);
             }
-            Company company = db.Company.Find(id);
-            if (company == null)
+            else
             {
-                return HttpNotFound();
+                return View();
             }
-            return View(company);
         }
 
         // POST: Companies/Edit/5
@@ -80,15 +93,26 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,Name,Address,Email,Website,Phone,Mobile,AlternativeMobile,RegistrationNo,RegistrationDate,TINNumber,StartingDate")] Company company)
         {
-            if (ModelState.IsValid)
+            if (company.Sl != 0)
             {
-                db.Entry(company).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                _db.Entry(company).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                ViewBag.Address = company.Address;
+                return View(company);
             }
-            return View(company);
+            else
+            {
+                _db.Company.Add(company);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                ViewBag.Address = company.Address;
+                return View(company);
+            }
         }
+        #endregion
 
+        #region Delete (We don't use it)
         // GET: Companies/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -96,7 +120,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.Company.Find(id);
+            Company company = _db.Company.Find(id);
             if (company == null)
             {
                 return HttpNotFound();
@@ -109,19 +133,22 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Company company = db.Company.Find(id);
-            db.Company.Remove(company);
-            db.SaveChanges();
+            Company company = _db.Company.Find(id);
+            _db.Company.Remove(company);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

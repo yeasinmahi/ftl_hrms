@@ -11,9 +11,6 @@ namespace FTL_HRMS.Models
         [Key]
         public int Sl { get; set; }
 
-        [Required(ErrorMessage = "Gross Salary cannot be empty")]
-        public double GrossSalary { get; set; }
-
         [Required(ErrorMessage = "Basic Salary cannot be empty")]
         public double BasicSalary { get; set; }
 

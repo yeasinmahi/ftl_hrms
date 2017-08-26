@@ -12,14 +12,17 @@ namespace FTL_HRMS.Controllers
 {
     public class SalaryDistributionsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List
         // GET: SalaryDistributions
         public ActionResult Index()
         {
-            return View(db.SalaryDistribution.ToList());
+            return View(_db.SalaryDistribution.ToList());
         }
+        #endregion
 
+        #region Details
         // GET: SalaryDistributions/Details/5
         public ActionResult Details(int? id)
         {
@@ -27,14 +30,16 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SalaryDistribution salaryDistribution = db.SalaryDistribution.Find(id);
+            SalaryDistribution salaryDistribution = _db.SalaryDistribution.Find(id);
             if (salaryDistribution == null)
             {
                 return HttpNotFound();
             }
             return View(salaryDistribution);
         }
+        #endregion
 
+        #region Create
         // GET: SalaryDistributions/Create
         public ActionResult Create()
         {
@@ -46,18 +51,21 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,GrossSalary,BasicSalary,HouseRent,MedicalAllowance,LifeInsurance,FoodAllowance,Entertainment")] SalaryDistribution salaryDistribution)
+        public ActionResult Create([Bind(Include = "Sl,BasicSalary,HouseRent,MedicalAllowance,LifeInsurance,FoodAllowance,Entertainment")] SalaryDistribution salaryDistribution)
         {
-            if (ModelState.IsValid)
+            if (salaryDistribution.BasicSalary != 0)
             {
-                db.SalaryDistribution.Add(salaryDistribution);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                _db.SalaryDistribution.Add(salaryDistribution);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(salaryDistribution);
         }
+        #endregion
 
+        #region Edit
         // GET: SalaryDistributions/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -65,7 +73,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SalaryDistribution salaryDistribution = db.SalaryDistribution.Find(id);
+            SalaryDistribution salaryDistribution = _db.SalaryDistribution.Find(id);
             if (salaryDistribution == null)
             {
                 return HttpNotFound();
@@ -78,17 +86,21 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,GrossSalary,BasicSalary,HouseRent,MedicalAllowance,LifeInsurance,FoodAllowance,Entertainment")] SalaryDistribution salaryDistribution)
+        public ActionResult Edit([Bind(Include = "Sl,BasicSalary,HouseRent,MedicalAllowance,LifeInsurance,FoodAllowance,Entertainment")] SalaryDistribution salaryDistribution)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(salaryDistribution).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                _db.Entry(salaryDistribution).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(salaryDistribution);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(salaryDistribution);
         }
+        #endregion
 
+        #region Delete
         // GET: SalaryDistributions/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -96,7 +108,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SalaryDistribution salaryDistribution = db.SalaryDistribution.Find(id);
+            SalaryDistribution salaryDistribution = _db.SalaryDistribution.Find(id);
             if (salaryDistribution == null)
             {
                 return HttpNotFound();
@@ -109,19 +121,22 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SalaryDistribution salaryDistribution = db.SalaryDistribution.Find(id);
-            db.SalaryDistribution.Remove(salaryDistribution);
-            db.SaveChanges();
+            SalaryDistribution salaryDistribution = _db.SalaryDistribution.Find(id);
+            _db.SalaryDistribution.Remove(salaryDistribution);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

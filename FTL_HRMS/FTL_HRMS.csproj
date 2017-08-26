@@ -2863,6 +2863,14 @@
     <Compile Include="Migrations\201708260705168_update branch.Designer.cs">
       <DependentUpon>201708260705168_update branch.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708260950584_update salary distribution.cs" />
+    <Compile Include="Migrations\201708260950584_update salary distribution.Designer.cs">
+      <DependentUpon>201708260950584_update salary distribution.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708261025454_update branch model.cs" />
+    <Compile Include="Migrations\201708261025454_update branch model.Designer.cs">
+      <DependentUpon>201708261025454_update branch model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LeaveCount.cs" />
@@ -3252,16 +3260,16 @@
     <Content Include="Views\Holidays\Details.cshtml" />
     <Content Include="Views\Holidays\Edit.cshtml" />
     <Content Include="Views\Holidays\Index.cshtml" />
-    <Content Include="Views\SalaryDistributions\Create.cshtml" />
-    <Content Include="Views\SalaryDistributions\Delete.cshtml" />
-    <Content Include="Views\SalaryDistributions\Details.cshtml" />
-    <Content Include="Views\SalaryDistributions\Edit.cshtml" />
-    <Content Include="Views\SalaryDistributions\Index.cshtml" />
     <Content Include="Views\Weekends\Create.cshtml" />
     <Content Include="Views\Weekends\Delete.cshtml" />
     <Content Include="Views\Weekends\Details.cshtml" />
     <Content Include="Views\Weekends\Edit.cshtml" />
     <Content Include="Views\Weekends\Index.cshtml" />
+    <Content Include="Views\SalaryDistributions\Create.cshtml" />
+    <Content Include="Views\SalaryDistributions\Delete.cshtml" />
+    <Content Include="Views\SalaryDistributions\Details.cshtml" />
+    <Content Include="Views\SalaryDistributions\Edit.cshtml" />
+    <Content Include="Views\SalaryDistributions\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3292,6 +3300,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708260705168_update branch.resx">
       <DependentUpon>201708260705168_update branch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708260950584_update salary distribution.resx">
+      <DependentUpon>201708260950584_update salary distribution.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708261025454_update branch model.resx">
+      <DependentUpon>201708261025454_update branch model.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

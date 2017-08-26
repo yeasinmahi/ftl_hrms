@@ -5,7 +5,7 @@ namespace FTL_HRMS.Models
 {
     public class HRMSDbContext : IdentityDbContext<ApplicationUser>
     {
-        public HRMSDbContext():base("FTL_HRMS")
+        public HRMSDbContext():base("HRMSDbContext")
         {
             Database.SetInitializer<HRMSDbContext>(null);
             Configuration.ProxyCreationEnabled = true;

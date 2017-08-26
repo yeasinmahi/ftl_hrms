@@ -20,7 +20,7 @@ namespace FTL_HRMS.Models
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
         ApplyFormatInEditMode = true)]
-        public DateTime OpentingTime { get; set; }
+        public DateTime OpeningTime { get; set; }
 
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",

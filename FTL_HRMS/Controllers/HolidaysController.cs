@@ -12,14 +12,17 @@ namespace FTL_HRMS.Controllers
 {
     public class HolidaysController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List
         // GET: Holidays
         public ActionResult Index()
         {
-            return View(db.Holiday.ToList());
+            return View(_db.Holiday.ToList());
         }
+        #endregion
 
+        #region Details
         // GET: Holidays/Details/5
         public ActionResult Details(int? id)
         {
@@ -27,14 +30,16 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Holiday holiday = db.Holiday.Find(id);
+            Holiday holiday = _db.Holiday.Find(id);
             if (holiday == null)
             {
                 return HttpNotFound();
             }
             return View(holiday);
         }
+        #endregion
 
+        #region Create
         // GET: Holidays/Create
         public ActionResult Create()
         {
@@ -48,16 +53,19 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Date,Remarks")] Holiday holiday)
         {
-            if (ModelState.IsValid)
+            if (holiday.Date != null)
             {
-                db.Holiday.Add(holiday);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                _db.Holiday.Add(holiday);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(holiday);
         }
+        #endregion
 
+        #region Edit
         // GET: Holidays/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -65,7 +73,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Holiday holiday = db.Holiday.Find(id);
+            Holiday holiday = _db.Holiday.Find(id);
             if (holiday == null)
             {
                 return HttpNotFound();
@@ -82,13 +90,17 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(holiday).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                _db.Entry(holiday).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(holiday);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(holiday);
         }
+        #endregion
 
+        #region Delete
         // GET: Holidays/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -96,7 +108,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Holiday holiday = db.Holiday.Find(id);
+            Holiday holiday = _db.Holiday.Find(id);
             if (holiday == null)
             {
                 return HttpNotFound();
@@ -109,19 +121,22 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Holiday holiday = db.Holiday.Find(id);
-            db.Holiday.Remove(holiday);
-            db.SaveChanges();
+            Holiday holiday = _db.Holiday.Find(id);
+            _db.Holiday.Remove(holiday);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }
