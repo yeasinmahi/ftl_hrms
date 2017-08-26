@@ -1,0 +1,99 @@
+﻿@model IEnumerable<FTL_HRMS.Models.Branch>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OpentingTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndingTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsLateCalculated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LateConsiderationTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LateConsiderationDay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LateDeductionPercentage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsOvertimeCalculated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OvertimeConsiderationTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OvertimePaymentPercentage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OpentingTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndingTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsLateCalculated)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LateConsiderationTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LateConsiderationDay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LateDeductionPercentage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsOvertimeCalculated)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OvertimeConsiderationTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OvertimePaymentPercentage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Sl }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Sl }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Sl })
+        </td>
+    </tr>
+}
+
+</table>

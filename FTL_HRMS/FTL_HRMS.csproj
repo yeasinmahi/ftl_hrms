@@ -2808,6 +2808,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccessDeniedController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\BranchTransfersController.cs" />
     <Compile Include="Controllers\DepartmentGroupsController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
@@ -3232,6 +3233,11 @@
     <Content Include="Views\Reports\DepartmentTransferReport.cshtml" />
     <Content Include="Views\Reports\BranchTransferReport.cshtml" />
     <Content Include="Views\LeaveHistories\LeaveRecommendation.cshtml" />
+    <Content Include="Views\Branches\Create.cshtml" />
+    <Content Include="Views\Branches\Delete.cshtml" />
+    <Content Include="Views\Branches\Details.cshtml" />
+    <Content Include="Views\Branches\Edit.cshtml" />
+    <Content Include="Views\Branches\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

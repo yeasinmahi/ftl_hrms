@@ -1,0 +1,114 @@
+﻿@model FTL_HRMS.Models.Branch
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Branch</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OpentingTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OpentingTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndingTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndingTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsLateCalculated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsLateCalculated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LateConsiderationTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LateConsiderationTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LateConsiderationDay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LateConsiderationDay)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LateDeductionPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LateDeductionPercentage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsOvertimeCalculated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsOvertimeCalculated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OvertimeConsiderationTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OvertimeConsiderationTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OvertimePaymentPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OvertimePaymentPercentage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Sl }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
