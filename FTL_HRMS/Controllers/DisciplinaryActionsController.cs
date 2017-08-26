@@ -48,7 +48,7 @@ namespace FTL_HRMS.Controllers
             int userId = DbUtility.GetUserId(_db, userName);
 
             List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.Sl != userId).ToList();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
             return View();
@@ -62,7 +62,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult Create([Bind(Include = "Sl,EmployeeId,DisciplinaryActionTypeId,Date,Remarks")] DisciplinaryAction disciplinaryAction)
         {
             List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             if (ModelState.IsValid)
             {
                 _db.DisciplinaryAction.Add(disciplinaryAction);
@@ -93,7 +93,7 @@ namespace FTL_HRMS.Controllers
                 return HttpNotFound();
             }
             List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", disciplinaryAction.EmployeeId);
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
             return View(disciplinaryAction);
@@ -107,7 +107,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult Edit([Bind(Include = "Sl,EmployeeId,DisciplinaryActionTypeId,Date,Remarks")] DisciplinaryAction disciplinaryAction)
         {
             List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             if (ModelState.IsValid)
             {
                 _db.Entry(disciplinaryAction).State = EntityState.Modified;

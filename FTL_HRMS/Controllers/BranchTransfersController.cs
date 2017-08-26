@@ -49,7 +49,7 @@ namespace FTL_HRMS.Controllers
             int userId = DbUtility.GetUserId(_db, userName);
 
             List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.Sl != userId).ToList();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
 
             List<Branch> branchList = new List<Branch>();
@@ -86,8 +86,11 @@ namespace FTL_HRMS.Controllers
             }
             TempData["WarningMsg"] = "Something went wrong !!";
 
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+
             List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", branchTransfer.EmployeeId);
 
             List<Branch> branchList = new List<Branch>();

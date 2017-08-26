@@ -29,7 +29,7 @@ namespace FTL_HRMS.Controllers
         {
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
-            List<Employee> employeeList = _db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true && i.Sl != userId).ToList();
+            List<Employee> employeeList = _db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
             return View(employeeList);
         }
         #endregion

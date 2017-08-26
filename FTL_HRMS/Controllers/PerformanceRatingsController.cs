@@ -48,7 +48,7 @@ namespace FTL_HRMS.Controllers
             int userId = DbUtility.GetUserId(_db, userName);
 
             List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.Sl != userId).ToList();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name");
             return View();
@@ -62,7 +62,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult Create([Bind(Include = "Sl,Rating,Date,EmployeeId,PerformanceIssueId")] PerformanceRating performanceRating)
         {
             List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             if (ModelState.IsValid)
             {
                 _db.PerformanceRating.Add(performanceRating);
@@ -93,7 +93,7 @@ namespace FTL_HRMS.Controllers
                 return HttpNotFound();
             }
             List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", performanceRating.EmployeeId);
             ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
             return View(performanceRating);
@@ -107,7 +107,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult Edit([Bind(Include = "Sl,Rating,Date,EmployeeId,PerformanceIssueId")] PerformanceRating performanceRating)
         {
             List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true).ToList();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             if (ModelState.IsValid)
             {
                 _db.Entry(performanceRating).State = EntityState.Modified;
