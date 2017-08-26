@@ -12,15 +12,18 @@ namespace FTL_HRMS.Controllers
 {
     public class WeekendsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List
         // GET: Weekends
         public ActionResult Index()
         {
-            var weekend = db.Weekend.Include(w => w.Branch);
+            var weekend = _db.Weekend.Include(w => w.Branch);
             return View(weekend.ToList());
         }
+        #endregion
 
+        #region Details
         // GET: Weekends/Details/5
         public ActionResult Details(int? id)
         {
@@ -28,18 +31,22 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Weekend weekend = db.Weekend.Find(id);
+            Weekend weekend = _db.Weekend.Find(id);
             if (weekend == null)
             {
                 return HttpNotFound();
             }
             return View(weekend);
         }
+        #endregion
 
+        #region Create
         // GET: Weekends/Create
         public ActionResult Create()
         {
-            ViewBag.BranchId = new SelectList(db.Branches, "Sl", "Name");
+            List<Branch> branchList = new List<Branch>();
+            branchList = _db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(branchList, "Sl", "Name");
             return View();
         }
 
@@ -50,17 +57,22 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,BranchId,Day")] Weekend weekend)
         {
-            if (ModelState.IsValid)
+            if (weekend.BranchId != 0)
             {
-                db.Weekend.Add(weekend);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                _db.Weekend.Add(weekend);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
-            ViewBag.BranchId = new SelectList(db.Branches, "Sl", "Name", weekend.BranchId);
+            TempData["WarningMsg"] = "Something went wrong !!";
+            List<Branch> branchList = new List<Branch>();
+            branchList = _db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", weekend.BranchId);
             return View(weekend);
         }
+        #endregion
 
+        #region Edit
         // GET: Weekends/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -68,12 +80,14 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Weekend weekend = db.Weekend.Find(id);
+            Weekend weekend = _db.Weekend.Find(id);
             if (weekend == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.BranchId = new SelectList(db.Branches, "Sl", "Name", weekend.BranchId);
+            List<Branch> branchList = new List<Branch>();
+            branchList = _db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", weekend.BranchId);
             return View(weekend);
         }
 
@@ -86,14 +100,20 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(weekend).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                _db.Entry(weekend).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(weekend);
             }
-            ViewBag.BranchId = new SelectList(db.Branches, "Sl", "Name", weekend.BranchId);
+            TempData["WarningMsg"] = "Something went wrong !!";
+            List<Branch> branchList = new List<Branch>();
+            branchList = _db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", weekend.BranchId);
             return View(weekend);
         }
+        #endregion
 
+        #region Delete
         // GET: Weekends/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -101,7 +121,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Weekend weekend = db.Weekend.Find(id);
+            Weekend weekend = _db.Weekend.Find(id);
             if (weekend == null)
             {
                 return HttpNotFound();
@@ -114,19 +134,22 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Weekend weekend = db.Weekend.Find(id);
-            db.Weekend.Remove(weekend);
-            db.SaveChanges();
+            Weekend weekend = _db.Weekend.Find(id);
+            _db.Weekend.Remove(weekend);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }
