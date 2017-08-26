@@ -2867,6 +2867,10 @@
     <Compile Include="Migrations\201708260950584_update salary distribution.Designer.cs">
       <DependentUpon>201708260950584_update salary distribution.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708261025454_update branch model.cs" />
+    <Compile Include="Migrations\201708261025454_update branch model.Designer.cs">
+      <DependentUpon>201708261025454_update branch model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LeaveCount.cs" />
@@ -3299,6 +3303,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708260950584_update salary distribution.resx">
       <DependentUpon>201708260950584_update salary distribution.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708261025454_update branch model.resx">
+      <DependentUpon>201708261025454_update branch model.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

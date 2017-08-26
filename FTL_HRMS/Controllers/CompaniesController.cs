@@ -14,7 +14,7 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext _db = new HRMSDbContext();
 
-        #region List
+        #region List (We don't use it)
         // GET: Companies
         public ActionResult Index()
         {
@@ -22,7 +22,7 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Details
+        #region Details (We don't use it)
         // GET: Companies/Details/5
         public ActionResult Details(int? id)
         {
@@ -39,7 +39,7 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Create
+        #region Create (We don't use it)
         // GET: Companies/Create
         public ActionResult Create()
         {
@@ -67,18 +67,23 @@ namespace FTL_HRMS.Controllers
 
         #region Edit
         // GET: Companies/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit()
         {
-            if (id == null)
+            if(_db.Company.Select(i=> i.Sl).Count() > 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                int id = _db.Company.Select(i => i.Sl).FirstOrDefault();
+                Company company = _db.Company.Find(id);
+                if (company == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.Address = company.Address;
+                return View(company);
             }
-            Company company = _db.Company.Find(id);
-            if (company == null)
+            else
             {
-                return HttpNotFound();
+                return View();
             }
-            return View(company);
         }
 
         // POST: Companies/Edit/5
@@ -88,19 +93,26 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,Name,Address,Email,Website,Phone,Mobile,AlternativeMobile,RegistrationNo,RegistrationDate,TINNumber,StartingDate")] Company company)
         {
-            if (ModelState.IsValid)
+            if (company.Sl != 0)
             {
                 _db.Entry(company).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
+                ViewBag.Address = company.Address;
                 return View(company);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
-            return View(company);
+            else
+            {
+                _db.Company.Add(company);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                ViewBag.Address = company.Address;
+                return View(company);
+            }
         }
         #endregion
 
-        #region Delete
+        #region Delete (We don't use it)
         // GET: Companies/Delete/5
         public ActionResult Delete(int? id)
         {
