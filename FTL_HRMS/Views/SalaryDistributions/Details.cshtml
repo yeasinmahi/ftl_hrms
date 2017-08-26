@@ -1,0 +1,74 @@
+﻿@model FTL_HRMS.Models.SalaryDistribution
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SalaryDistribution</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.GrossSalary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GrossSalary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BasicSalary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BasicSalary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HouseRent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HouseRent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MedicalAllowance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MedicalAllowance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LifeInsurance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LifeInsurance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FoodAllowance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FoodAllowance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Entertainment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Entertainment)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Sl }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

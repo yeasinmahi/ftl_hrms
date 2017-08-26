@@ -12,14 +12,17 @@ namespace FTL_HRMS.Controllers
 {
     public class BranchesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List
         // GET: Branches
         public ActionResult Index()
         {
-            return View(db.Branches.ToList());
+            return View(_db.Branches.Where(i => i.Status == true).ToList());
         }
+        #endregion
 
+        #region Details
         // GET: Branches/Details/5
         public ActionResult Details(int? id)
         {
@@ -27,14 +30,16 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Branch branch = db.Branches.Find(id);
+            Branch branch = _db.Branches.Find(id);
             if (branch == null)
             {
                 return HttpNotFound();
             }
             return View(branch);
         }
+        #endregion
 
+        #region Create
         // GET: Branches/Create
         public ActionResult Create()
         {
@@ -48,16 +53,20 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Name,Address,OpentingTime,EndingTime,IsLateCalculated,LateConsiderationTime,LateConsiderationDay,LateDeductionPercentage,IsOvertimeCalculated,OvertimeConsiderationTime,OvertimePaymentPercentage,Status")] Branch branch)
         {
-            if (ModelState.IsValid)
+            if (branch.Name != "")
             {
-                db.Branches.Add(branch);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                branch.Status = true;
+                _db.Branches.Add(branch);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Added Successfully !!";
+                return RedirectToAction("Create");
             }
-
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(branch);
         }
+        #endregion
 
+        #region Edit
         // GET: Branches/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -65,7 +74,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Branch branch = db.Branches.Find(id);
+            Branch branch = _db.Branches.Find(id);
             if (branch == null)
             {
                 return HttpNotFound();
@@ -82,13 +91,17 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(branch).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                _db.Entry(branch).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return View(branch);
             }
+            TempData["WarningMsg"] = "Something went wrong !!";
             return View(branch);
         }
+        #endregion
 
+        #region Delete
         // GET: Branches/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -96,7 +109,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Branch branch = db.Branches.Find(id);
+            Branch branch = _db.Branches.Find(id);
             if (branch == null)
             {
                 return HttpNotFound();
@@ -109,19 +122,23 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Branch branch = db.Branches.Find(id);
-            db.Branches.Remove(branch);
-            db.SaveChanges();
+            Branch branch = _db.Branches.Find(id);
+            branch.Status = false;
+            _db.Entry(branch).State = EntityState.Modified;
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

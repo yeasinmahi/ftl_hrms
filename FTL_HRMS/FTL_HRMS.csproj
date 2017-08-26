@@ -2810,6 +2810,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\BranchTransfersController.cs" />
+    <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\DepartmentGroupsController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\DepartmentTransfersController.cs" />
@@ -2820,6 +2821,7 @@
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\EmployeeTypesController.cs" />
     <Compile Include="Controllers\ExperiencesController.cs" />
+    <Compile Include="Controllers\HolidaysController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\LeaveCountsController.cs" />
@@ -2831,7 +2833,9 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\ResignationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SalaryDistributionsController.cs" />
     <Compile Include="Controllers\SourceOfHiresController.cs" />
+    <Compile Include="Controllers\WeekendsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -3238,6 +3242,26 @@
     <Content Include="Views\Branches\Details.cshtml" />
     <Content Include="Views\Branches\Edit.cshtml" />
     <Content Include="Views\Branches\Index.cshtml" />
+    <Content Include="Views\Companies\Create.cshtml" />
+    <Content Include="Views\Companies\Delete.cshtml" />
+    <Content Include="Views\Companies\Details.cshtml" />
+    <Content Include="Views\Companies\Edit.cshtml" />
+    <Content Include="Views\Companies\Index.cshtml" />
+    <Content Include="Views\Holidays\Create.cshtml" />
+    <Content Include="Views\Holidays\Delete.cshtml" />
+    <Content Include="Views\Holidays\Details.cshtml" />
+    <Content Include="Views\Holidays\Edit.cshtml" />
+    <Content Include="Views\Holidays\Index.cshtml" />
+    <Content Include="Views\SalaryDistributions\Create.cshtml" />
+    <Content Include="Views\SalaryDistributions\Delete.cshtml" />
+    <Content Include="Views\SalaryDistributions\Details.cshtml" />
+    <Content Include="Views\SalaryDistributions\Edit.cshtml" />
+    <Content Include="Views\SalaryDistributions\Index.cshtml" />
+    <Content Include="Views\Weekends\Create.cshtml" />
+    <Content Include="Views\Weekends\Delete.cshtml" />
+    <Content Include="Views\Weekends\Details.cshtml" />
+    <Content Include="Views\Weekends\Edit.cshtml" />
+    <Content Include="Views\Weekends\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

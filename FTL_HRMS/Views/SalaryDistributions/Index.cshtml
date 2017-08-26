@@ -1,0 +1,69 @@
+﻿@model IEnumerable<FTL_HRMS.Models.SalaryDistribution>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.GrossSalary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BasicSalary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HouseRent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MedicalAllowance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LifeInsurance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodAllowance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Entertainment)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.GrossSalary)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BasicSalary)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HouseRent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MedicalAllowance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LifeInsurance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FoodAllowance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Entertainment)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Sl }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Sl }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Sl })
+        </td>
+    </tr>
+}
+
+</table>
