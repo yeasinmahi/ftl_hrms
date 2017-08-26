@@ -41,6 +41,8 @@ namespace FTL_HRMS.Models
 
         public double? OvertimeConsiderationTime { get; set; }
 
+        public double? OvertimePaymentPercentage { get; set; }
+
         public bool Status { get; set; }
     }
 }

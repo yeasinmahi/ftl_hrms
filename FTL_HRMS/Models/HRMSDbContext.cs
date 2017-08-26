@@ -38,6 +38,7 @@ namespace FTL_HRMS.Models
         public DbSet<MonthlyAttendance> MonthlyAttendance { get; set; }
         public DbSet<MonthlySalarySheet> MonthlySalarySheet { get; set; }
         public DbSet<PaidSalaryDuration> PaidSalaryDuration { get; set; }
+        public DbSet<SalaryDistribution> SalaryDistribution { get; set; }
         public DbSet<EmployeeSalaryDistribution> EmployeeSalaryDistribution { get; set; }
         public DbSet<Weekend> Weekend { get; set; }
 

@@ -2808,7 +2808,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccessDeniedController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\BranchTransfersController.cs" />
     <Compile Include="Controllers\DepartmentGroupsController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
@@ -2850,6 +2849,14 @@
     <Compile Include="Migrations\201708260553116_update employee model.cs" />
     <Compile Include="Migrations\201708260553116_update employee model.Designer.cs">
       <DependentUpon>201708260553116_update employee model.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708260658065_add salary distribution.cs" />
+    <Compile Include="Migrations\201708260658065_add salary distribution.Designer.cs">
+      <DependentUpon>201708260658065_add salary distribution.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708260705168_update branch.cs" />
+    <Compile Include="Migrations\201708260705168_update branch.Designer.cs">
+      <DependentUpon>201708260705168_update branch.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -3162,11 +3169,6 @@
     <Content Include="Views\DepartmentTransfers\Details.cshtml" />
     <Content Include="Views\DepartmentTransfers\Edit.cshtml" />
     <Content Include="Views\DepartmentTransfers\Index.cshtml" />
-    <Content Include="Views\Branches\Create.cshtml" />
-    <Content Include="Views\Branches\Delete.cshtml" />
-    <Content Include="Views\Branches\Details.cshtml" />
-    <Content Include="Views\Branches\Edit.cshtml" />
-    <Content Include="Views\Branches\Index.cshtml" />
     <Content Include="Views\BranchTransfers\Create.cshtml" />
     <Content Include="Views\BranchTransfers\Delete.cshtml" />
     <Content Include="Views\BranchTransfers\Details.cshtml" />
@@ -3254,6 +3256,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708260553116_update employee model.resx">
       <DependentUpon>201708260553116_update employee model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708260658065_add salary distribution.resx">
+      <DependentUpon>201708260658065_add salary distribution.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708260705168_update branch.resx">
+      <DependentUpon>201708260705168_update branch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
