@@ -51,7 +51,7 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,Name,Address,OpentingTime,EndingTime,IsLateCalculated,LateConsiderationTime,LateConsiderationDay,LateDeductionPercentage,IsOvertimeCalculated,OvertimeConsiderationTime,OvertimePaymentPercentage,Status")] Branch branch)
+        public ActionResult Create([Bind(Include = "Sl,Name,Address,OpeningTime,EndingTime,IsLateCalculated,LateConsiderationTime,LateConsiderationDay,LateDeductionPercentage,IsOvertimeCalculated,OvertimeConsiderationTime,OvertimePaymentPercentage,Status")] Branch branch)
         {
             if (branch.Name != "")
             {
@@ -87,7 +87,7 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Name,Address,OpentingTime,EndingTime,IsLateCalculated,LateConsiderationTime,LateConsiderationDay,LateDeductionPercentage,IsOvertimeCalculated,OvertimeConsiderationTime,OvertimePaymentPercentage,Status")] Branch branch)
+        public ActionResult Edit([Bind(Include = "Sl,Name,Address,OpeningTime,EndingTime,IsLateCalculated,LateConsiderationTime,LateConsiderationDay,LateDeductionPercentage,IsOvertimeCalculated,OvertimeConsiderationTime,OvertimePaymentPercentage,Status")] Branch branch)
         {
             if (ModelState.IsValid)
             {
