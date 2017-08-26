@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using FTL_HRMS.Models;
@@ -32,7 +34,35 @@ namespace FTL_HRMS.Utility
                     return "Cannot get the error";
             }
         }
-        
+        public enum ConnectionStringProperty
+        {
+            DataSource,
+            DatabaseName,
+            User,
+            Password
+        }
+
+        public static string GetConectionStringProperty(string connectionString, ConnectionStringProperty connectionStringProperty)
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
+            switch (connectionStringProperty)
+            {
+                case ConnectionStringProperty.DatabaseName:
+                    return builder.InitialCatalog;
+                case ConnectionStringProperty.DataSource:
+                    return builder.DataSource;
+                case ConnectionStringProperty.User:
+                    return builder.UserID;
+                case ConnectionStringProperty.Password:
+                    return builder.Password;
+                default:
+                    return "something wrong";
+            }
+        }
+        public static string GetConnectionString()
+        {
+            return ConfigurationManager.ConnectionStrings["HRMSDbContext"].ConnectionString;
+        }
         public static PropertyInfo GetPropertyInfo(object o, string property)
         {
             Type myObjOriginalType = o.GetType();
@@ -40,9 +70,9 @@ namespace FTL_HRMS.Utility
             return myProps.FirstOrDefault(propertyInfo => propertyInfo.Name == property);
         }
 
-        public static bool SetValue(object o ,PropertyInfo propertyInfo, string value)
+        public static bool SetValue(object o, PropertyInfo propertyInfo, string value)
         {
-            
+
             string proType = propertyInfo.PropertyType.Name;
             try
             {
@@ -63,12 +93,12 @@ namespace FTL_HRMS.Utility
             {
                 return false;
             }
-            
-            
+
+
         }
 
         public static int GetUserId(HRMSDbContext db, string userName)
-        {   
+        {
             return db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
         }
         public static void ExecuteSeedOperation(HRMSDbContext context, List<string> scripts)
@@ -77,13 +107,13 @@ namespace FTL_HRMS.Utility
             {
                 context.Database.ExecuteSqlCommand(script);
             }
-            
+
         }
 
         public static string GetViewCheckQuery(string viewName)
         {
-            string view = @"IF OBJECT_ID('dbo."+viewName+"', 'V') IS NOT NULL DROP VIEW dbo."+viewName;
+            string view = @"IF OBJECT_ID('dbo." + viewName + "', 'V') IS NOT NULL DROP VIEW dbo." + viewName;
             return view;
-        } 
+        }
     }
 }
