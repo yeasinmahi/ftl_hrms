@@ -20,7 +20,7 @@ namespace FTL_HRMS.Controllers
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
             List<Resignation> resignationList = new List<Resignation>();
-            resignationList = _db.Resignation.Where(i => i.EmployeeId == userId).ToList();
+            resignationList = _db.Resignation.Include(a => a.UpdateEmployee).Where(i => i.EmployeeId == userId).ToList();
             return View(resignationList);
         }
         #endregion
@@ -79,7 +79,7 @@ namespace FTL_HRMS.Controllers
         {
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
-            List<Resignation> resignationList = _db.Resignation.Where(x => x.EmployeeId != userId).ToList();
+            List<Resignation> resignationList = _db.Resignation.Include(a => a.UpdateEmployee).Where(x => x.EmployeeId != userId).ToList();
             return View(resignationList);
         }
 

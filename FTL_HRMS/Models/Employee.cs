@@ -91,13 +91,14 @@ namespace FTL_HRMS.Models
 
         public double GrossSalary { get; set; }
 
+        [ForeignKey("CreateEmployee")]
         public int CreatedBy { get; set; }
 
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
         ApplyFormatInEditMode = true)]
         public DateTime CreateDate { get; set; }
-
+        
         public int? UpdatedBy { get; set; }
 
         [DataType(DataType.Date),
@@ -105,8 +106,11 @@ namespace FTL_HRMS.Models
         ApplyFormatInEditMode = true)]
         public DateTime? UpdateDate { get; set; }
 
-        public bool Status { get; set; }
+        public bool IsSystemOrSuperAdmin { get; set; }
 
+        public bool Status { get; set; }
+        
+        public virtual Employee CreateEmployee { get; set; }
         public virtual SourceOfHire SourceOfHire { get; set; }
         public virtual Designation Designation { get; set; }
         public virtual EmployeeType EmployeeType { get; set; }

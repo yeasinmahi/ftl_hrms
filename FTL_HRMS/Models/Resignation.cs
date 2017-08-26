@@ -27,6 +27,7 @@ namespace FTL_HRMS.Models
         ApplyFormatInEditMode = true)]
         public DateTime CreateDate { get; set; }
 
+        [ForeignKey("UpdateEmployee")]
         public int? UpdatedBy { get; set; }
 
         [DataType(DataType.Date),
@@ -40,6 +41,7 @@ namespace FTL_HRMS.Models
         [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
 
+        public virtual Employee UpdateEmployee { get; set; }
         public virtual Employee Employee { get; set; }
     }
 }

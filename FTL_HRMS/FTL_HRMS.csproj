@@ -2839,6 +2839,18 @@
     <Compile Include="Migrations\201708181143265_Initial.Designer.cs">
       <DependentUpon>201708181143265_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708240812540_adding foreignkey in department and adding payroll model.cs" />
+    <Compile Include="Migrations\201708240812540_adding foreignkey in department and adding payroll model.Designer.cs">
+      <DependentUpon>201708240812540_adding foreignkey in department and adding payroll model.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708241025097_update_createdBy_updatedBy.cs" />
+    <Compile Include="Migrations\201708241025097_update_createdBy_updatedBy.Designer.cs">
+      <DependentUpon>201708241025097_update_createdBy_updatedBy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708260553116_update employee model.cs" />
+    <Compile Include="Migrations\201708260553116_update employee model.Designer.cs">
+      <DependentUpon>201708260553116_update employee model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LeaveCount.cs" />
@@ -2854,6 +2866,16 @@
     <Compile Include="Models\Experience.cs" />
     <Compile Include="Models\Education.cs" />
     <Compile Include="Models\Images.cs" />
+    <Compile Include="Models\Payroll\Company.cs" />
+    <Compile Include="Models\Payroll\SalaryDistribution.cs" />
+    <Compile Include="Models\Payroll\PaidSalaryDuration.cs" />
+    <Compile Include="Models\Payroll\MonthlySalarySheet.cs" />
+    <Compile Include="Models\Payroll\EmployeeSalaryDistribution.cs" />
+    <Compile Include="Models\Payroll\MonthlyAttendance.cs" />
+    <Compile Include="Models\Payroll\FilterAttendance.cs" />
+    <Compile Include="Models\Payroll\DeviceAttendance.cs" />
+    <Compile Include="Models\Payroll\Weekend.cs" />
+    <Compile Include="Models\Payroll\Holiday.cs" />
     <Compile Include="Models\PerformanceIssue .cs" />
     <Compile Include="Models\PerformanceRating.cs" />
     <Compile Include="Models\Resignation.cs" />
@@ -3206,6 +3228,7 @@
     <Content Include="Views\Reports\LeaveReport.cshtml" />
     <Content Include="Views\Reports\DepartmentTransferReport.cshtml" />
     <Content Include="Views\Reports\BranchTransferReport.cshtml" />
+    <Content Include="Views\LeaveHistories\LeaveRecommendation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3221,6 +3244,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201708181143265_Initial.resx">
       <DependentUpon>201708181143265_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708240812540_adding foreignkey in department and adding payroll model.resx">
+      <DependentUpon>201708240812540_adding foreignkey in department and adding payroll model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708241025097_update_createdBy_updatedBy.resx">
+      <DependentUpon>201708241025097_update_createdBy_updatedBy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708260553116_update employee model.resx">
+      <DependentUpon>201708260553116_update employee model.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

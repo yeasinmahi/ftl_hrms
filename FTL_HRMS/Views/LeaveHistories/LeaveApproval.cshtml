@@ -118,15 +118,24 @@
                             <td align="center" width="5%">
                                 @(rowNo += 1)
                             </td>
-                            <td width="6%" align="center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a data-toggle="modal" href="#ultraModal-7" onclick="LeaveApproval('Approved', @item.Sl)">Approve</a></li>
-                                        <li><a data-toggle="modal" href="#ultraModal-7" onclick="LeaveApproval('Canceled', @item.Sl)">Cancel</a></li>
-                                    </ul>
-                                </div>
-                            </td>
+                            @if (item.Status == "Recommended")
+                            {
+                                <td width="6%" align="center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a data-toggle="modal" href="#ultraModal-7" onclick="LeaveApproval('Approved', @item.Sl)">Approve</a></li>
+                                            <li><a data-toggle="modal" href="#ultraModal-7" onclick="LeaveApproval('Canceled', @item.Sl)">Cancel</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <button type="button" class="btn btn-success btn-sm" aria-expanded="false">Action Taken</button>
+                                </td>
+                            }
                             <td>
                                 @Html.DisplayFor(modelItem => item.Employee.Code)
                             </td>
@@ -155,7 +164,7 @@
                                 @Html.DisplayFor(modelItem => item.Status)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.UpdatedBy)
+                                @Html.DisplayFor(modelItem => item.UpdateEmployee.Name)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.UpdateDate)

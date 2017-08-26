@@ -18,6 +18,7 @@ namespace FTL_HRMS.Models
         [MaxLength(250)]
         public string Name { get; set; }
 
+        [ForeignKey("CreateEmployee")]
         public int CreatedBy { get; set; }
 
         [DataType(DataType.Date),
@@ -25,6 +26,7 @@ namespace FTL_HRMS.Models
         ApplyFormatInEditMode = true)]
         public DateTime CreateDate { get; set; }
 
+        [ForeignKey("UpdateEmployee")]
         public int? UpdatedBy { get; set; }
 
         [DataType(DataType.Date),
@@ -34,6 +36,8 @@ namespace FTL_HRMS.Models
 
         public bool Status { get; set; }
 
+        public virtual Employee CreateEmployee { get; set; }
+        public virtual Employee UpdateEmployee { get; set; }
         public ICollection<Department> Department { get; set; }
     }
 }

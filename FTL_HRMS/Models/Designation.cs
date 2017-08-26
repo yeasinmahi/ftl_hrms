@@ -23,6 +23,7 @@ namespace FTL_HRMS.Models
         [Required(ErrorMessage = "Role Name cannot be empty")]
         public string RoleName { get; set; }
 
+        [ForeignKey("CreateEmployee")]
         public int CreatedBy { get; set; }
 
         [DataType(DataType.Date),
@@ -30,6 +31,7 @@ namespace FTL_HRMS.Models
         ApplyFormatInEditMode = true)]
         public DateTime CreateDate { get; set; }
 
+        [ForeignKey("UpdateEmployee")]
         public int? UpdatedBy { get; set; }
 
         [DataType(DataType.Date),
@@ -39,6 +41,8 @@ namespace FTL_HRMS.Models
 
         public bool Status { get; set; }
 
-        public Department Department { get; set; }
+        public virtual Employee CreateEmployee { get; set; }
+        public virtual Employee UpdateEmployee { get; set; }
+        public virtual Department Department { get; set; }
     }
 }

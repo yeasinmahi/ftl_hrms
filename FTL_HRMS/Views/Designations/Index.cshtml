@@ -56,6 +56,18 @@
                         <th>
                             Role Name
                         </th>
+                        <th>
+                            Created By
+                        </th>
+                        <th>
+                            Create Date
+                        </th>
+                        <th>
+                            Updated By
+                        </th>
+                        <th>
+                            Update Date
+                        </th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -73,6 +85,18 @@
                         </th>
                         <th>
                             Role Name
+                        </th>
+                        <th>
+                            Created By
+                        </th>
+                        <th>
+                            Create Date
+                        </th>
+                        <th>
+                            Updated By
+                        </th>
+                        <th>
+                            Update Date
                         </th>
                     </tr>
                 </tfoot>
@@ -107,6 +131,19 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.RoleName)
                             </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreateEmployee.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreateDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdateEmployee.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdateDate)
+                            </td>
+
                         </tr>
                     }
                 </tbody>

@@ -22,6 +22,7 @@ namespace FTL_HRMS.Models
         [ForeignKey("DepartmentGroup")]
         public int DepartmentGroupId { get; set; }
 
+        [ForeignKey("CreateEmployee")]
         public int CreatedBy { get; set; }
 
         [DataType(DataType.Date),
@@ -29,6 +30,7 @@ namespace FTL_HRMS.Models
         ApplyFormatInEditMode = true)]
         public DateTime CreateDate { get; set; }
 
+        [ForeignKey("UpdateEmployee")]
         public int? UpdatedBy { get; set; }
 
         [DataType(DataType.Date),
@@ -38,7 +40,9 @@ namespace FTL_HRMS.Models
 
         public bool Status { get; set; }
 
-        public DepartmentGroup DepartmentGroup { get; set; }
+        public virtual Employee CreateEmployee { get; set; }
+        public virtual Employee UpdateEmployee { get; set; }
+        public virtual DepartmentGroup DepartmentGroup { get; set; }
         public ICollection<Designation> Designation { get; set; }
     }
 }

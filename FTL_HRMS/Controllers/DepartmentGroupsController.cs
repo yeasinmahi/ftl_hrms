@@ -16,7 +16,7 @@ namespace FTL_HRMS.Controllers
         // GET: DepartmentGroups
         public ActionResult Index()
         {
-            return View(_db.DepartmentGroup.Where(i=> i.Status==true).ToList());
+            return View(_db.DepartmentGroup.Include(a => a.CreateEmployee).Include(a => a.UpdateEmployee).Where(i=> i.Status==true).ToList());
         }
         #endregion
 

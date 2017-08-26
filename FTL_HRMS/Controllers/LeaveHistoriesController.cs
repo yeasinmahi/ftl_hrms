@@ -20,7 +20,7 @@ namespace FTL_HRMS.Controllers
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
             List<LeaveHistory> leaveHistoryList = new List<LeaveHistory>();
-            leaveHistoryList = _db.LeaveHistories.Where(i => i.EmployeeId == userId).Include(i=> i.LeaveType).ToList();
+            leaveHistoryList = _db.LeaveHistories.Include(a => a.UpdateEmployee).Where(i => i.EmployeeId == userId).Include(i=> i.LeaveType).ToList();
             return View(leaveHistoryList);
         }
         #endregion
@@ -78,11 +78,48 @@ namespace FTL_HRMS.Controllers
 
         #region Leave Approval
         // GET: Resignations
+        public ActionResult LeaveRecommendation()
+        {
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+            List<LeaveHistory> leaveHistoryList = _db.LeaveHistories.Include(i => i.Employee).Include(i => i.LeaveType).Include(a => a.UpdateEmployee).Where(x => x.EmployeeId != userId && x.Status != "Approved").ToList();
+            return View(leaveHistoryList);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult LeaveRecommendation([Bind(Include = "Sl,EmployeeId,LeaveTypeId,CreateDate,FromDate,ToDate,Day,Cause,UpdatedBy,UpdateDate,Status,Remarks")] LeaveHistory leaveHistory)
+        {
+            int id = Convert.ToInt32(Request["field-1"]);
+            string status = Convert.ToString(Request["field-2"]);
+            string remarks = Convert.ToString(Request["field-3"]);
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+
+            leaveHistory = _db.LeaveHistories.Find(id);
+            if (leaveHistory != null)
+            {
+                leaveHistory.Status = status;
+                leaveHistory.Remarks = remarks;
+                leaveHistory.UpdatedBy = userId;
+                leaveHistory.UpdateDate = DateTime.Now;
+                _db.Entry(leaveHistory).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                return RedirectToAction("LeaveRecommendation", "LeaveHistories");
+            }
+            TempData["WarningMsg"] = "Something went wrong !!";
+            return RedirectToAction("LeaveRecommendation", "LeaveHistories");
+        }
+        #endregion
+
+        #region Leave Approval
+        // GET: Resignations
         public ActionResult LeaveApproval()
         {
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
-            List<LeaveHistory> leaveHistoryList = _db.LeaveHistories.Include(i => i.Employee).Include(i => i.LeaveType).Where(x => x.EmployeeId != userId).ToList();
+            List<LeaveHistory> leaveHistoryList = _db.LeaveHistories.Include(i => i.Employee).Include(i => i.LeaveType).Include(a => a.UpdateEmployee).Where(x => x.EmployeeId != userId && x.Status != "Pending").ToList();
             return View(leaveHistoryList);
         }
 

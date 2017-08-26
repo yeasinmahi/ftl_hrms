@@ -40,6 +40,7 @@ namespace FTL_HRMS.Models
         [MaxLength(250)]
         public string Cause { get; set; }
 
+        [ForeignKey("UpdateEmployee")]
         public int? UpdatedBy { get; set; }
 
         [DataType(DataType.Date),
@@ -51,6 +52,7 @@ namespace FTL_HRMS.Models
 
         public string Remarks { get; set; }
 
+        public virtual Employee UpdateEmployee { get; set; }
         public virtual Employee Employee { get; set; }
         public virtual LeaveType LeaveType { get; set; }
     }

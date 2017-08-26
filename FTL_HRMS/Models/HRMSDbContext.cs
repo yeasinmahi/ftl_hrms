@@ -31,6 +31,16 @@ namespace FTL_HRMS.Models
         public DbSet<Employee> Employee { get; set; }
         public DbSet<Images> Images { get; set; }
 
+        public DbSet<Company> Company { get; set; }
+        public DbSet<DeviceAttendance> DeviceAttendance { get; set; }
+        public DbSet<FilterAttendance> FilterAttendance { get; set; }
+        public DbSet<Holiday> Holiday { get; set; }
+        public DbSet<MonthlyAttendance> MonthlyAttendance { get; set; }
+        public DbSet<MonthlySalarySheet> MonthlySalarySheet { get; set; }
+        public DbSet<PaidSalaryDuration> PaidSalaryDuration { get; set; }
+        public DbSet<EmployeeSalaryDistribution> EmployeeSalaryDistribution { get; set; }
+        public DbSet<Weekend> Weekend { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
