@@ -39,7 +39,7 @@ namespace FTL_HRMS.Models
         public DateTime? UpdateDate { get; set; }
 
         public bool Status { get; set; }
-
+        
         public virtual Employee CreateEmployee { get; set; }
         public virtual Employee UpdateEmployee { get; set; }
         public virtual DepartmentGroup DepartmentGroup { get; set; }
