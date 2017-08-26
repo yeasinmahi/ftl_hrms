@@ -2,128 +2,140 @@
 
 @{
     ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-
-<h2>Create</h2>
-
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Branch</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.OpentingTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OpentingTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OpentingTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndingTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndingTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndingTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsLateCalculated, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsLateCalculated)
-                    @Html.ValidationMessageFor(model => model.IsLateCalculated, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LateConsiderationTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LateConsiderationTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LateConsiderationTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LateConsiderationDay, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LateConsiderationDay, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LateConsiderationDay, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LateDeductionPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LateDeductionPercentage, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LateDeductionPercentage, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsOvertimeCalculated, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsOvertimeCalculated)
-                    @Html.ValidationMessageFor(model => model.IsOvertimeCalculated, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.OvertimeConsiderationTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OvertimeConsiderationTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OvertimeConsiderationTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.OvertimePaymentPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OvertimePaymentPercentage, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OvertimePaymentPercentage, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Status)
-                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class="page-title">
+        <div class="pull-left">
+            <h1 class="title">Branch</h1>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+<header class="panel_header">
+    <h2 class="title pull-left">Add New Branch</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["SuccessMsg"]
+                        </div>
+                    }
+                    @if (TempData["WarningMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["WarningMsg"]
+                        </div>
+                    }
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Status)
+                    <div class="col-md-offset-3">
+                        <div>
+                        <div class="btn-group col-md-offset-5">
+                            <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Branches" )'">Back To List</button>
+                        </div>
+                        <div>
+                          @Html.LabelFor(model => model.Name)
+                        </div>
+                        <div>
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div>
+                           @Html.LabelFor(model => model.Address)
+                        </div>
+                        <div>
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+
+
+                        <div>
+                           @Html.LabelFor(model => model.OpentingTime,"Opening Time")
+                        </div>
+                        <div>
+                            @Html.EditorFor(model => model.OpentingTime, new { htmlAttributes = new { @class = "form-control timepicker-holdOffTime", type = "time", step = 1, style = "width:50%" } })
+                            @Html.ValidationMessageFor(model => model.OpentingTime, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div>
+                            @Html.LabelFor(model => model.EndingTime, "Ending Time")
+                        </div>
+                        <div>
+                            @Html.EditorFor(model => model.EndingTime, new { htmlAttributes = new { @class = "form-control timepicker-holdOffTime", type = "time", step = 1, style = "width:50%" } })
+                            @Html.ValidationMessageFor(model => model.EndingTime, "", new { @class = "text-danger" })
+                        </div>
+                        <br />
+                        <div>
+                            <input class="Is_Late_Calculated" type="checkbox" style="width:2%" name="Is_Late_Calculated" value="1" />
+                            <span class="item-text">Late Calculation</span>
+                        </div>
+                            <div class="IsLateCalculated">
+                                <label>Late Consideration Time</label>
+                                <input name="LateConsiderationTime" type="text" class="form-control" style="width:50%" id="LateConsiderationTime">
+                                <label>Late Consideration Day</label>
+                                <input name="LateConsiderationDay" type="text" class="form-control" style="width:50%" id="LateConsiderationDay">
+                                <label>Late Deduction Percentage</label>
+                                <input name="LateDeductionPercentage" type="text" class="form-control" style="width:50%" id="LateDeductionPercentage">
+                            </div><br />
+                        <div>
+                            <input class="Is_Overtime_Calculated" type="checkbox" style="width:2%" name="Is_Overtime_Calculated" value="1" />
+                            <span class="item-text">Overtime Calculation</span>
+                        </div>
+                    </div>
+                    
+                    <div class="IsOvertimeCalculated">
+                        <label>Overtime Consideration Time</label>
+                        <input name="OvertimeConsiderationTime" type="text" class="form-control" style="width:50%" id="OvertimeConsiderationTime">
+                        <label>Overtime Payment Percentage</label>
+                        <input name="OvertimePaymentPercentage" type="text" class="form-control" style="width:50%" id="OvertimePaymentPercentage">
+                    </div><br />
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+              </div>
+            }
+        </div>
+    </div>
+
+    <script src="~/Content/AdminTemplate/assets/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(".IsLateCalculated").hide();
+    $(".Is_Late_Calculated").click(function () {
+        if ($(this).is(":checked")) {
+            $(".IsLateCalculated").show(200);
+            $("#LateConsiderationTime").prop('required', true);
+            $("#LateConsiderationDay").prop('required', true);
+            $("#LateDeductionPercentage").prop('required', true);
+        } else {
+            $(".IsLateCalculated").hide(200);
+        }
+    });
+    $(".IsOvertimeCalculated").hide();
+    $(".Is_Overtime_Calculated").click(function () {
+        if ($(this).is(":checked")) {
+            $(".IsOvertimeCalculated").show(200);
+            $("#OvertimeConsiderationTime").prop('required', true);
+            $("#OvertimePaymentPercentage").prop('required', true);
+        } else {
+            $(".IsOvertimeCalculated").hide(200);
+        }
+    });
+    </script>
