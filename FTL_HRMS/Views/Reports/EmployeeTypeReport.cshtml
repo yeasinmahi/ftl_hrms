@@ -25,13 +25,13 @@
                         <div><h5> Select Department: </h5></div>
                         <div>
                             <select class="form-control" style="width:50%" id="ddl_dept" name="ddl_dept" onchange="LoadDesignation();" tabindex=20>
-                                <option value="">Select Department</option>
+                                <option value="">--All--</option>
                             </select>
                         </div>
                         <div><h5> Select Designation: </h5></div>
                         <div>
                             <select class="form-control" style="width:50%" id="ddl_designation" name="ddl_designation">
-                                <option value="" selected>Select Designation</option>
+                                <option value="" selected>--All--</option>
                             </select>
                         </div>
                         <br />
@@ -42,36 +42,36 @@
                 </div>
             </div>
         </div>
-        </div>
-        }
-        <div class="content-body">
-            <div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="table-responsive" data-pattern="priority-columns">
-                        @if (ViewBag.Status != null)
+    </div>
+}
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="table-responsive" data-pattern="priority-columns">
+                @if (ViewBag.Status != null)
                 {
                     if (ViewBag.TypeName == null)
                     {
-                                <div align="center">
-                                    <p><b>Type Name : </b> All Employee's List</p>
-                                </div>
-                            }
-                            else
-                            {
-                                <div align="center">
-                                    <p><b>Type Name : </b> @ViewBag.TypeName</p>
-                                </div>
-                            }
+                        <div align="center">
+                            <p><b>Type Name : </b> All Employee's List</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div align="center">
+                            <p><b>Type Name : </b> @ViewBag.TypeName</p>
+                        </div>
+                    }
 
 
-                            <div class="btn-group">
+                    <div class="btn-group">
 
-                                <button type="submit" class="btn btn-info btn-sm" onclick="location.href='@Url.Action("PrintEmployeeList", "Reports", new { employeeTypeId=@ViewBag.EmployeesTypeId })'" target="_blank">
-                                    <span class="glyphicon glyphicon-print"></span> Download PDF
-                                </button>
+                        <button type="submit" class="btn btn-info btn-sm" onclick="location.href='@Url.Action("PrintEmployeeList", "Reports", new { employeeTypeId=@ViewBag.EmployeesTypeId })'" target="_blank">
+                            <span class="glyphicon glyphicon-print"></span> Download PDF
+                        </button>
 
-                            </div>
-                            <br />
+                    </div>
+                    <br />
                             <table cellspacing="0" id="tech-companies-1" class="table table-small-font table-bordered table-striped">
                                 @{int rowNo = 0;}
                                 <thead>
@@ -121,58 +121,58 @@
                                 </tbody>
                             </table>
                                     }
-                    </div>
-                </div>
             </div>
         </div>
-        <script>
-            function LoadDepartment() {
-                $.ajax({
-                    url: '/Departments/GetDepartmentByGroupId',
-                    method: 'POST',
-                    data: {
-                        DepartmentGroupId: $('#ddl_deptgroup').val(),
-                    },
-                    cache: false,
-                    error: function () {
-                        alert("An error occoured!");
-                    },
-                    success: function (response) {
-                        $('#ddl_dept').empty();
-                        $('#ddl_dept').append($('<option>', {
-                            value: '',
-                            text: 'Select Department'
-                        }));
-                        for (var i = 0; i < response.length; i++) {
-                            var opt = new Option(response[i].Name, response[i].Sl);
-                            $('#ddl_dept').append(opt);
-                        }
-                    }
-                });
-            };
+    </div>
+</div>
+<script>
+    function LoadDepartment() {
+        $.ajax({
+            url: '/Departments/GetDepartmentByGroupId',
+            method: 'POST',
+            data: {
+                DepartmentGroupId: $('#ddl_deptgroup').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                $('#ddl_dept').empty();
+                $('#ddl_dept').append($('<option>', {
+                    value: '',
+                    text: '--All--'
+                }));
+                for (var i = 0; i < response.length; i++) {
+                    var opt = new Option(response[i].Name, response[i].Sl);
+                    $('#ddl_dept').append(opt);
+                }
+            }
+        });
+    };
 
-            function LoadDesignation() {
-                $.ajax({
-                    url: '/Designations/GetDesignationByDeptId',
-                    method: 'POST',
-                    data: {
-                        DepartmentId: $('#ddl_dept').val(),
-                    },
-                    cache: false,
-                    error: function () {
-                        alert("An error occoured!");
-                    },
-                    success: function (response) {
-                        $('#ddl_designation').empty();
-                        $('#ddl_designation').append($('<option>', {
-                            value: '',
-                            text: 'Select Designation'
-                        }));
-                        for (var i = 0; i < response.length; i++) {
-                            var opt = new Option(response[i].Name, response[i].Sl);
-                            $('#ddl_designation').append(opt);
-                        }
-                    }
-                });
-            };
-        </script>
+    function LoadDesignation() {
+        $.ajax({
+            url: '/Designations/GetDesignationByDeptId',
+            method: 'POST',
+            data: {
+                DepartmentId: $('#ddl_dept').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                $('#ddl_designation').empty();
+                $('#ddl_designation').append($('<option>', {
+                    value: '',
+                    text: '--All--'
+                }));
+                for (var i = 0; i < response.length; i++) {
+                    var opt = new Option(response[i].Name, response[i].Sl);
+                    $('#ddl_designation').append(opt);
+                }
+            }
+        });
+    };
+</script>

@@ -34,7 +34,10 @@ namespace FTL_HRMS.Controllers
             ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
             ViewBag.DepartmentGroupId = new SelectList(_db.DepartmentGroup, "Sl", "Name");
             ViewBag.Status = "SelectType";
-
+            TempData["etid"] = etid;
+            TempData["dgid"] = dgid;
+            TempData["did"] = did;
+            TempData["dsid"] = dsid;
             List<Employee> employeeList = GetEmployeeList(etid, dgid, did, dsid);
             return View(employeeList);
 
@@ -96,18 +99,84 @@ namespace FTL_HRMS.Controllers
             return employeeList;
         }
 
-        public void GetSelectedFormula()
+        public string GetSelectedFormula(int employeeTypeId, int departmentGroupId, int departmentId, int designationId)
         {
-            
+            string selectedFormula;
+            string departmentGroupIdSelectedFormula = " {tbl_DepartmentGroup.Sl} ="+departmentGroupId;
+            string departmentIdSelectedFormula = " {tbl_Department.Sl} ="+departmentId;
+            string employeeTypeIdSelectedFormula = " {tbl_Employee.EmployeeTypeId} ="+employeeTypeId;
+            string designationIdSelectedFormula = " {tbl_Designation.Sl} ="+ designationId;
+
+
+            if (employeeTypeId > 0)
+            {
+                if (departmentGroupId > 0)
+                {
+                    if (departmentId > 0)
+                    {
+                        if (designationId > 0)
+                        {
+                            selectedFormula = employeeTypeIdSelectedFormula + " and " + designationIdSelectedFormula;
+                        }
+                        else
+                        {
+                            selectedFormula = employeeTypeIdSelectedFormula + " and " + departmentIdSelectedFormula;
+                        }
+                    }
+                    else
+                    {
+                        selectedFormula = employeeTypeIdSelectedFormula+" and "+departmentGroupIdSelectedFormula;
+                    }
+                }
+                else
+                {
+                    selectedFormula = employeeTypeIdSelectedFormula;
+                }
+            }
+            else
+            {
+                if (departmentGroupId > 0)
+                {
+                    if (departmentId > 0)
+                    {
+                        if (designationId > 0)
+                        {
+                            selectedFormula = designationIdSelectedFormula;
+                        }
+                        else
+                        {
+                            selectedFormula = departmentIdSelectedFormula;
+                        }
+                    }
+                    else
+                    {
+                        selectedFormula = departmentGroupIdSelectedFormula;
+                    }
+                }
+                else
+                {
+                    selectedFormula = "";
+                }
+            }
+            return selectedFormula;
         }
         public ActionResult PrintEmployeeList()
         {
-            int employeeTypeId = Convert.ToInt32(Request["employeeTypeId"]);
             string selectedFormula = "";
-            if (employeeTypeId > 0)
+            try
             {
-                selectedFormula = "{tbl_Employee.EmployeeTypeId} = " + employeeTypeId;
+                int etid = (int)TempData["etid"];
+                int dgid = (int)TempData["dgid"];
+                int did = (int)TempData["did"];
+                int dsid = (int)TempData["dsid"];
+                selectedFormula = GetSelectedFormula(etid, dgid, did, dsid);
             }
+            catch (Exception)
+            {
+                return null;
+            }
+            
+            
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName = "Employee Report", selectedFormula = selectedFormula });
         }
         #endregion
