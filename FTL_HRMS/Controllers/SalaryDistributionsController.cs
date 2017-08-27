@@ -14,7 +14,7 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext _db = new HRMSDbContext();
 
-        #region List
+        #region List (We don't use it)
         // GET: SalaryDistributions
         public ActionResult Index()
         {
@@ -22,7 +22,7 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Details
+        #region Details (We don't use it)
         // GET: SalaryDistributions/Details/5
         public ActionResult Details(int? id)
         {
@@ -39,7 +39,7 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Create
+        #region Create (We don't use it)
         // GET: SalaryDistributions/Create
         public ActionResult Create()
         {
@@ -67,18 +67,22 @@ namespace FTL_HRMS.Controllers
 
         #region Edit
         // GET: SalaryDistributions/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit()
         {
-            if (id == null)
+            if (_db.SalaryDistribution.Select(i => i.Sl).Count() > 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                int id = _db.SalaryDistribution.Select(i => i.Sl).FirstOrDefault();
+                SalaryDistribution salaryDistribution = _db.SalaryDistribution.Find(id);
+                if (salaryDistribution == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(salaryDistribution);
             }
-            SalaryDistribution salaryDistribution = _db.SalaryDistribution.Find(id);
-            if (salaryDistribution == null)
+            else
             {
-                return HttpNotFound();
-            }
-            return View(salaryDistribution);
+                return View();
+            }            
         }
 
         // POST: SalaryDistributions/Edit/5
@@ -88,19 +92,35 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,BasicSalary,HouseRent,MedicalAllowance,LifeInsurance,FoodAllowance,Entertainment")] SalaryDistribution salaryDistribution)
         {
-            if (ModelState.IsValid)
+            double gross = salaryDistribution.BasicSalary + salaryDistribution.HouseRent + salaryDistribution.MedicalAllowance +
+                salaryDistribution.LifeInsurance + salaryDistribution.FoodAllowance + salaryDistribution.Entertainment;
+
+            if (gross == 100)
             {
-                _db.Entry(salaryDistribution).State = EntityState.Modified;
-                _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                if (salaryDistribution.Sl != 0)
+                {
+                    _db.Entry(salaryDistribution).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    TempData["SuccessMsg"] = "Updated Successfully!";
+                    return View(salaryDistribution);
+                }
+                else
+                {
+                    _db.SalaryDistribution.Add(salaryDistribution);
+                    _db.SaveChanges();
+                    TempData["SuccessMsg"] = "Added Successfully !!";
+                    return View(salaryDistribution);
+                }
+            }
+            else
+            {
+                TempData["WarningMsg"] = "Total must be 100% !!";
                 return View(salaryDistribution);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
-            return View(salaryDistribution);
         }
         #endregion
 
-        #region Delete
+        #region Delete (We don't use it)
         // GET: SalaryDistributions/Delete/5
         public ActionResult Delete(int? id)
         {
