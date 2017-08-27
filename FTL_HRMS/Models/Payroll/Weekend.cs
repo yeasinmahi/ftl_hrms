@@ -16,7 +16,7 @@ namespace FTL_HRMS.Models
         public int BranchId { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
         ApplyFormatInEditMode = true)]
         public DateTime Day { get; set; }
 

@@ -98,16 +98,18 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,BranchId,Day")] Weekend weekend)
         {
+            List<Branch> branchList = new List<Branch>();
+            branchList = _db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", weekend.BranchId);
             if (ModelState.IsValid)
             {
                 _db.Entry(weekend).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
+                ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", weekend.BranchId);
                 return View(weekend);
             }
             TempData["WarningMsg"] = "Something went wrong !!";
-            List<Branch> branchList = new List<Branch>();
-            branchList = _db.Branches.Where(i => i.Status == true).ToList();
             ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", weekend.BranchId);
             return View(weekend);
         }

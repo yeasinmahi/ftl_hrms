@@ -2,44 +2,113 @@
 
 @{
     ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-
-<h2>Edit</h2>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Weekend</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Sl)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.BranchId, "BranchId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("BranchId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Day, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Day, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Day, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class="page-title">
+        <div class="pull-left">
+            <h1 class="title">Weekend</h1>
         </div>
     </div>
-}
+</div>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<header class="panel_header">
+    <h2 class="title pull-left">Edit Weekend</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["SuccessMsg"]
+                        </div>
+                    }
+                    @if (TempData["WarningMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["WarningMsg"]
+                        </div>
+                    }
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Sl)
+                    <div class="col-md-offset-3">
+                        <div class="btn-group col-md-offset-5">
+                            <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Weekends" )'">Back To List</button>
+                        </div>
+                        <div>
+                            @Html.LabelFor(model => model.BranchId, "Branch", new { @class = "required" })
+                        </div>
+                        <div>
+                            @Html.DropDownList("BranchId", null, "Select Branch", htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
+                            @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+                        </div>
+                        <div>
+                            @Html.LabelFor(model => model.Day, new { @class = "required" })
+                        </div>
+                        @{
+                            List<SelectListItem> listItems = new List<SelectListItem>();
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "Saturday",
+                                Value = "10/1/1994 12:00:00 AM",
+                            });
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "Sunday",
+                                Value = "10/2/1994 12:00:00 AM",
+
+                            });
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "Monday",
+                                Value = "10/3/1994 12:00:00 AM",
+                            });
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "Tuesday",
+                                Value = "10/4/1994 12:00:00 AM",
+                            });
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "Wednesday",
+                                Value = "10/5/1994 12:00:00 AM",
+
+                            });
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "Thursday",
+                                Value = "10/6/1994 12:00:00 AM",
+                            });
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "Friday",
+                                Value = "10/7/1994 12:00:00 AM",
+                            });
+                        }
+                        <div>
+                            @Html.DropDownListFor(model => model.Day, listItems, "Select Day", new { @class = "form-control", style = "width:50%", @required = true })
+                            @Html.ValidationMessageFor(model => model.Day, "", new { @class = "text-danger" })
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
+                                <input type="submit" value="Update" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>

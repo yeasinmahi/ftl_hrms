@@ -2,17 +2,30 @@
 
 @{
     ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class="page-title">
+        <div class="pull-left">
+            <h1 class="title">Weekend</h1>
+        </div>
+    </div>
+</div>
+<header class="panel_header">
+    <h2 class="title pull-left">Delete Weekend</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
 
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Weekend</h4>
-    <hr />
+<div class="col-md-offset-4">
+    <h3>Are you sure you want to delete this?</h3>
+    <br />
+</div>
+<div class="col-md-offset-4">
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Branch.Name)
+            Branch
         </dt>
 
         <dd>
@@ -20,21 +33,23 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Day)
+            Day
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Day)
+            @Html.DisplayFor(model => model.Day.DayOfWeek)
         </dd>
 
     </dl>
-
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+        <div class="btn-group" style="margin-left:10%">
+            <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Weekends")'">Back To List</button>
+        </div>
+        <div class="btn-group" style="margin-left:5%">
+            <input type="submit" class="btn btn-danger btn-sm" aria-expanded="false" value="Delete" />
         </div>
     }
 </div>
+<br />
