@@ -96,7 +96,7 @@ namespace FTL_HRMS.Controllers
                     employeeList = _db.Employee.ToList();
                 }
             }
-            return employeeList;
+            return (List<Employee>) employeeList.Where(x=>x.Status.Equals(true));
         }
 
         public string GetSelectedFormula(int employeeTypeId, int departmentGroupId, int departmentId, int designationId)
