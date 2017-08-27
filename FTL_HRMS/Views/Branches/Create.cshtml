@@ -81,10 +81,10 @@
                         </div>
                         <br />
                         <div>
-                            <input class="Is_Late_Calculated" type="checkbox" style="width:2%" name="Is_Late_Calculated" value="1" />
-                            <span class="item-text">Late Calculation</span>
+                                @Html.CheckBoxFor(model => model.IsLateCalculated)
+                                <span class="item-text">Late Calculation</span>
                         </div>
-                            <div class="IsLateCalculated">
+                            <div class="Is_Late_Calculated">
                                 <label>Late Consideration Time</label>
                                 <input name="LateConsiderationTime" type="text" class="form-control" style="width:50%" id="LateConsiderationTime">
                                 <label>Late Consideration Day</label>
@@ -93,12 +93,12 @@
                                 <input name="LateDeductionPercentage" type="text" class="form-control" style="width:50%" id="LateDeductionPercentage">
                             </div><br />
                         <div>
-                            <input class="Is_Overtime_Calculated" type="checkbox" style="width:2%" name="Is_Overtime_Calculated" value="1" />
+                            @Html.CheckBoxFor(model => model.IsOvertimeCalculated)
                             <span class="item-text">Overtime Calculation</span>
                         </div>
                     </div>
                     
-                    <div class="IsOvertimeCalculated">
+                    <div class="Is_Overtime_Calculated">
                         <label>Overtime Consideration Time</label>
                         <input name="OvertimeConsiderationTime" type="text" class="form-control" style="width:50%" id="OvertimeConsiderationTime">
                         <label>Overtime Payment Percentage</label>
@@ -117,25 +117,25 @@
 </div>
     <script src="~/Content/AdminTemplate/assets/js/jquery-1.11.2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $(".IsLateCalculated").hide();
-    $(".Is_Late_Calculated").click(function () {
+        $(".Is_Late_Calculated").hide();
+        $("#IsLateCalculated").click(function () {
         if ($(this).is(":checked")) {
-            $(".IsLateCalculated").show(200);
+            $(".Is_Late_Calculated").show(200);
             $("#LateConsiderationTime").prop('required', true);
             $("#LateConsiderationDay").prop('required', true);
             $("#LateDeductionPercentage").prop('required', true);
         } else {
-            $(".IsLateCalculated").hide(200);
+            $(".Is_Late_Calculated").hide(200);
         }
     });
-    $(".IsOvertimeCalculated").hide();
-    $(".Is_Overtime_Calculated").click(function () {
+    $(".Is_Overtime_Calculated").hide();
+    $("#IsOvertimeCalculated").click(function () {
         if ($(this).is(":checked")) {
-            $(".IsOvertimeCalculated").show(200);
+            $(".Is_Overtime_Calculated").show(200);
             $("#OvertimeConsiderationTime").prop('required', true);
             $("#OvertimePaymentPercentage").prop('required', true);
         } else {
-            $(".IsOvertimeCalculated").hide(200);
+            $(".Is_Overtime_Calculated").hide(200);
         }
     });
     </script>

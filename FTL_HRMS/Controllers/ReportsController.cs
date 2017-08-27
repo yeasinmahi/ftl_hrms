@@ -6,6 +6,7 @@ using CrystalDecisions.CrystalReports.Engine;
 using FTL_HRMS.Models;
 using System.Collections.Generic;
 using System.Linq;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -93,6 +94,11 @@ namespace FTL_HRMS.Controllers
                 }
             }
             return employeeList;
+        }
+
+        public void GetSelectedFormula()
+        {
+            
         }
         public ActionResult PrintEmployeeList()
         {
@@ -245,8 +251,17 @@ namespace FTL_HRMS.Controllers
         private ReportDocument GetReport(string reportName)
         {
             ReportDocument rd = new ReportDocument();
+            string connectionString = DbUtility.GetConnectionString();
+            string databaseName = DbUtility.GetConectionStringProperty(connectionString,
+                DbUtility.ConnectionStringProperty.DatabaseName);
+            string dataSource = DbUtility.GetConectionStringProperty(connectionString,
+                DbUtility.ConnectionStringProperty.DataSource);
+            string user = DbUtility.GetConectionStringProperty(connectionString,
+                DbUtility.ConnectionStringProperty.User);
+            string password = DbUtility.GetConectionStringProperty(connectionString,
+                DbUtility.ConnectionStringProperty.Password);
             rd.Load(Path.Combine(Server.MapPath("~/Reports"), reportName + ".rpt"));
-            rd.SetDatabaseLogon("sa", "sa2009", ".\\SQLEXPRESS", "FTL_HRMS");
+            rd.SetDatabaseLogon(user, password, dataSource, databaseName);
             return rd;
         }
 
