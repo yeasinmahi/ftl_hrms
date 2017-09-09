@@ -9,6 +9,7 @@ using FTL_HRMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
+using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
 using static FTL_HRMS.Models.AccountViewModels;
 

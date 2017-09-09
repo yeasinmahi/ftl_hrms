@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FTL_HRMS.Models
+namespace FTL_HRMS.Models.Hr
 {
-    [Table("tbl_BranchTransfer")]
-    public class BranchTransfer
+    [Table("tbl_DepartmentTransfer")]
+    public class DepartmentTransfer
     {
         [Key]
         public int Sl { get; set; }
@@ -14,13 +14,13 @@ namespace FTL_HRMS.Models
         [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
 
-        [Required(ErrorMessage = "From Branch cannot be empty")]
-        [ForeignKey("FromBranch")]
-        public int FromBranchId { get; set; }
+        [Required(ErrorMessage = "From Designation cannot be empty")]
+        [ForeignKey("FromDesignation")]
+        public int FromDesignationId { get; set; }
 
-        [Required(ErrorMessage = "To Branch cannot be empty")]
-        [ForeignKey("ToBranch")]
-        public int ToBranchId { get; set; }
+        [Required(ErrorMessage = "To Designation cannot be empty")]
+        [ForeignKey("ToDesignation")]
+        public int ToDesignationId { get; set; }
 
         [DataType(DataType.Date),
          DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
@@ -28,7 +28,8 @@ namespace FTL_HRMS.Models
         public DateTime TransferDate { get; set; }
 
         public virtual Employee Employee { get; set; }
-        public virtual Branch FromBranch { get; set; }
-        public virtual Branch ToBranch { get; set; }
+        public virtual Designation FromDesignation { get; set; }
+        public virtual Designation ToDesignation { get; set; }
+
     }
 }

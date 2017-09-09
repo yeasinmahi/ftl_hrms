@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FTL_HRMS.Models
+namespace FTL_HRMS.Models.Hr
 {
     [Table("tbl_Employee")]
     public class Employee
@@ -17,7 +17,6 @@ namespace FTL_HRMS.Models
 
         [Key]
         public int Sl { get; set; }
-
         public string Code { get; set; }
 
         [Required(ErrorMessage = "Name cannot be empty")]

@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using FTL_HRMS.Models.Hr;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FTL_HRMS.Models
@@ -49,12 +50,12 @@ namespace FTL_HRMS.Models
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
         }
 
-        public System.Data.Entity.DbSet<FTL_HRMS.Models.Branch> Branches { get; set; }
+        public System.Data.Entity.DbSet<Branch> Branches { get; set; }
 
-        public System.Data.Entity.DbSet<FTL_HRMS.Models.LeaveType> LeaveTypes { get; set; }
+        public System.Data.Entity.DbSet<LeaveType> LeaveTypes { get; set; }
 
-        public System.Data.Entity.DbSet<FTL_HRMS.Models.LeaveCount> LeaveCounts { get; set; }
+        public System.Data.Entity.DbSet<LeaveCount> LeaveCounts { get; set; }
 
-        public System.Data.Entity.DbSet<FTL_HRMS.Models.LeaveHistory> LeaveHistories { get; set; }
+        public System.Data.Entity.DbSet<LeaveHistory> LeaveHistories { get; set; }
     }
 }

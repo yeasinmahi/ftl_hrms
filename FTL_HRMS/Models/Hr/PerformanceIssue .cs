@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FTL_HRMS.Models
+namespace FTL_HRMS.Models.Hr
 {
-    [Table("tbl_EmployeeType")]
-    public class EmployeeType
+    [Table("tbl_PerformanceIssue")]
+    public class PerformanceIssue
     {
         [Key]
         public int Sl { get; set; }
@@ -12,7 +12,5 @@ namespace FTL_HRMS.Models
         [Required(ErrorMessage = "Name cannot be empty")]
         [MaxLength(250)]
         public string Name { get; set; }
-
-        public bool Status { get; set; }
     }
 }

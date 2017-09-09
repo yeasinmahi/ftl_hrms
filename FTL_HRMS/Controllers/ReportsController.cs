@@ -6,6 +6,7 @@ using CrystalDecisions.CrystalReports.Engine;
 using FTL_HRMS.Models;
 using System.Collections.Generic;
 using System.Linq;
+using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
@@ -95,6 +96,7 @@ namespace FTL_HRMS.Controllers
                 {
                     employeeList = _db.Employee.ToList();
                 }
+                employeeList = (List<Employee>)employeeList.Where(x => x.Status.Equals(true)).ToList();
             }
             return employeeList;
         }
@@ -102,10 +104,11 @@ namespace FTL_HRMS.Controllers
         public string GetSelectedFormula(int employeeTypeId, int departmentGroupId, int departmentId, int designationId)
         {
             string selectedFormula;
-            string departmentGroupIdSelectedFormula = " {tbl_DepartmentGroup.Sl} ="+departmentGroupId;
-            string departmentIdSelectedFormula = " {tbl_Department.Sl} ="+departmentId;
-            string employeeTypeIdSelectedFormula = " {tbl_Employee.EmployeeTypeId} ="+employeeTypeId;
-            string designationIdSelectedFormula = " {tbl_Designation.Sl} ="+ designationId;
+            string statusFormula = "{tbl_Employee.Status} = true and ";
+            string departmentGroupIdSelectedFormula = statusFormula+ " {tbl_DepartmentGroup.Sl} =" +departmentGroupId;
+            string departmentIdSelectedFormula = statusFormula + " {tbl_Department.Sl} =" +departmentId;
+            string employeeTypeIdSelectedFormula = statusFormula + " {tbl_Employee.EmployeeTypeId} =" +employeeTypeId;
+            string designationIdSelectedFormula = statusFormula + " {tbl_Designation.Sl} =" + designationId;
 
 
             if (employeeTypeId > 0)
