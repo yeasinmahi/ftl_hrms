@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    List<FTL_HRMS.Models.Hr.LeaveCount> LeaveCountList = new List<FTL_HRMS.Models.Hr.LeaveCount>();
+    LeaveCountList = ViewBag.LeaveCount;
 }
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
@@ -48,51 +50,75 @@
                     @Html.HiddenFor(model => model.UpdatedBy)
                     @Html.HiddenFor(model => model.Remarks)
                     @Html.HiddenFor(model => model.EmployeeId)
-                    <div class="col-md-offset-3">
-                        <div class="btn-group col-md-offset-5">
-                            <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "LeaveHistories" )'">Back To List</button>
-                        </div>
-                        <div>
-                            @Html.LabelFor(model => model.LeaveTypeId, "Leave Type", new { @class = "required" })
-                        </div>
-                        <div>
-                            @Html.DropDownList("LeaveTypeId", null, "Select Type", htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
-                            @Html.ValidationMessageFor(model => model.LeaveTypeId, "", new { @class = "text-danger" })
-                        </div>
 
-                        <div>
-                            @Html.LabelFor(model => model.FromDate, "From Date", new { @class = "required" })
-                        </div>
-                        <div>
-                            @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
-                            @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div>
-                            @Html.LabelFor(model => model.ToDate, "To Date", new { @class = "required" })
-                        </div>
-                        <div>
-                            @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
-                            @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div>
-                            @Html.LabelFor(model => model.Cause, new { @class = "required" })
-                        </div>
-                        <div>
-                            <div>
-                                <textarea class="form-control autogrow" cols="5" name="Cause" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height:35px; width:50%" id="cause" required></textarea>
-                            </div>
-                        </div>
-
-                        <br />
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
-                                <input type="submit" value="Create" class="btn btn-primary" />
-                            </div>
-                        </div>
-                    </div>
+                    <div class="col-md-3">
+                    <table id="myTable" class="table table-bordered table-responsive cart_summary">
+                        <thead>
+                            <tr>
+                                <th>Leave Type</th>
+                                <th>Available Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < LeaveCountList.Count; i++)
+                            {
+                                <tr>
+                                    <td class="cart_description">
+                                        <p class="product-name">@LeaveCountList[i].LeaveType.Name</p>
+                                    </td>
+                                    <td class="cart_description">
+                                        <p class="product-name">@LeaveCountList[i].AvailableDay</p>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
+                            <div class="col-md-offset-3">
+                                <div class="btn-group col-md-offset-5">
+                                    <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "LeaveHistories" )'">Back To List</button>
+                                </div>
+                                <div>
+                                    @Html.LabelFor(model => model.LeaveTypeId, "Leave Type", new { @class = "required" })
+                                </div>
+                                <div>
+                                    @Html.DropDownList("LeaveTypeId", null, "Select Type", htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
+                                    @Html.ValidationMessageFor(model => model.LeaveTypeId, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div>
+                                    @Html.LabelFor(model => model.FromDate, "From Date", new { @class = "required" })
+                                </div>
+                                <div>
+                                    @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
+                                    @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div>
+                                    @Html.LabelFor(model => model.ToDate, "To Date", new { @class = "required" })
+                                </div>
+                                <div>
+                                    @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
+                                    @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div>
+                                    @Html.LabelFor(model => model.Cause, new { @class = "required" })
+                                </div>
+                                <div>
+                                    <div>
+                                        <textarea class="form-control autogrow" cols="5" name="Cause" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height:35px; width:50%" id="cause" required></textarea>
+                                    </div>
+                                </div>
+
+                                <br />
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
+                                        <input type="submit" value="Create" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+</div>
             }
         </div>
     </div>

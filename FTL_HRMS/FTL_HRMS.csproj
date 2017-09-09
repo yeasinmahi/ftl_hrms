@@ -2875,6 +2875,10 @@
     <Compile Include="Migrations\201709090943175_add_IsEditable_in_LeaveType.Designer.cs">
       <DependentUpon>201709090943175_add_IsEditable_in_LeaveType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709091057547_update_days_type.cs" />
+    <Compile Include="Migrations\201709091057547_update_days_type.Designer.cs">
+      <DependentUpon>201709091057547_update_days_type.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\LeaveCount.cs" />
@@ -3313,6 +3317,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709090943175_add_IsEditable_in_LeaveType.resx">
       <DependentUpon>201709090943175_add_IsEditable_in_LeaveType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709091057547_update_days_type.resx">
+      <DependentUpon>201709091057547_update_days_type.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

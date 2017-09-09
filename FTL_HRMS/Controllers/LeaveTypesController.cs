@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Hr;
+using System.Collections.Generic;
 
 namespace FTL_HRMS.Controllers
 {
@@ -55,6 +56,25 @@ namespace FTL_HRMS.Controllers
                 leaveType.IsEditable = true;
                 _db.LeaveTypes.Add(leaveType);
                 _db.SaveChanges();
+
+                #region Add Leave Count                
+                if(_db.LeaveCounts.Where(i=> i.LeaveTypeId == leaveType.Sl).Select(i=> i.Sl).Count() < 1)
+                {
+                    List<Employee> employeeList = new List<Employee>();
+                    employeeList = _db.Employee.Where(i => i.Status != false && i.IsSystemOrSuperAdmin != true).ToList();
+
+                    for (int i = 0; i < employeeList.Count; i++)
+                    {
+                        LeaveCount leaveCount = new LeaveCount();
+                        leaveCount.EmployeeId = employeeList[i].Sl;
+                        leaveCount.LeaveTypeId = leaveType.Sl;
+                        leaveCount.AvailableDay = leaveType.Day;
+                        _db.LeaveCounts.Add(leaveCount);
+                        _db.SaveChanges();
+                    }
+                }
+                #endregion
+
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Create");
             }
@@ -88,8 +108,29 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                double OldDays = _db.LeaveTypes.Where(i => i.Sl == leaveType.Sl).Select(i => i.Day).FirstOrDefault();
+                double NewDays = leaveType.Day;
+                double DifferenceDays = OldDays - NewDays;
+
                 _db.Entry(leaveType).State = EntityState.Modified;
                 _db.SaveChanges();
+
+                #region Edit Leave Count                
+                if (_db.LeaveCounts.Where(i => i.LeaveTypeId == leaveType.Sl).Select(i => i.Sl).Count() > 0)
+                {
+                    List<LeaveCount> leaveCountList = new List<LeaveCount>();
+                    leaveCountList = _db.LeaveCounts.Where(i => i.LeaveTypeId == leaveType.Sl).ToList();
+
+                    for (int i = 0; i < leaveCountList.Count; i++)
+                    {
+                        LeaveCount leaveCount = _db.LeaveCounts.Find(leaveCountList[i].Sl);
+                        leaveCount.AvailableDay = leaveCount.AvailableDay - DifferenceDays;
+                        _db.Entry(leaveCount).State = EntityState.Modified;
+                        _db.SaveChanges();
+                    }
+                }
+                #endregion
+
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return View(leaveType);
             }
@@ -119,6 +160,21 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            #region Delete Leave Count                
+            if (_db.LeaveCounts.Where(i => i.LeaveTypeId == id).Select(i => i.Sl).Count() > 0)
+            {
+                List<LeaveCount> leaveCountList = new List<LeaveCount>();
+                leaveCountList = _db.LeaveCounts.Where(i => i.LeaveTypeId == id).ToList();
+
+                for (int i = 0; i < leaveCountList.Count; i++)
+                {
+                    LeaveCount leaveCount = _db.LeaveCounts.Find(leaveCountList[i].Sl);
+                    _db.LeaveCounts.Remove(leaveCount);
+                    _db.SaveChanges();
+                }
+            }
+            #endregion
+
             LeaveType leaveType = _db.LeaveTypes.Find(id);
             _db.LeaveTypes.Remove(leaveType);
             _db.SaveChanges();

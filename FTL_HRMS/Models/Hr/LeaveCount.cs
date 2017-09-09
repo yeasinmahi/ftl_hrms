@@ -18,7 +18,7 @@ namespace FTL_HRMS.Models.Hr
         public int LeaveTypeId { get; set; }
 
         [Required(ErrorMessage = "Day cannot be empty")]
-        public int AvailableDay { get; set; }
+        public double AvailableDay { get; set; }
 
         public virtual Employee Employee { get; set; }
         public virtual LeaveType LeaveType { get; set; }

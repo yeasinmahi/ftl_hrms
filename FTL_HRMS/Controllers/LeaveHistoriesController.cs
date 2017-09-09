@@ -47,6 +47,11 @@ namespace FTL_HRMS.Controllers
         // GET: LeaveHistories/Create
         public ActionResult Create()
         {
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+            List<LeaveCount> leaveCountList = new List<LeaveCount>();
+            leaveCountList = _db.LeaveCounts.Where(i => i.EmployeeId == userId).ToList();
+            ViewBag.LeaveCount = leaveCountList;
             ViewBag.LeaveTypeId = new SelectList(_db.LeaveTypes, "Sl", "Name");
             return View();
         }
