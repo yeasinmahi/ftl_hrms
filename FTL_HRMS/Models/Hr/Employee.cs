@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FTL_HRMS.Models
+namespace FTL_HRMS.Models.Hr
 {
     [Table("tbl_Employee")]
     public class Employee

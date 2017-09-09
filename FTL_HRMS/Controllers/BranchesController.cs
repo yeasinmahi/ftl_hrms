@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
+using FTL_HRMS.Models.Hr;
 
 namespace FTL_HRMS.Controllers
 {

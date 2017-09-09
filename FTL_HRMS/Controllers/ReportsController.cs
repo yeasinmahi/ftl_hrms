@@ -6,6 +6,7 @@ using CrystalDecisions.CrystalReports.Engine;
 using FTL_HRMS.Models;
 using System.Collections.Generic;
 using System.Linq;
+using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers

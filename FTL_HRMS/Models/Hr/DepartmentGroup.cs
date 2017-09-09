@@ -3,24 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FTL_HRMS.Models
+namespace FTL_HRMS.Models.Hr
 {
-    [Table("tbl_Department")]
-    public class Department
+    [Table("tbl_DepartmentGroup")]
+    public class DepartmentGroup
     {
        
         [Key]
         public int Sl { get; set; }
-
         public string Code { get; set; }
 
         [Required(ErrorMessage = "Name cannot be empty")]
         [MaxLength(250)]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "Department Group cannot be empty")]
-        [ForeignKey("DepartmentGroup")]
-        public int DepartmentGroupId { get; set; }
 
         [ForeignKey("CreateEmployee")]
         public int CreatedBy { get; set; }
@@ -39,10 +34,9 @@ namespace FTL_HRMS.Models
         public DateTime? UpdateDate { get; set; }
 
         public bool Status { get; set; }
-        
+
         public virtual Employee CreateEmployee { get; set; }
         public virtual Employee UpdateEmployee { get; set; }
-        public virtual DepartmentGroup DepartmentGroup { get; set; }
-        public ICollection<Designation> Designation { get; set; }
+        public ICollection<Department> Department { get; set; }
     }
 }

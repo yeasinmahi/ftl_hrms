@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FTL_HRMS.Models
+namespace FTL_HRMS.Models.Hr
 {
     [Table("tbl_Experience")]
     public class Experience
