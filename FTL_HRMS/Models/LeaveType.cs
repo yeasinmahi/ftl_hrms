@@ -15,5 +15,7 @@ namespace FTL_HRMS.Models
 
         [Required(ErrorMessage = "Day cannot be empty")]
         public int Day { get; set; }
+
+        public bool IsEditable { get; set; }
     }
 }

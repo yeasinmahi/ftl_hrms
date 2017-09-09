@@ -335,6 +335,21 @@ namespace FTL_HRMS.Controllers
                 }
                 #endregion
 
+                #region Add Leave Count
+                List<LeaveType> typeList = new List<LeaveType>();
+                typeList = _db.LeaveTypes.Where(i=>i.Name != "Without Pay Leave").ToList();
+
+                for (int i = 0; i < typeList.Count; i++)
+                {
+                    LeaveCount leaveCount = new LeaveCount();
+                    leaveCount.EmployeeId = employee.Sl;
+                    leaveCount.LeaveTypeId = typeList[i].Sl;
+                    leaveCount.AvailableDay = typeList[i].Day;
+                    _db.LeaveCounts.Add(leaveCount);
+                    _db.SaveChanges();
+                }
+                #endregion
+
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Create", "Employees");
             }

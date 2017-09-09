@@ -47,10 +47,11 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,Name,Day")] LeaveType leaveType)
+        public ActionResult Create([Bind(Include = "Sl,Name,Day,IsEditable")] LeaveType leaveType)
         {
             if (ModelState.IsValid)
             {
+                leaveType.IsEditable = true;
                 _db.LeaveTypes.Add(leaveType);
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
@@ -82,7 +83,7 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Name,Day")] LeaveType leaveType)
+        public ActionResult Edit([Bind(Include = "Sl,Name,Day,IsEditable")] LeaveType leaveType)
         {
             if (ModelState.IsValid)
             {
