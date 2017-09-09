@@ -95,17 +95,19 @@ namespace FTL_HRMS.Controllers
                 {
                     employeeList = _db.Employee.ToList();
                 }
+                employeeList = (List<Employee>)employeeList.Where(x => x.Status.Equals(true)).ToList();
             }
-            return (List<Employee>) employeeList.Where(x=>x.Status.Equals(true));
+            return employeeList;
         }
 
         public string GetSelectedFormula(int employeeTypeId, int departmentGroupId, int departmentId, int designationId)
         {
             string selectedFormula;
-            string departmentGroupIdSelectedFormula = " {tbl_DepartmentGroup.Sl} ="+departmentGroupId;
-            string departmentIdSelectedFormula = " {tbl_Department.Sl} ="+departmentId;
-            string employeeTypeIdSelectedFormula = " {tbl_Employee.EmployeeTypeId} ="+employeeTypeId;
-            string designationIdSelectedFormula = " {tbl_Designation.Sl} ="+ designationId;
+            string statusFormula = "{tbl_Employee.Status} = true and ";
+            string departmentGroupIdSelectedFormula = statusFormula+ " {tbl_DepartmentGroup.Sl} =" +departmentGroupId;
+            string departmentIdSelectedFormula = statusFormula + " {tbl_Department.Sl} =" +departmentId;
+            string employeeTypeIdSelectedFormula = statusFormula + " {tbl_Employee.EmployeeTypeId} =" +employeeTypeId;
+            string designationIdSelectedFormula = statusFormula + " {tbl_Designation.Sl} =" + designationId;
 
 
             if (employeeTypeId > 0)
