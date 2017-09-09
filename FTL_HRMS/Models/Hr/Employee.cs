@@ -54,6 +54,7 @@ namespace FTL_HRMS.Models.Hr
 
         [Required(ErrorMessage = "NID or Birth Cirtificate cannot be empty")]
         [MaxLength(250)]
+        // ReSharper disable once InconsistentNaming
         public string NIDorBirthCirtificate { get; set; }
 
         [MaxLength(250)]
