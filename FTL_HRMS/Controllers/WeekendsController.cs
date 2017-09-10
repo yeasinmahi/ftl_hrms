@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Hr;
+using FTL_HRMS.Models.Payroll;
 
 namespace FTL_HRMS.Controllers
 {
