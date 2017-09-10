@@ -11,7 +11,7 @@ namespace FTL_HRMS.Models.Payroll
         [Key]
         public int Sl { get; set; }
         
-        public int EmployeeCode { get; set; }
+        public string EmployeeCode { get; set; }
 
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
@@ -19,7 +19,6 @@ namespace FTL_HRMS.Models.Payroll
         public DateTime Datetime { get; set; }
 
         public bool IsCalculated { get; set; }
-
-        public virtual Employee Employee { get; set; }
+        
     }
 }

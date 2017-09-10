@@ -17,6 +17,8 @@ namespace FTL_HRMS.Models.Hr
 
         [Key]
         public int Sl { get; set; }
+
+        [Index(IsUnique = true)]
         public string Code { get; set; }
 
         [Required(ErrorMessage = "Name cannot be empty")]
