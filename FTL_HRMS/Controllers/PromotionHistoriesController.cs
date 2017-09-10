@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FTL_HRMS.Controllers
 {
@@ -106,12 +108,39 @@ namespace FTL_HRMS.Controllers
 
                 _db.PromotionHistories.Add(promotionHistory);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", promotionHistory.EmployeeId);
-            ViewBag.FromDesignationId = new SelectList(_db.Designation, "Sl", "Code", promotionHistory.FromDesignationId);
-            ViewBag.ToDesignationId = new SelectList(_db.Designation, "Sl", "Code", promotionHistory.ToDesignationId);
+                #region Edit Employee
+                Employee employee = _db.Employee.Find(promotionHistory.EmployeeId);
+                employee.DesignationId = toDesignationId;
+                employee.GrossSalary = toSalary;
+                _db.Entry(employee).State = EntityState.Modified;
+                _db.SaveChanges();
+                #endregion
+
+                #region Role Transfer
+                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
+                string existingRole = _db.Designation.Where(i => i.Sl == fromDesignationId).Select(i => i.RoleName).FirstOrDefault();
+                string newRole = _db.Designation.Where(i => i.Sl == toDesignationId).Select(i => i.RoleName).FirstOrDefault();
+                string userId = _db.Users.Where(i => i.CustomUserId == promotionHistory.EmployeeId).Select(s => s.Id).FirstOrDefault();
+                var result1 = userManager.RemoveFromRole(userId, existingRole);
+                var result2 = userManager.AddToRole(userId, newRole);
+                #endregion
+
+                TempData["SuccessMsg"] = "Transfered Successfully !!";
+                return RedirectToAction("Create");
+            }
+            TempData["WarningMsg"] = "Something went wrong !!";
+            string userName = User.Identity.Name;
+            int userid = DbUtility.GetUserId(_db, userName);
+
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userid).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", promotionHistory.EmployeeId);
+
+            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
             return View(promotionHistory);
         }
 
