@@ -2831,6 +2831,7 @@
     <Compile Include="Controllers\PerformanceIssuesController.cs" />
     <Compile Include="Controllers\PerformanceRatingsController.cs" />
     <Compile Include="Controllers\ProbationController.cs" />
+    <Compile Include="Controllers\PromotionHistoriesController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\ResignationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -2896,6 +2897,10 @@
     <Compile Include="Migrations\201709101041263_update_tbl_update_emp_parmanentDate.Designer.cs">
       <DependentUpon>201709101041263_update_tbl_update_emp_parmanentDate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709101206532_add_tbl_PromotionHistory.cs" />
+    <Compile Include="Migrations\201709101206532_add_tbl_PromotionHistory.Designer.cs">
+      <DependentUpon>201709101206532_add_tbl_PromotionHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\LeaveCount.cs" />
@@ -2911,6 +2916,7 @@
     <Compile Include="Models\Hr\Experience.cs" />
     <Compile Include="Models\Hr\Education.cs" />
     <Compile Include="Models\Hr\Images.cs" />
+    <Compile Include="Models\Hr\PromotionHistory.cs" />
     <Compile Include="Models\Payroll\Company.cs" />
     <Compile Include="Models\Payroll\SalaryDistribution.cs" />
     <Compile Include="Models\Payroll\PaidSalaryDuration.cs" />
@@ -3297,6 +3303,11 @@
     <Content Include="Views\SalaryDistributions\Index.cshtml" />
     <Content Include="Views\Probation\Index.cshtml" />
     <Content Include="Views\Probation\MakeParmanent.cshtml" />
+    <Content Include="Views\PromotionHistories\Create.cshtml" />
+    <Content Include="Views\PromotionHistories\Delete.cshtml" />
+    <Content Include="Views\PromotionHistories\Details.cshtml" />
+    <Content Include="Views\PromotionHistories\Edit.cshtml" />
+    <Content Include="Views\PromotionHistories\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3351,6 +3362,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709101041263_update_tbl_update_emp_parmanentDate.resx">
       <DependentUpon>201709101041263_update_tbl_update_emp_parmanentDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709101206532_add_tbl_PromotionHistory.resx">
+      <DependentUpon>201709101206532_add_tbl_PromotionHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

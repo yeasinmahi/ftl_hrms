@@ -58,5 +58,7 @@ namespace FTL_HRMS.Models
         public System.Data.Entity.DbSet<LeaveCount> LeaveCounts { get; set; }
 
         public System.Data.Entity.DbSet<LeaveHistory> LeaveHistories { get; set; }
+
+        public System.Data.Entity.DbSet<FTL_HRMS.Models.Hr.PromotionHistory> PromotionHistories { get; set; }
     }
 }

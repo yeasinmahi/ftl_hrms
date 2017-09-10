@@ -1,0 +1,256 @@
+﻿@model FTL_HRMS.Models.Hr.PromotionHistory
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class="page-title">
+        <div class="pull-left">
+            <h1 class="title">Promotion</h1>
+        </div>
+    </div>
+</div>
+
+<header class="panel_header">
+    <h2 class="title pull-left">Promote Employee</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["SuccessMsg"]
+                        </div>
+                    }
+                    @if (TempData["WarningMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["WarningMsg"]
+                        </div>
+                    }
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="col-md-offset-0">
+                        <div class="btn-group col-md-offset-11">
+                            <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "DepartmentTransfers" )'">Back To List</button>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div>
+                                    @Html.LabelFor(model => model.EmployeeId, "Employee Code", new { @class = "required" })
+                                </div>
+                                <div>
+                                    @Html.DropDownList("EmployeeId", null, "--Select Employee--", htmlAttributes: new { @class = "form-control", style = "width:100%", @name = "Employee", @id = "employee", @onchange = "GetDesignation()", @required = true })
+                                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    @Html.LabelFor(model => model.PromotionDate, "Promotion Date", new { @class = "required" })
+                                </div>
+                                <div>
+                                    @Html.EditorFor(model => model.PromotionDate, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @required = true } })
+                                    @Html.ValidationMessageFor(model => model.PromotionDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div>
+                                    @Html.Label("From Department Group", new { @class = "required" })
+                                </div>
+
+                                <div>
+                                    @Html.Editor("Department Group", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "departmentGroupName", @placeholder = "Department Group", @required = true } })
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div>
+                                    @Html.Label("From Department", new { @class = "required" })
+                                </div>
+
+                                <div>
+                                    @Html.Editor("Department", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "departmentName", @placeholder = "Department", @required = true } })
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div>
+                                    @Html.Label("From Designation", new { @class = "required" })
+                                </div>
+
+                                <div>
+                                    @Html.Editor("Designation", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "designationName", @placeholder = "Designation", @required = true } })
+                                    @Html.ValidationMessageFor(model => model.FromDesignationId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div>
+                                    @Html.Label("From Salary", new { @class = "required" })
+                                </div>
+
+                                <div>
+                                    @Html.Editor("Salary", new { htmlAttributes = new { @class = "form-control", style = "width:100%", @id = "salaryAmount", @placeholder = "Salary", @required = true } })
+                                    @Html.ValidationMessageFor(model => model.FromDesignationId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div>
+                                    @Html.Label("To Department Group", new { @class = "required" })
+                                </div>
+
+                                <div>
+                                    @Html.DropDownList("DepartmentGroupId", null, "Select Group", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();", @required = true })
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div>
+                                    @Html.Label("To Department", new { @class = "required" })
+                                </div>
+
+                                <select class="form-control" style="width:100%" id="ddl_dept" name="ddl_dept" onchange="LoadDesignation();" tabindex=20 required>
+                                    <option value="">Select Department</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <div>
+                                    @Html.Label("To Designation", new { @class = "required" })
+                                </div>
+
+                                <select class="form-control" style="width:100%" id="ddl_designation" name="ddl_designation" required>
+                                    <option value="" selected>Select Designation</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <div>
+                                  To Salary
+                                </div>
+                                <div>
+                                    @Html.EditorFor(model => model.ToSalary, new { htmlAttributes = new { @class = "form-control", @name= "to_salary", @id="to_salary"} })
+                                    @Html.ValidationMessageFor(model => model.ToSalary, "", new { @class = "text-danger" })
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <br />
+                        <center>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function GetDesignation() {
+        $.ajax({
+            url: '/PromotionHistories/GetDesignation',
+            method: 'POST',
+            data: {
+                empId: $('#employee').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                if (response[0] == "") {
+                    $('#designationName').val("");
+                    $('#departmentName').val("");
+                    $('#departmentGroupName').val("");
+                    $('#salaryAmount').val("");
+                    
+                    document.getElementById("designationName").removeAttribute("readonly", true);
+                    document.getElementById("departmentName").removeAttribute("readonly", true);
+                    document.getElementById("departmentGroupName").removeAttribute("readonly", true);
+                    document.getElementById("salaryAmount").removeAttribute("readonly", true);
+                }
+                else {
+                    $('#designationName').val(response[0]);
+                    $('#departmentName').val(response[1]);
+                    $('#departmentGroupName').val(response[2]);
+                    $('#salaryAmount').val(response[3]);
+
+                    document.getElementById("designationName").setAttribute("readonly", true);
+                    document.getElementById("departmentName").setAttribute("readonly", true);
+                    document.getElementById("departmentGroupName").setAttribute("readonly", true);
+                    document.getElementById("salaryAmount").setAttribute("readonly", true);
+                }
+
+            }
+        });
+    };
+
+    function LoadDepartment() {
+        $.ajax({
+            url: '/Departments/GetDepartmentByGroupId',
+            method: 'POST',
+            data: {
+                DepartmentGroupId: $('#ddl_deptgroup').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                $('#ddl_dept').empty();
+                $('#ddl_dept').append($('<option>', {
+                    value: '',
+                    text: 'Select Department'
+                }));
+                for (var i = 0; i < response.length; i++) {
+                    var opt = new Option(response[i].Name, response[i].Sl);
+                    $('#ddl_dept').append(opt);
+                }
+            }
+        });
+    };
+
+    function LoadDesignation() {
+        $.ajax({
+            url: '/Designations/GetDesignationByDeptId',
+            method: 'POST',
+            data: {
+                DepartmentId: $('#ddl_dept').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                $('#ddl_designation').empty();
+                $('#ddl_designation').append($('<option>', {
+                    value: '',
+                    text: 'Select Designation'
+                }));
+                for (var i = 0; i < response.length; i++) {
+                    var opt = new Option(response[i].Name, response[i].Sl);
+                    $('#ddl_designation').append(opt);
+                }
+            }
+        });
+    };
+
+</script>
