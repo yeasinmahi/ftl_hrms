@@ -11,10 +11,8 @@ namespace FTL_HRMS.Models
     {       
         [Key]
         public int Sl { get; set; }
-
-        [Required(ErrorMessage = "Employee cannot be empty")]
-        [ForeignKey("Employee")]
-        public int EmployeeId { get; set; }
+        
+        public int EmployeeCode { get; set; }
 
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
