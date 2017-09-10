@@ -11,7 +11,6 @@ namespace FTL_HRMS.Models.Payroll
         [Key]
         public int Sl { get; set; }
         [MaxLength(15)]
-        [Index(IsUnique = true)]
         public string EmployeeCode { get; set; }
 
         [DataType(DataType.Date),
