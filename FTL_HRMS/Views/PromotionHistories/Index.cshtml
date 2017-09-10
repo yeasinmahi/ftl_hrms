@@ -1,0 +1,63 @@
+﻿@model IEnumerable<FTL_HRMS.Models.Hr.PromotionHistory>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Employee.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FromDesignation.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ToDesignation.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PromotionDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FromSalary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ToSalary)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FromDesignation.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ToDesignation.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PromotionDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FromSalary)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ToSalary)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Sl }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Sl }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Sl })
+        </td>
+    </tr>
+}
+
+</table>
