@@ -191,10 +191,10 @@
                                             </select>
                                         </div>
                                         <div>
-                                            @Html.Label("Password", new { @class = "required" })
+                                            @Html.Label("Password (at least 6 digits)", new { @class = "required" })
                                         </div>
                                         <div>
-                                            <input name="Password" type="password" class="form-control" style="width:100%" id="password" required="required" tabindex="23">
+                                            <input name="Password" type="password" class="form-control" style="width:100%" id="password" required="required" tabindex="23" onchange="CheckPassword()">
                                         </div>
                                         <br />
                                         <div>
@@ -254,10 +254,10 @@
                                             </select>
                                         </div>
                                         <div>
-                                            @Html.Label("Confirm Password", new { @class = "required" })
+                                            @Html.Label("Confirm Password (at least 6 digits)", new { @class = "required" })
                                         </div>
                                         <div>
-                                            <input name="ConfirmPassword" type="password" class="form-control" style="width:100%" id="confirmPass" required="required" tabindex="24">
+                                            <input name="ConfirmPassword" type="password" class="form-control" style="width:100%" id="confirmPass" required="required" tabindex="24" onchange="CheckPassword()">
                                         </div>
                                         <br />
                                         <div>
@@ -417,7 +417,7 @@
             </div>
                     <div class="form-group">
                         <div class="col-md-12" style="margin-left:45%;">
-                            <input type="submit" value="Create" class="btn btn-primary" />
+                            <input type="submit" value="Create" class="btn btn-primary" id="submitBtn" disabled/>
                         </div>
                   </div>
                 }
@@ -426,6 +426,24 @@
 </div>
 
 <script>
+    function CheckPassword() {
+        var Password = $('#password').val();
+        var ConfirmPassword = $('#confirmPass').val();
+        if (ConfirmPassword != "") {
+            if (Password != ConfirmPassword) {
+                $('#submitBtn').attr("disabled");
+                alert("Password doesn't match !!");
+            }
+            else if (ConfirmPassword.length < 6) {
+                $('#submitBtn').attr("disabled");
+                alert("Password must be at least 6 characters !!");
+            }
+            else {
+                $('#submitBtn').removeAttr("disabled");
+            }
+        }
+    }
+
     function LoadDepartment() {
         $.ajax({
             url: '/Departments/GetDepartmentByGroupId',
