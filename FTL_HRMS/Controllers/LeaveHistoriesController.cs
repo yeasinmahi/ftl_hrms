@@ -63,10 +63,10 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,EmployeeId,LeaveTypeId,CreateDate,FromDate,ToDate,Day,Cause,UpdatedBy,UpdateDate,Status,Remarks")] LeaveHistory leaveHistory)
         {
-            if (leaveHistory.Cause != null)
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+            if (leaveHistory.LeaveType.Name == "Without Pay Leave")
             {
-                string userName = User.Identity.Name;
-                int userId = DbUtility.GetUserId(_db, userName);
                 leaveHistory.EmployeeId = userId;
                 leaveHistory.CreateDate = DateTime.Now;
                 leaveHistory.Day = (leaveHistory.ToDate - leaveHistory.FromDate.AddDays(-1)).Days;
@@ -75,6 +75,25 @@ namespace FTL_HRMS.Controllers
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Applied Successfully !!";
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                if (_db.LeaveCounts.Where(i => i.EmployeeId == userId && i.LeaveTypeId == leaveHistory.LeaveTypeId).Select(i => i.AvailableDay).FirstOrDefault() >= leaveHistory.Day)
+                {
+                    leaveHistory.EmployeeId = userId;
+                    leaveHistory.CreateDate = DateTime.Now;
+                    leaveHistory.Day = (leaveHistory.ToDate - leaveHistory.FromDate.AddDays(-1)).Days;
+                    leaveHistory.Status = "Pending";
+                    _db.LeaveHistories.Add(leaveHistory);
+                    _db.SaveChanges();
+                    TempData["SuccessMsg"] = "Applied Successfully !!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.LeaveTypeId = new SelectList(_db.LeaveTypes, "Sl", "Name", leaveHistory.LeaveTypeId);
+                    TempData["WarningMsg"] = "Exceeds available days !!";
+                }
             }
             ViewBag.LeaveTypeId = new SelectList(_db.LeaveTypes, "Sl", "Name", leaveHistory.LeaveTypeId);
             TempData["WarningMsg"] = "Something went wrong !!";
