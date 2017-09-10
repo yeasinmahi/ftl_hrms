@@ -2892,6 +2892,10 @@
     <Compile Include="Migrations\201709101000550_modify employee code in device attendance.Designer.cs">
       <DependentUpon>201709101000550_modify employee code in device attendance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709101041263_update_tbl_update_emp_parmanentDate.cs" />
+    <Compile Include="Migrations\201709101041263_update_tbl_update_emp_parmanentDate.Designer.cs">
+      <DependentUpon>201709101041263_update_tbl_update_emp_parmanentDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\LeaveCount.cs" />
@@ -3344,6 +3348,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709101000550_modify employee code in device attendance.resx">
       <DependentUpon>201709101000550_modify employee code in device attendance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709101041263_update_tbl_update_emp_parmanentDate.resx">
+      <DependentUpon>201709101041263_update_tbl_update_emp_parmanentDate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

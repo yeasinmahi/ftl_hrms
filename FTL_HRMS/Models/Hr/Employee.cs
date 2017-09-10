@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
 
 namespace FTL_HRMS.Models.Hr
 {
@@ -19,8 +18,8 @@ namespace FTL_HRMS.Models.Hr
         [Key]
         public int Sl { get; set; }
         [MaxLength(15)]
-        [Required(ErrorMessage = "Code cannot be empty")]
-        [Index(IsUnique = true)]
+        [Required(ErrorMessage ="Code can not be empty")]
+        [Index(IsUnique =true)]
         public string Code { get; set; }
 
         [Required(ErrorMessage = "Name cannot be empty")]
