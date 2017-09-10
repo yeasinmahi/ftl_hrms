@@ -137,6 +137,8 @@
                                         <div>
                                             <input type="file" name="image1" id="image1" class="form-control" style = "width:100%" tabindex="22"/>
                                         </div>
+                                       
+
                                     </div>
                                     <div class="col-md-4">
                                         <div>
@@ -194,6 +196,12 @@
                                         <div>
                                             <input name="Password" type="password" class="form-control" style="width:100%" id="password" required="required" tabindex="23">
                                         </div>
+                                        <br />
+                                        <div>
+                                            @Html.CheckBoxFor(model => model.IsSpecialEmployee)
+                                            @Html.ValidationMessageFor(model => model.IsSpecialEmployee, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.IsSpecialEmployee, "Is Special Employee")
+                                        </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div>
@@ -250,6 +258,12 @@
                                         </div>
                                         <div>
                                             <input name="ConfirmPassword" type="password" class="form-control" style="width:100%" id="confirmPass" required="required" tabindex="24">
+                                        </div>
+                                        <br />
+                                        <div>
+                                            @Html.CheckBoxFor(model => model.ProbationStatus)
+                                            @Html.ValidationMessageFor(model => model.ProbationStatus, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.ProbationStatus, "Probation Status")
                                         </div>
                                     </div>
                                 </div>
