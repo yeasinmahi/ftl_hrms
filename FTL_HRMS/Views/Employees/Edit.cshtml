@@ -54,6 +54,10 @@
                     @Html.HiddenFor(model => model.UpdatedBy)
                     @Html.HiddenFor(model => model.IsSystemOrSuperAdmin)
                     @Html.HiddenFor(model => model.Status)
+                    @Html.HiddenFor(model => model.ParmanentDate)
+                    @Html.HiddenFor(model => model.IsSpecialEmployee)
+                    @Html.HiddenFor(model => model.ProbationStatus)
+
                     <div class="col-md-offset-8">
                         <div class="btn-group col-md-offset-9">
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Employees" )'">Back To List</button>

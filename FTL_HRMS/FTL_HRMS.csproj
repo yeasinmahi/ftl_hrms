@@ -2830,6 +2830,7 @@
     <Compile Include="Controllers\MenuItemsController.cs" />
     <Compile Include="Controllers\PerformanceIssuesController.cs" />
     <Compile Include="Controllers\PerformanceRatingsController.cs" />
+    <Compile Include="Controllers\ProbationController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\ResignationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -2882,6 +2883,14 @@
     <Compile Include="Migrations\201709100512031_Update_tbl_Employee.cs" />
     <Compile Include="Migrations\201709100512031_Update_tbl_Employee.Designer.cs">
       <DependentUpon>201709100512031_Update_tbl_Employee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709100645578_update_tbl_update_emp_parmanentDate.cs" />
+    <Compile Include="Migrations\201709100645578_update_tbl_update_emp_parmanentDate.Designer.cs">
+      <DependentUpon>201709100645578_update_tbl_update_emp_parmanentDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709100703129_update_tbl_update_emp_parmanentDate_1.cs" />
+    <Compile Include="Migrations\201709100703129_update_tbl_update_emp_parmanentDate_1.Designer.cs">
+      <DependentUpon>201709100703129_update_tbl_update_emp_parmanentDate_1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -3282,6 +3291,8 @@
     <Content Include="Views\SalaryDistributions\Details.cshtml" />
     <Content Include="Views\SalaryDistributions\Edit.cshtml" />
     <Content Include="Views\SalaryDistributions\Index.cshtml" />
+    <Content Include="Views\Probation\Index.cshtml" />
+    <Content Include="Views\Probation\MakeParmanent.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3327,6 +3338,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709100512031_Update_tbl_Employee.resx">
       <DependentUpon>201709100512031_Update_tbl_Employee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709100645578_update_tbl_update_emp_parmanentDate.resx">
+      <DependentUpon>201709100645578_update_tbl_update_emp_parmanentDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709100703129_update_tbl_update_emp_parmanentDate_1.resx">
+      <DependentUpon>201709100703129_update_tbl_update_emp_parmanentDate_1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

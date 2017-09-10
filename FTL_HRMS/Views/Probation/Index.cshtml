@@ -16,7 +16,7 @@
     </div>
 </div>
 <header class="panel_header">
-    <h2 class="title pull-left">Probation Employee List</h2>
+    <h2 class="title pull-left">Employee List</h2>
     <div class="actions panel_actions pull-right">
         <i class="box_toggle fa fa-chevron-down"></i>
     </div>
@@ -34,7 +34,7 @@
             <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th>SL</th>
+                        <th>Parmanent</th>
                         <th>Action</th>
                         <th>Education</th>
                         <th>Experience</th>
@@ -108,12 +108,12 @@
                         <th>
                             Update Date
                         </th>
-                       
+
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>SL</th>
+                        <th>Parmanent</th>
                         <th>Action</th>
                         <th>Education</th>
                         <th>Experience</th>
@@ -187,7 +187,7 @@
                         <th>
                             Update Date
                         </th>
-                        
+
                     </tr>
                 </tfoot>
                 <tbody>
@@ -198,15 +198,8 @@
                             <td align="center" width="5%">
                                 @(rowNo += 1)
                             </td>
-                            <td align="center" width="6%">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>@Html.ActionLink("Edit", "Edit", new { id = item.Sl })</li>
-                                        <li>@Html.ActionLink("Details", "Details", new { id = item.Sl })</li>
-                                        <li>@Html.ActionLink("Delete", "Delete", new { id = item.Sl })</li>
-                                    </ul>
-                                </div>
+                            <td align="center" width="8%">
+                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("MakeParmanent", "Probation", new { id = item.Sl })'">Make Parmanent</button>
                             </td>
                             <td align="center" width="8%">
                                 <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Educations", new { employeeId = item.Sl })'">Education</button>
@@ -286,7 +279,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.UpdateDate)
                             </td>
-                           
+
                         </tr>
                     }
                 </tbody>

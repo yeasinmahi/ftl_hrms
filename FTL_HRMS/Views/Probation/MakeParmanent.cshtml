@@ -1,0 +1,104 @@
+﻿@model FTL_HRMS.Models.Hr.Employee
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class="page-title">
+        <div class="pull-left">
+            <h1 class="title">Employee</h1>
+
+        </div>
+    </div>
+</div>
+
+<header class="panel_header">
+    <h2 class="title pull-left">Make Parmanent</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["SuccessMsg"]
+                        </div>
+                    }
+                    @if (TempData["WarningMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["WarningMsg"]
+                        </div>
+                    }
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Sl)
+                    @Html.HiddenFor(model => model.DesignationId)
+                    @Html.HiddenFor(model => model.EmployeeTypeId)
+                    @Html.HiddenFor(model => model.BranchId)
+                    @Html.HiddenFor(model => model.GrossSalary)
+                    @Html.HiddenFor(model => model.CreateDate)
+                    @Html.HiddenFor(model => model.CreatedBy)
+                    @Html.HiddenFor(model => model.UpdateDate)
+                    @Html.HiddenFor(model => model.UpdatedBy)
+                    @Html.HiddenFor(model => model.IsSystemOrSuperAdmin)
+                    @Html.HiddenFor(model => model.Status)
+                    @Html.HiddenFor(model => model.IsSpecialEmployee)
+                    @Html.HiddenFor(model => model.Code)
+                    @Html.HiddenFor(model => model.Name)
+                    @Html.HiddenFor(model => model.FathersName)
+                    @Html.HiddenFor(model => model.MothersName)
+                    @Html.HiddenFor(model => model.Gender)
+                    @Html.HiddenFor(model => model.PermanentAddress)
+                    @Html.HiddenFor(model => model.PresentAddress)
+                    @Html.HiddenFor(model => model.Mobile)
+                    @Html.HiddenFor(model => model.Email)
+                    @Html.HiddenFor(model => model.NIDorBirthCirtificate)
+                    @Html.HiddenFor(model => model.DrivingLicence)
+                    @Html.HiddenFor(model => model.PassportNumber)
+                    @Html.HiddenFor(model => model.DateOfBirth)
+                    @Html.HiddenFor(model => model.DateOfJoining)
+                    @Html.HiddenFor(model => model.SourceOfHireId)
+                    @Html.HiddenFor(model => model.GrossSalary)
+                    @Html.HiddenFor(model => model.IsSpecialEmployee)
+                    <div class="col-md-offset-3">
+                        <div class="col-md-offset-5">
+                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Probation" )'">Back To List</button>
+                         </div>
+                        <div>
+                            @Html.CheckBoxFor(model => model.ProbationStatus)
+                            @Html.ValidationMessageFor(model => model.ProbationStatus, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.ProbationStatus, "Probation Status")
+                        </div>
+                        <br />
+                        <div>
+                            @Html.LabelFor(model => model.ParmanentDate, "Date Of Parmanent", new { @class = "required" })
+                        </div>
+                        <div>
+                            @Html.EditorFor(model => model.ParmanentDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
+                            @Html.ValidationMessageFor(model => model.ParmanentDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                  </div>
+
+                    <br />      
+                <div class="form-group">
+                    <div class="col-md-12" style="margin-left:40%;">
+                        <input type="submit" value="Update" class="btn btn-primary" />
+                    </div>
+                </div>
+                                            }
+        </div>
+    </div>
+</div>

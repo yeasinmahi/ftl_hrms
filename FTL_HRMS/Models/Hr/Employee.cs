@@ -114,6 +114,11 @@ namespace FTL_HRMS.Models.Hr
 
         public bool IsSpecialEmployee { get; set; }
 
+        [DataType(DataType.Date),
+        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        ApplyFormatInEditMode = true)]
+        public DateTime? ParmanentDate { get; set; }
+
         public virtual Employee CreateEmployee { get; set; }
         public virtual SourceOfHire SourceOfHire { get; set; }
         public virtual Designation Designation { get; set; }
