@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using FTL_HRMS.Models.Hr;
+using FTL_HRMS.Models.Payroll;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FTL_HRMS.Models
