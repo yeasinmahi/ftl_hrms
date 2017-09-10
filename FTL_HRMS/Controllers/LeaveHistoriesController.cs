@@ -63,26 +63,43 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,EmployeeId,LeaveTypeId,CreateDate,FromDate,ToDate,Day,Cause,UpdatedBy,UpdateDate,Status,Remarks")] LeaveHistory leaveHistory)
         {
-            if (leaveHistory.Cause != null)
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+            leaveHistory.EmployeeId = userId;
+            leaveHistory.CreateDate = DateTime.Now;
+            leaveHistory.Day = (leaveHistory.ToDate - leaveHistory.FromDate.AddDays(-1)).Days;
+            leaveHistory.Status = "Pending";
+
+            if (_db.LeaveTypes.Where(i => i.Sl == leaveHistory.LeaveTypeId).Select(i => i.Name).FirstOrDefault() == "Without Pay Leave")
             {
-                string userName = User.Identity.Name;
-                int userId = DbUtility.GetUserId(_db, userName);
-                leaveHistory.EmployeeId = userId;
-                leaveHistory.CreateDate = DateTime.Now;
-                leaveHistory.Day = (leaveHistory.ToDate - leaveHistory.FromDate.AddDays(-1)).Days;
-                leaveHistory.Status = "Pending";
                 _db.LeaveHistories.Add(leaveHistory);
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Applied Successfully !!";
                 return RedirectToAction("Index");
             }
-            ViewBag.LeaveTypeId = new SelectList(_db.LeaveTypes, "Sl", "Name", leaveHistory.LeaveTypeId);
-            TempData["WarningMsg"] = "Something went wrong !!";
+            else
+            {
+                if (_db.LeaveCounts.Where(i => i.EmployeeId == userId && i.LeaveTypeId == leaveHistory.LeaveTypeId).Select(i => i.AvailableDay).FirstOrDefault() >= leaveHistory.Day)
+                {
+                    _db.LeaveHistories.Add(leaveHistory);
+                    _db.SaveChanges();
+                    TempData["SuccessMsg"] = "Applied Successfully !!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    List<LeaveCount> leaveCountList = new List<LeaveCount>();
+                    leaveCountList = _db.LeaveCounts.Where(i => i.EmployeeId == userId).ToList();
+                    ViewBag.LeaveCount = leaveCountList;
+                    ViewBag.LeaveTypeId = new SelectList(_db.LeaveTypes, "Sl", "Name", leaveHistory.LeaveTypeId);
+                    TempData["WarningMsg"] = "Exceeds available days !!";
+                }
+            }
             return View(leaveHistory);
         }
         #endregion
 
-        #region Leave Approval
+        #region Leave Recommendation
         // GET: Resignations
         public ActionResult LeaveRecommendation()
         {
@@ -148,6 +165,18 @@ namespace FTL_HRMS.Controllers
                 leaveHistory.UpdateDate = DateTime.Now;
                 _db.Entry(leaveHistory).State = EntityState.Modified;
                 _db.SaveChanges();
+
+                #region Edit Leave Count                
+                if (_db.LeaveCounts.Where(i => i.EmployeeId == leaveHistory.EmployeeId && i.LeaveTypeId == leaveHistory.LeaveTypeId).Select(i => i.Sl).Count() > 0)
+                {
+                    int CountId = _db.LeaveCounts.Where(i => i.EmployeeId == leaveHistory.EmployeeId && i.LeaveTypeId == leaveHistory.LeaveTypeId).Select(i => i.Sl).FirstOrDefault();
+                    LeaveCount leaveCount = _db.LeaveCounts.Find(CountId);
+                    leaveCount.AvailableDay = leaveCount.AvailableDay - leaveHistory.Day;
+                    _db.Entry(leaveCount).State = EntityState.Modified;
+                    _db.SaveChanges();
+                }
+                #endregion
+
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return RedirectToAction("LeaveApproval", "LeaveHistories");
             }

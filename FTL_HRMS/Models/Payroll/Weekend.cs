@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FTL_HRMS.Models.Hr;
 
-namespace FTL_HRMS.Models
+namespace FTL_HRMS.Models.Payroll
 {
     [Table("tbl_Weekend")]
     public class Weekend

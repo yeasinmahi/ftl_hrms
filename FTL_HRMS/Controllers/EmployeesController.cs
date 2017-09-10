@@ -237,7 +237,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Gender,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,IsSystemOrSuperAdmin,Status,ProbationStatus,IsSpecialEmployee,ParmanentDate")] Employee employee, HttpPostedFileBase image1)
         {
-            if (UserValidation(employee.Code, Request["Password"], Request["ConfirmPassword"]))
+            if (UserValidation(employee.Code, Request["Password"], Request["ConfirmPassword"]) && Convert.ToString(Request["Password"]).Length >= 6)
             {
                 #region Add Employee
                 string permanentAddress = Request["PermanentAddress"].ToString();
