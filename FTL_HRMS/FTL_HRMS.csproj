@@ -2901,6 +2901,10 @@
     <Compile Include="Migrations\201709101206532_add_tbl_PromotionHistory.Designer.cs">
       <DependentUpon>201709101206532_add_tbl_PromotionHistory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709101231442_Change device attandance datetime to checktime.cs" />
+    <Compile Include="Migrations\201709101231442_Change device attandance datetime to checktime.Designer.cs">
+      <DependentUpon>201709101231442_Change device attandance datetime to checktime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\LeaveCount.cs" />
@@ -3365,6 +3369,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709101206532_add_tbl_PromotionHistory.resx">
       <DependentUpon>201709101206532_add_tbl_PromotionHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709101231442_Change device attandance datetime to checktime.resx">
+      <DependentUpon>201709101231442_Change device attandance datetime to checktime.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

@@ -16,7 +16,7 @@ namespace FTL_HRMS.Models.Payroll
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
         ApplyFormatInEditMode = true)]
-        public DateTime Datetime { get; set; }
+        public DateTime CheckTime { get; set; }
 
         public bool IsCalculated { get; set; }
         
