@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
 using static FTL_HRMS.Models.AccountViewModels;
+using FTL_HRMS.Models.Payroll;
 
 namespace FTL_HRMS.Controllers
 {
@@ -351,6 +352,40 @@ namespace FTL_HRMS.Controllers
                     leaveCount.LeaveTypeId = typeList[i].Sl;
                     leaveCount.AvailableDay = typeList[i].Day;
                     _db.LeaveCounts.Add(leaveCount);
+                    _db.SaveChanges();
+                }
+                #endregion
+
+                #region Add Employee Salary Distribution
+                if (_db.SalaryDistribution.Select(i => i.Sl).Count() > 0)
+                {
+                    int id = _db.SalaryDistribution.Select(i => i.Sl).FirstOrDefault();
+                    SalaryDistribution salaryDistribution = _db.SalaryDistribution.Find(id);
+
+                    EmployeeSalaryDistribution distribution = new EmployeeSalaryDistribution();
+                    distribution.EmployeeId = employee.Sl;
+                    distribution.GrossSalary = employee.GrossSalary;
+                    distribution.BasicSalary = employee.GrossSalary * salaryDistribution.BasicSalary / 100;
+                    distribution.HouseRent = employee.GrossSalary * salaryDistribution.HouseRent / 100;
+                    distribution.MedicalAllowance = employee.GrossSalary * salaryDistribution.MedicalAllowance / 100;
+                    distribution.LifeInsurance = employee.GrossSalary * salaryDistribution.LifeInsurance / 100;
+                    distribution.FoodAllowance = employee.GrossSalary * salaryDistribution.FoodAllowance / 100;
+                    distribution.Entertainment = employee.GrossSalary * salaryDistribution.Entertainment / 100;
+                    _db.EmployeeSalaryDistribution.Add(distribution);
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    EmployeeSalaryDistribution distribution = new EmployeeSalaryDistribution();
+                    distribution.EmployeeId = employee.Sl;
+                    distribution.GrossSalary = employee.GrossSalary;
+                    distribution.BasicSalary = employee.GrossSalary;
+                    distribution.HouseRent = 0;
+                    distribution.MedicalAllowance = 0;
+                    distribution.LifeInsurance = 0;
+                    distribution.FoodAllowance = 0;
+                    distribution.Entertainment = 0;
+                    _db.EmployeeSalaryDistribution.Add(distribution);
                     _db.SaveChanges();
                 }
                 #endregion
