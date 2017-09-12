@@ -1,4 +1,5 @@
-﻿@model List<FTL_HRMS.ViewModels.VMMenuByRole>
+﻿@using FTL_HRMS.Models.ViewModels
+@model List<FTL_HRMS.Models.ViewModels.VMMenuByRole>
 @{
     ViewBag.Title = "Add a new Role";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -46,9 +47,9 @@
 
                             @if (Model != null)
                             {
-                                List<FTL_HRMS.ViewModels.VMMenuByRole> par = Model.Where(t => t.ParentId == null).ToList();
+                                List<VMMenuByRole> par = Model.Where(t => t.ParentId == null).ToList();
 
-                                List<FTL_HRMS.ViewModels.VMMenuByRole> child = null;
+                                List<VMMenuByRole> child = null;
                                 <div>
                                     @for (int i = 0; i < par.Count; i++)
                                     {

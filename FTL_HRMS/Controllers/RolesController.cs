@@ -6,8 +6,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using FTL_HRMS.Models;
-using FTL_HRMS.ViewModels;
 using System.Data.Entity;
+using FTL_HRMS.Models.ViewModels;
 
 namespace FTL_HRMS.Controllers
 {
@@ -201,7 +201,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult AddRole()
         {
             FTL_HRMS.Models.HRMSDbContext dbCtx = new FTL_HRMS.Models.HRMSDbContext();
-            List<FTL_HRMS.ViewModels.VMMenuByRole> menuItemsForRole = new List<FTL_HRMS.ViewModels.VMMenuByRole>();
+            List<VMMenuByRole> menuItemsForRole = new List<VMMenuByRole>();
 
             string rolll = _userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
 
@@ -245,7 +245,7 @@ namespace FTL_HRMS.Controllers
             }
             foreach (var mi in menuItems)
             {
-                FTL_HRMS.ViewModels.VMMenuByRole menuByRole = new FTL_HRMS.ViewModels.VMMenuByRole();
+                VMMenuByRole menuByRole = new VMMenuByRole();
                 menuByRole.ActionName = mi.ActionName;
                 menuByRole.ControllerName = mi.ControllerName;
                 menuByRole.MenuItemName = mi.Name;
@@ -317,7 +317,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult EditRole(string roleId)
         {
 
-            List<FTL_HRMS.ViewModels.VMMenuByRole> menuItemsForRole = new List<FTL_HRMS.ViewModels.VMMenuByRole>();
+            List<VMMenuByRole> menuItemsForRole = new List<VMMenuByRole>();
 
 
             string[] menuIds = null;

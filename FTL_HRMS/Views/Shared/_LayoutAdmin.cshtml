@@ -57,14 +57,16 @@
     <!-- START CONTAINER -->
     <div class="page-container row-fluid">
         <div class="page-sidebar ">
-            @using System.Web.Optimization @using Microsoft.AspNet.Identity;
+            @using System.Web.Optimization 
+@using FTL_HRMS.Models.ViewModels
+@using Microsoft.AspNet.Identity;
 
             @if (Request.IsAuthenticated)
             {
 
 
                 FTL_HRMS.Models.HRMSDbContext db_ctx = new FTL_HRMS.Models.HRMSDbContext();
-                List<FTL_HRMS.ViewModels.VMMenuByRole> MenuItemsForRole = new List<FTL_HRMS.ViewModels.VMMenuByRole>();
+                List<VMMenuByRole> MenuItemsForRole = new List<VMMenuByRole>();
 
 
 
@@ -104,7 +106,7 @@
                 }
                 foreach (var mi in MenuItems)
                 {
-                    FTL_HRMS.ViewModels.VMMenuByRole MenuByRole = new FTL_HRMS.ViewModels.VMMenuByRole();
+                    VMMenuByRole MenuByRole = new VMMenuByRole();
                     MenuByRole.ActionName = mi.ActionName;
                     MenuByRole.ControllerName = mi.ControllerName;
                     MenuByRole.MenuItemName = mi.Name;

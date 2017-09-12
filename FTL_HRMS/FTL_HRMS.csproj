@@ -3007,8 +3007,8 @@
     <Compile Include="Utility\DbUtility.cs" />
     <Compile Include="Utility\GenericData.cs" />
     <Compile Include="Utility\Utility.cs" />
-    <Compile Include="ViewModels\VMMenuByRole.cs" />
-    <Compile Include="ViewModels\VMRoleList.cs" />
+    <Compile Include="Models\ViewModels\VMMenuByRole.cs" />
+    <Compile Include="Models\ViewModels\VMRoleList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
