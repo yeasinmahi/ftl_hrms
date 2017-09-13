@@ -15,7 +15,7 @@ namespace FTL_HRMS.Controllers
 {
     public class DeviceAttendancesController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         // GET: DeviceAttendances
         public ActionResult Index()
@@ -29,17 +29,16 @@ namespace FTL_HRMS.Controllers
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
             if (type == "" || type == "Present")
             {
-                var Code = db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
-                foreach (var item in Code)
+                var codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
+                foreach (var item in codes)
                 {
-                    List<DeviceAttendance> device = new List<DeviceAttendance>();
-                    device = db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day).ToList();
-                    DateTime CheckTime = device.Min(p => p.CheckTime);
+                    List<DeviceAttendance>  device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day).ToList();
+                    DateTime checkTime = device.Min(p => p.CheckTime);
 
                     VMTodaysAttendance attendance = new VMTodaysAttendance();
                     attendance.Code = item;
-                    attendance.Name = db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
-                    attendance.CheckTime = CheckTime;
+                    attendance.Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
+                    attendance.CheckTime = checkTime;
                     attendance.Status = "Present";
                     todaysAttendance.Add(attendance);
                 }
@@ -48,21 +47,21 @@ namespace FTL_HRMS.Controllers
             else if(type == "Absent")
             {
                 List<DeviceAttendance> device = new List<DeviceAttendance>();
-                device = db.DeviceAttendance.Where(i => i.CheckTime.Day == DateTime.Now.Day).ToList();
-                var Code = device.Select(m => m.EmployeeCode).Distinct();
+                device = _db.DeviceAttendance.Where(i => i.CheckTime.Day == DateTime.Now.Day).ToList();
+                var code = device.Select(m => m.EmployeeCode).Distinct();
 
-                List<Employee> employee = db.Employee.Where(i => i.Status != false && i.IsSystemOrSuperAdmin != true).ToList();
-                foreach (var item in Code)
+                List<Employee> employee = _db.Employee.Where(i => i.Status != false && i.IsSystemOrSuperAdmin != true).ToList();
+                foreach (var item in code)
                 {
                     employee.Where(p => p.Code == item).ToList().ForEach(p => employee.Remove(p));
                 }
 
-                var EmpCode = employee.Select(m => m.Code).Distinct();
-                foreach (var item in EmpCode)
+                var empCode = employee.Select(m => m.Code).Distinct();
+                foreach (var item in empCode)
                 {
                     VMTodaysAttendance attendance = new VMTodaysAttendance();
                     attendance.Code = item;
-                    attendance.Name = db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
+                    attendance.Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
                     attendance.Status = "Absent";
                     todaysAttendance.Add(attendance);
                 }
@@ -78,7 +77,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DeviceAttendance deviceAttendance = db.DeviceAttendance.Find(id);
+            DeviceAttendance deviceAttendance = _db.DeviceAttendance.Find(id);
             if (deviceAttendance == null)
             {
                 return HttpNotFound();
@@ -101,8 +100,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.DeviceAttendance.Add(deviceAttendance);
-                db.SaveChanges();
+                _db.DeviceAttendance.Add(deviceAttendance);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -116,7 +115,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DeviceAttendance deviceAttendance = db.DeviceAttendance.Find(id);
+            DeviceAttendance deviceAttendance = _db.DeviceAttendance.Find(id);
             if (deviceAttendance == null)
             {
                 return HttpNotFound();
@@ -133,8 +132,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(deviceAttendance).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(deviceAttendance).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(deviceAttendance);
@@ -147,7 +146,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DeviceAttendance deviceAttendance = db.DeviceAttendance.Find(id);
+            DeviceAttendance deviceAttendance = _db.DeviceAttendance.Find(id);
             if (deviceAttendance == null)
             {
                 return HttpNotFound();
@@ -160,9 +159,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DeviceAttendance deviceAttendance = db.DeviceAttendance.Find(id);
-            db.DeviceAttendance.Remove(deviceAttendance);
-            db.SaveChanges();
+            DeviceAttendance deviceAttendance = _db.DeviceAttendance.Find(id);
+            if (deviceAttendance != null) _db.DeviceAttendance.Remove(deviceAttendance);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -170,7 +169,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

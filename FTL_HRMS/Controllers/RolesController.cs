@@ -466,7 +466,7 @@ namespace FTL_HRMS.Controllers
                 }
                 return Json(statusMsg, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 statusMsg = "Data update failed. There is something wrong!!!";
                 return Json(statusMsg, JsonRequestBehavior.AllowGet);
