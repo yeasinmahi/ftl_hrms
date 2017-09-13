@@ -1,4 +1,4 @@
-﻿namespace FTL_HRMS.ViewModels
+﻿namespace FTL_HRMS.Models.ViewModels
 {
     public class VMRoleList
     {

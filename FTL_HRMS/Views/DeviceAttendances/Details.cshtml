@@ -1,0 +1,42 @@
+﻿@model FTL_HRMS.Models.Payroll.DeviceAttendance
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>DeviceAttendance</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EmployeeCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmployeeCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Datetime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Datetime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCalculated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCalculated)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Sl }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

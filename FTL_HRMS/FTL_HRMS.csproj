@@ -2815,6 +2815,7 @@
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\DepartmentTransfersController.cs" />
     <Compile Include="Controllers\DesignationsController.cs" />
+    <Compile Include="Controllers\DeviceAttendancesController.cs" />
     <Compile Include="Controllers\DisciplinaryActionsController.cs" />
     <Compile Include="Controllers\DisciplinaryActionTypesController.cs" />
     <Compile Include="Controllers\EducationsController.cs" />
@@ -2943,6 +2944,7 @@
     <Compile Include="Models\Hr\Designation.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\RolePermission.cs" />
+    <Compile Include="Models\ViewModels\VMTodaysAttendance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\BranchTransferReport.cs">
       <AutoGen>True</AutoGen>
@@ -3008,8 +3010,8 @@
     <Compile Include="Utility\DbUtility.cs" />
     <Compile Include="Utility\GenericData.cs" />
     <Compile Include="Utility\Utility.cs" />
-    <Compile Include="ViewModels\VMMenuByRole.cs" />
-    <Compile Include="ViewModels\VMRoleList.cs" />
+    <Compile Include="Models\ViewModels\VMMenuByRole.cs" />
+    <Compile Include="Models\ViewModels\VMRoleList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -3319,6 +3321,11 @@
     <Content Include="Views\MonthlyAttendances\Edit.cshtml" />
     <Content Include="Views\MonthlyAttendances\Index.cshtml" />
     <Content Include="Views\MonthlyAttendances\EmployeeAttendenceReport.cshtml" />
+    <Content Include="Views\DeviceAttendances\Create.cshtml" />
+    <Content Include="Views\DeviceAttendances\Delete.cshtml" />
+    <Content Include="Views\DeviceAttendances\Details.cshtml" />
+    <Content Include="Views\DeviceAttendances\Edit.cshtml" />
+    <Content Include="Views\DeviceAttendances\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

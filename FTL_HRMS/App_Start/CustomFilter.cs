@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FTL_HRMS.Models.ViewModels;
 
 namespace FTL_HRMS.App_Start
 {
@@ -35,7 +36,7 @@ namespace FTL_HRMS.App_Start
                 if (HttpContext.Current.User.Identity.GetUserId() != null)
                 {
                     FTL_HRMS.Models.HRMSDbContext db_ctx = new FTL_HRMS.Models.HRMSDbContext();
-                    List<FTL_HRMS.ViewModels.VMMenuByRole> MenuItemsForRole = new List<FTL_HRMS.ViewModels.VMMenuByRole>();
+                    List<VMMenuByRole> MenuItemsForRole = new List<VMMenuByRole>();
 
 
 
