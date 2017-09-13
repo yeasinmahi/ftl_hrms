@@ -17,12 +17,13 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List
         // GET: DeviceAttendances
         public ActionResult Index()
         {         
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
-            var Code = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
-            foreach (var item in Code)
+            var Codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
+            foreach (var item in Codes)
             {
                 List<DeviceAttendance> device = new List<DeviceAttendance>();
                 device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
@@ -51,8 +52,8 @@ namespace FTL_HRMS.Controllers
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
             if (type == "Present")
             {
-                var codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
-                foreach (var item in codes)
+                var Codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
+                foreach (var item in Codes)
                 {
                     List<DeviceAttendance> device = new List<DeviceAttendance>();
                     device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
@@ -72,14 +73,14 @@ namespace FTL_HRMS.Controllers
             {
                 List<DeviceAttendance> device = new List<DeviceAttendance>();
                 device = _db.DeviceAttendance.Where(i => i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
-                var Code = device.Select(m => m.EmployeeCode).Distinct();
+                var Codes = device.Select(m => m.EmployeeCode).Distinct();
 
                 List<LeaveHistory> leave = new List<LeaveHistory>();
                 leave = _db.LeaveHistories.Where(i => i.FromDate < DateTime.Now && i.ToDate > DateTime.Now).ToList();
                 var EmpSl = leave.Select(m => m.EmployeeId).Distinct();
 
                 List<Employee> employee = _db.Employee.Where(i => i.Status != false && i.IsSystemOrSuperAdmin != true).ToList();
-                foreach (var item in Code)
+                foreach (var item in Codes)
                 {
                     employee.Where(p => p.Code == item).ToList().ForEach(p => employee.Remove(p));
                 }
@@ -94,6 +95,7 @@ namespace FTL_HRMS.Controllers
                     VMTodaysAttendance attendance = new VMTodaysAttendance();
                     attendance.Code = item;
                     attendance.Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
+                    attendance.CheckTime = Utility.Utility.GetDefaultDate();
                     attendance.Status = "Absent";
                     todaysAttendance.Add(attendance);
                 }
@@ -108,6 +110,7 @@ namespace FTL_HRMS.Controllers
                         VMTodaysAttendance attendance = new VMTodaysAttendance();
                         attendance.Code = _db.Employee.Where(i => i.Sl == item).Select(i => i.Code).FirstOrDefault();
                         attendance.Name = _db.Employee.Where(i => i.Sl == item).Select(i => i.Name).FirstOrDefault();
+                        attendance.CheckTime = Utility.Utility.GetDefaultDate();
                         attendance.Status = "Leave";
                         todaysAttendance.Add(attendance);
                     }
@@ -115,7 +118,9 @@ namespace FTL_HRMS.Controllers
             }
             return Json(todaysAttendance, JsonRequestBehavior.AllowGet);
         }
+        #endregion
 
+        #region Details (We don't use it)
         // GET: DeviceAttendances/Details/5
         public ActionResult Details(int? id)
         {
@@ -130,7 +135,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(deviceAttendance);
         }
+        #endregion
 
+        #region Create (We don't use it)
         // GET: DeviceAttendances/Create
         public ActionResult Create()
         {
@@ -153,7 +160,9 @@ namespace FTL_HRMS.Controllers
 
             return View(deviceAttendance);
         }
+        #endregion
 
+        #region Edit (We don't use it)
         // GET: DeviceAttendances/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -184,7 +193,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(deviceAttendance);
         }
+        #endregion
 
+        #region Delete (We don't use it)
         // GET: DeviceAttendances/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -210,7 +221,9 @@ namespace FTL_HRMS.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -219,5 +232,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }
