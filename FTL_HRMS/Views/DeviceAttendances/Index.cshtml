@@ -8,6 +8,46 @@
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous">
 </script>
+<script>
+    function TodaysAttendance() {
+        $.ajax({
+            url: '/DeviceAttendances/GetTodaysAttendance',
+            method: 'POST',
+            data: {
+                SelectType: $('#SelectType').val(),
+            },
+            cache: false,
+            error: function () {
+                alert("An error occoured!");
+            },
+            success: function (response) {
+                console.log(response);
+                
+                $('#myTable tbody').empty();
+                var row = 1;
+                for (var i = 0; i < response.length; i++) {
+                    $('#myTable').find('tbody').append("<tr>" +
+                                "<td align=\"center\" width=\"5%\">"+
+                                    row++
+                                +"</td>"+
+                                "<td>"+
+                                    response[i].Code
+                                +"</td>"+
+                                "<td>"+
+                                    response[i].Name
+                                + "</td>" +
+                                "<td>" +
+                                    parseTime(response[i].CheckTime)
+                                +"</td>"+
+                                "<td>"+
+                                    response[i].Status
+                                +"</td>"+
+                        "</tr>")
+                }
+            }
+        });
+    }
+</script>
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
         <div class="pull-left">
@@ -24,7 +64,7 @@
 
 <div class="content-body">
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
+        <center class="col-md-12 col-sm-12 col-xs-12">
             @{
                 List<SelectListItem> listItems = new List<SelectListItem>();
                 listItems.Add(new SelectListItem
@@ -44,16 +84,13 @@
                     Value = "Leave"
                 });
             }
-            @using (Html.BeginForm("Index", "DeviceAttendances"))
-            {
-                <div class="col-md-3">
-                    @Html.DropDownList("SelectType", listItems, new { @class = "form-control", style = "width:100%", @Value=ViewBag.SelectType })
-                </div>
-                <div class="col-md-3">
-                    <input type="submit" value="Go" class="btn btn-primary" />
-                </div>
-                <br /><br />
-            }
+                <center>
+                    <select class="form-control" id="SelectType" name="SelectType" onchange="TodaysAttendance();" style="width:25%">
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                        <option value="Leave">Leave</option>
+                    </select>
+                </center>
                 @{int rowNo = 0;}
                 <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
                     <thead>
@@ -91,7 +128,6 @@
                         </tr>
                     </tfoot>
                     <tbody>
-
                         @foreach (var item in Model)
                         {
                             <tr>
@@ -122,4 +158,12 @@
 $(document).ready(function(){
     $('#myTable').DataTable();
 });
+function parseTime(date) {
+    var value = new Date
+            (
+                 parseInt(date.replace(/(^.*\()|([+-].*$)/g, ''))
+            );
+    var dat = value.toLocaleTimeString();
+    return dat;
+}
 </script>
