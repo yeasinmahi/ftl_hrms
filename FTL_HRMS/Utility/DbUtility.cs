@@ -115,5 +115,7 @@ namespace FTL_HRMS.Utility
             string view = @"IF OBJECT_ID('dbo." + viewName + "', 'V') IS NOT NULL DROP VIEW dbo." + viewName;
             return view;
         }
+
+        
     }
 }

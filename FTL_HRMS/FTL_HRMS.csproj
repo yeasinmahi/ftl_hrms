@@ -2829,6 +2829,7 @@
     <Compile Include="Controllers\LeaveHistoriesController.cs" />
     <Compile Include="Controllers\LeaveTypesController.cs" />
     <Compile Include="Controllers\MenuItemsController.cs" />
+    <Compile Include="Controllers\MonthlyAttendancesController.cs" />
     <Compile Include="Controllers\PerformanceIssuesController.cs" />
     <Compile Include="Controllers\PerformanceRatingsController.cs" />
     <Compile Include="Controllers\ProbationController.cs" />
@@ -3314,6 +3315,12 @@
     <Content Include="Views\PromotionHistories\Details.cshtml" />
     <Content Include="Views\PromotionHistories\Edit.cshtml" />
     <Content Include="Views\PromotionHistories\Index.cshtml" />
+    <Content Include="Views\MonthlyAttendances\Create.cshtml" />
+    <Content Include="Views\MonthlyAttendances\Delete.cshtml" />
+    <Content Include="Views\MonthlyAttendances\Details.cshtml" />
+    <Content Include="Views\MonthlyAttendances\Edit.cshtml" />
+    <Content Include="Views\MonthlyAttendances\Index.cshtml" />
+    <Content Include="Views\MonthlyAttendances\EmployeeAttendenceReport.cshtml" />
     <Content Include="Views\DeviceAttendances\Create.cshtml" />
     <Content Include="Views\DeviceAttendances\Delete.cshtml" />
     <Content Include="Views\DeviceAttendances\Details.cshtml" />
