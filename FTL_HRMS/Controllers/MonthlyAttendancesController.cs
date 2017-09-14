@@ -126,7 +126,8 @@ namespace FTL_HRMS.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", monthlyAttendance.EmployeeId);
+            ViewBag.EmployeeId = _db.MonthlyAttendance.Where(x => x.EmployeeId == id).Select(x => x.EmployeeId).FirstOrDefault();
+            ViewBag.EmployeeCode = _db.MonthlyAttendance.Where(x => x.EmployeeId == id).Select(x=> x.Employee.Code).FirstOrDefault();
             return View(monthlyAttendance);
         }
 
@@ -139,11 +140,16 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                monthlyAttendance.EmployeeId = monthlyAttendance.EmployeeId;
+                monthlyAttendance.IsCalculated = false;
                 _db.Entry(monthlyAttendance).State = EntityState.Modified;
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Updated Successfully!";
+                ViewBag.EmployeeCode = _db.MonthlyAttendance.Where(x => x.EmployeeId == monthlyAttendance.EmployeeId).Select(x => x.Employee.Code).FirstOrDefault();
+                return View(monthlyAttendance);
             }
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", monthlyAttendance.EmployeeId);
+            TempData["WarningMsg"] = "Something went wrong !!";
+            ViewBag.EmployeeCode = _db.MonthlyAttendance.Where(x => x.EmployeeId == monthlyAttendance.EmployeeId).Select(x => x.Employee.Code).FirstOrDefault();
             return View(monthlyAttendance);
         }
 

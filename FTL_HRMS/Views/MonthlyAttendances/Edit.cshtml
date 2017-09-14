@@ -2,62 +2,129 @@
 
 @{
     ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-
-<h2>Edit</h2>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>MonthlyAttendance</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Sl)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EmployeeId, "EmployeeId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("EmployeeId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsCalculated, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsCalculated)
-                    @Html.ValidationMessageFor(model => model.IsCalculated, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class="page-title">
+        <div class="pull-left">
+            <h1 class="title">Give Attendence</h1>
         </div>
     </div>
-}
+</div>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<header class="panel_header">
+    <h2 class="title pull-left">Edit Attendence</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["SuccessMsg"]
+                        </div>
+                    }
+                    @if (TempData["WarningMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["WarningMsg"]
+                        </div>
+                    }
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Sl)
+                    @Html.HiddenFor(model => model.IsCalculated)
+                    @Html.HiddenFor(model => model.Date)
+                    <div class="col-md-offset-3">
+                        <input id="EmployeeId" name="EmployeeId" value="@ViewBag.EmployeeId" type="hidden" />
+                        <div class="btn-group col-md-offset-5">
+                            <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("EmployeeAttendenceReport", "MonthlyAttendances")'">Back To List</button>
+                        </div>
+                        <div>
+                            <label style="margin-left:15%"> Employee Code : @ViewBag.EmployeeCode </label>
+                        </div>
+                        <br />
+                        <div>
+                            <label>Status</label>
+                            @{
+                                List<SelectListItem> listItems = new List<SelectListItem>();
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "P",
+                                    Value = "P",
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "A",
+                                    Value = "A"
+
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "L",
+                                    Value = "L"
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "H",
+                                    Value = "H",
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "W",
+                                    Value = "W"
+
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "CL",
+                                    Value = "CL"
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "SL",
+                                    Value = "SL",
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "ML",
+                                    Value = "ML"
+
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "AL",
+                                    Value = "AL"
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "WL",
+                                    Value = "WL"
+                                });
+                            }
+                        </div>
+                        <div>
+                            @Html.DropDownListFor(model => model.Status, listItems, "--select--", new { @class = "form-control", style = "width:50%" })
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
+                                <input type="submit" value="Update" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                }
+        </div>
+    </div>
 </div>

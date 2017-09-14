@@ -10,19 +10,19 @@
 </script>
 @using (Html.BeginForm())
 {
-<header class="panel_header">
-    <h2 class="title pull-left">Selection</h2>
-    <div class="actions panel_actions pull-right">
-        <i class="box_toggle fa fa-chevron-down"></i>
-    </div>
-</header>
-<br /> <br />
-  <div class="content-body">
+    <header class="panel_header">
+        <h2 class="title pull-left">Selection</h2>
+        <div class="actions panel_actions pull-right">
+            <i class="box_toggle fa fa-chevron-down"></i>
+        </div>
+    </header>
+    <br /> <br />
+    <div class="content-body">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group">
                     <div class="col-md-offset-3">
-                        
+
                         <div><h5> Select Department Group: </h5></div>
                         <div style="width:50%">@Html.DropDownList("DepartmentGroupId", null, "--All--", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "ddl_deptgroup", @name = "ddl_deptgroup", @onchange = "LoadDepartment();" })</div>
                         <div><h5> Select Department: </h5></div>
@@ -57,59 +57,60 @@
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             @{int rowNo = 0;}
-                <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
-                   
-                    <thead>
+            <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
+
+                <thead>
+                    <tr>
+                        <th style="text-align:center">SL</th>
+                        <th data-priority="1" style="text-align:center">Code</th>
+                        <th data-priority="1" style="text-align:center">Name</th>
+                        <th data-priority="3" style="text-align:center">Phone</th>
+                        <th data-priority="1" style="text-align:center">Designation</th>
+                        <th data-priority="6" style="text-align:center">Status</th>
+                        <th style="text-align:center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
                         <tr>
-                            <th style="text-align:center">SL</th>
-                            <th style="text-align:center">Action</th>
-                            <th data-priority="1" style="text-align:center">Code</th>
-                            <th data-priority="1" style="text-align:center">Name</th>
-                            <th data-priority="3" style="text-align:center">Phone</th>
-                            <th data-priority="1" style="text-align:center">Designation</th>
-                            <th data-priority="6" style="text-align:center">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td align="center" width="5%">
-                                    @(rowNo += 1)
-                                </td>
+                            <td align="center" width="5%">
+                                @(rowNo += 1)
+                            </td>
+
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Employee.Code)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Employee.Name)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Employee.Mobile)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Employee.Designation.Name)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+
+                            <td align="center" width="8%">
                                 @if (item.Status == "A")
                                 {
-                                    
+                                    <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Edit", "MonthlyAttendances", new { id = item.Sl })'">Present</button>
                                 }
-                                <td align="center" width="8%">
-                                    <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Educations", new { employeeId = item.Sl })'">Education</button>
-                                </td>
-                                <td width="10%" align="center">
-                                    @Html.DisplayFor(modelItem => item.Employee.Code)
-                                </td>
-                                <td width="10%" align="center">
-                                    @Html.DisplayFor(modelItem => item.Employee.Name)
-                                </td>
-                                <td width="10%" align="center">
-                                    @Html.DisplayFor(modelItem => item.Employee.Mobile)
-                                </td>
-                                <td width="10%" align="center">
-                                    @Html.DisplayFor(modelItem => item.Employee.Designation.Name)
-                                </td>
-                                <td width="10%" align="center">
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </td>
+                            </td>
 
-                            </tr>
-                        }
+                        </tr>
+                    }
 
-                    </tbody>
+                </tbody>
 
-                </table>
+            </table>
 
-            </div>
         </div>
     </div>
+</div>
 
 
 <script>
