@@ -6,7 +6,7 @@ namespace FTL_HRMS.Utility
     {
         public static DateTime GetDefaultDate()
         {
-            return new DateTime(1970, 1, 1);
+            return new DateTime(1999, 1, 1);
         }
     }
 }

@@ -17,59 +17,110 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List
         // GET: DeviceAttendances
         public ActionResult Index()
+        {         
+            List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
+            var Codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
+            foreach (var item in Codes)
+            {
+                List<DeviceAttendance> device = new List<DeviceAttendance>();
+                device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
+                if(device.Count > 0)
+                {
+                    DateTime CheckTime = device.Min(p => p.CheckTime);
+                    VMTodaysAttendance attendance = new VMTodaysAttendance();
+                    attendance.Code = item;
+                    attendance.Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
+                    attendance.CheckTime = CheckTime;
+                    attendance.Status = "Present";
+                    todaysAttendance.Add(attendance);
+                }
+            }
+            return View(todaysAttendance);
+        }
+
+        public ActionResult GetTodaysAttendance()
         {
             string type = string.Empty;
             if (Request["SelectType"] != null)
             {
                 type = Request["SelectType"].ToString();
-            } 
-                       
-            List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
-            if (type == "" || type == "Present")
-            {
-                var codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
-                foreach (var item in codes)
-                {
-                    List<DeviceAttendance>  device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day).ToList();
-                    DateTime checkTime = device.Min(p => p.CheckTime);
-
-                    VMTodaysAttendance attendance = new VMTodaysAttendance();
-                    attendance.Code = item;
-                    attendance.Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
-                    attendance.CheckTime = checkTime;
-                    attendance.Status = "Present";
-                    todaysAttendance.Add(attendance);
-                }
-                ViewBag.SelectType = "Present";
             }
-            else if(type == "Absent")
+
+            List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
+            if (type == "Present")
+            {
+                var Codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
+                foreach (var item in Codes)
+                {
+                    List<DeviceAttendance> device = new List<DeviceAttendance>();
+                    device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
+                    if (device.Count > 0)
+                    {
+                        DateTime CheckTime = device.Min(p => p.CheckTime);
+                        VMTodaysAttendance attendance = new VMTodaysAttendance();
+                        attendance.Code = item;
+                        attendance.Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
+                        attendance.CheckTime = CheckTime;
+                        attendance.Status = "Present";
+                        todaysAttendance.Add(attendance);
+                    }
+                }
+            }
+            else if (type == "Absent")
             {
                 List<DeviceAttendance> device = new List<DeviceAttendance>();
-                device = _db.DeviceAttendance.Where(i => i.CheckTime.Day == DateTime.Now.Day).ToList();
-                var code = device.Select(m => m.EmployeeCode).Distinct();
+                device = _db.DeviceAttendance.Where(i => i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
+                var Codes = device.Select(m => m.EmployeeCode).Distinct();
+
+                List<LeaveHistory> leave = new List<LeaveHistory>();
+                leave = _db.LeaveHistories.Where(i => i.FromDate < DateTime.Now && i.ToDate > DateTime.Now).ToList();
+                var EmpSl = leave.Select(m => m.EmployeeId).Distinct();
 
                 List<Employee> employee = _db.Employee.Where(i => i.Status != false && i.IsSystemOrSuperAdmin != true).ToList();
-                foreach (var item in code)
+                foreach (var item in Codes)
                 {
                     employee.Where(p => p.Code == item).ToList().ForEach(p => employee.Remove(p));
                 }
+                foreach (var item in EmpSl)
+                {
+                    employee.Where(p => p.Sl == item).ToList().ForEach(p => employee.Remove(p));
+                }
 
-                var empCode = employee.Select(m => m.Code).Distinct();
-                foreach (var item in empCode)
+                var EmpCode = employee.Select(m => m.Code).Distinct();
+                foreach (var item in EmpCode)
                 {
                     VMTodaysAttendance attendance = new VMTodaysAttendance();
                     attendance.Code = item;
                     attendance.Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
+                    attendance.CheckTime = Utility.Utility.GetDefaultDate();
                     attendance.Status = "Absent";
                     todaysAttendance.Add(attendance);
                 }
-                ViewBag.SelectType = "Absent";
             }
-            return View(todaysAttendance);
+            else
+            {
+                var EmpSl = _db.LeaveHistories.Select(m => m.EmployeeId).Distinct();
+                foreach (var item in EmpSl)
+                {
+                    if (_db.LeaveHistories.Where(i => i.EmployeeId == item && i.FromDate < DateTime.Now && i.ToDate > DateTime.Now).Count() > 0)
+                    {
+                        VMTodaysAttendance attendance = new VMTodaysAttendance();
+                        attendance.Code = _db.Employee.Where(i => i.Sl == item).Select(i => i.Code).FirstOrDefault();
+                        attendance.Name = _db.Employee.Where(i => i.Sl == item).Select(i => i.Name).FirstOrDefault();
+                        attendance.CheckTime = Utility.Utility.GetDefaultDate();
+                        attendance.Status = "Leave";
+                        todaysAttendance.Add(attendance);
+                    }
+                }
+            }
+            return Json(todaysAttendance, JsonRequestBehavior.AllowGet);
         }
-        
+        #endregion
+
+        #region Details (We don't use it)
         // GET: DeviceAttendances/Details/5
         public ActionResult Details(int? id)
         {
@@ -84,7 +135,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(deviceAttendance);
         }
+        #endregion
 
+        #region Create (We don't use it)
         // GET: DeviceAttendances/Create
         public ActionResult Create()
         {
@@ -107,7 +160,9 @@ namespace FTL_HRMS.Controllers
 
             return View(deviceAttendance);
         }
+        #endregion
 
+        #region Edit (We don't use it)
         // GET: DeviceAttendances/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -138,7 +193,9 @@ namespace FTL_HRMS.Controllers
             }
             return View(deviceAttendance);
         }
+        #endregion
 
+        #region Delete (We don't use it)
         // GET: DeviceAttendances/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -164,7 +221,9 @@ namespace FTL_HRMS.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -173,5 +232,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }
