@@ -1,0 +1,124 @@
+﻿@model IEnumerable<FTL_HRMS.Models.Payroll.MonthlyAttendance>
+
+@{
+    ViewBag.Title = "Employee List";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+</script>
+@using (Html.BeginForm())
+{
+    <header class="panel_header">
+        <h2 class="title pull-left">Selection</h2>
+        <div class="actions panel_actions pull-right">
+            <i class="box_toggle fa fa-chevron-down"></i>
+        </div>
+    </header>
+    <br /> <br />
+    <div class="content-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <div class="col-md-offset-3">
+
+                        <div class="form-group"><h5> Select Employee Code </h5></div>
+                        <div style="width:50%">@Html.DropDownList("EmployeeId", null, "--All--", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "employeeId", @name = "employeeId" })</div>
+                        <br />
+                        <div class="form-group">
+                            <label class="form-label" for="Fromdate">From Date</label>
+                            <div class="controls">
+                                <input type="text" id="fromdate" name="FromDate" class="form-control datepicker" data-start-view="2" style="width:50%">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="Todate">To Date</label>
+                            <div class="controls">
+                                <input type="text" id="todate" name="ToDate" class="form-control datepicker" data-start-view="2" style="width:50%">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-offset-2" style="margin-left:22%">
+                            <input type="submit" value="Submit" name="Submit" class="btn btn-info" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<header class="panel_header">
+    <h2 class="title pull-left">List Of Employee</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
+<br /> <br />
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @{int rowNo = 0;}
+            <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
+
+                <thead>
+                    <tr>
+                        <th style="text-align:center">SL</th>
+                        <th data-priority="1" style="text-align:center">Date</th>
+                        <th data-priority="1" style="text-align:center">Code</th>
+                        <th data-priority="1" style="text-align:center">Name</th>
+                        <th data-priority="3" style="text-align:center">Phone</th>
+                        <th data-priority="1" style="text-align:center">Designation</th>
+                        <th data-priority="6" style="text-align:center">Status</th>
+                        <th style="text-align:center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td align="center" width="5%">
+                                @(rowNo += 1)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Employee.Code)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Employee.Name)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Employee.Mobile)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Employee.Designation.Name)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+
+                            <td align="center" width="8%">
+                                @if (item.Status == "A")
+                                {
+                                    <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Edit", "MonthlyAttendances", new { id = item.Sl })'">Present</button>
+                                }
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+
+</script>

@@ -22,7 +22,7 @@ namespace FTL_HRMS.Controllers
             var monthlyAttendance = _db.MonthlyAttendance.Include(m => m.Employee);
             return View(monthlyAttendance.ToList());
         }
-        #region Department Transfer Report
+        #region Employee Attendence Report
         public ActionResult EmployeeAttendenceReport()
         {
             ViewBag.DepartmentGroupId = new SelectList(_db.DepartmentGroup, "Sl", "Name");
@@ -67,6 +67,10 @@ namespace FTL_HRMS.Controllers
                 }
 
             }
+            else if (departmentGroupId == 0)
+            {
+                attendenceList = _db.MonthlyAttendance.Include(x => x.Employee).Where(x=>x.Date == Date).ToList();
+            }
             else
             {
                 attendenceList = _db.MonthlyAttendance.Include(x=> x.Employee).ToList();
@@ -74,7 +78,71 @@ namespace FTL_HRMS.Controllers
             return attendenceList;
         }
         #endregion
-   
+
+        #region EmployeeWise Attendence
+        public ActionResult EmployeewiseAttendenceReport()
+        {
+            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code");
+            List<MonthlyAttendance> attendenceList = GetEmployeewiseList(0, Utility.Utility.GetDefaultDate(), Utility.Utility.GetDefaultDate());
+            return View(attendenceList);
+        }
+        [HttpPost]
+        public ActionResult EmployeewiseAttendenceReport(string employeeId)
+        {
+            int eid;
+            Int32.TryParse(employeeId, out eid);
+            DateTime FromDate = Utility.Utility.GetDefaultDate();
+            if(Request["FromDate"]!="")
+            {
+                DateTime.TryParse(Request["FromDate"], out FromDate);
+            }
+            DateTime ToDate = Utility.Utility.GetDefaultDate();
+            if (Request["ToDate"]!="")
+            {
+                DateTime.TryParse(Request["ToDate"], out ToDate);
+            }
+          
+           
+
+            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code");
+            ViewBag.Status = "SelectType";
+            TempData["dgid"] = eid;
+            TempData["FromDate"] = FromDate;
+            TempData["ToDate"] = ToDate;
+            List<MonthlyAttendance> attendenceList = GetEmployeewiseList(eid, FromDate, ToDate);
+            return View(attendenceList);
+        }
+            public List<MonthlyAttendance> GetEmployeewiseList(int employeeId, DateTime FromDate, DateTime ToDate)
+        {
+            List<MonthlyAttendance> attendenceList = new List<MonthlyAttendance>();
+            if (FromDate.Equals(Utility.Utility.GetDefaultDate()))
+            {
+                FromDate = DateTime.Now.AddDays(-1);
+                ToDate = DateTime.Now.AddDays(-1);
+            }
+            if (ToDate.Equals(Utility.Utility.GetDefaultDate()))
+            {
+                ToDate = DateTime.Now.AddDays(-1);
+            }
+            if (employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] != "" || 
+                employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] != "" ||
+                employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] == "")
+            {
+                attendenceList = _db.MonthlyAttendance.Where(x => x.Employee.Sl.Equals(employeeId)).Where(x => x.Date >= FromDate  && x.Date <= ToDate).ToList();
+            }
+            else if (employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] == "")
+            {
+                attendenceList = _db.MonthlyAttendance.Where(x => x.Employee.Sl.Equals(employeeId)).Where(x => x.Date.Day == ToDate.Day && x.Date.Month == ToDate.Month && x.Date.Year == ToDate.Year).ToList();
+            }
+            else 
+            {
+                attendenceList = _db.MonthlyAttendance.Include(x => x.Employee).Where(x => x.Date.Day == ToDate.Day && x.Date.Month == ToDate.Month && x.Date.Year == ToDate.Year).ToList();
+            }
+            return attendenceList;
+        }
+
+        #endregion
+
         public ActionResult Details(int? id)
         {
             if (id == null)

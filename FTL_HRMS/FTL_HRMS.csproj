@@ -3326,6 +3326,7 @@
     <Content Include="Views\DeviceAttendances\Details.cshtml" />
     <Content Include="Views\DeviceAttendances\Edit.cshtml" />
     <Content Include="Views\DeviceAttendances\Index.cshtml" />
+    <Content Include="Views\MonthlyAttendances\EmployeewiseAttendenceReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
