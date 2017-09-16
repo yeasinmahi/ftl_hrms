@@ -2911,8 +2911,14 @@
     <Compile Include="Migrations\201709161039441_update_tbl_monthlyattendance.Designer.cs">
       <DependentUpon>201709161039441_update_tbl_monthlyattendance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.cs" />
+    <Compile Include="Migrations\201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.Designer.cs">
+      <DependentUpon>201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Hr\FileStorage.cs" />
+    <Compile Include="Models\Payroll\BonusAndPenalty.cs" />
     <Compile Include="Models\Hr\LeaveCount.cs" />
     <Compile Include="Models\Hr\LeaveHistory.cs" />
     <Compile Include="Models\Hr\LeaveType.cs" />
@@ -2928,6 +2934,7 @@
     <Compile Include="Models\Hr\Images.cs" />
     <Compile Include="Models\Hr\PromotionHistory.cs" />
     <Compile Include="Models\Payroll\Company.cs" />
+    <Compile Include="Models\Payroll\FestibleBonus.cs" />
     <Compile Include="Models\Payroll\SalaryDistribution.cs" />
     <Compile Include="Models\Payroll\PaidSalaryDuration.cs" />
     <Compile Include="Models\Payroll\MonthlySalarySheet.cs" />
@@ -3394,6 +3401,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709161039441_update_tbl_monthlyattendance.resx">
       <DependentUpon>201709161039441_update_tbl_monthlyattendance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.resx">
+      <DependentUpon>201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

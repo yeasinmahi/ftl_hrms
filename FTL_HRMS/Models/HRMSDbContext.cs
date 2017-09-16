@@ -43,6 +43,10 @@ namespace FTL_HRMS.Models
         public DbSet<SalaryDistribution> SalaryDistribution { get; set; }
         public DbSet<EmployeeSalaryDistribution> EmployeeSalaryDistribution { get; set; }
         public DbSet<Weekend> Weekend { get; set; }
+        public DbSet<BonusAndPenalty> BonusAndPenalty { get; set; }
+        public DbSet<FestibleBonus> FestibleBonus { get; set; }
+        public DbSet<FileStorage> FileStorage { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
