@@ -23,6 +23,13 @@ namespace FTL_HRMS.Models.Payroll
         [Required(ErrorMessage = "Status cannot be empty")]
         public string Status { get; set; }
 
+        public int? UpdatedBy { get; set; }
+
+        [DataType(DataType.Date),
+        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        ApplyFormatInEditMode = true)]
+        public DateTime? UpdateDate { get; set; }
+
         public bool IsCalculated { get; set; }
 
         public virtual Employee Employee { get; set; }

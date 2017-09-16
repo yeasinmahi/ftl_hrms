@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Models.Hr;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -169,7 +170,7 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,EmployeeId,Date,Status,IsCalculated")] MonthlyAttendance monthlyAttendance)
+        public ActionResult Create([Bind(Include = "Sl,EmployeeId,Date,Status,IsCalculated,UpdatedBy,UpdateDate")] MonthlyAttendance monthlyAttendance)
         {
             if (ModelState.IsValid)
             {
@@ -204,12 +205,16 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,EmployeeId,Date,Status,IsCalculated")] MonthlyAttendance monthlyAttendance)
+        public ActionResult Edit([Bind(Include = "Sl,EmployeeId,Date,Status,IsCalculated,UpdatedBy,UpdateDate")] MonthlyAttendance monthlyAttendance)
         {
             if (ModelState.IsValid)
             {
                 monthlyAttendance.EmployeeId = monthlyAttendance.EmployeeId;
                 monthlyAttendance.IsCalculated = false;
+                string userName = User.Identity.Name;
+                int UserId = DbUtility.GetUserId(_db, userName);
+                monthlyAttendance.UpdatedBy = UserId;
+                monthlyAttendance.UpdateDate = DateTime.Now;
                 _db.Entry(monthlyAttendance).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
