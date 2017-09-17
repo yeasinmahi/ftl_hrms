@@ -2808,6 +2808,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccessDeniedController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BonusAndPenaltiesController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\BranchTransfersController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
@@ -3338,6 +3339,11 @@
     <Content Include="Views\DeviceAttendances\Edit.cshtml" />
     <Content Include="Views\DeviceAttendances\Index.cshtml" />
     <Content Include="Views\MonthlyAttendances\EmployeewiseAttendenceReport.cshtml" />
+    <Content Include="Views\BonusAndPenalties\Create.cshtml" />
+    <Content Include="Views\BonusAndPenalties\Delete.cshtml" />
+    <Content Include="Views\BonusAndPenalties\Details.cshtml" />
+    <Content Include="Views\BonusAndPenalties\Edit.cshtml" />
+    <Content Include="Views\BonusAndPenalties\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
