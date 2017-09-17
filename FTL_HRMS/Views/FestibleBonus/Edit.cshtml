@@ -1,0 +1,111 @@
+﻿@model FTL_HRMS.Models.Payroll.FestibleBonus
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class="page-title">
+        <div class="pull-left">
+            <h1 class="title">Festible Bonus</h1>
+        </div>
+    </div>
+</div>
+
+<header class="panel_header">
+    <h2 class="title pull-left">Edit Festible Bonus</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["SuccessMsg"]
+                        </div>
+                    }
+                    @if (TempData["WarningMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            @TempData["WarningMsg"]
+                        </div>
+                    }
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Sl)
+                    <div class="col-md-offset-3">
+                        <div>
+                            <div class="btn-group col-md-offset-5">
+                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "FestibleBonus")'">Back To List</button>
+                            </div>
+                            <div>
+                                @Html.LabelFor(model => model.BasedOn, "Based On")
+                                @{
+                                    List<SelectListItem> listItems = new List<SelectListItem>();
+                                    listItems.Add(new SelectListItem
+                                    {
+                                        Text = "Basic",
+                                        Value = "Basic",
+                                    });
+                                    listItems.Add(new SelectListItem
+                                    {
+                                        Text = "Gross",
+                                        Value = "Gross"
+
+                                    });
+                                }
+                            </div>
+                            <div>
+                                @Html.DropDownListFor(model => model.BasedOn, listItems, "--select--", new { @class = "form-control", style = "width:50%" })
+                                @Html.ValidationMessageFor(model => model.BasedOn, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div>
+                                @Html.LabelFor(model => model.BonusPersentage, "Bonus Persentage")
+                            </div>
+
+                            <div>
+                                @Html.EditorFor(model => model.BonusPersentage, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                                @Html.ValidationMessageFor(model => model.BonusPersentage, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div>
+                                @Html.LabelFor(model => model.Date)
+                            </div>
+
+                            <div>
+                                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Remarks)
+                            </div>
+
+                            <div>
+                                @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                                @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                            </div>
+
+                            <br />
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
+                                    <input type="submit" value="Update" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                    }
+        </div>
+    </div>
+</div>
