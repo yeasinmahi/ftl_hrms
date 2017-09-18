@@ -2823,7 +2823,7 @@
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\EmployeeTypesController.cs" />
     <Compile Include="Controllers\ExperiencesController.cs" />
-    <Compile Include="Controllers\FestibleBonusController.cs" />
+    <Compile Include="Controllers\FestivalBonusController.cs" />
     <Compile Include="Controllers\HolidaysController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
@@ -2917,6 +2917,10 @@
     <Compile Include="Migrations\201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.Designer.cs">
       <DependentUpon>201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709171153273_renaming FestibalBonus.cs" />
+    <Compile Include="Migrations\201709171153273_renaming FestibalBonus.Designer.cs">
+      <DependentUpon>201709171153273_renaming FestibalBonus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
@@ -2936,7 +2940,7 @@
     <Compile Include="Models\Hr\Images.cs" />
     <Compile Include="Models\Hr\PromotionHistory.cs" />
     <Compile Include="Models\Payroll\Company.cs" />
-    <Compile Include="Models\Payroll\FestibleBonus.cs" />
+    <Compile Include="Models\Payroll\FestivalBonus.cs" />
     <Compile Include="Models\Payroll\SalaryDistribution.cs" />
     <Compile Include="Models\Payroll\PaidSalaryDuration.cs" />
     <Compile Include="Models\Payroll\MonthlySalarySheet.cs" />
@@ -3345,11 +3349,11 @@
     <Content Include="Views\BonusAndPenalties\Details.cshtml" />
     <Content Include="Views\BonusAndPenalties\Edit.cshtml" />
     <Content Include="Views\BonusAndPenalties\Index.cshtml" />
-    <Content Include="Views\FestibleBonus\Create.cshtml" />
-    <Content Include="Views\FestibleBonus\Delete.cshtml" />
-    <Content Include="Views\FestibleBonus\Details.cshtml" />
-    <Content Include="Views\FestibleBonus\Edit.cshtml" />
-    <Content Include="Views\FestibleBonus\Index.cshtml" />
+    <Content Include="Views\FestivalBonus\Create.cshtml" />
+    <Content Include="Views\FestivalBonus\Delete.cshtml" />
+    <Content Include="Views\FestivalBonus\Details.cshtml" />
+    <Content Include="Views\FestivalBonus\Edit.cshtml" />
+    <Content Include="Views\FestivalBonus\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3416,6 +3420,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.resx">
       <DependentUpon>201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709171153273_renaming FestibalBonus.resx">
+      <DependentUpon>201709171153273_renaming FestibalBonus.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
