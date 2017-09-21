@@ -62,27 +62,36 @@ namespace FTL_HRMS.Controllers
             if (Request["FileName"] != "")
             {
 
-                string EmployeeCode = _db.Employee.Where(x => x.Sl == fileStorage.EmployeeId).Select(x => x.Code).FirstOrDefault();
-                string FilesName = Request["FileName"];
+                string employeeCode = _db.Employee.Where(x => x.Sl == fileStorage.EmployeeId).Select(x => x.Code).FirstOrDefault();
+                string filesName = Request["FileName"];
                 var file = Request.Files["EmployeeFile"];
                 string fullFileName = String.Empty;
                 string fullPath = String.Empty;
                 if (file != null && file.ContentLength > 0)
                 {
                     string fileExtension = Path.GetExtension(file.FileName);
-                    fullFileName = string.Concat(FilesName, "_", EmployeeCode, fileExtension);
+                    fullFileName = string.Concat(filesName, "_", employeeCode, fileExtension);
                     fullPath = Path.Combine(path, fullFileName);
+                    FileStorage existingFileStorage = _db.FileStorage.FirstOrDefault(x => x.Path.Equals(fullFileName));
+                    if (existingFileStorage != null)
+                    {
+                        TempData["WarningMsg"] = "This File Already Exist";
+                        ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", fileStorage.EmployeeId);
+                        return View(fileStorage);
+                    }
+
                     file.SaveAs(fullPath);
 
+                    
                     fileStorage.EmployeeId = fileStorage.EmployeeId;
                     fileStorage.Path = fullFileName;
                     string userName = User.Identity.Name;
                     int userId = DbUtility.GetUserId(_db, userName);
                     fileStorage.CreatedBy = userId;
                     fileStorage.CreateDate = DateTime.Now;
-
                     _db.FileStorage.Add(fileStorage);
                     _db.SaveChanges();
+
                     TempData["SuccessMsg"] = "Added Successfully !!";
                     return RedirectToAction("Create");
                 }
@@ -156,13 +165,13 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             FileStorage fileStorage = _db.FileStorage.Find(id);
-            string EmployeeCode = _db.Employee.Where(x => x.Sl == fileStorage.EmployeeId).Select(x => x.Code).FirstOrDefault();
-            string fullPath = Request.MapPath("~/Uploads/File/" + EmployeeCode);
+            string employeeCode = _db.Employee.Where(x => x.Sl == fileStorage.EmployeeId).Select(x => x.Code).FirstOrDefault();
+            string fullPath = Request.MapPath("~/Uploads/File/" + employeeCode);
             if (System.IO.File.Exists(fullPath))
             {
                 System.IO.File.Delete(fullPath);
             }
-            _db.FileStorage.Remove(fileStorage);
+            if (fileStorage != null) _db.FileStorage.Remove(fileStorage);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
