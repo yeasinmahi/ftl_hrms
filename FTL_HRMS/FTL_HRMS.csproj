@@ -2824,6 +2824,7 @@
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\EmployeeTypesController.cs" />
     <Compile Include="Controllers\ExperiencesController.cs" />
+    <Compile Include="Controllers\FileStoragesController.cs" />
     <Compile Include="Controllers\FestivalBonusController.cs" />
     <Compile Include="Controllers\HolidaysController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -3351,12 +3352,18 @@
     <Content Include="Views\BonusAndPenalties\Details.cshtml" />
     <Content Include="Views\BonusAndPenalties\Edit.cshtml" />
     <Content Include="Views\BonusAndPenalties\Index.cshtml" />
+    <Content Include="Views\FileStorages\Create.cshtml" />
+    <Content Include="Views\FileStorages\Delete.cshtml" />
+    <Content Include="Views\FileStorages\Details.cshtml" />
+    <Content Include="Views\FileStorages\Edit.cshtml" />
+    <Content Include="Views\FileStorages\Index.cshtml" />
     <Content Include="Views\FestivalBonus\Create.cshtml" />
     <Content Include="Views\FestivalBonus\Delete.cshtml" />
     <Content Include="Views\FestivalBonus\Details.cshtml" />
     <Content Include="Views\FestivalBonus\Edit.cshtml" />
     <Content Include="Views\FestivalBonus\Index.cshtml" />
     <Content Include="Views\Attendance\MoveDeviceAttendanceToFilterAttendance.cshtml" />
+    <Content Include="Uploads\as_E001.pdf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
