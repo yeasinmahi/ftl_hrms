@@ -3360,6 +3360,7 @@
     <Content Include="Views\FestivalBonus\Details.cshtml" />
     <Content Include="Views\FestivalBonus\Edit.cshtml" />
     <Content Include="Views\FestivalBonus\Index.cshtml" />
+    <Content Include="Uploads\as_E001.pdf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
