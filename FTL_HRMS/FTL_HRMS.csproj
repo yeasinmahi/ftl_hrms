@@ -2808,6 +2808,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccessDeniedController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\BonusAndPenaltiesController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\BranchTransfersController.cs" />
@@ -2840,6 +2841,7 @@
     <Compile Include="Controllers\ResignationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SalaryDistributionsController.cs" />
+    <Compile Include="Controllers\SalarySheetController.cs" />
     <Compile Include="Controllers\SourceOfHiresController.cs" />
     <Compile Include="Controllers\WeekendsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -3354,6 +3356,7 @@
     <Content Include="Views\FestivalBonus\Details.cshtml" />
     <Content Include="Views\FestivalBonus\Edit.cshtml" />
     <Content Include="Views\FestivalBonus\Index.cshtml" />
+    <Content Include="Views\Attendance\MoveDeviceAttendanceToFilterAttendance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3365,6 +3368,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\AdminTemplate\assets\plugins\data-table\" />
     <Folder Include="Content\assets\data\images\" />
+    <Folder Include="Views\SalarySheet\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201708181143265_Initial.resx">

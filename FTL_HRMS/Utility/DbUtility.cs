@@ -8,7 +8,7 @@ using FTL_HRMS.Models;
 
 namespace FTL_HRMS.Utility
 {
-    class DbUtility
+    public class DbUtility
     {
         public enum Status
         {
