@@ -1,4 +1,4 @@
-﻿@model FTL_HRMS.Models.Payroll.FestibleBonus
+﻿@model FTL_HRMS.Models.Payroll.FestivalBonus
 
 @{
     ViewBag.Title = "Create";
@@ -44,7 +44,7 @@
                     <div class="col-md-offset-3">
                         <div>
                             <div class="btn-group col-md-offset-5">
-                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "FestibleBonus")'">Back To List</button>
+                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href = '@Url.Action("Index", "FestivalBonus")'">Back To List</button>
                             </div>
                             <div>
                                 @Html.LabelFor(model => model.BasedOn, "Based On")

@@ -11,110 +11,110 @@ using FTL_HRMS.Models.Payroll;
 
 namespace FTL_HRMS.Controllers
 {
-    public class FestibleBonusController : Controller
+    public class FestivalBonusController : Controller
     {
         private HRMSDbContext _db = new HRMSDbContext();
 
-        // GET: FestibleBonus
+        // GET: FestivalBonus
         public ActionResult Index()
         {
-            return View(_db.FestibleBonus.ToList());
+            return View(_db.FestivalBonus.ToList());
         }
 
-        // GET: FestibleBonus/Details/5
+        // GET: FestivalBonus/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FestibleBonus festibleBonus = _db.FestibleBonus.Find(id);
-            if (festibleBonus == null)
+            FestivalBonus festivalBonus = _db.FestivalBonus.Find(id);
+            if (festivalBonus == null)
             {
                 return HttpNotFound();
             }
-            return View(festibleBonus);
+            return View(festivalBonus);
         }
 
-        // GET: FestibleBonus/Create
+        // GET: FestivalBonus/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: FestibleBonus/Create
+        // POST: FestivalBonus/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,BasedOn,BonusPersentage,Date,Remarks")] FestibleBonus festibleBonus)
+        public ActionResult Create([Bind(Include = "Sl,BasedOn,BonusPersentage,Date,Remarks")] FestivalBonus festivalBonus)
         {
             if (ModelState.IsValid)
             {
-                _db.FestibleBonus.Add(festibleBonus);
+                _db.FestivalBonus.Add(festivalBonus);
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Create");
             }
             TempData["WarningMsg"] = "Something went wrong !!";
-            return View(festibleBonus);
+            return View(festivalBonus);
         }
 
-        // GET: FestibleBonus/Edit/5
+        // GET: FestivalBonus/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FestibleBonus festibleBonus = _db.FestibleBonus.Find(id);
-            if (festibleBonus == null)
+            FestivalBonus festivalBonus = _db.FestivalBonus.Find(id);
+            if (festivalBonus == null)
             {
                 return HttpNotFound();
             }
-            return View(festibleBonus);
+            return View(festivalBonus);
         }
 
-        // POST: FestibleBonus/Edit/5
+        // POST: FestivalBonus/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,BasedOn,BonusPersentage,Date,Remarks")] FestibleBonus festibleBonus)
+        public ActionResult Edit([Bind(Include = "Sl,BasedOn,BonusPersentage,Date,Remarks")] FestivalBonus festivalBonus)
         {
             if (ModelState.IsValid)
             {
-                _db.Entry(festibleBonus).State = EntityState.Modified;
+                _db.Entry(festivalBonus).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Edit");
             }
             TempData["WarningMsg"] = "Something went wrong !!";
-            return View(festibleBonus);
+            return View(festivalBonus);
         }
 
-        // GET: FestibleBonus/Delete/5
+        // GET: FestivalBonus/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FestibleBonus festibleBonus = _db.FestibleBonus.Find(id);
-            if (festibleBonus == null)
+            FestivalBonus festivalBonus = _db.FestivalBonus.Find(id);
+            if (festivalBonus == null)
             {
                 return HttpNotFound();
             }
-            return View(festibleBonus);
+            return View(festivalBonus);
         }
 
-        // POST: FestibleBonus/Delete/5
+        // POST: FestivalBonus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            FestibleBonus festibleBonus = _db.FestibleBonus.Find(id);
-            _db.FestibleBonus.Remove(festibleBonus);
+            FestivalBonus festivalBonus = _db.FestivalBonus.Find(id);
+            _db.FestivalBonus.Remove(festivalBonus);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }

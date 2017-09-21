@@ -7,8 +7,8 @@ using System.Web;
 
 namespace FTL_HRMS.Models.Payroll
 {
-    [Table("tbl_FestibleBonus")]
-    public class FestibleBonus
+    [Table("tbl_FestivalBonus")]
+    public class FestivalBonus
     {
         [Key]
         public int Sl { get; set; }
