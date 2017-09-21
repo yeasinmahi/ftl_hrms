@@ -2824,6 +2824,7 @@
     <Compile Include="Controllers\EmployeeTypesController.cs" />
     <Compile Include="Controllers\ExperiencesController.cs" />
     <Compile Include="Controllers\FestibleBonusController.cs" />
+    <Compile Include="Controllers\FileStoragesController.cs" />
     <Compile Include="Controllers\HolidaysController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
@@ -3350,6 +3351,11 @@
     <Content Include="Views\FestibleBonus\Details.cshtml" />
     <Content Include="Views\FestibleBonus\Edit.cshtml" />
     <Content Include="Views\FestibleBonus\Index.cshtml" />
+    <Content Include="Views\FileStorages\Create.cshtml" />
+    <Content Include="Views\FileStorages\Delete.cshtml" />
+    <Content Include="Views\FileStorages\Details.cshtml" />
+    <Content Include="Views\FileStorages\Edit.cshtml" />
+    <Content Include="Views\FileStorages\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
