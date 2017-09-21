@@ -2829,7 +2829,6 @@
     <Compile Include="Controllers\HolidaysController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
-    <Compile Include="Controllers\LeaveCountsController.cs" />
     <Compile Include="Controllers\LeaveHistoriesController.cs" />
     <Compile Include="Controllers\LeaveTypesController.cs" />
     <Compile Include="Controllers\MenuItemsController.cs" />
