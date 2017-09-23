@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Leave Report By Date Range";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<header class="panel_header">
+    <h2 class="title pull-left">Salary Calculation</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
+<br /> <br />
+@using (Html.BeginForm("SalaryReportDateView", "Reports"))
+{
+    <div class="row">
+        <div class="col-md-4" style="margin-left:15%">
+            <div class="col-xs-7">
+                <div class="form-group">
+                    <label class="form-label" for="from_date">From Date</label>
+                    <div class="controls">
+                        <input type="text" id="from_date" name="FromDate" class="form-control datepicker" data-start-view="2" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="col-xs-5">
+                <div class="form-group">
+                    <label class="form-label" for="to_date-1">To Date</label>
+                    <div class="controls">
+                        <input type="text" id="to_date" name="ToDate" class="form-control datepicker" data-start-view="2" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2" style="margin-left:40%">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+
+    </div>
+
+
+    <div class="content-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              
+            </div>
+        </div>
+    </div>
+}

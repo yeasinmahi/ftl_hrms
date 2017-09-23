@@ -18,8 +18,9 @@
 <script language="JavaScript" type="text/javascript" src="~/Scripts/amcharts/amcharts.js"></script>
 <script language="JavaScript" type="text/javascript" src="~/Scripts/amcharts/light.js"></script>
 <script language="JavaScript" type="text/javascript" src="~/Scripts/amcharts/serial.js"></script>
+
 <header class="panel_header">
-    <h2 class="title pull-left">Admin Dashboard</h2>
+    <h2 class="title pull-left">Dashboard</h2>
     <div class="actions panel_actions pull-right">
         <i class="box_toggle fa fa-chevron-down"></i>
     </div>
@@ -27,5 +28,131 @@
 
 <div class="content-body">
     <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row" style="margin-bottom: 10px;">
+
+                <div class="col-md-3 col-sm-5 col-xs-12">
+
+                    <div class="r1_graph1 db_box">
+                        <span class='pull-right' style="font-size:20px;  margin-top:15px"><small>Employee</small></span>
+                        <div class="clearfix" style="font-size:50px; margin-top:15px">@ViewBag.TotalEmployee</div>
+                    </div>
+                    <div class="r1_graph1 db_box" style="background:#FFA500">
+                        <span class='pull-right' style="font-size:20px;  margin-top:15px"><small>Department Group</small></span>
+                        <div class="clearfix" style="font-size:50px; margin-top:15px">@ViewBag.DepartmentGroup</div>
+                    </div>
+
+                </div>
+                <div class="col-md-3 col-sm-5 col-xs-12">
+                    <div class="r1_graph2 db_box" style="background:#89CFF0">
+                        <span class='pull-right' style="font-size:20px;  margin-top:15px"><small>Admin</small></span>
+                        <div class="clearfix" style="font-size:50px; margin-top:15px">@ViewBag.TotalAdmin</div>
+                    </div>
+                    <div class="r1_graph2 db_box" style="background:Navy">
+                        <span class='pull-right' style="font-size:20px;  margin-top:15px"><small>Department</small></span>
+                        <div class="clearfix" style="font-size:50px; margin-top:15px">@ViewBag.Department</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-5 col-xs-12">
+                    <div class="r1_graph2 db_box" style="background:#FA8072">
+                        <span class='pull-right' style="font-size:20px;  margin-top:15px"><small>Super Admin</small></span>
+                        <div class="clearfix" style="font-size:50px; margin-top:15px">@ViewBag.TotalSuperAdmin </div>
+                    </div>
+
+                    <div class="r1_graph2 db_box" style="background:#4682b4">
+                        <span class='pull-right' style="font-size:20px;  margin-top:15px"><small>Designation</small></span>
+                        <div class="clearfix" style="font-size:50px; margin-top:15px">@ViewBag.Designation </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-5 col-xs-12">
+                    <div class="r1_graph2 db_box" style="background:#FFB6C1">
+                        <span class='pull-right' style="font-size:20px;  margin-top:15px"><small>Holiday</small></span>
+                        <div class="clearfix" style="font-size:50px; margin-top:15px">@ViewBag.Holiday </div>
+                    </div>
+
+                    <div class="r1_graph2 db_box" style="background:#FF6347">
+                        <span class='pull-right' style="font-size:20px;  margin-top:15px"><small>Probation</small></span>
+                        <div class="clearfix" style="font-size:50px; margin-top:15px">@ViewBag.Probation </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-3 col-sm-6 col-xs-6">
+                    <div class="r4_counter db_box">
+                        <i class='pull-left fa fa-money icon-md icon-rounded icon-orange'></i>
+                        <div class="stats">
+                            <h4><strong>@ViewBag.EarnLeave</strong></h4>
+                            <span>Earn Leave</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-6">
+                    <div class="r4_counter db_box">
+                        <i class='pull-left fa fa-arrows-h icon-md icon-rounded icon-purple'></i>
+                        <div class="stats">
+                            <h4><strong>@ViewBag.DepartmentGroupName</strong></h4>
+                            <span>Department Group</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-6">
+                    <div class="r4_counter db_box">
+                        <i class='pull-left fa fa-square icon-md icon-rounded icon-warning'></i>
+                        <div class="stats">
+                            <h4><strong>@ViewBag.DepartmentName</strong></h4>
+                            <span>Department</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-6">
+                    <div class="r4_counter db_box">
+                        <i class='pull-left fa fa-hand-o-right icon-md icon-rounded icon-primary'></i>
+                        <div class="stats">
+                            <h4><strong>@ViewBag.DesignationName</strong></h4>
+                            <span>Designation</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- End .row -->
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="r4_counter db_box">
+                    <i class='pull-left fa fa-refresh icon-md icon-rounded icon-primary'></i>
+                    <div class="stats">
+                        <h4><strong>@ViewBag.LastPresent</strong></h4>
+                        <span>Last 30 Days Present</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="r4_counter db_box">
+                    <i class='pull-left fa fa-ambulance icon-md icon-rounded icon-black'></i>
+                    <div class="stats">
+                        <h4><strong>@ViewBag.LateDay</strong></h4>
+                        <span>Last 30 Days Late</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="r4_counter db_box">
+                    <i class='pull-left fa fa-unlink icon-md icon-rounded icon-warning'></i>
+                    <div class="stats">
+                        <h4><strong>@ViewBag.AbsentDay </strong></h4>
+                        <span>Last 30 Days Absent</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="r4_counter db_box">
+                    <i class='pull-left fa fa-google-wallet icon-md icon-rounded icon-danger'></i>
+                    <div class="stats">
+                        <h4><strong>@ViewBag.PerformanceRating</strong></h4>
+                        <span>Own Rating</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
