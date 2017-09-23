@@ -2840,6 +2840,7 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\ResignationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SalaryController.cs" />
     <Compile Include="Controllers\SalaryDistributionsController.cs" />
     <Compile Include="Controllers\SourceOfHiresController.cs" />
     <Compile Include="Controllers\WeekendsController.cs" />
@@ -3360,6 +3361,10 @@
     <Content Include="Views\FestivalBonus\Details.cshtml" />
     <Content Include="Views\FestivalBonus\Edit.cshtml" />
     <Content Include="Views\FestivalBonus\Index.cshtml" />
+    <Content Include="Uploads\as_E001.pdf" />
+    <Content Include="Uploads\File\E001\asdE001.pdf" />
+    <Content Include="Uploads\File\E004\qw.pdf" />
+    <Content Include="Views\Reports\SalaryReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3371,6 +3376,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\AdminTemplate\assets\plugins\data-table\" />
     <Folder Include="Content\assets\data\images\" />
+    <Folder Include="Views\Salary\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201708181143265_Initial.resx">
