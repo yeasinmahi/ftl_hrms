@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Hr;
@@ -65,13 +62,12 @@ namespace FTL_HRMS.Controllers
                 string employeeCode = _db.Employee.Where(x => x.Sl == fileStorage.EmployeeId).Select(x => x.Code).FirstOrDefault();
                 string filesName = Request["FileName"];
                 var file = Request.Files["EmployeeFile"];
-                string fullFileName = String.Empty;
-                string fullPath = String.Empty;
+                string fullFileName;
                 if (file != null && file.ContentLength > 0)
                 {
                     string fileExtension = Path.GetExtension(file.FileName);
                     fullFileName = string.Concat(filesName, "_", employeeCode, fileExtension);
-                    fullPath = Path.Combine(path, fullFileName);
+                    string fullPath = Path.Combine(path, fullFileName);
                     FileStorage existingFileStorage = _db.FileStorage.FirstOrDefault(x => x.Path.Equals(fullFileName));
                     if (existingFileStorage != null)
                     {
