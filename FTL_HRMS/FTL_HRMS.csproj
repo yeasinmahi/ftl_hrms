@@ -3367,10 +3367,10 @@
     <Content Include="Views\FestivalBonus\Edit.cshtml" />
     <Content Include="Views\FestivalBonus\Index.cshtml" />
     <Content Include="Uploads\as_E001.pdf" />
-    <Content Include="Uploads\File\E001\asdE001.pdf" />
-    <Content Include="Uploads\File\E004\qw.pdf" />
     <Content Include="Views\Reports\SalaryReport.cshtml" />
     <Content Include="Views\Attendance\MoveDeviceAttendanceToFilterAttendance.cshtml" />
+    <Content Include="Uploads\Department report_E001.pdf" />
+    <Content Include="Uploads\Empoloyee report_E001.pdf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
