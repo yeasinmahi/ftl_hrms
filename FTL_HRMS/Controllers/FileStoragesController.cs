@@ -172,6 +172,25 @@ namespace FTL_HRMS.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult DownloadPdf(int id)
+        {
+            FileStorage fileStorage = _db.FileStorage.Find(id);
+            string path = Server.MapPath("~/Uploads/");
+            if (fileStorage != null)
+            {
+                string fullPath = path+ fileStorage.Path;
+                Response.ClearHeaders();
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("Content-Disposition", "attachment; filename="+fullPath);
+                Response.TransmitFile(fullPath);
+            }
+            else
+            {
+                TempData["Warning"] = "File not found";
+            }
+            Response.End();
+            return RedirectToAction("Index");
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

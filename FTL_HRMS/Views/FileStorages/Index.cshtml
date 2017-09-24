@@ -79,7 +79,7 @@
                                 @Html.DisplayFor(modelItem => item.Employee.Code)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Path)
+                                @Html.ActionLink(item.Path, "DownloadPdf", new { id = item.Sl })
                             </td>
                         </tr>
                     }
