@@ -84,10 +84,12 @@ namespace FTL_HRMS.Controllers
         {
             return _db.Employee.Where(i => i.Code == code).Select(i => i.Sl).FirstOrDefault();
         }
+
         public string GetEmployeeCodeByEmployeeSl(int sl)
         {
             return _db.Employee.Where(x => x.Sl == sl).Select(x => x.Code).FirstOrDefault();
         }
+
         public bool InsertFilterAttendance(FilterAttendance filterAttendance)
         {           
             try
@@ -196,7 +198,8 @@ namespace FTL_HRMS.Controllers
         {
             try
             {
-                if(InTime.TimeOfDay <= OpeningTime.AddMinutes(LateConsiderationTime).TimeOfDay)
+                DateTime OpeningTimeWithConsidration = OpeningTime.AddMinutes(LateConsiderationTime);
+                if (InTime.TimeOfDay >= OpeningTimeWithConsidration.TimeOfDay)
                 {
                     return true;
                 }
