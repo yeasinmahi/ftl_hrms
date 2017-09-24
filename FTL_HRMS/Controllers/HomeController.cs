@@ -44,7 +44,7 @@ namespace FTL_HRMS.Controllers
             {
                 ViewBag.TotalEmployee = _db.Employee.Count();
                 ViewBag.TotalAdmin = _db.Designation.Where(x=> x.RoleName == "Admin").Count();
-                ViewBag.TotalSuperAdmin = _db.Designation.Where(x => x.RoleName == "Super Admin").Count();
+                ViewBag.TotalBranch = _db.Branches.Count();
                 DateTime d1 = DateTime.Now;
                 DateTime d2 = DateTime.Now.AddDays(30);
                 DateTime d3 = DateTime.Now.AddDays(-30);
@@ -72,35 +72,35 @@ namespace FTL_HRMS.Controllers
                 ViewBag.DepartmentName = _db.Designation.Where(x => x.Sl == designationId).Select(x=> x.Department.Name).FirstOrDefault();
                 ViewBag.DepartmentGroupName = _db.Department.Where(x => x.Sl == departmentId).Select(x => x.DepartmentGroup.Name).FirstOrDefault();
 
-                if (_db.MonthlyAttendance.Where(i => i.Date < d1 && i.Date > d3).Where(x => x.Status == "P").Count() > 0)
+                if (_db.MonthlyAttendance.Where(x => x.EmployeeId == EmployeeId).Where(i => i.Date < d1 && i.Date > d3).Where(x => x.Status == "P").Count() > 0)
                 {
-                    ViewBag.LastPresent = _db.MonthlyAttendance.Where(i => i.Date < d1 && i.Date > d3).Where(x=> x.Status== "P").Count();
+                    ViewBag.LastPresent = _db.MonthlyAttendance.Where(x => x.EmployeeId == EmployeeId).Where(i => i.Date < d1 && i.Date > d3).Where(x=> x.Status== "P").Count();
                 }
                 else
                 {
                     ViewBag.LastPresent = 0;
                 }
-                if (_db.MonthlyAttendance.Where(i => i.Date < d1 && i.Date > d3).Where(x => x.Status == "L").Count() > 0)
+                if (_db.MonthlyAttendance.Where(x => x.EmployeeId == EmployeeId).Where(i => i.Date < d1 && i.Date > d3).Where(x => x.Status == "L").Count() > 0)
                 {
-                    ViewBag.LateDay = _db.MonthlyAttendance.Where(i => i.Date < d1 && i.Date > d3).Where(x => x.Status == "L").Count();
+                    ViewBag.LateDay = _db.MonthlyAttendance.Where(x => x.EmployeeId == EmployeeId).Where(i => i.Date < d1 && i.Date > d3).Where(x => x.Status == "L").Count();
                 }
                 else
                 {
                     ViewBag.LateDay = 0;
                 }
 
-                if (_db.MonthlyAttendance.Where(i => i.Date < d1 && i.Date > d3).Where(x => x.Status == "A").Count() > 0)
+                if (_db.MonthlyAttendance.Where(x => x.EmployeeId == EmployeeId).Where(i => i.Date < d1 && i.Date > d3).Where(x => x.Status == "A").Count() > 0)
                 {
-                    ViewBag.AbsentDay = _db.MonthlyAttendance.Where(i => i.Date < d1 && i.Date > d3).Where(x => x.Status == "A").Count();
+                    ViewBag.AbsentDay = _db.MonthlyAttendance.Where(x => x.EmployeeId == EmployeeId).Where(i => i.Date < d1 && i.Date > d3).Where(x => x.Status == "A").Count();
                 }
                 else
                 {
                     ViewBag.AbsentDay = 0;
                 }
 
-                if (_db.PerformanceRating.Where(i => i.Date < d1 && i.Date > d3).Select(x => x.Rating).Count() > 0)
+                if (_db.PerformanceRating.Where(x => x.EmployeeId == EmployeeId).Where(i => i.Date < d1 && i.Date > d3).Select(x => x.Rating).Count() > 0)
                 {
-                    ViewBag.PerformanceRating = _db.PerformanceRating.Where(i => i.Date < d1 && i.Date > d3).Select(x => x.Rating).Count();
+                    ViewBag.PerformanceRating = _db.PerformanceRating.Where(x => x.EmployeeId == EmployeeId).Where(i => i.Date < d1 && i.Date > d3).Select(x => x.Rating).Count();
                 }
                 else
                 {

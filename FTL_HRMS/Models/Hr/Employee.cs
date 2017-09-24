@@ -122,6 +122,27 @@ namespace FTL_HRMS.Models.Hr
         ApplyFormatInEditMode = true)]
         public DateTime? ParmanentDate { get; set; }
 
+        [Required(ErrorMessage = "Emergency Contact cannot be empty")]
+        [StringLength(450)]
+        public string EmergencyMobile { get; set; }
+
+        [Required(ErrorMessage = "Relationship cannot be empty")]
+        [StringLength(450)]
+        public string RelationEmergencyMobile { get; set; }
+
+        [Required(ErrorMessage = "Blood Group cannot be empty")]
+        public string BloodGroup { get; set; }
+        
+        public string MedicalHistory { get; set; }
+
+        public double Height { get; set; }
+
+        public double Weight { get; set; }
+
+        [Required(ErrorMessage = "Extra Curricular Activities cannot be empty")]
+        public string ExtraCurricularActivities { get; set; }
+
+
         public virtual Employee CreateEmployee { get; set; }
         public virtual SourceOfHire SourceOfHire { get; set; }
         public virtual Designation Designation { get; set; }
