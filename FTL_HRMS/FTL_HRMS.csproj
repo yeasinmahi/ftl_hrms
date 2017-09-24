@@ -3357,6 +3357,10 @@
     <Content Include="Views\FestivalBonus\Edit.cshtml" />
     <Content Include="Views\FestivalBonus\Index.cshtml" />
     <Content Include="Uploads\as_E001.pdf" />
+    <Content Include="Uploads\File\E001\asdE001.pdf" />
+    <Content Include="Uploads\File\E004\qw.pdf" />
+    <Content Include="Views\Reports\SalaryReport.cshtml" />
+    <Content Include="Views\Attendance\MoveDeviceAttendanceToFilterAttendance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3368,7 +3372,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\AdminTemplate\assets\plugins\data-table\" />
     <Folder Include="Content\assets\data\images\" />
-    <Folder Include="Views\SalarySheet\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201708181143265_Initial.resx">

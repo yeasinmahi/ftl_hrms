@@ -294,6 +294,21 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Salary
+        public ActionResult SalaryReport()
+        {
+            return View();
+        }
+        public ActionResult SalaryReportDateView()
+        {
+            DateTime fromDate = Convert.ToDateTime(Request["FromDate"]);
+            DateTime toDate = Convert.ToDateTime(Request["ToDate"]);
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
+            return View();
+
+        }
+        #endregion
         #region Common
         public ActionResult PrintReport(string sourceName, string fileName, string selectedFormula)
         {

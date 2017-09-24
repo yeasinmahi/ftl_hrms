@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using static FTL_HRMS.Utility.DbUtility;
 
@@ -85,7 +84,10 @@ namespace FTL_HRMS.Controllers
         {
             return _db.Employee.Where(i => i.Code == code).Select(i => i.Sl).FirstOrDefault();
         }
-
+        public string GetEmployeeCodeByEmployeeSl(int sl)
+        {
+            return _db.Employee.Where(x => x.Sl == sl).Select(x => x.Code).FirstOrDefault();
+        }
         public bool InsertFilterAttendance(FilterAttendance filterAttendance)
         {           
             try
