@@ -138,8 +138,27 @@
                                         <div>
                                             <input type="file" name="image1" id="image1" class="form-control" style = "width:100%" tabindex="22"/>
                                         </div>
-                                       
-
+                                        <div>
+                                            @Html.LabelFor(model => model.EmergencyMobile, "Emergency Contact Number", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.EmergencyMobile, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.EmergencyMobile, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.MedicalHistory, "Medical History", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.MedicalHistory, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.MedicalHistory, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.Weight, "Weight", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div>
@@ -197,12 +216,76 @@
                                         <div>
                                             <input name="Password" type="password" class="form-control" style="width:100%" id="password" required="required" tabindex="23" onchange="CheckPassword()">
                                         </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.RelationEmergencyMobile, "Relation With Emergency Contact", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.RelationEmergencyMobile, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.RelationEmergencyMobile, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.BloodGroup, "Blood Group", new { @class = "required" })
+                                        </div>
+                                        @{
+                                            List<SelectListItem> listItems2 = new List<SelectListItem>();
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "A+",
+                                                Value = "A+",
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "A-",
+                                                Value = "A-"
+
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "B+",
+                                                Value = "B+"
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "B-",
+                                                Value = "B-",
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "O+",
+                                                Value = "O+"
+
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "O-",
+                                                Value = "O-"
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "AB+",
+                                                Value = "AB+"
+
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "AB-",
+                                                Value = "AB-"
+                                            });
+                                        }
+                                        <div>
+                                            @Html.DropDownListFor(model => model.BloodGroup, listItems2, "--select--", new { @class = "form-control", style = "width:100%" })
+                                            @Html.ValidationMessageFor(model => model.BloodGroup, "", new { @class = "text-danger" })
+                                        </div>
+
+                                       
                                         <br />
                                         <div>
                                             @Html.CheckBoxFor(model => model.IsSpecialEmployee)
                                             @Html.ValidationMessageFor(model => model.IsSpecialEmployee, "", new { @class = "text-danger" })
                                             @Html.LabelFor(model => model.IsSpecialEmployee, "Is Special Employee")
                                         </div>
+                                      
+
                                     </div>
                                     <div class="col-md-4">
                                         <div>
@@ -259,6 +342,20 @@
                                         </div>
                                         <div>
                                             <input name="ConfirmPassword" type="password" class="form-control" style="width:100%" id="confirmPass" required="required" tabindex="24" onchange="CheckPassword()">
+                                        </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.ExtraCurricularActivities, "Extra Curricular Activities", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.ExtraCurricularActivities, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.ExtraCurricularActivities, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.Height, "Height", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.Height, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.Height, "", new { @class = "text-danger" })
                                         </div>
                                         <br />
                                         <div>

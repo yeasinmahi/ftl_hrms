@@ -128,6 +128,27 @@
                                             @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
                                         </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.EmergencyMobile, "Emergency Contact Number", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.EmergencyMobile, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.EmergencyMobile, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.MedicalHistory, "Medical History", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.MedicalHistory, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.MedicalHistory, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.Weight, "Weight", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div>
@@ -164,6 +185,66 @@
                                             @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 14, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfJoining, "", new { @class = "text-danger" })
                                         </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.RelationEmergencyMobile, "Relation With Emergency Contact", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.RelationEmergencyMobile, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.RelationEmergencyMobile, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.BloodGroup, "Blood Group", new { @class = "required" })
+                                        </div>
+                                        @{
+                                            List<SelectListItem> listItems2 = new List<SelectListItem>();
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "A+",
+                                                Value = "A+",
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "A-",
+                                                Value = "A-"
+
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "B+",
+                                                Value = "B+"
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "B-",
+                                                Value = "B-",
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "O+",
+                                                Value = "O+"
+
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "O-",
+                                                Value = "O-"
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "AB+",
+                                                Value = "AB+"
+
+                                            });
+                                            listItems2.Add(new SelectListItem
+                                            {
+                                                Text = "AB-",
+                                                Value = "AB-"
+                                            });
+                                        }
+                                        <div>
+                                            @Html.DropDownListFor(model => model.BloodGroup, listItems2, "--select--", new { @class = "form-control", style = "width:100%" })
+                                            @Html.ValidationMessageFor(model => model.BloodGroup, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div>
@@ -199,6 +280,20 @@
                                         <div>
                                             @Html.DropDownList("SourceOfHireId", null, "Select Source", htmlAttributes: new { @class = "form-control", style = "width:100%", @tabindex = 15, @required = true })
                                             @Html.ValidationMessageFor(model => model.SourceOfHireId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.ExtraCurricularActivities, "Extra Curricular Activities", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.ExtraCurricularActivities, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.ExtraCurricularActivities, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            @Html.LabelFor(model => model.Height, "Height", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.EditorFor(model => model.Height, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.ValidationMessageFor(model => model.Height, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
