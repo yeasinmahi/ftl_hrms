@@ -3283,11 +3283,6 @@
     <Content Include="Views\LeaveTypes\Details.cshtml" />
     <Content Include="Views\LeaveTypes\Edit.cshtml" />
     <Content Include="Views\LeaveTypes\Index.cshtml" />
-    <Content Include="Views\LeaveCounts\Create.cshtml" />
-    <Content Include="Views\LeaveCounts\Delete.cshtml" />
-    <Content Include="Views\LeaveCounts\Details.cshtml" />
-    <Content Include="Views\LeaveCounts\Edit.cshtml" />
-    <Content Include="Views\LeaveCounts\Index.cshtml" />
     <Content Include="Views\LeaveHistories\Create.cshtml" />
     <Content Include="Views\LeaveHistories\Delete.cshtml" />
     <Content Include="Views\LeaveHistories\Details.cshtml" />
