@@ -123,7 +123,8 @@
             }
             else
             {
-                @Html.Partial("~/Views/Shared/_SideBarAdmin.cshtml", MenuItemsForRole)
+                Response.Redirect("~/Account/Login");
+                //@Html.Partial("~/Views/Shared/_SideBarAdmin.cshtml", MenuItemsForRole)
             }
         </div>
 
