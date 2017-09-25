@@ -194,7 +194,7 @@ namespace FTL_HRMS.Controllers
                 string fullPath = path+ fileStorage.Path;
                 Response.ClearHeaders();
                 Response.ContentType = "application/pdf";
-                Response.AddHeader("Content-Disposition", "attachment; filename="+fullPath);
+                Response.AddHeader("Content-Disposition", "attachment; filename="+ fileStorage.Path);
                 Response.TransmitFile(fullPath);
             }
             else
