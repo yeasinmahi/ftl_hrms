@@ -135,9 +135,9 @@ namespace FTL_HRMS.Models.Hr
         
         public string MedicalHistory { get; set; }
 
-        public double Height { get; set; }
+        public string Height { get; set; }
 
-        public double Weight { get; set; }
+        public string Weight { get; set; }
 
         [Required(ErrorMessage = "Extra Curricular Activities cannot be empty")]
         public string ExtraCurricularActivities { get; set; }
