@@ -3358,8 +3358,6 @@
     <Content Include="Views\BonusAndPenalties\Index.cshtml" />
     <Content Include="Views\FileStorages\Create.cshtml" />
     <Content Include="Views\FileStorages\Delete.cshtml" />
-    <Content Include="Views\FileStorages\Details.cshtml" />
-    <Content Include="Views\FileStorages\Edit.cshtml" />
     <Content Include="Views\FileStorages\Index.cshtml" />
     <Content Include="Views\FestivalBonus\Create.cshtml" />
     <Content Include="Views\FestivalBonus\Delete.cshtml" />
