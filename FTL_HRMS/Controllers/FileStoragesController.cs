@@ -14,28 +14,34 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext _db = new HRMSDbContext();
 
+        #region List
+        
         // GET: FileStorages
         public ActionResult Index()
         {
             var fileStorage = _db.FileStorage.Include(f => f.CreateEmployee).Include(f => f.Employee);
             return View(fileStorage.ToList());
         }
+        #endregion
 
+        #region Details (We dont use it)
         // GET: FileStorages/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            FileStorage fileStorage = _db.FileStorage.Find(id);
-            if (fileStorage == null)
-            {
-                return HttpNotFound();
-            }
-            return View(fileStorage);
-        }
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    FileStorage fileStorage = _db.FileStorage.Find(id);
+        //    if (fileStorage == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(fileStorage);
+        //}
+        #endregion
 
+        #region Create
         // GET: FileStorages/Create
         public ActionResult Create()
         {
@@ -104,27 +110,30 @@ namespace FTL_HRMS.Controllers
             ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", fileStorage.EmployeeId);
             return View(fileStorage);
         }
+        #endregion
 
+        #region Edit (we dont use it)
         // GET: FileStorages/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            FileStorage fileStorage = _db.FileStorage.Find(id);
-            if (fileStorage == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CreatedBy = new SelectList(_db.Employee, "Sl", "Code", fileStorage.CreatedBy);
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", fileStorage.EmployeeId);
-            return View(fileStorage);
-        }
+        //public ActionResult Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    FileStorage fileStorage = _db.FileStorage.Find(id);
+        //    if (fileStorage == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    ViewBag.CreatedBy = new SelectList(_db.Employee, "Sl", "Code", fileStorage.CreatedBy);
+        //    ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", fileStorage.EmployeeId);
+        //    return View(fileStorage);
+        //}
 
         // POST: FileStorages/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,EmployeeId,Path,CreatedBy,CreateDate")] FileStorage fileStorage)
@@ -139,7 +148,9 @@ namespace FTL_HRMS.Controllers
             ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", fileStorage.EmployeeId);
             return View(fileStorage);
         }
+        #endregion
 
+        #region Delete
         // GET: FileStorages/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -171,26 +182,33 @@ namespace FTL_HRMS.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Download Pdf From List
         public ActionResult DownloadPdf(int id)
         {
             FileStorage fileStorage = _db.FileStorage.Find(id);
             string path = Server.MapPath("~/Uploads/");
+            string fullPath=string.Empty;
             if (fileStorage != null)
             {
-                string fullPath = path+ fileStorage.Path;
+                fullPath = path+ fileStorage.Path;
                 Response.ClearHeaders();
                 Response.ContentType = "application/pdf";
                 Response.AddHeader("Content-Disposition", "attachment; filename="+ fileStorage.Path);
-                Response.TransmitFile(fullPath);
+                //Response.TransmitFile(fullPath);
             }
             else
             {
                 TempData["Warning"] = "File not found";
             }
-            Response.End();
-            return RedirectToAction("Index");
+            //Response.End();
+            byte[] stream = System.IO.File.ReadAllBytes(fullPath);
+            return File(stream, "application/pdf");
         }
+        #endregion
+
+        #region Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -199,5 +217,6 @@ namespace FTL_HRMS.Controllers
             }
             base.Dispose(disposing);
         }
+        #endregion
     }
 }
