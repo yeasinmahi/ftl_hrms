@@ -124,70 +124,70 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region Edit
-            // GET: Resignations/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Resignation resignation = _db.Resignation.Find(id);
-            if (resignation == null)
-            {
-                return HttpNotFound();
-            }
-            return View(resignation);
-        }
+        //#region Edit
+        //    // GET: Resignations/Edit/5
+        //public ActionResult Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Resignation resignation = _db.Resignation.Find(id);
+        //    if (resignation == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(resignation);
+        //}
 
-        // POST: Resignations/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,ResignDate,Reason,Suggestion,Status,CreateDate,UpdatedBy,UpdateDate,Remarks,EmployeeId")] Resignation resignation)
-        {
-            if (ModelState.IsValid)
-            {
-                resignation.UpdatedBy = resignation.EmployeeId;
-                resignation.UpdateDate = DateTime.Now;
-                _db.Entry(resignation).State = EntityState.Modified;
-                _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
-                return View(resignation);
-            }
-            TempData["WarningMsg"] = "Something went wrong !!";
-            return View(resignation);
-        }
-        #endregion
+        //// POST: Resignations/Edit/5
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit([Bind(Include = "Sl,ResignDate,Reason,Suggestion,Status,CreateDate,UpdatedBy,UpdateDate,Remarks,EmployeeId")] Resignation resignation)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        resignation.UpdatedBy = resignation.EmployeeId;
+        //        resignation.UpdateDate = DateTime.Now;
+        //        _db.Entry(resignation).State = EntityState.Modified;
+        //        _db.SaveChanges();
+        //        TempData["SuccessMsg"] = "Updated Successfully!";
+        //        return View(resignation);
+        //    }
+        //    TempData["WarningMsg"] = "Something went wrong !!";
+        //    return View(resignation);
+        //}
+        //#endregion
 
-        #region Delete
-        // GET: Resignations/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Resignation resignation = _db.Resignation.Find(id);
-            if (resignation == null)
-            {
-                return HttpNotFound();
-            }
-            return View(resignation);
-        }
+        //#region Delete
+        //// GET: Resignations/Delete/5
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Resignation resignation = _db.Resignation.Find(id);
+        //    if (resignation == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(resignation);
+        //}
 
-        // POST: Resignations/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Resignation resignation = _db.Resignation.Find(id);
-            _db.Resignation.Remove(resignation);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-        #endregion
+        //// POST: Resignations/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Resignation resignation = _db.Resignation.Find(id);
+        //    _db.Resignation.Remove(resignation);
+        //    _db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+        //#endregion
 
         #region Dispose
         protected override void Dispose(bool disposing)
