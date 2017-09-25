@@ -2929,6 +2929,10 @@
     <Compile Include="Migrations\201709240952588_update_tbl_employee_last_meeting.Designer.cs">
       <DependentUpon>201709240952588_update_tbl_employee_last_meeting.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709241113230_update_tbl_employee_last_meeting_1.cs" />
+    <Compile Include="Migrations\201709241113230_update_tbl_employee_last_meeting_1.Designer.cs">
+      <DependentUpon>201709241113230_update_tbl_employee_last_meeting_1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
@@ -3363,10 +3367,10 @@
     <Content Include="Views\FestivalBonus\Edit.cshtml" />
     <Content Include="Views\FestivalBonus\Index.cshtml" />
     <Content Include="Uploads\as_E001.pdf" />
-    <Content Include="Uploads\File\E001\asdE001.pdf" />
-    <Content Include="Uploads\File\E004\qw.pdf" />
     <Content Include="Views\Reports\SalaryReport.cshtml" />
     <Content Include="Views\Attendance\MoveDeviceAttendanceToFilterAttendance.cshtml" />
+    <Content Include="Uploads\Department report_E001.pdf" />
+    <Content Include="Uploads\Empoloyee report_E001.pdf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3439,6 +3443,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709240952588_update_tbl_employee_last_meeting.resx">
       <DependentUpon>201709240952588_update_tbl_employee_last_meeting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709241113230_update_tbl_employee_last_meeting_1.resx">
+      <DependentUpon>201709241113230_update_tbl_employee_last_meeting_1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
