@@ -60,14 +60,15 @@
             @using System.Web.Optimization 
 @using FTL_HRMS.Models.ViewModels
 @using Microsoft.AspNet.Identity;
-
+            @{
+                List<VMMenuByRole> MenuItemsForRole = new List<VMMenuByRole>();
+            }
             @if (Request.IsAuthenticated)
             {
 
 
                 FTL_HRMS.Models.HRMSDbContext db_ctx = new FTL_HRMS.Models.HRMSDbContext();
-                List<VMMenuByRole> MenuItemsForRole = new List<VMMenuByRole>();
-
+                
 
 
                 UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
@@ -122,7 +123,7 @@
             }
             else
             {
-                @Html.Partial("~/Views/Shared/_SideBarAdmin.cshtml")
+                @Html.Partial("~/Views/Shared/_SideBarAdmin.cshtml", MenuItemsForRole)
             }
         </div>
 
