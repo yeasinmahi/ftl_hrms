@@ -189,20 +189,22 @@ namespace FTL_HRMS.Controllers
         {
             FileStorage fileStorage = _db.FileStorage.Find(id);
             string path = Server.MapPath("~/Uploads/");
+            string fullPath=string.Empty;
             if (fileStorage != null)
             {
-                string fullPath = path+ fileStorage.Path;
+                fullPath = path+ fileStorage.Path;
                 Response.ClearHeaders();
                 Response.ContentType = "application/pdf";
                 Response.AddHeader("Content-Disposition", "attachment; filename="+ fileStorage.Path);
-                Response.TransmitFile(fullPath);
+                //Response.TransmitFile(fullPath);
             }
             else
             {
                 TempData["Warning"] = "File not found";
             }
-            Response.End();
-            return RedirectToAction("Index");
+            //Response.End();
+            byte[] stream = System.IO.File.ReadAllBytes(fullPath);
+            return File(stream, "application/pdf");
         }
         #endregion
 
