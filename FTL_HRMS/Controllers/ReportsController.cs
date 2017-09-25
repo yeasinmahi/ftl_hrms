@@ -263,6 +263,20 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Branch
+        public ActionResult PrintBranchReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BranchReport", fileName = "Branch Report" });
+        }
+        #endregion
+
+        #region Holiday
+        public ActionResult PrintHolidayReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "HolidayReport", fileName = "Holiday Report" });
+        }
+        #endregion
+
         #region Designation
         public ActionResult PrintDesignationReport()
         {
@@ -309,6 +323,7 @@ namespace FTL_HRMS.Controllers
 
         }
         #endregion
+
         #region Common
         public ActionResult PrintReport(string sourceName, string fileName, string selectedFormula)
         {

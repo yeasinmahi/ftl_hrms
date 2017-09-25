@@ -2975,6 +2975,12 @@
     <Compile Include="Models\RolePermission.cs" />
     <Compile Include="Models\ViewModels\VMTodaysAttendance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\BranchReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\BranchTransferReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3003,6 +3009,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Header.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\HolidayReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HolidayReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\LeaveReport.cs">
@@ -3255,9 +3267,7 @@
     <Content Include="Views\BranchTransfers\Edit.cshtml" />
     <Content Include="Views\BranchTransfers\Index.cshtml" />
     <Content Include="Views\Resignations\Create.cshtml" />
-    <Content Include="Views\Resignations\Delete.cshtml" />
     <Content Include="Views\Resignations\Details.cshtml" />
-    <Content Include="Views\Resignations\Edit.cshtml" />
     <Content Include="Views\Resignations\Index.cshtml" />
     <Content Include="Views\DisciplinaryActions\Create.cshtml" />
     <Content Include="Views\DisciplinaryActions\Delete.cshtml" />
@@ -3445,6 +3455,10 @@
     <EmbeddedResource Include="Migrations\201709241113230_update_tbl_employee_last_meeting_1.resx">
       <DependentUpon>201709241113230_update_tbl_employee_last_meeting_1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\BranchReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BranchReport.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BranchTransferReport.cs</LastGenOutput>
@@ -3464,6 +3478,10 @@
     <EmbeddedResource Include="Reports\Header.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Header.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\HolidayReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>HolidayReport.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\LeaveReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
