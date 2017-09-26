@@ -27,23 +27,29 @@ namespace FTL_HRMS.Models.Payroll
         [Required(ErrorMessage = "Absent Day cannot be empty")]
         public double AbsentDay { get; set; }
 
+        [Required(ErrorMessage = "Absent Panelty cannot be empty")]
+        public double AbsentPanelty { get; set; }
+
         [Required(ErrorMessage = "Late Day cannot be empty")]
         public double LateDay { get; set; }
 
         [Required(ErrorMessage = "Late Penalty cannot be empty")]
         public double LatePenalty { get; set; }
 
-        [Required(ErrorMessage = "Disciplinary Action Penalty cannot be empty")]
-        public double DisciplinaryActionPenalty { get; set; }
+        [Required(ErrorMessage = "Unofficial Day cannot be empty")]
+        public double UnofficialDay { get; set; }
+
+        [Required(ErrorMessage = "Unofficial Penalty cannot be empty")]
+        public double UnofficialPenalty { get; set; }
+
+        [Required(ErrorMessage = "Leave Penalty cannot be empty")]
+        public double LeavePenalty { get; set; }
 
         [Required(ErrorMessage = "Others Penalty cannot be empty")]
         public double OthersPenalty { get; set; }
 
         [Required(ErrorMessage = "Festival Bonus cannot be empty")]
         public double FestivalBonus { get; set; }
-
-        [Required(ErrorMessage = "Performance Bonus cannot be empty")]
-        public double PerformanceBonus { get; set; }
 
         [Required(ErrorMessage = "Others Bonus cannot be empty")]
         public double OthersBonus { get; set; }

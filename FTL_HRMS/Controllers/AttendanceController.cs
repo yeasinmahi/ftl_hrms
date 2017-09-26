@@ -158,8 +158,7 @@ namespace FTL_HRMS.Controllers
 
         public DateTime GetFirstDate()
         {
-            double Day = DateTime.Now.Day-1;
-            DateTime FirstDate = DateTime.Now.Date.AddDays(-Day);
+            DateTime FirstDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             if (_db.MonthlyAttendance.ToList().Count > 0)
             {
                 FirstDate = _db.MonthlyAttendance.ToList().Max(i => i.Date.Date).AddDays(1);

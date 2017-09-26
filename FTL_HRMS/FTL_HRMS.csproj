@@ -3371,6 +3371,7 @@
     <Content Include="Views\Reports\SalaryReport.cshtml" />
     <Content Include="Uploads\Department report_E001.pdf" />
     <Content Include="Uploads\Empoloyee report_E001.pdf" />
+    <Content Include="Views\SalarySheet\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
