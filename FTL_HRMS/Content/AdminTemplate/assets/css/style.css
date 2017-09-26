@@ -439,7 +439,7 @@ a:hover, a:focus {
 }
 .page-topbar .dropdown-menu:after, .page-topbar .dropdown-menu:before {
     bottom: 100%;
-    left: 22px;
+    left: 150px;
     border: solid transparent;
     content: " ";
     height: 0;
