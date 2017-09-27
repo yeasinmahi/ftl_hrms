@@ -2847,10 +2847,6 @@
     <Compile Include="Migrations\201708181143265_Initial.Designer.cs">
       <DependentUpon>201708181143265_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708190806343_adding foreign key.cs" />
-    <Compile Include="Migrations\201708190806343_adding foreign key.Designer.cs">
-      <DependentUpon>201708190806343_adding foreign key.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201708240812540_adding foreignkey in department and adding payroll model.cs" />
     <Compile Include="Migrations\201708240812540_adding foreignkey in department and adding payroll model.Designer.cs">
       <DependentUpon>201708240812540_adding foreignkey in department and adding payroll model.cs</DependentUpon>
@@ -2934,6 +2930,10 @@
     <Compile Include="Migrations\201709260856506_change salary table.cs" />
     <Compile Include="Migrations\201709260856506_change salary table.Designer.cs">
       <DependentUpon>201709260856506_change salary table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709271121507_adding foreign key to images model.cs" />
+    <Compile Include="Migrations\201709271121507_adding foreign key to images model.Designer.cs">
+      <DependentUpon>201709271121507_adding foreign key to images model.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -3403,9 +3403,6 @@
     <EmbeddedResource Include="Migrations\201708181143265_Initial.resx">
       <DependentUpon>201708181143265_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708190806343_adding foreign key.resx">
-      <DependentUpon>201708190806343_adding foreign key.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708240812540_adding foreignkey in department and adding payroll model.resx">
       <DependentUpon>201708240812540_adding foreignkey in department and adding payroll model.cs</DependentUpon>
     </EmbeddedResource>
@@ -3521,6 +3518,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DepartmentTransferReport.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Migrations\201709271121507_adding foreign key to images model.resx">
+      <DependentUpon>201709271121507_adding foreign key to images model.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

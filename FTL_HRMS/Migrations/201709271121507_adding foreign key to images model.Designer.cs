@@ -7,13 +7,13 @@ namespace FTL_HRMS.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class addingforeignkey : IMigrationMetadata
+    public sealed partial class addingforeignkeytoimagesmodel : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addingforeignkey));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(addingforeignkeytoimagesmodel));
         
         string IMigrationMetadata.Id
         {
-            get { return "201708190806343_adding foreign key"; }
+            get { return "201709271121507_adding foreign key to images model"; }
         }
         
         string IMigrationMetadata.Source
