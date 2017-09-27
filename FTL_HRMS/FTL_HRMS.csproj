@@ -2799,6 +2799,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\CustomFilter.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccessDeniedController.cs" />
@@ -3468,58 +3469,58 @@
     <EmbeddedResource Include="Migrations\201709260856506_change salary table.resx">
       <DependentUpon>201709260856506_change salary table.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\BranchReport.rpt">
+    <Content Include="Reports\BranchReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BranchReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
+    </Content>
+    <Content Include="Reports\BranchTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BranchTransferReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\DepartmentGroupReport.rpt">
+    </Content>
+    <Content Include="Reports\DepartmentGroupReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DepartmentGroupReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\DepartmentReport.rpt">
+    </Content>
+    <Content Include="Reports\DepartmentReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DepartmentReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\DesignationReport.rpt">
+    </Content>
+    <Content Include="Reports\DesignationReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DesignationReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\Footer.rpt">
+    </Content>
+    <Content Include="Reports\Footer.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Footer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\Header.rpt">
+    </Content>
+    <Content Include="Reports\Header.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Header.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\HolidayReport.rpt">
+    </Content>
+    <Content Include="Reports\HolidayReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>HolidayReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\LeaveReport.rpt">
+    </Content>
+    <Content Include="Reports\LeaveReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LeaveReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ResignReport.rpt">
+    </Content>
+    <Content Include="Reports\ResignReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ResignReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\test.rpt">
+    </Content>
+    <Content Include="Reports\test.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>test.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\EmployeeReport.rpt">
+    </Content>
+    <Content Include="Reports\EmployeeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EmployeeReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\DepartmentTransferReport.rpt">
+    </Content>
+    <Content Include="Reports\DepartmentTransferReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DepartmentTransferReport.cs</LastGenOutput>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

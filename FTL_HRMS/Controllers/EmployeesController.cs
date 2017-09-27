@@ -343,7 +343,7 @@ namespace FTL_HRMS.Controllers
 
                 #region Add Leave Count
                 List<LeaveType> typeList = new List<LeaveType>();
-                typeList = _db.LeaveTypes.Where(i=>i.Name != "Without Pay Leave").ToList();
+                typeList = _db.LeaveTypes.Where(i => i.Name != "Without Pay Leave").ToList();
 
                 for (int i = 0; i < typeList.Count; i++)
                 {
@@ -416,7 +416,7 @@ namespace FTL_HRMS.Controllers
             }
         }
         #endregion
-      
+
         #region Edit
         // GET: Employees/Edit/5
         public ActionResult Edit(int? id)
@@ -538,7 +538,7 @@ namespace FTL_HRMS.Controllers
             List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
             sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
-          
+
             return View(employee);
         }
         #endregion
@@ -641,6 +641,20 @@ namespace FTL_HRMS.Controllers
                 return user.PasswordHash != null;
             }
             return false;
+        }
+        #endregion
+
+        #region Photo
+        public FileContentResult Photo(string userid)
+        {
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+            Images image = _db.Images.FirstOrDefault(i => i.EmployeeId == userId);
+
+            if (image != null) return new FileContentResult(image.Image, "image/jpeg");
+
+            byte[] defaultImage = Utility.Utility.GetBytesFromImagePath("~/Content/AdminTemplate/data/profile/profile.png");
+            return new FileContentResult(defaultImage, "image/jpeg");
         }
         #endregion
     }

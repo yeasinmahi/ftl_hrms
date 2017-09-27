@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNet.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FTL_HRMS.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 
-namespace FTL_HRMS.App_Start
+namespace FTL_HRMS
 {
     public class CustomFilter: ActionFilterAttribute
     {

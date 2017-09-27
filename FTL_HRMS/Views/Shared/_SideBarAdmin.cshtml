@@ -1,4 +1,5 @@
 ﻿@using FTL_HRMS.Models.ViewModels
+@using Microsoft.AspNet.Identity
 @model List<FTL_HRMS.Models.ViewModels.VMMenuByRole>
    
 <!-- SIDEBAR - START -->
@@ -10,7 +11,8 @@
 
         <div class="profile-image col-md-4 col-sm-4 col-xs-4">
             <a href="@Url.Action("ProfileInfo", "Account")">
-                <img src="~/Content/AdminTemplate/data/profile/profile.png" class="img-responsive img-circle">
+                <img src="@Url.Action("Photo", "Employees")" class="img-responsive img-circle"/>
+                @*<img src="~/Content/AdminTemplate/data/profile/profile.png" class="img-responsive img-circle">*@
             </a>
         </div>
 
