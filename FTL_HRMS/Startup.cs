@@ -5,6 +5,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
+using MenuItem = FTL_HRMS.Models.MenuItem;
 
 [assembly: OwinStartupAttribute(typeof(FTL_HRMS.Startup))]
 namespace FTL_HRMS
@@ -14,13 +16,18 @@ namespace FTL_HRMS
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            //CheckDatabaseConnection();
             CreateRolesandUsers();
         }
+
+        private void CheckDatabaseConnection()
+        {
+        }
+
 
         private void CreateRolesandUsers()
         {
             HRMSDbContext dbCtx = new HRMSDbContext();
-
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbCtx));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbCtx));
 
@@ -48,7 +55,6 @@ namespace FTL_HRMS
                 if (chkUser.Succeeded)
                 {
                     userManager.AddToRole(user.Id, "System Admin");
-
                 }
 
                 //first we create Admin role
