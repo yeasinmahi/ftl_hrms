@@ -347,6 +347,13 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Probation Employee
+        public ActionResult PrintProbationEmployeeReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "ProbationEmployeeReport", fileName = "Probation Employee Report", selectedFormula = "{tbl_Employee.ProbationStatus} = TRUE" });
+        }
+        #endregion
+
         #region Leave Report
         public ActionResult LeaveReport()
         {
