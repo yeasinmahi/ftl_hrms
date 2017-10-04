@@ -3044,6 +3044,12 @@
       <DependentUpon>LeaveReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\PrintLeaveTypeReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PrintLeaveTypeReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\ResignationApplicationReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3541,18 +3547,22 @@
     <EmbeddedResource Include="Migrations\201709271121507_adding foreign key to images model.resx">
       <DependentUpon>201709271121507_adding foreign key to images model.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\DisciplinaryActionTypeReport.rpt">
+    <Content Include="Reports\DisciplinaryActionTypeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DisciplinaryActionTypeReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\EmployeeTypeReport.rpt">
+    </Content>
+    <Content Include="Reports\EmployeeTypeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EmployeeTypeReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ResignationApplicationReport.rpt">
+    </Content>
+    <Content Include="Reports\PrintLeaveTypeReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PrintLeaveTypeReport.cs</LastGenOutput>
+    </Content>
+    <Content Include="Reports\ResignationApplicationReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ResignationApplicationReport.cs</LastGenOutput>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
