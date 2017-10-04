@@ -1,7 +1,12 @@
-﻿@{
+﻿@model IEnumerable<FTL_HRMS.Models.Payroll.MonthlySalarySheet>
+@{
     ViewBag.Title = "Salary Sheet";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+</script>
 <header class="panel_header">
     <h2 class="title pull-left">Salary Calculation</h2>
     <div class="actions panel_actions pull-right">
@@ -42,8 +47,166 @@
     <div class="content-body">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-
+                @{int rowNo = 0;}
+                <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                SL
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Employee.Code)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.GrossSalary)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BasicSalary)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AbsentDay)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AbsentPanelty)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LateDay)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LatePenalty)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UnofficialDay)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UnofficialPenalty)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LeavePenalty)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OthersPenalty)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FestivalBonus)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OthersBonus)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NetPay)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>
+                                SL
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Employee.Code)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.GrossSalary)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BasicSalary)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AbsentDay)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AbsentPanelty)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LateDay)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LatePenalty)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UnofficialDay)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UnofficialPenalty)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LeavePenalty)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OthersPenalty)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FestivalBonus)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OthersBonus)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NetPay)
+                            </th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td align="center" width="5%">
+                                    @(rowNo += 1)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Employee.Code)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GrossSalary)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BasicSalary)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AbsentDay)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AbsentPanelty)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LateDay)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LatePenalty)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UnofficialDay)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UnofficialPenalty)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LeavePenalty)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OthersPenalty)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FestivalBonus)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OthersBonus)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NetPay)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 }
+
+<script>
+$(document).ready(function(){
+    $('#myTable').DataTable();
+});
+</script>
