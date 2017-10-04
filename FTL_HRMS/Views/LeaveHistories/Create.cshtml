@@ -28,20 +28,7 @@
             {
                 @Html.AntiForgeryToken()
                 <div class="row">
-                    @if (TempData["SuccessMsg"] != null)
-                    {
-                        <div class="alert alert-success alert-dismissable fade in">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            @TempData["SuccessMsg"]
-                        </div>
-                    }
-                    @if (TempData["WarningMsg"] != null)
-                    {
-                        <div class="alert alert-danger alert-dismissable fade in">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            @TempData["WarningMsg"]
-                        </div>
-                    }
+                    @Html.Partial("~/Views/Shared/WarningMessage.cshtml")
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.Status)
                     @Html.HiddenFor(model => model.Day)
