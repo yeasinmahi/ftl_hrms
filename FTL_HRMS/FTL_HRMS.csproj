@@ -2978,6 +2978,12 @@
     <Compile Include="Models\RolePermission.cs" />
     <Compile Include="Models\ViewModels\VMTodaysAttendance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\BonusAndPenaltieseReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BonusAndPenaltieseReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\BranchReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3589,6 +3595,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ResignationApplicationReport.cs</LastGenOutput>
     </Content>
+    <Content Include="Reports\BonusAndPenaltieseReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BonusAndPenaltieseReport.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="Reports\DisciplinaryActionHistoryReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DisciplinaryActionHistoryReport.cs</LastGenOutput>
@@ -3609,10 +3619,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PerformanceRatingReport.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="Reports\ProbationEmployeeReport.rpt">
+    <Content Include="Reports\ProbationEmployeeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ProbationEmployeeReport.cs</LastGenOutput>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

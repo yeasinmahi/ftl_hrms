@@ -354,6 +354,13 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Bonus and penalties
+        public ActionResult PrintBonusAndpenaltiesReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BonusAndPenaltieseReport", fileName = "Bonus And PenaltieseReport", selectedFormula = "{tbl_Employee.ProbationStatus} = TRUE" });
+        }
+        #endregion
+
         #region Leave Report
         public ActionResult LeaveReport()
         {
