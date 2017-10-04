@@ -3008,6 +3008,12 @@
       <DependentUpon>DesignationReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\DisciplinaryActionTypeReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DisciplinaryActionTypeReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\EmployeeTypeReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3534,6 +3540,10 @@
     </Content>
     <EmbeddedResource Include="Migrations\201709271121507_adding foreign key to images model.resx">
       <DependentUpon>201709271121507_adding foreign key to images model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\DisciplinaryActionTypeReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DisciplinaryActionTypeReport.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\EmployeeTypeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

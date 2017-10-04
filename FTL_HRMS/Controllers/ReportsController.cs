@@ -312,6 +312,20 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Disciplinary Action History
+        public ActionResult PrintDisciplinaryActionHistoryReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DisciplinaryActionHistoryReport", fileName = "Disciplinary Action History Report" });
+        }
+        #endregion
+
+        #region Leave Type
+        public ActionResult PrintLeaveTypeReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "LeaveTypeReport", fileName = "Leave Type Report" });
+        }
+        #endregion
+
         #region Leave Report
         public ActionResult LeaveReport()
         {
