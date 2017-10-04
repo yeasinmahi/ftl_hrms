@@ -333,6 +333,13 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Performance Issue
+        public ActionResult PrintPerformanceIssueReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "PerformanceIssueReport", fileName = "Performance Issue Report" });
+        }
+        #endregion
+
         #region Leave Report
         public ActionResult LeaveReport()
         {
