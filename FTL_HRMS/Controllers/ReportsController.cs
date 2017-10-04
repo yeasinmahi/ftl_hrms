@@ -291,6 +291,27 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Employee Type
+        public ActionResult PrintEmployeeTypeReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeTypeReport", fileName = "Employee Type Report" });
+        }
+        #endregion 
+
+        #region Resignation Application
+        public ActionResult PrintResignationApplicationReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "ResignationApplicationReport", fileName = "Resignation Application Report" });
+        }
+        #endregion
+
+        #region Disciplinary Action Type
+        public ActionResult PrintDisciplinaryActionTypeReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DisciplinaryActionTypeReport", fileName = "Disciplinary Action Type Report" });
+        }
+        #endregion
+
         #region Leave Report
         public ActionResult LeaveReport()
         {
