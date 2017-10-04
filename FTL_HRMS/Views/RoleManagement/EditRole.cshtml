@@ -53,13 +53,12 @@
 
                                 @if (Model != null)
                                 {
-                                    List<VMMenuByRole> par = Model.Where(t => t.ParentId == null).ToList();
+                                    List<VMMenuByRole> parents = Model.Where(t => t.ParentId == null).ToList();
 
-                                    List<VMMenuByRole> child = null;
                                     <div>
-                                        @for (int i = 0; i < par.Count; i++)
+                                        @foreach (VMMenuByRole parent in parents)
                                         {
-                                            child = Model.Where(t => t.ParentId == par[i].Id).ToList();
+                                            var child = Model.Where(t => t.ParentId == parent.Id).ToList();
                                             List<int> TotalChildArray = new List<int>();
                                             List<int> TotalSelectedItems = new List<int>();
                                             string TotalChild = string.Empty;
@@ -71,11 +70,11 @@
                                                 @*<input onclick="selectAll(@par[i].Id)" name="checkbox1" id="checkbox1_@par[i].Id" data-parsley-multiple="groups" data-parsley-mincheck="1" type="checkbox">
                                                 <label for="checkbox1_@par[i].Id"><a onclick="sub_menu_display_view('@par[i].Id')"> @par[i].MenuItemName </a></label>*@
 
-                                                @Html.CheckBox("checkbox1", par[i].IsSelected, new { @id = "checkbox1_" + par[i].Id, data_parsley_multiple = "groups", data_parsley_mincheck = "1", @onclick = "selectAll(" + par[i].Id + ")" })
+                                                @Html.CheckBox("checkbox1", parent.IsSelected, new { @id = "checkbox1_" + parent.Id, data_parsley_multiple = "groups", data_parsley_mincheck = "1", @onclick = "selectAll(" + parent.Id + ")" })
 
-                                                <label for="checkbox1_@par[i].Id"><a onclick="sub_menu_display_view('@par[i].Id')"> @par[i].MenuItemName </a></label>
+                                                <label for="checkbox1_@par[i].Id"><a onclick="sub_menu_display_view('@parent.Id')"> @parent.MenuItemName </a></label>
 
-                                                @Html.Hidden("main_item", par[i].Id)
+                                                @Html.Hidden("main_item", parent.Id)
 
                                             </div>
 
@@ -87,7 +86,7 @@
                                                     @* <input onclick="auto_menu_check('@par[i].Id', '@ch.Id')" id="checkbox_@ch.Id" name="sub_checkbox[@ch.Id]" type="checkbox" value="@ch.Id">
                                                     <label for="checkbox_@ch.Id"> @ch.MenuItemName </label>*@
 
-                                                    @Html.CheckBox("sub_checkbox", ch.IsSelected, new { @id = "checkbox_" + ch.Id, @onclick = "auto_menu_check('" + par[i].Id + "'," + "'" + ch.Id + "')" })
+                                                    @Html.CheckBox("sub_checkbox", ch.IsSelected, new { @id = "checkbox_" + ch.Id, @onclick = "auto_menu_check('" + parent.Id + "'," + "'" + ch.Id + "')" })
                                                     <label for="checkbox_@ch.Id"> @ch.MenuItemName </label>
 
                                                     @Html.Hidden("sub_item", ch.Id)
@@ -98,7 +97,7 @@
                                             }
                                             TotalChild = string.Join(",", TotalChildArray);
 
-                                            <input type="hidden" name="total_submenu" id="total_submenu_@par[i].Id" value="@TotalChild">
+                                            @:<input type="hidden" name="total_submenu" id="total_submenu_@parents[i].Id" value="@TotalChild">
                                         }
                                     </div>
                                 }
