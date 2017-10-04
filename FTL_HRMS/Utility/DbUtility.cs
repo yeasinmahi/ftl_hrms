@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
@@ -13,29 +14,47 @@ namespace FTL_HRMS.Utility
     {
         public enum Status
         {
-            Success,
+            AddSuccess,
+            UpdateSuccess,
+            DeleteSuccess,
+            AddFailed,
             UpdateFailed,
-            Fail,
+            DeleteFailed,
+            Exist,
+            UnknownError,
+            BlankError,
             Error,
-            Null
+            NotFound
         }
 
         public static string GetStatusMessage(Status status)
         {
             switch (status)
             {
-                case Status.Success:
-                    return "Success";
+                case Status.AddSuccess:
+                    return "1Successfully Added";
+                case Status.UpdateSuccess:
+                    return "1Successfully Updated";
+                case Status.DeleteSuccess:
+                    return "1Successfully Deleted";
+                case Status.AddFailed:
+                    return "0Adding Failed";
                 case Status.UpdateFailed:
-                    return "Update Failed";
-                case Status.Fail:
-                    return "Failed";
+                    return "0Update Failed";
+                case Status.DeleteFailed:
+                    return "0Delete Failed";
+                case Status.Exist:
+                    return "0Already Exist";
+                case Status.BlankError:
+                    return "0Can not be blank";
+                case Status.UnknownError:
+                    return "0Unknown Error";
                 case Status.Error:
-                    return "Error";
-                case Status.Null:
-                    return "Not Found";
+                    return "0Error";
+                case Status.NotFound:
+                    return "0Not Found";
                 default:
-                    return "Cannot get the error";
+                    return "0Cannot get the error";
             }
         }
         public enum ConnectionStringProperty
@@ -119,6 +138,7 @@ namespace FTL_HRMS.Utility
             string view = @"IF OBJECT_ID('dbo." + viewName + "', 'V') IS NOT NULL DROP VIEW dbo." + viewName;
             return view;
         }
+        
 
         
     }

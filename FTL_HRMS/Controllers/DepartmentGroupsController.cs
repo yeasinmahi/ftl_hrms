@@ -61,17 +61,10 @@ namespace FTL_HRMS.Controllers
                 departmentGroup.CreateDate = DateTime.Now;
                 departmentGroup.Status = true;
                 DbUtility.Status status = genericData.Insert<DepartmentGroup>(departmentGroup);
-                if (status.Equals(DbUtility.Status.Success))
-                {
-                    TempData["SuccessMsg"] = DbUtility.GetStatusMessage(status);
-                }
-                else
-                {
-                    TempData["WarningMsg"] = DbUtility.GetStatusMessage(status);
-                }
+                TempData["message"] = DbUtility.GetStatusMessage(status);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.BlankError);
             return View(departmentGroup);
         }
         #endregion

@@ -34,18 +34,18 @@ namespace FTL_HRMS.Controllers
                         {
                             if(!UpdateDeviceAttendanceStatus(code, date))
                             {
-                                return Status.Fail;
+                                return Status.UpdateFailed;
                             }
                         }
                         else
                         {
-                            return Status.Fail;
+                            return Status.AddFailed;
                         }
                     }
                 }
             }
             _db.SaveChanges();
-            return Status.Success;
+            return Status.AddSuccess;
         }
 
         public List<DateTime> DistinctDateListFromDeviceAttendance()
@@ -143,18 +143,18 @@ namespace FTL_HRMS.Controllers
                         {
                             if (!UpdateFilterAttendanceStatus(emp.Sl, date))
                             {
-                                return Status.Fail;
+                                return Status.UpdateFailed;
                             }
                         }
                         else
                         {
-                            return Status.Fail;
+                            return Status.AddFailed;
                         }
                     }
                 }
             }
             _db.SaveChanges();
-            return Status.Success;
+            return Status.AddSuccess;
         }
 
         public DateTime GetFirstDate()
