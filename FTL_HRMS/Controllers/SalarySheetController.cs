@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using FTL_HRMS.DAL;
 
 namespace FTL_HRMS.Controllers
 {

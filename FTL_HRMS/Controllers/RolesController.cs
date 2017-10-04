@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using FTL_HRMS.Models;
 using System.Data.Entity;
+using FTL_HRMS.DAL;
 using FTL_HRMS.Models.ViewModels;
 
 namespace FTL_HRMS.Controllers
@@ -18,7 +19,7 @@ namespace FTL_HRMS.Controllers
 
         HRMSDbContext _dbCtx = new HRMSDbContext();
 
-        UserManager<FTL_HRMS.Models.ApplicationUser> _userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+        UserManager<FTL_HRMS.Models.ApplicationUser> _userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new HRMSDbContext()));
 
         public RolesController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new HRMSDbContext())), new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new HRMSDbContext())))
@@ -176,7 +177,7 @@ namespace FTL_HRMS.Controllers
 
         public ViewResult RoleList()
         {
-            UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+            UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new HRMSDbContext()));
 
             string rolll = userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
 
@@ -200,7 +201,7 @@ namespace FTL_HRMS.Controllers
         [HttpGet]
         public ActionResult AddRole()
         {
-            FTL_HRMS.Models.HRMSDbContext dbCtx = new FTL_HRMS.Models.HRMSDbContext();
+            HRMSDbContext dbCtx = new HRMSDbContext();
             List<VMMenuByRole> menuItemsForRole = new List<VMMenuByRole>();
 
             string rolll = _userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();

@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using FTL_HRMS.Models;
 using System.Web;
 using System;
+using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Hr;
 
 namespace FTL_HRMS.Controllers

@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
@@ -12,7 +13,7 @@ namespace FTL_HRMS.Controllers
     public class DepartmentGroupsController : Controller
     {
         private HRMSDbContext _db = new HRMSDbContext();
-
+        private GenericData genericData = GenericData.GetInstance();
         #region List
         // GET: DepartmentGroups
         public ActionResult Index()
@@ -59,9 +60,15 @@ namespace FTL_HRMS.Controllers
                 departmentGroup.CreatedBy = userId;
                 departmentGroup.CreateDate = DateTime.Now;
                 departmentGroup.Status = true;
-                _db.DepartmentGroup.Add(departmentGroup);
-                _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                DbUtility.Status status = genericData.Insert<DepartmentGroup>(departmentGroup);
+                if (status.Equals(DbUtility.Status.Success))
+                {
+                    TempData["SuccessMsg"] = DbUtility.GetStatusMessage(status);
+                }
+                else
+                {
+                    TempData["WarningMsg"] = DbUtility.GetStatusMessage(status);
+                }
                 return RedirectToAction("Create");
             }
             TempData["WarningMsg"] = "Something went wrong !!";

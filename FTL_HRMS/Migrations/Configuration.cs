@@ -1,18 +1,19 @@
 using System.Collections.Generic;
+using FTL_HRMS.DAL;
 using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Migrations
 {
     using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<FTL_HRMS.Models.HRMSDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<HRMSDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(FTL_HRMS.Models.HRMSDbContext context)
+        protected override void Seed(HRMSDbContext context)
         {
             List<string> scripts = new List<string>();
 

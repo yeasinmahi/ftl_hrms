@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FTL_HRMS.DAL;
 using FTL_HRMS.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 
@@ -35,12 +36,12 @@ namespace FTL_HRMS
             {
                 if (HttpContext.Current.User.Identity.GetUserId() != null)
                 {
-                    FTL_HRMS.Models.HRMSDbContext db_ctx = new FTL_HRMS.Models.HRMSDbContext();
+                    HRMSDbContext db_ctx = new HRMSDbContext();
                     List<VMMenuByRole> MenuItemsForRole = new List<VMMenuByRole>();
 
 
 
-                    UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+                    UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new HRMSDbContext()));
 
                     string rolll = userManager.GetRoles(HttpContext.Current.User.Identity.GetUserId()).FirstOrDefault();
 

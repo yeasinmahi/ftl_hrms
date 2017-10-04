@@ -1,9 +1,10 @@
 ﻿using System.Data.Entity;
+using FTL_HRMS.Models;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Models.Payroll;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace FTL_HRMS.Models
+namespace FTL_HRMS.DAL
 {
     public class HRMSDbContext : IdentityDbContext<ApplicationUser>
     {
