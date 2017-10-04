@@ -4,9 +4,9 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
-using FTL_HRMS.Models;
+using FTL_HRMS.Utility;
 
-namespace FTL_HRMS.Utility
+namespace FTL_HRMS.DAL
 {
     public class GenericData
     {
@@ -41,7 +41,7 @@ namespace FTL_HRMS.Utility
             
 
         }
-        public string Insert<T>(object o)
+        public DbUtility.Status Insert<T>(object o)
         {
             Type type = typeof (T);
             lock (_obj)
@@ -50,15 +50,15 @@ namespace FTL_HRMS.Utility
                 {
                     _dbContext.Set(type).Add(o);
                     _dbContext.SaveChanges();
-                    return DbUtility.GetStatusMessage(DbUtility.Status.Success);
+                    return DbUtility.Status.Success;
                 }
                 catch (DbUpdateException)
                 {
-                    return "Db Update Failed";
+                    return DbUtility.Status.UpdateFailed;
                 }
                 catch (Exception)
                 {
-                    return DbUtility.GetStatusMessage(DbUtility.Status.Fail);
+                    return DbUtility.Status.Fail;
                 }
             }
         }

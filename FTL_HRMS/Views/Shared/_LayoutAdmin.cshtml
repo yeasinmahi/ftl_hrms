@@ -58,6 +58,7 @@
     <div class="page-container row-fluid">
         <div class="page-sidebar ">
             @using System.Web.Optimization 
+@using FTL_HRMS.DAL
 @using FTL_HRMS.Models.ViewModels
 @using Microsoft.AspNet.Identity;
             @{
@@ -67,11 +68,11 @@
             {
 
 
-                FTL_HRMS.Models.HRMSDbContext db_ctx = new FTL_HRMS.Models.HRMSDbContext();
+                HRMSDbContext db_ctx = new HRMSDbContext();
                 
 
 
-                UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+                UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new HRMSDbContext()));
 
                 string rolll = userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
                 string role_id = db_ctx.Roles.Where(t => t.Name == rolll).Select(g => g.Id).FirstOrDefault();

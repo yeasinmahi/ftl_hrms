@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using FTL_HRMS.Models;
 using System;
+using FTL_HRMS.DAL;
 
 namespace FTL_HRMS.Controllers
 {
@@ -26,7 +27,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult AdminDashboard()
         {
             
-            UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+            UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new HRMSDbContext()));
 
             string rolll = userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
             string rollId = _db.Roles.Where(t => t.Name == rolll).Select(g => g.Id).FirstOrDefault();

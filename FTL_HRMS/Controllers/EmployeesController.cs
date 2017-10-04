@@ -9,6 +9,7 @@ using FTL_HRMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
+using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
 using static FTL_HRMS.Models.AccountViewModels;
@@ -23,7 +24,7 @@ namespace FTL_HRMS.Controllers
         public UserManager<ApplicationUser> UserManager { get; private set; }
         public RoleManager<IdentityRole> RoleManager { get; private set; }
 
-        UserManager<FTL_HRMS.Models.ApplicationUser> _userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+        UserManager<FTL_HRMS.Models.ApplicationUser> _userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new HRMSDbContext()));
 
         #region List
         // GET: Employees

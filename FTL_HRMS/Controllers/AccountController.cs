@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 
 using System.Data.Entity;
+using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using static FTL_HRMS.Models.AccountViewModels;
 
@@ -21,7 +22,7 @@ namespace FTL_HRMS.Controllers
 
         HRMSDbContext _dbCtx = new HRMSDbContext();
 
-        UserManager<FTL_HRMS.Models.ApplicationUser> _userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+        UserManager<FTL_HRMS.Models.ApplicationUser> _userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new HRMSDbContext()));
 
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new HRMSDbContext())), new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new HRMSDbContext())))
@@ -324,7 +325,7 @@ namespace FTL_HRMS.Controllers
         [AllowAnonymous]
         public ActionResult ProfileInfo()
         {
-            UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new FTL_HRMS.Models.HRMSDbContext()));
+            UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new HRMSDbContext()));
             string rolll = userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
             if (rolll == "Receptionist")
             {                

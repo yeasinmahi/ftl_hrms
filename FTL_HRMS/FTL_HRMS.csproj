@@ -2971,7 +2971,7 @@
     <Compile Include="Models\Hr\SourceOfHire.cs" />
     <Compile Include="Models\Hr\DepartmentGroup.cs" />
     <Compile Include="Models\Hr\Department.cs" />
-    <Compile Include="Models\HRMSDbContext.cs" />
+    <Compile Include="DAL\HRMSDbContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Hr\Designation.cs" />
     <Compile Include="Models\MenuItem.cs" />
@@ -3119,7 +3119,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utility\SqlExceptionFilter.cs" />
     <Compile Include="Utility\DbUtility.cs" />
-    <Compile Include="Utility\GenericData.cs" />
+    <Compile Include="DAL\GenericData.cs" />
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Models\ViewModels\VMMenuByRole.cs" />
     <Compile Include="Models\ViewModels\VMRoleList.cs" />
@@ -3449,6 +3449,7 @@
     <Content Include="Uploads\Department report_E001.pdf" />
     <Content Include="Uploads\Empoloyee report_E001.pdf" />
     <Content Include="Views\SalarySheet\Index.cshtml" />
+    <Content Include="Views\Shared\WarningMessage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

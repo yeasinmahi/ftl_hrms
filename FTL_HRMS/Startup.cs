@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.Linq;
+using FTL_HRMS.DAL;
 using MenuItem = FTL_HRMS.Models.MenuItem;
 
 [assembly: OwinStartupAttribute(typeof(FTL_HRMS.Startup))]

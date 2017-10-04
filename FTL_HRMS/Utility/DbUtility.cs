@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
+using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 
 namespace FTL_HRMS.Utility
@@ -13,6 +14,7 @@ namespace FTL_HRMS.Utility
         public enum Status
         {
             Success,
+            UpdateFailed,
             Fail,
             Error,
             Null
@@ -24,6 +26,8 @@ namespace FTL_HRMS.Utility
             {
                 case Status.Success:
                     return "Success";
+                case Status.UpdateFailed:
+                    return "Update Failed";
                 case Status.Fail:
                     return "Failed";
                 case Status.Error:

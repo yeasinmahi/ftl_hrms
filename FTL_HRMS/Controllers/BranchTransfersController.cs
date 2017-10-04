@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using FTL_HRMS.Models;
 using System.Collections.Generic;
 using System;
+using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
 

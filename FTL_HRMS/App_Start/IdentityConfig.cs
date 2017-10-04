@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
