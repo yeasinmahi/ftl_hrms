@@ -16,14 +16,14 @@ namespace FTL_HRMS.Reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class PrintLeaveTypeReport : ReportClass {
+    public class LeaveApplicationReport : ReportClass {
         
-        public PrintLeaveTypeReport() {
+        public LeaveApplicationReport() {
         }
         
         public override string ResourceName {
             get {
-                return "PrintLeaveTypeReport.rpt";
+                return "LeaveApplicationReport.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace FTL_HRMS.Reports {
         
         public override string FullResourceName {
             get {
-                return "FTL_HRMS.Reports.PrintLeaveTypeReport.rpt";
+                return "FTL_HRMS.Reports.LeaveApplicationReport.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace FTL_HRMS.Reports {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedPrintLeaveTypeReport : Component, ICachedReport {
+    public class CachedLeaveApplicationReport : Component, ICachedReport {
         
-        public CachedPrintLeaveTypeReport() {
+        public CachedLeaveApplicationReport() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace FTL_HRMS.Reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            PrintLeaveTypeReport rpt = new PrintLeaveTypeReport();
+            LeaveApplicationReport rpt = new LeaveApplicationReport();
             rpt.Site = this.Site;
             return rpt;
         }
