@@ -12,6 +12,13 @@ namespace FTL_HRMS.Utility
         public void OnException(ExceptionContext filterContext)
         {
             CheckDatabaseConnection();
+            GetExceptionMessage(filterContext);
+
+        }
+
+        public void GetExceptionMessage(ExceptionContext filterContext)
+        {
+            
         }
 
         private void CheckDatabaseConnection()
