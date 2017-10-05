@@ -3038,6 +3038,12 @@
       <DependentUpon>EmployeeTypeReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\FestivalBonusReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FestivalBonusReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\Footer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3614,6 +3620,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DisciplinaryActionHistoryReport.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="Reports\FestivalBonusReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>FestivalBonusReport.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="Reports\LeaveApplicationReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LeaveApplicationReport.cs</LastGenOutput>

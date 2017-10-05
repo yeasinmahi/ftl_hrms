@@ -176,6 +176,21 @@ namespace FTL_HRMS.Controllers
             }
             #endregion
 
+            #region Delete Leave Histories                
+            if (_db.LeaveHistories.Where(i => i.LeaveTypeId == id).Select(i => i.Sl).Count() > 0)
+            {
+                List<LeaveHistory> leaveHistoryList = new List<LeaveHistory>();
+                leaveHistoryList = _db.LeaveHistories.Where(i => i.LeaveTypeId == id).ToList();
+
+                for (int i = 0; i < leaveHistoryList.Count; i++)
+                {
+                    LeaveHistory leaveHistory = _db.LeaveHistories.Find(leaveHistoryList[i].Sl);
+                    _db.LeaveHistories.Remove(leaveHistory);
+                    _db.SaveChanges();
+                }
+            }
+            #endregion
+
             LeaveType leaveType = _db.LeaveTypes.Find(id);
             _db.LeaveTypes.Remove(leaveType);
             _db.SaveChanges();

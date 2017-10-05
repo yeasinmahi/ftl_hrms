@@ -53,7 +53,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] DepartmentGroup departmentGroup)
         {
-            if (departmentGroup.Name != "")
+            if (_db.DepartmentGroup.Where(i=> i.Code == departmentGroup.Code).ToList().Count < 1)
             {
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
@@ -71,7 +71,10 @@ namespace FTL_HRMS.Controllers
                 }
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            else
+            {
+                TempData["WarningMsg"] = "Code already exists !!";
+            }
             return View(departmentGroup);
         }
         #endregion
@@ -99,7 +102,26 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,Code,Name,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] DepartmentGroup departmentGroup)
         {
-            if (ModelState.IsValid)
+            if (_db.DepartmentGroup.Where(i => i.Sl == departmentGroup.Sl).Select(i=> i.Code).ToString() != departmentGroup.Code)
+            {
+                if(_db.DepartmentGroup.Where(i => i.Code == departmentGroup.Code).ToList().Count < 1)
+                {
+                    string userName = User.Identity.Name;
+                    int userId = DbUtility.GetUserId(_db, userName);
+                    departmentGroup.UpdatedBy = userId;
+                    departmentGroup.UpdateDate = DateTime.Now;
+                    _db.Entry(departmentGroup).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    TempData["SuccessMsg"] = "Updated Successfully!";
+                    return View(departmentGroup);
+                }
+                else
+                {
+                    TempData["WarningMsg"] = "Code already exists !!";
+                    return View(departmentGroup);
+                }
+            }
+            else
             {
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
@@ -110,8 +132,6 @@ namespace FTL_HRMS.Controllers
                 TempData["SuccessMsg"] = "Updated Successfully!";
                 return View(departmentGroup);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
-            return View(departmentGroup);
         }
         #endregion
 
@@ -136,10 +156,18 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
-            departmentGroup.Status = false;
-            _db.Entry(departmentGroup).State = EntityState.Modified;
-            _db.SaveChanges();
+            if (_db.Department.Where(i => i.DepartmentGroupId == id && i.Status == true).ToList().Count < 1)
+            {
+                DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
+                departmentGroup.Status = false;
+                _db.Entry(departmentGroup).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Deleted Successfully !!";
+            }
+            else
+            {
+                TempData["WarningMsg"] = "Already exists some departments under this department group !!";
+            }
             return RedirectToAction("Index");
         }
         #endregion

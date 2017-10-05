@@ -320,6 +320,13 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Festival Bonus
+        public ActionResult PrintFestivalBonusReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "FestivalBonusReport", fileName = "Festival Bonus Report" });
+        }
+        #endregion
+
         #region Leave Type
         public ActionResult PrintLeaveTypeReport()
         {

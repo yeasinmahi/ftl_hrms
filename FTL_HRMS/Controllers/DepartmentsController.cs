@@ -83,7 +83,7 @@ namespace FTL_HRMS.Controllers
         {
             List<DepartmentGroup> groupList = new List<DepartmentGroup>();
             groupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            if (department.Name != "")
+            if (_db.Department.Where(i => i.Code == department.Code).ToList().Count < 1)
             {
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
@@ -97,8 +97,11 @@ namespace FTL_HRMS.Controllers
                 ViewBag.Departments = groupList;
                 return RedirectToAction("Create");
             }
+            else
+            {
+                TempData["WarningMsg"] = "Code already exists !!";
+            }
             ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name",department.DepartmentGroupId);
-            TempData["WarningMsg"] = "Something went wrong !!";
             return View(department);
         }
         #endregion
@@ -131,7 +134,28 @@ namespace FTL_HRMS.Controllers
         {
             List<DepartmentGroup> groupList = new List<DepartmentGroup>();
             groupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            if (ModelState.IsValid)
+            if (_db.Department.Where(i => i.Sl == department.Sl).Select(i => i.Code).ToString() != department.Code)
+            {
+                if (_db.Department.Where(i => i.Code == department.Code).ToList().Count < 1)
+                {
+                    string userName = User.Identity.Name;
+                    int userId = DbUtility.GetUserId(_db, userName);
+                    department.UpdatedBy = userId;
+                    department.UpdateDate = DateTime.Now;
+                    _db.Entry(department).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    TempData["SuccessMsg"] = "Updated Successfully!";
+                    ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name", department.DepartmentGroupId);
+                    return View(department);
+                }
+                else
+                {
+                    TempData["WarningMsg"] = "Code already exists !!";
+                    ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name", department.DepartmentGroupId);
+                    return View(department);
+                }
+            }
+            else
             {
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
@@ -143,9 +167,6 @@ namespace FTL_HRMS.Controllers
                 ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name", department.DepartmentGroupId);
                 return View(department);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
-            ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name", department.DepartmentGroupId);
-            return View(department);
         }
         #endregion
 
@@ -170,10 +191,18 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Department department = _db.Department.Find(id);
-            department.Status = false;
-            _db.Entry(department).State = EntityState.Modified;
-            _db.SaveChanges();
+            if (_db.Designation.Where(i => i.DepartmentId == id && i.Status == true).ToList().Count < 1)
+            {
+                Department department = _db.Department.Find(id);
+                department.Status = false;
+                _db.Entry(department).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Deleted Successfully !!";
+            }
+            else
+            {
+                TempData["WarningMsg"] = "Already exists some designations under this department !!";
+            }
             return RedirectToAction("Index");
         }
         #endregion
