@@ -334,6 +334,16 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region AttandanceByDateRange
+        public ActionResult PrintAttandanceByDateRangeReport()
+        {
+            int employeeId = Convert.ToInt32(Request["EmployeeId"]);
+            DateTime fromDate = Convert.ToDateTime(Request["fromDate"]);
+            DateTime toDate = Convert.ToDateTime(Request["toDate"]);
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "AttandanceByDateRangeReport", fileName = "Attandance By Date Range Report", selectedFormula = "{tbl_MonthlyAttendance.FromDate}>=Date (" + fromDate.ToString("yyyy,MM,dd") + ") and {tbl_MonthlyAttendance.ToDate}<= Date (" + toDate.ToString("yyyy,MM,dd") + " ) and {tbl_Employee.Sl}= "+employeeId+"" });
+        }
+        #endregion
+
         #region Performance Issue
         public ActionResult PrintPerformanceIssueReport()
         {
