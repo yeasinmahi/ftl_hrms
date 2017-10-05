@@ -24,14 +24,14 @@
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
-
+                <p style="color:red">** Summation of All Fields Should Be 100% **</p>
                 <div class="row">
                     @Html.Partial("~/Views/Shared/WarningMessage.cshtml")
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.Sl)
                     <div class="col-md-offset-4">
                         <div>
-                            @Html.LabelFor(model => model.BasicSalary,"Basic Salary", new { @class = "required" })
+                            @Html.LabelFor(model => model.BasicSalary,"Basic Salary (%)", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.BasicSalary, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -39,7 +39,7 @@
                         </div>
 
                         <div>
-                            @Html.LabelFor(model => model.HouseRent, "House Rent", new { @class = "required" })
+                            @Html.LabelFor(model => model.HouseRent, "House Rent (%)", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.HouseRent, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -47,7 +47,7 @@
                         </div>
 
                         <div>
-                            @Html.LabelFor(model => model.MedicalAllowance, "Medical Allowance", new { @class = "required" })
+                            @Html.LabelFor(model => model.MedicalAllowance, "Medical Allowance (%)", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.MedicalAllowance, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -55,7 +55,7 @@
                         </div>
 
                         <div>
-                            @Html.LabelFor(model => model.LifeInsurance, "Life Insurance", new { @class = "required" })
+                            @Html.LabelFor(model => model.LifeInsurance, "Life Insurance (%)", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.LifeInsurance, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -63,7 +63,7 @@
                         </div>
 
                         <div>
-                            @Html.LabelFor(model => model.FoodAllowance, "Food Allowance", new { @class = "required" })
+                            @Html.LabelFor(model => model.FoodAllowance, "Food Allowance (%)", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.FoodAllowance, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -71,7 +71,7 @@
                         </div>
 
                         <div>
-                            @Html.LabelFor(model => model.Entertainment, new { @class = "required" })
+                            @Html.LabelFor(model => model.Entertainment, "Entertainment (%)" ,new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Entertainment, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
