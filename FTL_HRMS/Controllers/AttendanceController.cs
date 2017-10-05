@@ -15,6 +15,12 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext _db = new HRMSDbContext();
 
+        public void SyncAttendance()
+        {
+            MoveDeviceAttendanceToFilterAttendance();
+            MoveFilterAttendanceToMonthlyAttendance();
+        }
+
         #region MoveDeviceAttendanceToFilterAttendance
         // GET: Attendance
         public Status MoveDeviceAttendanceToFilterAttendance()
@@ -176,7 +182,7 @@ namespace FTL_HRMS.Controllers
         public List<DateTime> GetDateList(DateTime StartDate, DateTime LastDate)
         {
             List<DateTime> DateList = new List<DateTime>();
-            while (StartDate.Day <= LastDate.Day)
+            while (StartDate.Date <= LastDate.Date)
             {
                 DateList.Add(StartDate);
                 StartDate = StartDate.Date.AddDays(+1);

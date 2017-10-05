@@ -47,6 +47,12 @@
     <div class="content-body">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
+                @{ 
+                    if(ViewBag.FromDate != "" && ViewBag.ToDate != "")
+                    {
+                        <h3>**Last Generated : @ViewBag.FromDate To @ViewBag.ToDate</h3>
+                    }
+                }
                 @{int rowNo = 0;}
                 <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
                     <thead>
@@ -55,46 +61,46 @@
                                 SL
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Employee.Code)
+                                Employee Code
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.GrossSalary)
+                                Gross Salary
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.BasicSalary)
+                                Basic Salary
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.AbsentDay)
+                                Absent Day
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.AbsentPanelty)
+                                Absent Panelty
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.LateDay)
+                                Late Day
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.LatePenalty)
+                                Late Penalty
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.UnofficialDay)
+                                Unofficial Day
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.UnofficialPenalty)
+                                Unofficial Penalty
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.LeavePenalty)
+                                Leave Penalty
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.OthersPenalty)
+                                Others Penalty
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.FestivalBonus)
+                                Festival Bonus
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.OthersBonus)
+                                Others Bonus
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.NetPay)
+                                Net Pay
                             </th>
                         </tr>
                     </thead>
@@ -104,46 +110,46 @@
                                 SL
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Employee.Code)
+                                Employee Code
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.GrossSalary)
+                                Gross Salary
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.BasicSalary)
+                                Basic Salary
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.AbsentDay)
+                                Absent Day
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.AbsentPanelty)
+                                Absent Panelty
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.LateDay)
+                                Late Day
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.LatePenalty)
+                                Late Penalty
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.UnofficialDay)
+                                Unofficial Day
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.UnofficialPenalty)
+                                Unofficial Penalty
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.LeavePenalty)
+                                Leave Penalty
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.OthersPenalty)
+                                Others Penalty
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.FestivalBonus)
+                                Festival Bonus
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.OthersBonus)
+                                Others Bonus
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.NetPay)
+                                Net Pay
                             </th>
                         </tr>
                     </tfoot>

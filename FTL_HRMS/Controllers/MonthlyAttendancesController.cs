@@ -14,6 +14,7 @@ namespace FTL_HRMS.Controllers
     public class MonthlyAttendancesController : Controller
     {
         private HRMSDbContext _db = new HRMSDbContext();
+        AttendanceController att = new AttendanceController();
 
         // GET: MonthlyAttendances
         public ActionResult Index()
@@ -32,6 +33,7 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult EmployeeAttendenceReport(string departmentGroupId, string ddl_dept)
         {
+            att.SyncAttendance();
             int dgid, did;
             Int32.TryParse(departmentGroupId, out dgid);
             Int32.TryParse(ddl_dept, out did);
@@ -88,6 +90,7 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult EmployeewiseAttendenceReport(string employeeId)
         {
+            att.SyncAttendance();
             int eid;
             Int32.TryParse(employeeId, out eid);
             DateTime FromDate = Utility.Utility.GetDefaultDate();
