@@ -111,6 +111,9 @@ namespace FTL_HRMS.Controllers
             TempData["dgid"] = eid;
             TempData["FromDate"] = FromDate;
             TempData["ToDate"] = ToDate;
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
+            ViewBag.EmpId = Int32.TryParse(employeeId, out eid);
             List<MonthlyAttendance> attendenceList = GetEmployeewiseList(eid, FromDate, ToDate);
             return View(attendenceList);
         }
@@ -140,6 +143,9 @@ namespace FTL_HRMS.Controllers
             {
                 attendenceList = _db.MonthlyAttendance.Include(x => x.Employee).Where(x => x.Date.Day == ToDate.Day && x.Date.Month == ToDate.Month && x.Date.Year == ToDate.Year).ToList();
             }
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
+            ViewBag.EmpId = employeeId;
             return attendenceList;
         }
 
