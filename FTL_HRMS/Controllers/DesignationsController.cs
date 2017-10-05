@@ -75,7 +75,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,DepartmentId,RoleName,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
         {
-            if (designation.Name != "")
+            if (_db.Designation.Where(i => i.Code == designation.Code).ToList().Count < 1)
             {
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
@@ -88,13 +88,16 @@ namespace FTL_HRMS.Controllers
                 TempData["SuccessMsg"] = "Added Successfully !!";
                 return RedirectToAction("Create");
             }
+            else
+            {
+                TempData["WarningMsg"] = "Code already exists !!";
+            }
             List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
             List<IdentityRole> roleList = new List<IdentityRole>();
             roleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
             ViewBag.RoleName = new SelectList(roleList, "Name", "Name");
-            TempData["WarningMsg"] = "Something went wrong !!";
             return View(designation);
         }
         #endregion
@@ -139,7 +142,25 @@ namespace FTL_HRMS.Controllers
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             List<IdentityRole> roleList = new List<IdentityRole>();
             roleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
-            if (ModelState.IsValid)
+            if (_db.Designation.Where(i => i.Sl == designation.Sl).Select(i => i.Code).ToString() != designation.Code)
+            {
+                if (_db.Designation.Where(i => i.Code == designation.Code).ToList().Count < 1)
+                {
+                    string userName = User.Identity.Name;
+                    int userId = DbUtility.GetUserId(_db, userName);
+                    designation.UpdatedBy = userId;
+                    designation.UpdateDate = DateTime.Now;
+                    designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
+                    _db.Entry(designation).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    TempData["SuccessMsg"] = "Updated Successfully!";
+                }
+                else
+                {
+                    TempData["WarningMsg"] = "Code already exists !!";
+                }
+            }
+            else
             {
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
@@ -149,10 +170,6 @@ namespace FTL_HRMS.Controllers
                 _db.Entry(designation).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Updated Successfully!";
-            }
-            else
-            {
-                TempData["WarningMsg"] = "Something went wrong !!";
             }
             int departmentId = designation.DepartmentId;
             ViewBag.DepartmentId = _db.Department.Where(x => x.Sl == departmentId).Select(t => t.Sl).FirstOrDefault();
