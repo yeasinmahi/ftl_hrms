@@ -120,10 +120,18 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Branch branch = _db.Branches.Find(id);
-            branch.Status = false;
-            _db.Entry(branch).State = EntityState.Modified;
-            _db.SaveChanges();
+            if(_db.Employee.Where(i=> i.BranchId == id && i.Status == true).ToList().Count < 1)
+            {
+                Branch branch = _db.Branches.Find(id);
+                branch.Status = false;
+                _db.Entry(branch).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Deleted Successfully !!";
+            }
+            else
+            {
+                TempData["WarningMsg"] = "Already exists some employees under this branch !!";
+            }
             return RedirectToAction("Index");
         }
         #endregion
