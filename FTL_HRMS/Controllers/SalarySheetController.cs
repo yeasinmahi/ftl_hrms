@@ -13,6 +13,7 @@ namespace FTL_HRMS.Controllers
     { 
         // GET: SalarySheet
         private HRMSDbContext _db = new HRMSDbContext();
+        AttendanceController att = new AttendanceController();
 
         public ActionResult Index()
         {
@@ -21,12 +22,17 @@ namespace FTL_HRMS.Controllers
             if (LastPaidSalaryDurationId > 0)
             {
                 SalarySheet = _db.MonthlySalarySheet.Include(i=> i.Employee).Include(i=> i.PaidSalaryDuration).Where(i => i.PaidSalaryDurationId == LastPaidSalaryDurationId).ToList();
+                DateTime FromDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.FromDate).FirstOrDefault();
+                DateTime ToDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
+                ViewBag.FromDate = FromDate.ToShortDateString();
+                ViewBag.ToDate = ToDate.ToShortDateString();
             }
             return View(SalarySheet);
         }
 
         public ActionResult CalculateSalarySheet(DateTime StartDate, DateTime EndDate)
         {
+            att.SyncAttendance();
             List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendance(StartDate, EndDate);
             double WorkingDays = GetWorkingDays(StartDate);
             int PaidSalaryDurationId = InsertPaidSalaryDuration(StartDate, EndDate, WorkingDays);
