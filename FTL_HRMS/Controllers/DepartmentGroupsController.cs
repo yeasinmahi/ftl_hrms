@@ -136,10 +136,18 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
-            departmentGroup.Status = false;
-            _db.Entry(departmentGroup).State = EntityState.Modified;
-            _db.SaveChanges();
+            if (_db.Department.Where(i => i.DepartmentGroupId == id && i.Status == true).ToList().Count < 1)
+            {
+                DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
+                departmentGroup.Status = false;
+                _db.Entry(departmentGroup).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Deleted Successfully !!";
+            }
+            else
+            {
+                TempData["WarningMsg"] = "Already exists some departments under this department group !!";
+            }
             return RedirectToAction("Index");
         }
         #endregion

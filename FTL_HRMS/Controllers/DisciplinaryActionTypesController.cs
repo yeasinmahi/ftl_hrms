@@ -119,9 +119,17 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DisciplinaryActionType disciplinaryActionType = _db.DisciplinaryActionType.Find(id);
-            _db.DisciplinaryActionType.Remove(disciplinaryActionType);
-            _db.SaveChanges();
+            if (_db.DisciplinaryAction.Where(i => i.DisciplinaryActionTypeId == id).ToList().Count < 1)
+            {
+                DisciplinaryActionType disciplinaryActionType = _db.DisciplinaryActionType.Find(id);
+                _db.DisciplinaryActionType.Remove(disciplinaryActionType);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Deleted Successfully !!";
+            }
+            else
+            {
+                TempData["WarningMsg"] = "Already exists some actions using this types !!";
+            }
             return RedirectToAction("Index");
         }
         #endregion

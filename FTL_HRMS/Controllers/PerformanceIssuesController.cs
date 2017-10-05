@@ -119,9 +119,17 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PerformanceIssue performanceIssue = _db.PerformanceIssue.Find(id);
-            _db.PerformanceIssue.Remove(performanceIssue);
-            _db.SaveChanges();
+            if (_db.PerformanceRating.Where(i => i.PerformanceIssueId == id).ToList().Count < 1)
+            {
+                PerformanceIssue performanceIssue = _db.PerformanceIssue.Find(id);
+                _db.PerformanceIssue.Remove(performanceIssue);
+                _db.SaveChanges();
+                TempData["SuccessMsg"] = "Deleted Successfully !!";
+            }
+            else
+            {
+                TempData["WarningMsg"] = "Already exists some ratings using this issue !!";
+            }
             return RedirectToAction("Index");
         }
         #endregion
