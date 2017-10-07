@@ -55,21 +55,21 @@ namespace FTL_HRMS.DAL
                 }
             }
         }
-        public DbUtility.Status Update<T>(object o) where T : class
+        public DbUtility.Status Update<T>(T o) where T : class
         {
             Type type = typeof(T);
             lock (_obj)
             {
                 try
                 {
+                    _dbContext.Entry(o).State = EntityState.Modified;
                     _dbContext.Set(type).Add(o);
-                    _dbContext.Entry(type).State = EntityState.Modified;
                     _dbContext.SaveChanges();
-                    return DbUtility.Status.AddSuccess;
+                    return DbUtility.Status.UpdateSuccess;
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    return DbUtility.Status.AddFailed;
+                    return DbUtility.Status.UpdateFailed;
                 }
             }
         }

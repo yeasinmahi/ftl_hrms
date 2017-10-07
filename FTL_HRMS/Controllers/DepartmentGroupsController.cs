@@ -13,7 +13,7 @@ namespace FTL_HRMS.Controllers
     public class DepartmentGroupsController : Controller
     {
         private HRMSDbContext _db = new HRMSDbContext();
-        private GenericData genericData = GenericData.GetInstance();
+        private readonly GenericData _genericData = GenericData.GetInstance();
         #region List
         // GET: DepartmentGroups
         public ActionResult Index()
@@ -60,7 +60,7 @@ namespace FTL_HRMS.Controllers
                 departmentGroup.CreatedBy = userId;
                 departmentGroup.CreateDate = DateTime.Now;
                 departmentGroup.Status = true;
-                DbUtility.Status status = genericData.Insert<DepartmentGroup>(departmentGroup);
+                DbUtility.Status status = _genericData.Insert<DepartmentGroup>(departmentGroup);
                 TempData["message"] = DbUtility.GetStatusMessage(status);
                 return RedirectToAction("Create");
             }
@@ -98,12 +98,11 @@ namespace FTL_HRMS.Controllers
                 int userId = DbUtility.GetUserId(_db, userName);
                 departmentGroup.UpdatedBy = userId;
                 departmentGroup.UpdateDate = DateTime.Now;
-                _db.Entry(departmentGroup).State = EntityState.Modified;
-                _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                DbUtility.Status status = _genericData.Update<DepartmentGroup>(departmentGroup);
+                TempData["message"] = DbUtility.GetStatusMessage(status);
                 return View(departmentGroup);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UnknownError);
             return View(departmentGroup);
         }
         #endregion
@@ -129,10 +128,10 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
+            DepartmentGroup departmentGroup = _genericData.GetById<DepartmentGroup>(id);
             departmentGroup.Status = false;
-            _db.Entry(departmentGroup).State = EntityState.Modified;
-            _db.SaveChanges();
+            DbUtility.Status status = _genericData.Update<DepartmentGroup>(departmentGroup);
+            TempData["message"] = DbUtility.GetStatusMessage(status);
             return RedirectToAction("Index");
         }
         #endregion
