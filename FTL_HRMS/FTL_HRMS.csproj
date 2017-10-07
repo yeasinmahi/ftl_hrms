@@ -234,7 +234,6 @@
     <Content Include="Content\AdminTemplate\assets\images\favicon.png" />
     <Content Include="Content\AdminTemplate\assets\images\index.html" />
     <Content Include="Content\AdminTemplate\assets\images\login-bg.png" />
-    <Content Include="Content\AdminTemplate\assets\images\login-logo.png" />
     <Content Include="Content\AdminTemplate\assets\images\logo-folded.png" />
     <Content Include="Content\AdminTemplate\assets\images\logo.png" />
     <Content Include="Content\AdminTemplate\assets\index.html" />

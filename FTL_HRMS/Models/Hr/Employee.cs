@@ -95,7 +95,7 @@ namespace FTL_HRMS.Models.Hr
         public double GrossSalary { get; set; }
 
         [ForeignKey("CreateEmployee")]
-        public int CreatedBy { get; set; }
+        public int? CreatedBy { get; set; }
 
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",

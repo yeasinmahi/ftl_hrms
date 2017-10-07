@@ -278,7 +278,7 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-        #region DepartmentGroup List
+        #region Department Group
         public ActionResult PrintDepartmentGroupReport()
         {
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "DepartmentGroupReport", fileName = "Department Group Report" });

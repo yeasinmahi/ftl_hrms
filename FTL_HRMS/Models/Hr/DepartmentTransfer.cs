@@ -16,11 +16,11 @@ namespace FTL_HRMS.Models.Hr
 
         [Required(ErrorMessage = "From Designation cannot be empty")]
         [ForeignKey("FromDesignation")]
-        public int FromDesignationId { get; set; }
+        public int? FromDesignationId { get; set; }
 
         [Required(ErrorMessage = "To Designation cannot be empty")]
         [ForeignKey("ToDesignation")]
-        public int ToDesignationId { get; set; }
+        public int? ToDesignationId { get; set; }
 
         [DataType(DataType.Date),
          DisplayFormat(DataFormatString = "{0:dd-MM-yy}",

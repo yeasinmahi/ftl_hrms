@@ -52,7 +52,7 @@ namespace FTL_HRMS.DAL
                     _dbContext.SaveChanges();
                     return DbUtility.Status.Success;
                 }
-                catch (DbUpdateException)
+                catch (DbUpdateException ex)
                 {
                     return DbUtility.Status.UpdateFailed;
                 }
