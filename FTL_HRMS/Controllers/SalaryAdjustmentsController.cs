@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Utility;
+using FTL_HRMS.Models.Hr;
 
 namespace FTL_HRMS.Controllers
 {
@@ -41,7 +42,11 @@ namespace FTL_HRMS.Controllers
         // GET: SalaryAdjustments/Create
         public ActionResult Create()
         {
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code");
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             return View();
         }
 
@@ -52,6 +57,8 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,EmployeeId,Date,Amount,Remarks,CreatedBy,CreateDate,UpdatedBy,UpdateDate")] SalaryAdjustment salaryAdjustment)
         {
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
             if (salaryAdjustment.Amount > 0)
             {
                 string Type = Request["Type"].ToString();
@@ -63,8 +70,6 @@ namespace FTL_HRMS.Controllers
                 {
                     salaryAdjustment.Amount = -salaryAdjustment.Amount;
                 }
-                string userName = User.Identity.Name;
-                int userId = DbUtility.GetUserId(_db, userName);
                 salaryAdjustment.CreatedBy = userId;
                 salaryAdjustment.Date = DateTime.Now;
                 _db.SalaryAdjustment.Add(salaryAdjustment);
@@ -73,7 +78,9 @@ namespace FTL_HRMS.Controllers
                 return RedirectToAction("Create");
             }
             TempData["WarningMsg"] = "Something went wrong !!";
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", salaryAdjustment.EmployeeId);
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", salaryAdjustment.EmployeeId);
             return View(salaryAdjustment);
         }
 
@@ -89,7 +96,6 @@ namespace FTL_HRMS.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", salaryAdjustment.EmployeeId);
             return View(salaryAdjustment);
         }
 
@@ -121,7 +127,6 @@ namespace FTL_HRMS.Controllers
                 return RedirectToAction("Create");
             }
             TempData["WarningMsg"] = "Something went wrong !!";
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", salaryAdjustment.EmployeeId);
             return View(salaryAdjustment);
         }
 

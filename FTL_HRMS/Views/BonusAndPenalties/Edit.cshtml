@@ -33,17 +33,11 @@
                     @Html.HiddenFor(model => model.CreateDate)
                     @Html.HiddenFor(model => model.UpdateDate)
                     @Html.HiddenFor(model => model.UpdatedBy)
+                    @Html.HiddenFor(model => model.EmployeeId)
                     <div class="col-md-offset-3">
                         <div>
                             <div class="btn-group col-md-offset-5">
                                 <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "BonusAndPenalties")'">Back To List</button>
-                            </div>
-                            <div>
-                                @Html.LabelFor(model => model.EmployeeId, "Employee Code")
-                            </div>
-                            <div>
-                                @Html.DropDownList("EmployeeId", null, htmlAttributes: new { @class = "form-control", style = "width:50%" })
-                                @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
                             </div>
                             <div>
                                 @Html.LabelFor(model => model.Date)
