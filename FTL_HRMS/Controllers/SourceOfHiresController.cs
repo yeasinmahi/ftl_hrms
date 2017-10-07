@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Hr;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -56,10 +57,10 @@ namespace FTL_HRMS.Controllers
                 sourceOfHire.Status = true;
                 _db.SourceOfHire.Add(sourceOfHire);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(sourceOfHire);
         }
         #endregion
@@ -91,10 +92,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Entry(sourceOfHire).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return View(sourceOfHire);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(sourceOfHire);
         }
         #endregion
@@ -126,11 +127,11 @@ namespace FTL_HRMS.Controllers
                 sourceOfHire.Status = false;
                 _db.Entry(sourceOfHire).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Deleted Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             }
             else
             {
-                TempData["WarningMsg"] = "Already exists some employees under this source !!";
+                TempData["message"] = "Some Employee Under This Source Are" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             return RedirectToAction("Index");
         }

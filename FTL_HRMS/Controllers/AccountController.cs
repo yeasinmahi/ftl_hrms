@@ -11,6 +11,7 @@ using System.Data.Entity;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using static FTL_HRMS.Models.AccountViewModels;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -372,14 +373,14 @@ namespace FTL_HRMS.Controllers
                 {
                     if (_dbCtx.Users.Where(u => u.Email == user.Email).Count() > 0)
                     {
-                        TempData["WarningMsg"] = "Username already exist!!!";
+                        TempData["message"] = "UserName " + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                     }
                     else
                     {
                         _dbCtx.Entry(user).State = EntityState.Modified;
                         _dbCtx.SaveChanges();
 
-                        TempData["SuccessMsg"] = "Information updated successfully!";
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                     }
                 }
                 else
@@ -387,7 +388,7 @@ namespace FTL_HRMS.Controllers
                     _dbCtx.Entry(user).State = EntityState.Modified;
                     _dbCtx.SaveChanges();
 
-                    TempData["SuccessMsg"] = "Information updated successfully!";
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 }
 
                 if (Request["OldPassword"] != "")
@@ -396,7 +397,7 @@ namespace FTL_HRMS.Controllers
                     {
                         if (!Request["Password"].Equals(Request["ConfirmPassword"]))
                         {
-                            TempData["ChangeWarningMsg"] = "Password does not match!!!";
+                            TempData["message"] = "Password does not match!!!";
                         }
                         else
                         {
@@ -404,11 +405,11 @@ namespace FTL_HRMS.Controllers
                             bool isSuccess = await ChangePassword(objUserVm, Request["OldPassword"], Request["Password"], Request["ConfirmPassword"]);
                             if (isSuccess == true)
                             {
-                                TempData["ChangeSuccessMsg"] = "Password changed successfully!";
+                                TempData["message"] = "Password changed successfully!";
                             }
                             else
                             {
-                                TempData["ChangeWarningMsg"] = "Old Password does not match!";
+                                TempData["message"] = "Old Password does not match!";
                             }
                         }
                     }
@@ -547,14 +548,14 @@ namespace FTL_HRMS.Controllers
             if (_dbCtx.Users.Where(i => i.UserName == username).Count() > 0)
             {
                 isValidate = false;
-                TempData["WarningMsg"] = "Username already exist!!!";
+                TempData["message"] = "UserName " + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             else
             {
                 if (!password.Equals(confirmPassword))
                 {
                     isValidate = false;
-                    TempData["WarningMsg"] = "Password does not match!!!";
+                    TempData["message"] = "Password does not match!!!";
                 }
             }
             return isValidate;

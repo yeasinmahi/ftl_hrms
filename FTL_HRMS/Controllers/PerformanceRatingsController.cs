@@ -69,14 +69,14 @@ namespace FTL_HRMS.Controllers
             {
                 _db.PerformanceRating.Add(performanceRating);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
                 ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name");
                 return RedirectToAction("Create");
             }
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", performanceRating.EmployeeId);
             ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(performanceRating);
         }
         #endregion
@@ -114,14 +114,14 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Entry(performanceRating).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
                 ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name");
                 return RedirectToAction("Create");
             }
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", performanceRating.EmployeeId);
             ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(performanceRating);
         }
         #endregion
@@ -150,6 +150,7 @@ namespace FTL_HRMS.Controllers
             PerformanceRating performanceRating = _db.PerformanceRating.Find(id);
             _db.PerformanceRating.Remove(performanceRating);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
         #endregion

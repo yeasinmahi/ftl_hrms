@@ -163,10 +163,10 @@ namespace FTL_HRMS.Controllers
                 }
                 #endregion
 
-                TempData["SuccessMsg"] = "Transfered Successfully !!";
+                TempData["message"] ="Promotion" + DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] ="Promotion" + DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             string userName = User.Identity.Name;
             int userid = DbUtility.GetUserId(_db, userName);
 
@@ -240,6 +240,7 @@ namespace FTL_HRMS.Controllers
             PromotionHistory promotionHistory = _db.PromotionHistories.Find(id);
             _db.PromotionHistories.Remove(promotionHistory);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
 

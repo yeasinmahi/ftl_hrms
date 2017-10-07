@@ -83,11 +83,10 @@ namespace FTL_HRMS.Controllers
                 _db.SaveChanges();
                 #endregion
 
-                TempData["SuccessMsg"] = "Transfered Successfully !!";
+                TempData["message"] = "Transfer" + DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
-
+            TempData["message"] = "Transfer" + DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
 
@@ -169,11 +168,11 @@ namespace FTL_HRMS.Controllers
                 _db.SaveChanges();
                 #endregion
 
-                TempData["SuccessMsg"] = "Updated Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
             }
             else
             {
-                TempData["WarningMsg"] = "Something went wrong !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             }
             BranchTransfer BranchTransfer = _db.BranchTransfer.Find(branchTransfer.Sl);
             ViewBag.Branch = _db.Branches.Where(x => x.Sl == BranchTransfer.ToBranchId).Select(t => t.Name).FirstOrDefault();
@@ -208,6 +207,7 @@ namespace FTL_HRMS.Controllers
             BranchTransfer branchTransfer = _db.BranchTransfer.Find(id);
             _db.BranchTransfer.Remove(branchTransfer);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
         #endregion

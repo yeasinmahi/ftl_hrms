@@ -102,12 +102,12 @@ namespace FTL_HRMS.Controllers
                     departmentGroup.UpdateDate = DateTime.Now;
                     _db.Entry(departmentGroup).State = EntityState.Modified;
                     _db.SaveChanges();
-                    TempData["SuccessMsg"] = "Updated Successfully!";
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                     return View(departmentGroup);
                 }
                 else
                 {
-                    TempData["WarningMsg"] = "Code already exists !!";
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
                     return View(departmentGroup);
                 }
             }

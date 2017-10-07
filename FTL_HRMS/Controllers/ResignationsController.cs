@@ -67,10 +67,10 @@ namespace FTL_HRMS.Controllers
                 resignation.Status = "Pending";
                 _db.Resignation.Add(resignation);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Applied Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Index");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(resignation);
         }
         #endregion
@@ -117,10 +117,10 @@ namespace FTL_HRMS.Controllers
                     _db.Users.Remove(user);
                     _db.SaveChanges();
                 }
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("ResignationApproval", "Resignations");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return RedirectToAction("ResignationApproval", "Resignations");
         }
         #endregion

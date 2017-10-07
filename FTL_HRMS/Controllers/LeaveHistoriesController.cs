@@ -75,7 +75,7 @@ namespace FTL_HRMS.Controllers
             {
                 _db.LeaveHistories.Add(leaveHistory);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Applied Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Index");
             }
             else
@@ -84,7 +84,7 @@ namespace FTL_HRMS.Controllers
                 {
                     _db.LeaveHistories.Add(leaveHistory);
                     _db.SaveChanges();
-                    TempData["SuccessMsg"] = "Applied Successfully !!";
+                    TempData["message"] ="Apply" + DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                     return RedirectToAction("Index");
                 }
                 else
@@ -93,7 +93,7 @@ namespace FTL_HRMS.Controllers
                     leaveCountList = _db.LeaveCounts.Where(i => i.EmployeeId == userId).ToList();
                     ViewBag.LeaveCount = leaveCountList;
                     ViewBag.LeaveTypeId = new SelectList(_db.LeaveTypes, "Sl", "Name", leaveHistory.LeaveTypeId);
-                    TempData["WarningMsg"] = "Exceeds available days !!";
+                    TempData["message"] = "Exceeds available days !!";
                 }
             }
             return View(leaveHistory);
@@ -129,10 +129,10 @@ namespace FTL_HRMS.Controllers
                 leaveHistory.UpdateDate = DateTime.Now;
                 _db.Entry(leaveHistory).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("LeaveRecommendation", "LeaveHistories");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return RedirectToAction("LeaveRecommendation", "LeaveHistories");
         }
         #endregion
@@ -178,10 +178,10 @@ namespace FTL_HRMS.Controllers
                 }
                 #endregion
 
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("LeaveApproval", "LeaveHistories");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return RedirectToAction("LeaveApproval", "LeaveHistories");
         }
         #endregion

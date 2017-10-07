@@ -78,7 +78,7 @@ namespace FTL_HRMS.Controllers
                     FileStorage existingFileStorage = _db.FileStorage.FirstOrDefault(x => x.Path.Equals(fullFileName));
                     if (existingFileStorage != null)
                     {
-                        TempData["WarningMsg"] = "This File Already Exist";
+                        TempData["message"] ="The File" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                         ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", fileStorage.EmployeeId);
                         return View(fileStorage);
                     }
@@ -95,17 +95,17 @@ namespace FTL_HRMS.Controllers
                     _db.FileStorage.Add(fileStorage);
                     _db.SaveChanges();
 
-                    TempData["SuccessMsg"] = "Added Successfully !!";
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                     return RedirectToAction("Create");
                 }
                 else
                 {
-                    TempData["WarningMsg"] = "Please upload file properly !!";
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Error);
                 }
             }
             else
             {
-                TempData["WarningMsg"] = "Please give a file name !!";
+                TempData["message"] = "File Name" + DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
             }
 
             ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", fileStorage.EmployeeId);
@@ -181,6 +181,7 @@ namespace FTL_HRMS.Controllers
             }
             if (fileStorage != null) _db.FileStorage.Remove(fileStorage);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
         #endregion
@@ -201,7 +202,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["Warning"] = "File not found";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
             }
             //Response.End();
             byte[] stream = System.IO.File.ReadAllBytes(fullPath);

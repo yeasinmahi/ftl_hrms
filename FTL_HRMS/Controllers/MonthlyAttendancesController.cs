@@ -224,11 +224,11 @@ namespace FTL_HRMS.Controllers
                 monthlyAttendance.UpdateDate = DateTime.Now;
                 _db.Entry(monthlyAttendance).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 ViewBag.EmployeeCode = _db.MonthlyAttendance.Where(x => x.EmployeeId == monthlyAttendance.EmployeeId).Select(x => x.Employee.Code).FirstOrDefault();
                 return View(monthlyAttendance);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             ViewBag.EmployeeCode = _db.MonthlyAttendance.Where(x => x.EmployeeId == monthlyAttendance.EmployeeId).Select(x => x.Employee.Code).FirstOrDefault();
             return View(monthlyAttendance);
         }
@@ -256,6 +256,7 @@ namespace FTL_HRMS.Controllers
             MonthlyAttendance monthlyAttendance = _db.MonthlyAttendance.Find(id);
             _db.MonthlyAttendance.Remove(monthlyAttendance);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
 

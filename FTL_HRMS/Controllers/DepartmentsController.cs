@@ -92,14 +92,14 @@ namespace FTL_HRMS.Controllers
                 department.Status = true;
                 _db.Department.Add(department);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name");
                 ViewBag.Departments = groupList;
                 return RedirectToAction("Create");
             }
             else
             {
-                TempData["WarningMsg"] = "Code already exists !!";
+                TempData["message"] ="Code" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name",department.DepartmentGroupId);
             return View(department);
@@ -144,13 +144,13 @@ namespace FTL_HRMS.Controllers
                     department.UpdateDate = DateTime.Now;
                     _db.Entry(department).State = EntityState.Modified;
                     _db.SaveChanges();
-                    TempData["SuccessMsg"] = "Updated Successfully!";
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                     ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name", department.DepartmentGroupId);
                     return View(department);
                 }
                 else
                 {
-                    TempData["WarningMsg"] = "Code already exists !!";
+                    TempData["message"] ="Code" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                     ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name", department.DepartmentGroupId);
                     return View(department);
                 }
@@ -163,7 +163,7 @@ namespace FTL_HRMS.Controllers
                 department.UpdateDate = DateTime.Now;
                 _db.Entry(department).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name", department.DepartmentGroupId);
                 return View(department);
             }
@@ -197,11 +197,11 @@ namespace FTL_HRMS.Controllers
                 department.Status = false;
                 _db.Entry(department).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Deleted Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             }
             else
             {
-                TempData["WarningMsg"] = "Already exists some designations under this department !!";
+                TempData["message"] = "Some Department" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             return RedirectToAction("Index");
         }

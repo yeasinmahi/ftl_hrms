@@ -69,14 +69,14 @@ namespace FTL_HRMS.Controllers
             {
                 _db.DisciplinaryAction.Add(disciplinaryAction);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
                 ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
                 return RedirectToAction("Create");
             }
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", disciplinaryAction.EmployeeId);
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(disciplinaryAction);
         }
         #endregion
@@ -114,19 +114,19 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Entry(disciplinaryAction).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
                 ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
                 return RedirectToAction("Create");
             }
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", disciplinaryAction.EmployeeId);
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(disciplinaryAction);
         }
         #endregion
 
-        #region Delete (We don't use it)
+        #region Delete
         // GET: DisciplinaryActions/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -150,6 +150,7 @@ namespace FTL_HRMS.Controllers
             DisciplinaryAction disciplinaryAction = _db.DisciplinaryAction.Find(id);
             _db.DisciplinaryAction.Remove(disciplinaryAction);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
         #endregion

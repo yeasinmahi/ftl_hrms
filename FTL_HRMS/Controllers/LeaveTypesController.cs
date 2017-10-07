@@ -6,6 +6,7 @@ using FTL_HRMS.Models;
 using FTL_HRMS.Models.Hr;
 using System.Collections.Generic;
 using FTL_HRMS.DAL;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -76,10 +77,10 @@ namespace FTL_HRMS.Controllers
                 }
                 #endregion
 
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(leaveType);
         }
         #endregion
@@ -132,10 +133,10 @@ namespace FTL_HRMS.Controllers
                 }
                 #endregion
 
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return View(leaveType);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed); ;
             return View(leaveType);
         }
         #endregion
@@ -194,6 +195,7 @@ namespace FTL_HRMS.Controllers
             LeaveType leaveType = _db.LeaveTypes.Find(id);
             _db.LeaveTypes.Remove(leaveType);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
         #endregion

@@ -7,6 +7,7 @@ using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Models.Payroll;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -61,10 +62,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Weekend.Add(weekend);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             List<Branch> branchList = new List<Branch>();
             branchList = _db.Branches.Where(i => i.Status == true).ToList();
             ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", weekend.BranchId);
@@ -105,11 +106,11 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Entry(weekend).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", weekend.BranchId);
                 return View(weekend);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", weekend.BranchId);
             return View(weekend);
         }
@@ -139,6 +140,7 @@ namespace FTL_HRMS.Controllers
             Weekend weekend = _db.Weekend.Find(id);
             _db.Weekend.Remove(weekend);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
         #endregion

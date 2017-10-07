@@ -96,10 +96,10 @@ namespace FTL_HRMS.Controllers
                 var result2 = userManager.AddToRole(userId, newRole);
                 #endregion
 
-                TempData["SuccessMsg"] = "Transfered Successfully !!";
+                TempData["message"] ="Transfer" + DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = "Transfer" + DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
 
             string userName = User.Identity.Name;
             int userid = DbUtility.GetUserId(_db, userName);
@@ -203,7 +203,7 @@ namespace FTL_HRMS.Controllers
                 var result2 = userManager.AddToRole(userId, newRole);
                 #endregion
 
-                TempData["SuccessMsg"] = "Updated Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("Index");
             }
             DepartmentTransfer department_Transfer = _db.DepartmentTransfer.Find(departmentTransfer.Sl);
@@ -217,7 +217,7 @@ namespace FTL_HRMS.Controllers
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(departmentTransfer);
         }
         #endregion
@@ -246,6 +246,7 @@ namespace FTL_HRMS.Controllers
             DepartmentTransfer departmentTransfer = _db.DepartmentTransfer.Find(id);
             _db.DepartmentTransfer.Remove(departmentTransfer);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
         #endregion
