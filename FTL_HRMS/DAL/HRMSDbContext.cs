@@ -11,8 +11,8 @@ namespace FTL_HRMS.DAL
         public HRMSDbContext():base("HRMSDbContext")
         {
             Database.SetInitializer<HRMSDbContext>(null);
-            Configuration.ProxyCreationEnabled = true;
-            Configuration.LazyLoadingEnabled = true;
+            Configuration.ProxyCreationEnabled = false;
+            Configuration.LazyLoadingEnabled = false;
         }
 
         public DbSet<MenuItem> MenuItem { get; set; }
