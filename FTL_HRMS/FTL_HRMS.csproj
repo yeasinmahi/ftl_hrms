@@ -2836,6 +2836,7 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\ResignationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SalaryAdjustmentsController.cs" />
     <Compile Include="Controllers\SalaryDistributionsController.cs" />
     <Compile Include="Controllers\SalarySheetController.cs" />
     <Compile Include="Controllers\SourceOfHiresController.cs" />
@@ -2847,9 +2848,14 @@
     <Compile Include="Migrations\201710070922351_InitialCreate.Designer.cs">
       <DependentUpon>201710070922351_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710071448400_UpdateMonthlySalarySheet.cs" />
+    <Compile Include="Migrations\201710071448400_UpdateMonthlySalarySheet.Designer.cs">
+      <DependentUpon>201710071448400_UpdateMonthlySalarySheet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
+    <Compile Include="Models\Payroll\SalaryAdjustment.cs" />
     <Compile Include="Models\Payroll\BonusAndPenalty.cs" />
     <Compile Include="Models\Hr\LeaveCount.cs" />
     <Compile Include="Models\Hr\LeaveHistory.cs" />
@@ -3373,6 +3379,11 @@
     <Content Include="Uploads\Empoloyee report_E001.pdf" />
     <Content Include="Views\SalarySheet\Index.cshtml" />
     <Content Include="Views\Shared\WarningMessage.cshtml" />
+    <Content Include="Views\SalaryAdjustments\Create.cshtml" />
+    <Content Include="Views\SalaryAdjustments\Delete.cshtml" />
+    <Content Include="Views\SalaryAdjustments\Details.cshtml" />
+    <Content Include="Views\SalaryAdjustments\Edit.cshtml" />
+    <Content Include="Views\SalaryAdjustments\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3452,11 +3463,14 @@
     </Content>
     <EmbeddedResource Include="Migrations\201710070922351_InitialCreate.resx">
       <DependentUpon>201710070922351_InitialCreate.cs</DependentUpon>
-      </EmbeddedResource>
+    </EmbeddedResource>
     <Content Include="Reports\BonusAndPenaltieseReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BonusAndPenaltieseReport.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Migrations\201710071448400_UpdateMonthlySalarySheet.resx">
+      <DependentUpon>201710071448400_UpdateMonthlySalarySheet.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AttandanceByDateRangeReport.cs</LastGenOutput>

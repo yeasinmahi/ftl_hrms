@@ -85,6 +85,7 @@ namespace FTL_HRMS.Controllers
                     double OthersPanelty = GetOthersPanelty(sl, StartDate, EndDate);
                     double OthersBonus = GetOthersBonus(sl, StartDate, EndDate);
                     double FestivalBonus = GetFestivalBonus(sl, StartDate, EndDate);
+                    double AdjustmentAmount = GetAdjustmentAmount(sl, StartDate, EndDate);
 
                     MonthlySalarySheet monthlySalarySheet = new MonthlySalarySheet();
                     monthlySalarySheet.EmployeeId = sl;
@@ -101,7 +102,8 @@ namespace FTL_HRMS.Controllers
                     monthlySalarySheet.OthersPenalty = OthersPanelty;
                     monthlySalarySheet.OthersBonus = OthersBonus;
                     monthlySalarySheet.FestivalBonus = FestivalBonus;
-                    monthlySalarySheet.NetPay = CalculateNetPay(GrossSalary, AbsentPanelty, LatePanelty, UnofficialPanelty, LeavePanelty, OthersPanelty, OthersBonus, FestivalBonus);
+                    monthlySalarySheet.AdjustmentAmount = AdjustmentAmount;
+                    monthlySalarySheet.NetPay = CalculateNetPay(GrossSalary, AbsentPanelty, LatePanelty, UnofficialPanelty, LeavePanelty, OthersPanelty, OthersBonus, FestivalBonus, AdjustmentAmount);
                     _db.MonthlySalarySheet.Add(monthlySalarySheet);
                     _db.SaveChanges();
                 }
@@ -426,9 +428,21 @@ namespace FTL_HRMS.Controllers
             return FestivalBonus;
         }
 
-        public double CalculateNetPay(double GrossSalary, double AbsentPanelty, double LatePanelty,double UnofficialPanelty,double LeavePanelty,double OthersPanelty,double OthersBonus,double FestivalBonus)
+        public double GetAdjustmentAmount(int sl, DateTime StartDate, DateTime EndDate)
         {
-            return GrossSalary - AbsentPanelty - LatePanelty - UnofficialPanelty - LeavePanelty - OthersPanelty + OthersBonus + FestivalBonus;
+            if (_db.SalaryAdjustment.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Count > 0)
+            {
+                return _db.SalaryAdjustment.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).Sum(i => i.Amount);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public double CalculateNetPay(double GrossSalary, double AbsentPanelty, double LatePanelty,double UnofficialPanelty,double LeavePanelty,double OthersPanelty,double OthersBonus,double FestivalBonus, double AdjustmentAmount)
+        {
+            return GrossSalary - AbsentPanelty - LatePanelty - UnofficialPanelty - LeavePanelty - OthersPanelty + OthersBonus + FestivalBonus + AdjustmentAmount;
         }
 
         public List<MonthlyAttendance> GetMonthlyAttendance(DateTime StartDate, DateTime EndDate)
