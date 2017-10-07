@@ -2848,6 +2848,10 @@
     <Compile Include="Migrations\201710070922351_InitialCreate.Designer.cs">
       <DependentUpon>201710070922351_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710071448400_UpdateMonthlySalarySheet.cs" />
+    <Compile Include="Migrations\201710071448400_UpdateMonthlySalarySheet.Designer.cs">
+      <DependentUpon>201710071448400_UpdateMonthlySalarySheet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
@@ -3459,13 +3463,13 @@
     </Content>
     <EmbeddedResource Include="Migrations\201710070922351_InitialCreate.resx">
       <DependentUpon>201710070922351_InitialCreate.cs</DependentUpon>
-      </EmbeddedResource>
+    </EmbeddedResource>
     <Content Include="Reports\BonusAndPenaltieseReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BonusAndPenaltieseReport.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="Migrations\201710070922351_InitialCreate.resx">
-      <DependentUpon>201710070922351_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710071448400_UpdateMonthlySalarySheet.resx">
+      <DependentUpon>201710071448400_UpdateMonthlySalarySheet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
