@@ -234,7 +234,6 @@
     <Content Include="Content\AdminTemplate\assets\images\favicon.png" />
     <Content Include="Content\AdminTemplate\assets\images\index.html" />
     <Content Include="Content\AdminTemplate\assets\images\login-bg.png" />
-    <Content Include="Content\AdminTemplate\assets\images\login-logo.png" />
     <Content Include="Content\AdminTemplate\assets\images\logo-folded.png" />
     <Content Include="Content\AdminTemplate\assets\images\logo.png" />
     <Content Include="Content\AdminTemplate\assets\index.html" />
@@ -3458,6 +3457,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ResignationApplicationReport.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Migrations\201710070922351_InitialCreate.resx">
+      <DependentUpon>201710070922351_InitialCreate.cs</DependentUpon>
+      </EmbeddedResource>
     <Content Include="Reports\BonusAndPenaltieseReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BonusAndPenaltieseReport.cs</LastGenOutput>

@@ -13,7 +13,7 @@ namespace FTL_HRMS.Controllers
     public class DepartmentGroupsController : Controller
     {
         private HRMSDbContext _db = new HRMSDbContext();
-        private GenericData genericData = GenericData.GetInstance();
+        private readonly GenericData _genericData = GenericData.GetInstance();
         #region List
         // GET: DepartmentGroups
         public ActionResult Index()
@@ -60,21 +60,11 @@ namespace FTL_HRMS.Controllers
                 departmentGroup.CreatedBy = userId;
                 departmentGroup.CreateDate = DateTime.Now;
                 departmentGroup.Status = true;
-                DbUtility.Status status = genericData.Insert<DepartmentGroup>(departmentGroup);
-                if (status.Equals(DbUtility.Status.Success))
-                {
-                    TempData["SuccessMsg"] = DbUtility.GetStatusMessage(status);
-                }
-                else
-                {
-                    TempData["WarningMsg"] = DbUtility.GetStatusMessage(status);
-                }
+                DbUtility.Status status = _genericData.Insert<DepartmentGroup>(departmentGroup);
+                TempData["message"] = DbUtility.GetStatusMessage(status);
                 return RedirectToAction("Create");
             }
-            else
-            {
-                TempData["WarningMsg"] = "Code already exists !!";
-            }
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.BlankError);
             return View(departmentGroup);
         }
         #endregion
@@ -127,11 +117,13 @@ namespace FTL_HRMS.Controllers
                 int userId = DbUtility.GetUserId(_db, userName);
                 departmentGroup.UpdatedBy = userId;
                 departmentGroup.UpdateDate = DateTime.Now;
-                _db.Entry(departmentGroup).State = EntityState.Modified;
-                _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                DbUtility.Status status = _genericData.Update<DepartmentGroup>(departmentGroup);
+                TempData["message"] = DbUtility.GetStatusMessage(status);
                 return View(departmentGroup);
             }
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UnknownError);
+            return View(departmentGroup);
+
         }
         #endregion
 
@@ -156,18 +148,10 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (_db.Department.Where(i => i.DepartmentGroupId == id && i.Status == true).ToList().Count < 1)
-            {
-                DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
-                departmentGroup.Status = false;
-                _db.Entry(departmentGroup).State = EntityState.Modified;
-                _db.SaveChanges();
-                TempData["SuccessMsg"] = "Deleted Successfully !!";
-            }
-            else
-            {
-                TempData["WarningMsg"] = "Already exists some departments under this department group !!";
-            }
+            DepartmentGroup departmentGroup = _genericData.GetById<DepartmentGroup>(id);
+            departmentGroup.Status = false;
+            DbUtility.Status status = _genericData.Update<DepartmentGroup>(departmentGroup);
+            TempData["message"] = DbUtility.GetStatusMessage(status);
             return RedirectToAction("Index");
         }
         #endregion
