@@ -72,7 +72,7 @@
 
                                                 @Html.CheckBox("checkbox1", parent.IsSelected, new { @id = "checkbox1_" + parent.Id, data_parsley_multiple = "groups", data_parsley_mincheck = "1", @onclick = "selectAll(" + parent.Id + ")" })
 
-                                                <label for="checkbox1_@par[i].Id"><a onclick="sub_menu_display_view('@parent.Id')"> @parent.MenuItemName </a></label>
+                                                <label for="checkbox1_@parent.Id"><a onclick="sub_menu_display_view('@parent.Id')"> @parent.MenuItemName </a></label>
 
                                                 @Html.Hidden("main_item", parent.Id)
 
@@ -97,7 +97,7 @@
                                             }
                                             TotalChild = string.Join(",", TotalChildArray);
 
-                                            @:<input type="hidden" name="total_submenu" id="total_submenu_@parents[i].Id" value="@TotalChild">
+                                            @:<input type="hidden" name="total_submenu" id="total_submenu_@parent.Id" value="@TotalChild">
                                         }
                                     </div>
                                 }
