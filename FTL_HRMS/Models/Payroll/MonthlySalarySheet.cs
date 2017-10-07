@@ -54,6 +54,9 @@ namespace FTL_HRMS.Models.Payroll
         [Required(ErrorMessage = "Others Bonus cannot be empty")]
         public double OthersBonus { get; set; }
 
+        [Required(ErrorMessage = "Adjustment Amount cannot be empty")]
+        public double AdjustmentAmount { get; set; }
+
         [Required(ErrorMessage = "Net Pay cannot be empty")]
         public double NetPay { get; set; }
 

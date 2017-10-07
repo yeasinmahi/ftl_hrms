@@ -45,6 +45,7 @@ namespace FTL_HRMS.DAL
         public DbSet<EmployeeSalaryDistribution> EmployeeSalaryDistribution { get; set; }
         public DbSet<Weekend> Weekend { get; set; }
         public DbSet<BonusAndPenalty> BonusAndPenalty { get; set; }
+        public DbSet<SalaryAdjustment> SalaryAdjustment { get; set; }
         public DbSet<FestivalBonus> FestivalBonus { get; set; }
         public DbSet<FileStorage> FileStorage { get; set; }
 

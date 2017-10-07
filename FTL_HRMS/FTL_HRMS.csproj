@@ -2837,6 +2837,7 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\ResignationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SalaryAdjustmentsController.cs" />
     <Compile Include="Controllers\SalaryDistributionsController.cs" />
     <Compile Include="Controllers\SalarySheetController.cs" />
     <Compile Include="Controllers\SourceOfHiresController.cs" />
@@ -2844,101 +2845,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708181143265_Initial.cs" />
-    <Compile Include="Migrations\201708181143265_Initial.Designer.cs">
-      <DependentUpon>201708181143265_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708240812540_adding foreignkey in department and adding payroll model.cs" />
-    <Compile Include="Migrations\201708240812540_adding foreignkey in department and adding payroll model.Designer.cs">
-      <DependentUpon>201708240812540_adding foreignkey in department and adding payroll model.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708241025097_update_createdBy_updatedBy.cs" />
-    <Compile Include="Migrations\201708241025097_update_createdBy_updatedBy.Designer.cs">
-      <DependentUpon>201708241025097_update_createdBy_updatedBy.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708260553116_update employee model.cs" />
-    <Compile Include="Migrations\201708260553116_update employee model.Designer.cs">
-      <DependentUpon>201708260553116_update employee model.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708260658065_add salary distribution.cs" />
-    <Compile Include="Migrations\201708260658065_add salary distribution.Designer.cs">
-      <DependentUpon>201708260658065_add salary distribution.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708260705168_update branch.cs" />
-    <Compile Include="Migrations\201708260705168_update branch.Designer.cs">
-      <DependentUpon>201708260705168_update branch.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708260950584_update salary distribution.cs" />
-    <Compile Include="Migrations\201708260950584_update salary distribution.Designer.cs">
-      <DependentUpon>201708260950584_update salary distribution.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708261025454_update branch model.cs" />
-    <Compile Include="Migrations\201708261025454_update branch model.Designer.cs">
-      <DependentUpon>201708261025454_update branch model.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709090943175_add_IsEditable_in_LeaveType.cs" />
-    <Compile Include="Migrations\201709090943175_add_IsEditable_in_LeaveType.Designer.cs">
-      <DependentUpon>201709090943175_add_IsEditable_in_LeaveType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709091057547_update_days_type.cs" />
-    <Compile Include="Migrations\201709091057547_update_days_type.Designer.cs">
-      <DependentUpon>201709091057547_update_days_type.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709100512031_Update_tbl_Employee.cs" />
-    <Compile Include="Migrations\201709100512031_Update_tbl_Employee.Designer.cs">
-      <DependentUpon>201709100512031_Update_tbl_Employee.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709100940554_modify some model.cs" />
-    <Compile Include="Migrations\201709100940554_modify some model.Designer.cs">
-      <DependentUpon>201709100940554_modify some model.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709101000550_modify employee code in device attendance.cs" />
-    <Compile Include="Migrations\201709101000550_modify employee code in device attendance.Designer.cs">
-      <DependentUpon>201709101000550_modify employee code in device attendance.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709101041263_update_tbl_update_emp_parmanentDate.cs" />
-    <Compile Include="Migrations\201709101041263_update_tbl_update_emp_parmanentDate.Designer.cs">
-      <DependentUpon>201709101041263_update_tbl_update_emp_parmanentDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709101206532_add_tbl_PromotionHistory.cs" />
-    <Compile Include="Migrations\201709101206532_add_tbl_PromotionHistory.Designer.cs">
-      <DependentUpon>201709101206532_add_tbl_PromotionHistory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709101231442_Change device attandance datetime to checktime.cs" />
-    <Compile Include="Migrations\201709101231442_Change device attandance datetime to checktime.Designer.cs">
-      <DependentUpon>201709101231442_Change device attandance datetime to checktime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709161039441_update_tbl_monthlyattendance.cs" />
-    <Compile Include="Migrations\201709161039441_update_tbl_monthlyattendance.Designer.cs">
-      <DependentUpon>201709161039441_update_tbl_monthlyattendance.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.cs" />
-    <Compile Include="Migrations\201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.Designer.cs">
-      <DependentUpon>201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709171153273_renaming FestibalBonus.cs" />
-    <Compile Include="Migrations\201709171153273_renaming FestibalBonus.Designer.cs">
-      <DependentUpon>201709171153273_renaming FestibalBonus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709240952588_update_tbl_employee_last_meeting.cs" />
-    <Compile Include="Migrations\201709240952588_update_tbl_employee_last_meeting.Designer.cs">
-      <DependentUpon>201709240952588_update_tbl_employee_last_meeting.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709241113230_update_tbl_employee_last_meeting_1.cs" />
-    <Compile Include="Migrations\201709241113230_update_tbl_employee_last_meeting_1.Designer.cs">
-      <DependentUpon>201709241113230_update_tbl_employee_last_meeting_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709260856506_change salary table.cs" />
-    <Compile Include="Migrations\201709260856506_change salary table.Designer.cs">
-      <DependentUpon>201709260856506_change salary table.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709271121507_adding foreign key to images model.cs" />
-    <Compile Include="Migrations\201709271121507_adding foreign key to images model.Designer.cs">
-      <DependentUpon>201709271121507_adding foreign key to images model.cs</DependentUpon>
+    <Compile Include="Migrations\201710070922351_InitialCreate.cs" />
+    <Compile Include="Migrations\201710070922351_InitialCreate.Designer.cs">
+      <DependentUpon>201710070922351_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
+    <Compile Include="Models\Payroll\SalaryAdjustment.cs" />
     <Compile Include="Models\Payroll\BonusAndPenalty.cs" />
     <Compile Include="Models\Hr\LeaveCount.cs" />
     <Compile Include="Models\Hr\LeaveHistory.cs" />
@@ -3462,6 +3376,11 @@
     <Content Include="Uploads\Empoloyee report_E001.pdf" />
     <Content Include="Views\SalarySheet\Index.cshtml" />
     <Content Include="Views\Shared\WarningMessage.cshtml" />
+    <Content Include="Views\SalaryAdjustments\Create.cshtml" />
+    <Content Include="Views\SalaryAdjustments\Delete.cshtml" />
+    <Content Include="Views\SalaryAdjustments\Details.cshtml" />
+    <Content Include="Views\SalaryAdjustments\Edit.cshtml" />
+    <Content Include="Views\SalaryAdjustments\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3475,72 +3394,6 @@
     <Folder Include="Content\assets\data\images\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708181143265_Initial.resx">
-      <DependentUpon>201708181143265_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708240812540_adding foreignkey in department and adding payroll model.resx">
-      <DependentUpon>201708240812540_adding foreignkey in department and adding payroll model.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708241025097_update_createdBy_updatedBy.resx">
-      <DependentUpon>201708241025097_update_createdBy_updatedBy.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708260553116_update employee model.resx">
-      <DependentUpon>201708260553116_update employee model.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708260658065_add salary distribution.resx">
-      <DependentUpon>201708260658065_add salary distribution.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708260705168_update branch.resx">
-      <DependentUpon>201708260705168_update branch.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708260950584_update salary distribution.resx">
-      <DependentUpon>201708260950584_update salary distribution.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708261025454_update branch model.resx">
-      <DependentUpon>201708261025454_update branch model.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709090943175_add_IsEditable_in_LeaveType.resx">
-      <DependentUpon>201709090943175_add_IsEditable_in_LeaveType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709091057547_update_days_type.resx">
-      <DependentUpon>201709091057547_update_days_type.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709100512031_Update_tbl_Employee.resx">
-      <DependentUpon>201709100512031_Update_tbl_Employee.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709100940554_modify some model.resx">
-      <DependentUpon>201709100940554_modify some model.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709101000550_modify employee code in device attendance.resx">
-      <DependentUpon>201709101000550_modify employee code in device attendance.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709101041263_update_tbl_update_emp_parmanentDate.resx">
-      <DependentUpon>201709101041263_update_tbl_update_emp_parmanentDate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709101206532_add_tbl_PromotionHistory.resx">
-      <DependentUpon>201709101206532_add_tbl_PromotionHistory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709101231442_Change device attandance datetime to checktime.resx">
-      <DependentUpon>201709101231442_Change device attandance datetime to checktime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709161039441_update_tbl_monthlyattendance.resx">
-      <DependentUpon>201709161039441_update_tbl_monthlyattendance.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.resx">
-      <DependentUpon>201709161142100_update_tbl_BonusPenalty_festbl_fileStrg_16917.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709171153273_renaming FestibalBonus.resx">
-      <DependentUpon>201709171153273_renaming FestibalBonus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709240952588_update_tbl_employee_last_meeting.resx">
-      <DependentUpon>201709240952588_update_tbl_employee_last_meeting.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709241113230_update_tbl_employee_last_meeting_1.resx">
-      <DependentUpon>201709241113230_update_tbl_employee_last_meeting_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709260856506_change salary table.resx">
-      <DependentUpon>201709260856506_change salary table.cs</DependentUpon>
-    </EmbeddedResource>
     <Content Include="Reports\BranchReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BranchReport.cs</LastGenOutput>
@@ -3593,9 +3446,6 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DepartmentTransferReport.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="Migrations\201709271121507_adding foreign key to images model.resx">
-      <DependentUpon>201709271121507_adding foreign key to images model.cs</DependentUpon>
-    </EmbeddedResource>
     <Content Include="Reports\DisciplinaryActionTypeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DisciplinaryActionTypeReport.cs</LastGenOutput>
@@ -3612,6 +3462,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BonusAndPenaltieseReport.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Migrations\201710070922351_InitialCreate.resx">
+      <DependentUpon>201710070922351_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AttandanceByDateRangeReport.cs</LastGenOutput>
