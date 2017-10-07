@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using FTL_HRMS.DAL;
-using FTL_HRMS.Models;
 
 namespace FTL_HRMS.Utility
 {
