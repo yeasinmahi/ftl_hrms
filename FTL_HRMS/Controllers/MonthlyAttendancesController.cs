@@ -14,6 +14,7 @@ namespace FTL_HRMS.Controllers
     public class MonthlyAttendancesController : Controller
     {
         private HRMSDbContext _db = new HRMSDbContext();
+        AttendanceController att = new AttendanceController();
 
         // GET: MonthlyAttendances
         public ActionResult Index()
@@ -32,6 +33,7 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult EmployeeAttendenceReport(string departmentGroupId, string ddl_dept)
         {
+            att.SyncAttendance();
             int dgid, did;
             Int32.TryParse(departmentGroupId, out dgid);
             Int32.TryParse(ddl_dept, out did);
@@ -88,6 +90,7 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult EmployeewiseAttendenceReport(string employeeId)
         {
+            att.SyncAttendance();
             int eid;
             Int32.TryParse(employeeId, out eid);
             DateTime FromDate = Utility.Utility.GetDefaultDate();
@@ -108,6 +111,9 @@ namespace FTL_HRMS.Controllers
             TempData["dgid"] = eid;
             TempData["FromDate"] = FromDate;
             TempData["ToDate"] = ToDate;
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
+            ViewBag.EmpId = Int32.TryParse(employeeId, out eid);
             List<MonthlyAttendance> attendenceList = GetEmployeewiseList(eid, FromDate, ToDate);
             return View(attendenceList);
         }
@@ -137,6 +143,9 @@ namespace FTL_HRMS.Controllers
             {
                 attendenceList = _db.MonthlyAttendance.Include(x => x.Employee).Where(x => x.Date.Day == ToDate.Day && x.Date.Month == ToDate.Month && x.Date.Year == ToDate.Year).ToList();
             }
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
+            ViewBag.EmpId = employeeId;
             return attendenceList;
         }
 

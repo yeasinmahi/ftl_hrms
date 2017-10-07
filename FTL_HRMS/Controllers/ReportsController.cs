@@ -320,6 +320,13 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Festival Bonus
+        public ActionResult PrintFestivalBonusReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "FestivalBonusReport", fileName = "Festival Bonus Report" });
+        }
+        #endregion
+
         #region Leave Type
         public ActionResult PrintLeaveTypeReport()
         {
@@ -331,6 +338,44 @@ namespace FTL_HRMS.Controllers
         public ActionResult PrintLeaveApplicationReport()
         {
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "LeaveApplicationReport", fileName = "Leave Application Report" });
+        }
+        #endregion
+
+        #region AttandanceByDateRange
+        public ActionResult PrintAttandanceByDateRangeReport()
+        {
+            int employeeId = Convert.ToInt32(Request["EmployeeId"]);
+            DateTime fromDate = Convert.ToDateTime(Request["fromDate"]);
+            DateTime toDate = Convert.ToDateTime(Request["toDate"]);
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "AttandanceByDateRangeReport", fileName = "Attandance By Date Range Report", selectedFormula = "{tbl_MonthlyAttendance.Date}>=Date (" + fromDate.ToString("yyyy,MM,dd") + ") and {tbl_MonthlyAttendance.Date}<= Date (" + toDate.ToString("yyyy,MM,dd") + " ) and {tbl_Employee.Sl}= "+employeeId+"" });
+        }
+        #endregion
+
+        #region Performance Issue
+        public ActionResult PrintPerformanceIssueReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "PerformanceIssueReport", fileName = "Performance Issue Report" });
+        }
+        #endregion
+
+        #region Performance Rating
+        public ActionResult PrintPerformanceRatingReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "PerformanceRatingReport", fileName = "Performance Rating Report" });
+        }
+        #endregion
+
+        #region Probation Employee
+        public ActionResult PrintProbationEmployeeReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "ProbationEmployeeReport", fileName = "Probation Employee Report", selectedFormula = "{tbl_Employee.ProbationStatus} = TRUE" });
+        }
+        #endregion
+
+        #region Bonus and penalties
+        public ActionResult PrintBonusAndpenaltiesReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BonusAndPenaltieseReport", fileName = "Bonus And PenaltieseReport", selectedFormula = "{tbl_Employee.ProbationStatus} = TRUE" });
         }
         #endregion
 

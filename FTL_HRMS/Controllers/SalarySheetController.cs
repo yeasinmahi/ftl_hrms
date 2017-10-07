@@ -13,14 +13,26 @@ namespace FTL_HRMS.Controllers
     { 
         // GET: SalarySheet
         private HRMSDbContext _db = new HRMSDbContext();
+        AttendanceController att = new AttendanceController();
 
         public ActionResult Index()
         {
-            return View();
+            int LastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
+            List<MonthlySalarySheet> SalarySheet = new List<MonthlySalarySheet>();
+            if (LastPaidSalaryDurationId > 0)
+            {
+                SalarySheet = _db.MonthlySalarySheet.Include(i=> i.Employee).Include(i=> i.PaidSalaryDuration).Where(i => i.PaidSalaryDurationId == LastPaidSalaryDurationId).ToList();
+                DateTime FromDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.FromDate).FirstOrDefault();
+                DateTime ToDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
+                ViewBag.FromDate = FromDate.ToShortDateString();
+                ViewBag.ToDate = ToDate.ToShortDateString();
+            }
+            return View(SalarySheet);
         }
 
         public ActionResult CalculateSalarySheet(DateTime StartDate, DateTime EndDate)
         {
+            att.SyncAttendance();
             List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendance(StartDate, EndDate);
             double WorkingDays = GetWorkingDays(StartDate);
             int PaidSalaryDurationId = InsertPaidSalaryDuration(StartDate, EndDate, WorkingDays);
@@ -365,12 +377,26 @@ namespace FTL_HRMS.Controllers
 
         public double GetOthersPanelty(int sl, DateTime StartDate, DateTime EndDate)
         {
-            return _db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Penalty" && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).Sum(i => i.Amount);
+            if(_db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Penalty" && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Count > 0)
+            {
+                return _db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Penalty" && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).Sum(i => i.Amount);
+            }
+            else
+            {
+                return 0;
+            }            
         }
 
         public double GetOthersBonus(int sl, DateTime StartDate, DateTime EndDate)
         {
-            return _db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Bonus" && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).Sum(i => i.Amount);
+            if(_db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Bonus" && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Count > 0)
+            {
+                return _db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Bonus" && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).Sum(i => i.Amount);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public double GetFestivalBonus(int sl, DateTime StartDate, DateTime EndDate)
@@ -419,6 +445,7 @@ namespace FTL_HRMS.Controllers
                 {
                     EmployeeAttendance.ForEach(x => x.IsCalculated = true);
                 }
+                _db.SaveChanges();
                 return true;
             }
             catch

@@ -53,7 +53,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] DepartmentGroup departmentGroup)
         {
-            if (departmentGroup.Name != "")
+            if (_db.DepartmentGroup.Where(i=> i.Code == departmentGroup.Code).ToList().Count < 1)
             {
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
@@ -92,7 +92,26 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,Code,Name,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] DepartmentGroup departmentGroup)
         {
-            if (ModelState.IsValid)
+            if (_db.DepartmentGroup.Where(i => i.Sl == departmentGroup.Sl).Select(i=> i.Code).ToString() != departmentGroup.Code)
+            {
+                if(_db.DepartmentGroup.Where(i => i.Code == departmentGroup.Code).ToList().Count < 1)
+                {
+                    string userName = User.Identity.Name;
+                    int userId = DbUtility.GetUserId(_db, userName);
+                    departmentGroup.UpdatedBy = userId;
+                    departmentGroup.UpdateDate = DateTime.Now;
+                    _db.Entry(departmentGroup).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    TempData["SuccessMsg"] = "Updated Successfully!";
+                    return View(departmentGroup);
+                }
+                else
+                {
+                    TempData["WarningMsg"] = "Code already exists !!";
+                    return View(departmentGroup);
+                }
+            }
+            else
             {
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
@@ -104,6 +123,7 @@ namespace FTL_HRMS.Controllers
             }
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UnknownError);
             return View(departmentGroup);
+
         }
         #endregion
 
