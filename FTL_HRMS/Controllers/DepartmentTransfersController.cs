@@ -79,13 +79,6 @@ namespace FTL_HRMS.Controllers
                 _db.DepartmentTransfer.Add(departmentTransfer);
                 _db.SaveChanges();
 
-                #region Edit Employee
-                Employee employee = _db.Employee.Find(departmentTransfer.EmployeeId);
-                employee.DesignationId = toDesignationId;
-                _db.Entry(employee).State = EntityState.Modified;
-                _db.SaveChanges();
-                #endregion
-
                 #region Role Transfer
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
@@ -94,6 +87,13 @@ namespace FTL_HRMS.Controllers
                 string userId = _db.Users.Where(i => i.CustomUserId == departmentTransfer.EmployeeId).Select(s => s.Id).FirstOrDefault();
                 var result1 = userManager.RemoveFromRole(userId, existingRole);
                 var result2 = userManager.AddToRole(userId, newRole);
+                #endregion
+
+                #region Edit Employee
+                Employee employee = _db.Employee.Find(departmentTransfer.EmployeeId);
+                employee.DesignationId = toDesignationId;
+                _db.Entry(employee).State = EntityState.Modified;
+                _db.SaveChanges();
                 #endregion
 
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);

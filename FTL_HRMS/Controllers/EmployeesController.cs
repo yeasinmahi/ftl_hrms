@@ -344,7 +344,7 @@ namespace FTL_HRMS.Controllers
 
                 #region Add Leave Count
                 List<LeaveType> typeList = new List<LeaveType>();
-                typeList = _db.LeaveTypes.Where(i => i.Name != "Without Pay Leave").ToList();
+                typeList = _db.LeaveTypes.Where(i => i.Name != "Without Pay").ToList();
 
                 for (int i = 0; i < typeList.Count; i++)
                 {

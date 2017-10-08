@@ -9,7 +9,6 @@ using FTL_HRMS.Models;
 using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Models.ViewModels;
 using FTL_HRMS.Models.Hr;
-
 namespace FTL_HRMS.Controllers
 {
     public class DeviceAttendancesController : Controller

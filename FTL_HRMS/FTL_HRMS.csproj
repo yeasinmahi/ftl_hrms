@@ -3019,6 +3019,12 @@
       <DependentUpon>ProbationEmployeeReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\PromotionHistoryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PromotionHistoryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\ResignationApplicationReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3047,6 +3053,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DepartmentTransferReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\TodaysAttendanceReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TodaysAttendanceReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Startup.cs" />
@@ -3388,6 +3400,8 @@
     <Content Include="Views\SalaryAdjustments\Details.cshtml" />
     <Content Include="Views\SalaryAdjustments\Edit.cshtml" />
     <Content Include="Views\SalaryAdjustments\Index.cshtml" />
+    <Content Include="Views\Resignations\Delete.cshtml" />
+    <Content Include="Views\Resignations\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3510,6 +3524,14 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ProbationEmployeeReport.cs</LastGenOutput>
     </Content>
+    <Content Include="Reports\PromotionHistoryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PromotionHistoryReport.cs</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="Reports\TodaysAttendanceReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TodaysAttendanceReport.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

@@ -17,7 +17,11 @@ namespace FTL_HRMS.Controllers
 
         public ActionResult Index()
         {
-            int LastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
+            int LastPaidSalaryDurationId = 0;
+            if (_db.PaidSalaryDuration.ToList().Count > 0)
+            {
+                LastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
+            }            
             List<MonthlySalarySheet> SalarySheet = new List<MonthlySalarySheet>();
             if (LastPaidSalaryDurationId > 0)
             {
@@ -208,12 +212,12 @@ namespace FTL_HRMS.Controllers
 
         public double GetEarnLeave(int sl)
         {
-            return _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Earn Leave").Select(i => i.AvailableDay).FirstOrDefault();
+            return _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Earn").Select(i => i.AvailableDay).FirstOrDefault();
         }
 
         public double GetWithoutPayLeave(int sl)
         {
-            return _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay Leave").Select(i => i.AvailableDay).FirstOrDefault();
+            return _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay").Select(i => i.AvailableDay).FirstOrDefault();
         }
 
         public bool CalculateLeavePanelty(int sl, int LeavePaneltyDays, double EarnLeave, double WithoutPayLeave)
@@ -223,13 +227,13 @@ namespace FTL_HRMS.Controllers
                 double result = EarnLeave - LeavePaneltyDays;
                 if (result < 0)
                 {
-                    int earnLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Earn Leave").Select(i => i.Sl).FirstOrDefault();
+                    int earnLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Earn").Select(i => i.Sl).FirstOrDefault();
                     var earnLeave = _db.LeaveCounts.Find(earnLeaveId);
                     earnLeave.AvailableDay = 0;
                     _db.Entry(earnLeave).State = EntityState.Modified;
                     _db.SaveChanges();
 
-                    int withoutPayLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay Leave").Select(i => i.Sl).FirstOrDefault();
+                    int withoutPayLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay").Select(i => i.Sl).FirstOrDefault();
                     var withoutPayLeave = _db.LeaveCounts.Find(withoutPayLeaveId);
                     withoutPayLeave.AvailableDay = withoutPayLeave.AvailableDay - result;
                     _db.Entry(withoutPayLeave).State = EntityState.Modified;
@@ -237,7 +241,7 @@ namespace FTL_HRMS.Controllers
                 }
                 else
                 {
-                    int earnLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Earn Leave").Select(i => i.Sl).FirstOrDefault();
+                    int earnLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Earn").Select(i => i.Sl).FirstOrDefault();
                     var earnLeave = _db.LeaveCounts.Find(earnLeaveId);
                     earnLeave.AvailableDay = result;
                     _db.Entry(earnLeave).State = EntityState.Modified;
@@ -258,7 +262,7 @@ namespace FTL_HRMS.Controllers
             {
                 LeavePanelty = PerDaySalary * WithoutPayLeave;
 
-                int withoutPayLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay Leave").Select(i => i.Sl).FirstOrDefault();
+                int withoutPayLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay").Select(i => i.Sl).FirstOrDefault();
                 var withoutPayLeave = _db.LeaveCounts.Find(withoutPayLeaveId);
                 withoutPayLeave.AvailableDay = 0;
                 _db.Entry(withoutPayLeave).State = EntityState.Modified;

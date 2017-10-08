@@ -344,26 +344,7 @@ namespace FTL_HRMS.Controllers
                 else if (IsLeave(emp.Sl, date))
                 {
                     string LeaveType = GetLeaveType(emp.Sl, date);
-                    if (LeaveType == "Casual Leave")
-                    {
-                        monthlyAttendance.Status = "CL";
-                    }
-                    else if (LeaveType == "Sick Leave")
-                    {
-                        monthlyAttendance.Status = "SL";
-                    }
-                    else if (LeaveType == "Without Pay Leave")
-                    {
-                        monthlyAttendance.Status = "WL";
-                    }
-                    else if (LeaveType == "Earn Leave")
-                    {
-                        monthlyAttendance.Status = "EL";
-                    }
-                    else
-                    {
-                        monthlyAttendance.Status = LeaveType;
-                    }
+                    monthlyAttendance.Status = LeaveType.Substring(0, 2) + "L";
                 }
                 else
                 {
