@@ -23,7 +23,7 @@
                             You have <strong>@notifyList.Count</strong>  pending notification .
                         </span>
                     </li>
-                    <li class="list" style="height: 400px; width: 400px;">
+                    <li class="list" style="height: 400px; width: 550px;">
                        
                         <table cellspacing="0" id="tech-companies-1" class="table table-small-font table-bordered table-striped">
                             @{int rowNo = 0;}
@@ -33,8 +33,9 @@
                                     <th data-priority="1">SL</th>
                                     <th data-priority="2">Employee Name </th>
                                     <th data-priority="3">Date</th>
-                                    <th data-priority="3">Type</th>
-                                    <th data-priority="4">Action</th>
+                                    <th data-priority="4">Type</th>
+                                    <th data-priority="5">Status</th>
+                                    <th data-priority="6">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -48,11 +49,36 @@
                                         <td> @leave.EmployeeCode</td>
                                         <td> @leave.Date</td>
                                         <td> @leave.Type</td>
-                                        <td align="center">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("LeaveApproval", "LeaveHistories")'">Details</button>
-                                            </div>
-                                        </td>
+                                        <td> @leave.Status</td>
+                                        @if (@leave.Type == "Leave")
+                                        {
+                                            if (@leave.Status == "Recommended")
+                                            {
+                                                <td align="center">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("LeaveApproval", "LeaveHistories")'">Details</button>
+                                                    </div>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td align="center">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("LeaveRecommendation", "LeaveHistories")'">Details</button>
+                                                    </div>
+                                                </td>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <td align="center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("ResignationApproval", "Resignations")'">Details</button>
+                                                </div>
+                                            </td>
+                                        }
+
                                     </tr>
                                 }
 

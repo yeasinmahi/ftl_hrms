@@ -11,5 +11,6 @@ namespace FTL_HRMS.Models.ViewModels
         public string EmployeeCode { get; set; }
         public DateTime Date { get; set; }
         public string Type { get; set; }
+        public string Status { get; set; }
     }
 }
