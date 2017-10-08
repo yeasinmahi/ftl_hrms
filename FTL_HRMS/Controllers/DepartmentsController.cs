@@ -134,7 +134,7 @@ namespace FTL_HRMS.Controllers
         {
             List<DepartmentGroup> groupList = new List<DepartmentGroup>();
             groupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            if (_db.Department.Where(i => i.Sl == department.Sl).Select(i => i.Code).ToString() != department.Code)
+            if (_db.Department.Where(i => i.Sl == department.Sl).Select(i => i.Code).FirstOrDefault() != department.Code && department.Code != null)
             {
                 if (_db.Department.Where(i => i.Code == department.Code).ToList().Count < 1)
                 {
