@@ -24,7 +24,7 @@ namespace FTL_HRMS.Models.Hr
         public string RoleName { get; set; }
 
         [ForeignKey("CreateEmployee")]
-        public int CreatedBy { get; set; }
+        public int? CreatedBy { get; set; }
 
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",

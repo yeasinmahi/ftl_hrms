@@ -391,7 +391,7 @@ namespace FTL_HRMS.Controllers
                 }
                 #endregion
 
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create", "Employees");
             }
             else
@@ -412,7 +412,7 @@ namespace FTL_HRMS.Controllers
                 departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
                 ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
-                TempData["WarningMsg"] = "Something went wrong !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
                 return View(employee);
             }
         }
@@ -454,7 +454,7 @@ namespace FTL_HRMS.Controllers
                 {
                     if (_db.Users.Where(u => u.UserName == employee.Code).Count() > 0)
                     {
-                        TempData["WarningMsg"] = "Username already exist!!!";
+                        TempData["message"] =  DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                     }
                     else
                     {
@@ -493,7 +493,7 @@ namespace FTL_HRMS.Controllers
                         _db.Entry(user).State = EntityState.Modified;
                         _db.SaveChanges();
 
-                        TempData["SuccessMsg"] = "Information updated successfully!";
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                     }
                 }
                 else
@@ -529,12 +529,12 @@ namespace FTL_HRMS.Controllers
                     _db.Entry(user).State = EntityState.Modified;
                     _db.SaveChanges();
 
-                    TempData["SuccessMsg"] = "Information updated successfully!";
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 }
             }
             else
             {
-                TempData["WarningMsg"] = "Something went wrong !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             }
             List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
             sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
@@ -574,7 +574,7 @@ namespace FTL_HRMS.Controllers
             ApplicationUser user = _db.Users.Find(employeeUserId);
             _db.Users.Remove(user);
             _db.SaveChanges();
-
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
         #endregion
@@ -597,14 +597,14 @@ namespace FTL_HRMS.Controllers
             if (_db.Users.Where(i => i.UserName == username).Count() > 0)
             {
                 isValidate = false;
-                TempData["WarningMsg"] = "Username already exist!!!";
+                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             else
             {
                 if (!password.Equals(confirmPassword))
                 {
                     isValidate = false;
-                    TempData["WarningMsg"] = "Password does not match!!!";
+                    TempData["message"] = "Password does not match!!!";
                 }
             }
             return isValidate;

@@ -7,6 +7,8 @@ using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Utility;
+using FTL_HRMS.Models.Hr;
+using System.Collections.Generic;
 
 namespace FTL_HRMS.Controllers
 {
@@ -39,7 +41,11 @@ namespace FTL_HRMS.Controllers
         // GET: BonusAndPenalties/Create
         public ActionResult Create()
         {
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code");
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             return View();
         }
 
@@ -50,20 +56,22 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,EmployeeId,Date,Type,Amount,Remarks,CreatedBy,CreateDate,UpdatedBy,UpdateDate")] BonusAndPenalty bonusAndPenalty)
         {
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
             if (bonusAndPenalty.Type != "")
             {
                 bonusAndPenalty.EmployeeId = bonusAndPenalty.EmployeeId;
-                string userName = User.Identity.Name;
-                int userId = DbUtility.GetUserId(_db, userName);
                 bonusAndPenalty.CreatedBy = userId;
                 bonusAndPenalty.CreateDate = DateTime.Now;
                 _db.BonusAndPenalty.Add(bonusAndPenalty);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code");
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code",bonusAndPenalty.EmployeeId);
             return View(bonusAndPenalty);
 
         }
@@ -79,10 +87,7 @@ namespace FTL_HRMS.Controllers
             if (bonusAndPenalty == null)
             {
                 return HttpNotFound();
-            }
-            
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", bonusAndPenalty.EmployeeId);
-            
+            }            
             return View(bonusAndPenalty);
         }
 
@@ -101,11 +106,10 @@ namespace FTL_HRMS.Controllers
                 bonusAndPenalty.UpdateDate = DateTime.Now;
                 _db.Entry(bonusAndPenalty).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("Edit");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", bonusAndPenalty.EmployeeId);
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(bonusAndPenalty);
         }
 
@@ -132,6 +136,7 @@ namespace FTL_HRMS.Controllers
             BonusAndPenalty bonusAndPenalty = _db.BonusAndPenalty.Find(id);
             _db.BonusAndPenalty.Remove(bonusAndPenalty);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteFailed);
             return RedirectToAction("Index");
         }
 

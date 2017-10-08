@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Payroll;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -50,10 +51,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.FestivalBonus.Add(festivalBonus);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(festivalBonus);
         }
 
@@ -83,10 +84,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Entry(festivalBonus).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("Edit");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(festivalBonus);
         }
 
@@ -113,6 +114,7 @@ namespace FTL_HRMS.Controllers
             FestivalBonus festivalBonus = _db.FestivalBonus.Find(id);
             _db.FestivalBonus.Remove(festivalBonus);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
 

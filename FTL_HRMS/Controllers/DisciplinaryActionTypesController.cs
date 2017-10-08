@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Hr;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -55,10 +56,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.DisciplinaryActionType.Add(disciplinaryActionType);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(disciplinaryActionType);
         }
         #endregion
@@ -90,10 +91,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Entry(disciplinaryActionType).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return View(disciplinaryActionType);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(disciplinaryActionType);
         }
         #endregion
@@ -124,11 +125,11 @@ namespace FTL_HRMS.Controllers
                 DisciplinaryActionType disciplinaryActionType = _db.DisciplinaryActionType.Find(id);
                 _db.DisciplinaryActionType.Remove(disciplinaryActionType);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Deleted Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
             }
             else
             {
-                TempData["WarningMsg"] = "Already exists some actions using this types !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             return RedirectToAction("Index");
         }

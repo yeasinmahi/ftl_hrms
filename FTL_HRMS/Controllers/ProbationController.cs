@@ -45,7 +45,7 @@ namespace FTL_HRMS.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult MakeParmanent([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Gender,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,IsSystemOrSuperAdmin,Status,ProbationStatus,IsSpecialEmployee,ParmanentDate")] Employee employee)
+        public ActionResult MakeParmanent([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Gender,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,IsSystemOrSuperAdmin,Status,ProbationStatus,IsSpecialEmployee,ParmanentDate,EmergencyMobile,RelationEmergencyMobile,BloodGroup,MedicalHistory,Height,Weight,ExtraCurricularActivities")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +55,7 @@ namespace FTL_HRMS.Controllers
                 {
                     if (_db.Users.Where(u => u.UserName == employee.Code).Count() > 0)
                     {
-                        TempData["WarningMsg"] = "Username already exist!!!";
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                     }
                     else
                     {
@@ -94,7 +94,7 @@ namespace FTL_HRMS.Controllers
                         _db.Entry(user).State = EntityState.Modified;
                         _db.SaveChanges();
 
-                        TempData["SuccessMsg"] = "Information updated successfully!";
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                     }
                 }
                 else
@@ -130,12 +130,12 @@ namespace FTL_HRMS.Controllers
                     _db.Entry(user).State = EntityState.Modified;
                     _db.SaveChanges();
 
-                    TempData["SuccessMsg"] = "Information updated successfully!";
+                    TempData["message"] =  DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 }
             }
             else
             {
-                TempData["WarningMsg"] = "Something went wrong !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             }
             List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
             sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();

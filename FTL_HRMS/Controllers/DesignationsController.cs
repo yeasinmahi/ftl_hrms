@@ -85,12 +85,12 @@ namespace FTL_HRMS.Controllers
                 designation.Status = true;
                 _db.Designation.Add(designation);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
             else
             {
-                TempData["WarningMsg"] = "Code already exists !!";
+                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
@@ -153,11 +153,11 @@ namespace FTL_HRMS.Controllers
                     designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
                     _db.Entry(designation).State = EntityState.Modified;
                     _db.SaveChanges();
-                    TempData["SuccessMsg"] = "Updated Successfully!";
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 }
                 else
                 {
-                    TempData["WarningMsg"] = "Code already exists !!";
+                    TempData["message"] =  DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                 }
             }
             else
@@ -169,7 +169,7 @@ namespace FTL_HRMS.Controllers
                 designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
                 _db.Entry(designation).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
             }
             int departmentId = designation.DepartmentId;
             ViewBag.DepartmentId = _db.Department.Where(x => x.Sl == departmentId).Select(t => t.Sl).FirstOrDefault();
@@ -208,11 +208,11 @@ namespace FTL_HRMS.Controllers
                 designation.Status = false;
                 _db.Entry(designation).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Deleted Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             }
             else
             {
-                TempData["WarningMsg"] = "Already exists some employees under this designation !!";
+                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             return RedirectToAction("Index");
         }

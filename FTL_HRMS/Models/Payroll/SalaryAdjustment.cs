@@ -1,29 +1,36 @@
-﻿using System;
+﻿using FTL_HRMS.Models.Hr;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
 
-namespace FTL_HRMS.Models.Hr
+namespace FTL_HRMS.Models.Payroll
 {
-    [Table("tbl_Department")]
-    public class Department
+    [Table("tbl_SalaryAdjustment")]
+    public class SalaryAdjustment
     {
-       
         [Key]
         public int Sl { get; set; }
 
-        public string Code { get; set; }
+        [Required(ErrorMessage = "Employee cannot be empty")]
+        [ForeignKey("Employee")]
+        public int EmployeeId { get; set; }
 
-        [Required(ErrorMessage = "Name cannot be empty")]
-        [MaxLength(250)]
-        public string Name { get; set; }
+        [DataType(DataType.Date),
+        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        ApplyFormatInEditMode = true)]
+        public DateTime Date { get; set; }
 
-        [Required(ErrorMessage = "Department Group cannot be empty")]
-        [ForeignKey("DepartmentGroup")]
-        public int DepartmentGroupId { get; set; }
+        [Required(ErrorMessage = "Amount cannot be empty")]
+        public double Amount { get; set; }
+
+        [Required(ErrorMessage = "Remarks cannot be empty")]
+        public string Remarks { get; set; }
 
         [ForeignKey("CreateEmployee")]
-        public int? CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
 
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
@@ -38,11 +45,8 @@ namespace FTL_HRMS.Models.Hr
         ApplyFormatInEditMode = true)]
         public DateTime? UpdateDate { get; set; }
 
-        public bool Status { get; set; }
-        
+        public virtual Employee Employee { get; set; }
         public virtual Employee CreateEmployee { get; set; }
         public virtual Employee UpdateEmployee { get; set; }
-        public virtual DepartmentGroup DepartmentGroup { get; set; }
-        public ICollection<Designation> Designation { get; set; }
     }
 }

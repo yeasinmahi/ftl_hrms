@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Payroll;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -55,10 +56,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Company.Add(company);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
             return View(company);
         }
         #endregion
@@ -95,7 +96,7 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Entry(company).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 ViewBag.Address = company.Address;
                 return View(company);
             }
@@ -103,7 +104,7 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Company.Add(company);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 ViewBag.Address = company.Address;
                 return View(company);
             }

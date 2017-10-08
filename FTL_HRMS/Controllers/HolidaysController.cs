@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Payroll;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -55,10 +56,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Holiday.Add(holiday);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(holiday);
         }
         #endregion
@@ -90,10 +91,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Entry(holiday).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return View(holiday);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(holiday);
         }
         #endregion
@@ -122,6 +123,7 @@ namespace FTL_HRMS.Controllers
             Holiday holiday = _db.Holiday.Find(id);
             _db.Holiday.Remove(holiday);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
         #endregion

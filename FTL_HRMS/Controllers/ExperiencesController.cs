@@ -6,6 +6,7 @@ using FTL_HRMS.Models;
 using System;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Hr;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -61,10 +62,10 @@ namespace FTL_HRMS.Controllers
                 experience.EmployeeId = empId;
                 _db.Experience.Add(experience);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create", "Experiences", new { employeeId = empId });
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(experience);
         }
         #endregion
@@ -96,10 +97,10 @@ namespace FTL_HRMS.Controllers
             {
                 _db.Entry(experience).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return View(experience);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(experience);
         }
         #endregion
@@ -129,6 +130,7 @@ namespace FTL_HRMS.Controllers
             int employeeId = experience.EmployeeId;
             _db.Experience.Remove(experience);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index", "Experiences", new { employeeId = employeeId });
         }
         #endregion

@@ -7,6 +7,7 @@ using System.Web;
 using System;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Hr;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -72,10 +73,10 @@ namespace FTL_HRMS.Controllers
                 images.EmployeeId = empId;
                 _db.Images.Add(images);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create", "Images", new { employeeId = empId });
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(images);
         }
         #endregion
@@ -110,7 +111,7 @@ namespace FTL_HRMS.Controllers
                 image1.InputStream.Read(images.Image, 0, image1.ContentLength);
                 _db.Entry(images).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("Index", "Images", new { employeeId = images.EmployeeId });
             }
             return View(images);
@@ -142,6 +143,7 @@ namespace FTL_HRMS.Controllers
             int employeeId = images.EmployeeId;
             _db.Images.Remove(images);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index", "Images", new { employeeId = employeeId });
         }
         #endregion

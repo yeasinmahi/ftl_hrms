@@ -1,14 +1,21 @@
-﻿@if (TempData["SuccessMsg"] != null)
+﻿
+@if (TempData["message"] != null)
 {
-    <div class="alert alert-success alert-dismissable fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        @TempData["SuccessMsg"]
-    </div>
-}
-@if (TempData["WarningMsg"] != null)
-{
-    <div class="alert alert-danger alert-dismissable fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        @TempData["WarningMsg"]
-    </div>
+    string receivedMessage = TempData["message"].ToString();
+    string message = receivedMessage.Substring(1);
+    if (receivedMessage.StartsWith("0"))
+    {
+
+        <div class="alert alert-danger alert-dismissable fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @message
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-success alert-dismissable fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @message
+        </div>
+    }
 }

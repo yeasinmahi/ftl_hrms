@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FTL_HRMS.Models.Hr.DepartmentGroup>
+﻿@model IEnumerable<FTL_HRMS.Models.Payroll.SalaryAdjustment>
 
 @{
     ViewBag.Title = "Index";
@@ -11,12 +11,12 @@
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
         <div class="pull-left">
-            <h1 class="title">Department Group</h1>
+            <h1 class="title">Salary Adjustment</h1>
         </div>
     </div>
 </div>
 <header class="panel_header">
-    <h2 class="title pull-left">Department Group List</h2>
+    <h2 class="title pull-left">Salary Adjustment List</h2>
     <div class="actions panel_actions pull-right">
         <i class="box_toggle fa fa-chevron-down"></i>
     </div>
@@ -24,21 +24,19 @@
 
 <div class="content-body">
     <div class="row">
-        @Html.Partial("~/Views/Shared/WarningMessage.cshtml")
         <div class="col-md-6">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href = '@Url.Action("Create", "DepartmentGroups")'">Add Department Group</button>
+                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Create", "SalaryAdjustments")'">Add Salary Adjustments</button>
             </div>
         </div>
         <div class="col-md-6 text-right">
             <div class="btn-group">
-                <button type="button" onclick="location.href = '@Url.Action("PrintDepartmentGroupReport", "Reports")'" target="_blank" class="btn btn-info btn-sm">
+                <button type="button" onclick="location.href='@Url.Action("PrintSalaryAdjustmentReport", "Reports")'" target="_blank" class="btn btn-info btn-sm">
                     <span class="glyphicon glyphicon-print"></span> Download PDF
                 </button>
             </div>
         </div>
-    </div>
-    <br /><br />
+        <br /><br />
         <div class="col-md-12 col-sm-12 col-xs-12">
             @{int rowNo = 0;}
             <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
@@ -50,21 +48,14 @@
                             Code
                         </th>
                         <th>
-                            Name
+                            Date
                         </th>
                         <th>
-                            Created By
+                            Amount
                         </th>
                         <th>
-                            Create Date
+                            Remarks
                         </th>
-                        <th>
-                            Updated By
-                        </th>
-                        <th>
-                            Update Date
-                        </th>
-                        
                     </tr>
                 </thead>
                 <tfoot>
@@ -75,21 +66,14 @@
                             Code
                         </th>
                         <th>
-                            Name
+                            Date
                         </th>
                         <th>
-                            Created By
+                            Amount
                         </th>
                         <th>
-                            Create Date
+                            Remarks
                         </th>
-                        <th>
-                            Updated By
-                        </th>
-                        <th>
-                            Update Date
-                        </th>
-                        
                     </tr>
                 </tfoot>
                 <tbody>
@@ -100,35 +84,21 @@
                             <td align="center" width="5%">
                                 @(rowNo += 1)
                             </td>
-                            <td align="center" width="5%">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>@Html.ActionLink("Edit", "Edit", new { id = item.Sl })</li>
-                                        <li>@Html.ActionLink("Details", "Details", new { id = item.Sl })</li>
-                                        <li>@Html.ActionLink("Delete", "Delete", new { id = item.Sl })</li>
-                                    </ul>
-                                </div>
+                            <td align="center" width="8%">
+                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Edit", "SalaryAdjustments", new { Id = item.Sl })'">Edit</button>
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Code)
+                                @Html.DisplayFor(modelItem => item.Employee.Code)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Name)
+                                @Html.DisplayFor(modelItem => item.Date)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.CreateEmployee.Name)
+                                @Html.DisplayFor(modelItem => item.Amount)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.CreateDate)
+                                @Html.DisplayFor(modelItem => item.Remarks)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.UpdateEmployee.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.UpdateDate)
-                            </td>
-                            
                         </tr>
                     }
                 </tbody>
