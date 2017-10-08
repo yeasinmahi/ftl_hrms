@@ -5,6 +5,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using FTL_HRMS.Models;
 using System;
 using FTL_HRMS.DAL;
+using FTL_HRMS.Models.ViewModels;
+using System.Collections.Generic;
 
 namespace FTL_HRMS.Controllers
 {
@@ -41,7 +43,7 @@ namespace FTL_HRMS.Controllers
             {
                 viewName = "~/Views/Shared/_DashboardAdmin.cshtml";
             }
-            else if (rolll == "Super Admin" || rolll == "Admin" || rolll == "Employee" )
+            else if (rolll == "Super Admin")
             {
                 ViewBag.TotalEmployee = _db.Employee.Count();
                 ViewBag.TotalAdmin = _db.Designation.Where(x=> x.RoleName == "Admin").Count();
@@ -108,7 +110,41 @@ namespace FTL_HRMS.Controllers
                     ViewBag.PerformanceRating = 0;
                 }
 
+                var NotifyList = _db.LeaveHistories.OrderByDescending(d => d.FromDate).ToList();
+                List<VMNotification> NotificationList = new List<VMNotification>();
+                if (NotifyList != null)
+                {
+                    foreach (var o in NotifyList)
+                    {
+                        var ord = new VMNotification
+                        {
+                            Sl = o.Sl,
+                            Date = o.FromDate,
+                            EmployeeCode = o.Employee.Code,
+                            Type = "Leave",
+                        };
 
+                        NotificationList.Add(ord);
+                    }
+                }
+
+                var NotifyResignList = _db.Resignation.OrderByDescending(d => d.ResignDate).ToList();
+                if (NotifyResignList != null)
+                {
+                    foreach (var o in NotifyResignList)
+                    {
+                        var ord = new VMNotification
+                        {
+                            Sl = o.Sl,
+                            Date = o.ResignDate,
+                            EmployeeCode = o.Employee.Code,
+                            Type = "Resign",
+                        };
+
+                        NotificationList.Add(ord);
+                    }
+                }
+                Session["NotifyList"] = NotificationList;
 
                 viewName = "~/Views/Home/AdminDashboard.cshtml";
             }

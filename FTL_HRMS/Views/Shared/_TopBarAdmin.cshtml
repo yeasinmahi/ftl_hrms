@@ -1,4 +1,7 @@
-﻿<div class='logo-area'>
+﻿@{
+    var notifyList = (List<FTL_HRMS.Models.ViewModels.VMNotification>)Session["NotifyList"];
+}
+<div class='logo-area'>
     <img src="/Content/AdminTemplate/assets/images/logo.png">
 </div>
 <div class='quick-area'>
@@ -9,9 +12,60 @@
                     <i class="fa fa-bars"></i>
                 </a>
             </li>
+            <li class="">
+                <a href="#" data-toggle="dropdown" class="toggle">
+                    <i class="fa fa-bell"></i>
+                    <span class="badge badge-orange" style="color: black ">@notifyList.Count</span>
+                </a>
+                <ul class="dropdown-menu notifications animated fadeIn">
+                    <li class="total">
+                        <span class="small">
+                            You have <strong>@notifyList.Count</strong>  pending notification .
+                        </span>
+                    </li>
+                    <li class="list" style="height: 400px; width: 400px;">
+                       
+                        <table cellspacing="0" id="tech-companies-1" class="table table-small-font table-bordered table-striped">
+                            @{int rowNo = 0;}
+
+                            <thead>
+                                <tr>
+                                    <th data-priority="1">SL</th>
+                                    <th data-priority="2">Employee Name </th>
+                                    <th data-priority="3">Date</th>
+                                    <th data-priority="3">Type</th>
+                                    <th data-priority="4">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var leave in notifyList)
+                                {
+                                    <tr>
+                                        <td align="center">
+                                            @(rowNo += 1)
+                                        </td>
+                                        <td> @leave.EmployeeCode</td>
+                                        <td> @leave.Date</td>
+                                        <td> @leave.Type</td>
+                                        <td align="center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("LeaveApproval", "LeaveHistories")'">Details</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </li>
+                </ul>
+            </li>
 
         </ul>
     </div>
+
     <div class='pull-right'>
         <ul class="info-menu right-links list-inline list-unstyled">
             <li class="profile" style="padding-left: 106px">
