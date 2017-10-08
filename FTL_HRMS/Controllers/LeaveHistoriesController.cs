@@ -84,7 +84,7 @@ namespace FTL_HRMS.Controllers
                 {
                     _db.LeaveHistories.Add(leaveHistory);
                     _db.SaveChanges();
-                    TempData["message"] ="Apply" + DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                     return RedirectToAction("Index");
                 }
                 else

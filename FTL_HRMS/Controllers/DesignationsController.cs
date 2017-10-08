@@ -90,7 +90,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] = "Code" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
@@ -157,7 +157,7 @@ namespace FTL_HRMS.Controllers
                 }
                 else
                 {
-                    TempData["message"] = "Code" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                    TempData["message"] =  DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                 }
             }
             else
@@ -212,7 +212,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] ="Some Employee" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             return RedirectToAction("Index");
         }

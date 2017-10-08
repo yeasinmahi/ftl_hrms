@@ -96,10 +96,10 @@ namespace FTL_HRMS.Controllers
                 var result2 = userManager.AddToRole(userId, newRole);
                 #endregion
 
-                TempData["message"] ="Transfer" + DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["message"] = "Transfer" + DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+            TempData["message"] =  DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
 
             string userName = User.Identity.Name;
             int userid = DbUtility.GetUserId(_db, userName);

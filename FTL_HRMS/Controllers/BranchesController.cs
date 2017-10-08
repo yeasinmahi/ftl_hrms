@@ -131,7 +131,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] =" Employee " + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             return RedirectToAction("Index");
         }
