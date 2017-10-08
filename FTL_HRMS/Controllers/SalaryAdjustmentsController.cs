@@ -1,4 +1,4 @@
-﻿using System;
+﻿  using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -71,7 +71,7 @@ namespace FTL_HRMS.Controllers
                     salaryAdjustment.Amount = -salaryAdjustment.Amount;
                 }
                 salaryAdjustment.CreatedBy = userId;
-                salaryAdjustment.Date = DateTime.Now;
+                salaryAdjustment.CreateDate = DateTime.Now;
                 _db.SalaryAdjustment.Add(salaryAdjustment);
                 _db.SaveChanges();
                 TempData["SuccessMsg"] = "Added Successfully !!";
@@ -92,6 +92,15 @@ namespace FTL_HRMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             SalaryAdjustment salaryAdjustment = _db.SalaryAdjustment.Find(id);
+            if(salaryAdjustment.Amount < 0)
+            {
+                ViewBag.Type = "Subtraction";
+                salaryAdjustment.Amount = Math.Abs(salaryAdjustment.Amount);
+            }
+            else
+            {
+                ViewBag.Type = "Addition";
+            }
             if (salaryAdjustment == null)
             {
                 return HttpNotFound();

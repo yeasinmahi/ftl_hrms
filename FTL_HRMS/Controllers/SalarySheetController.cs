@@ -17,7 +17,11 @@ namespace FTL_HRMS.Controllers
 
         public ActionResult Index()
         {
-            int LastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
+            int LastPaidSalaryDurationId = 0;
+            if (_db.PaidSalaryDuration.ToList().Count > 0)
+            {
+                LastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
+            }            
             List<MonthlySalarySheet> SalarySheet = new List<MonthlySalarySheet>();
             if (LastPaidSalaryDurationId > 0)
             {
