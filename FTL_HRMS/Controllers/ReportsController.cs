@@ -358,6 +358,20 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Promotion History
+        public ActionResult PrintPromotionHistoryReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "PromotionHistoryReport", fileName = "Promotion HistoryReport",  });
+        }
+        #endregion
+
+        #region Todays Attendance
+        public ActionResult PrintTodaysAttendance()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "TodaysAttendanceReport", fileName = "Todays Atendance Report", });
+        }
+        #endregion
+
         #region Performance Rating
         public ActionResult PrintPerformanceRatingReport()
         {
