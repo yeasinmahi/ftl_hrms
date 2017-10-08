@@ -42,8 +42,20 @@ join tbl_Branch as tb on tb.Sl =bt.ToBranchId
 join tbl_Employee as e on e.Sl = bt.EmployeeId";
             scripts.Add(executeBranchTransferView);
 
+            string checkPromotionHistoryView = DbUtility.GetViewCheckQuery("PromotionHistoryView");
+            scripts.Add(checkPromotionHistoryView);
 
-            DbUtility.ExecuteSeedOperation(context,scripts);
+            string executePromotionHistoryView =
+            @"create view PromotionHistoryView
+as
+select e.Name, e.Code, fd.Name as FromDesignation, td.Name as ToDesignation, p.PromotionDate,p.FromSalary,p.ToSalary from tbl_PromotionHistory as p 
+join tbl_Designation as fd on p.FromDesignationId=fd.Sl
+join tbl_Designation as td on p.ToDesignationId = td.Sl
+join tbl_Employee as e on e.Sl = p.EmployeeId";
+            scripts.Add(executePromotionHistoryView);
+
+
+            DbUtility.ExecuteSeedOperation(context, scripts);
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
