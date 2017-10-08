@@ -30,6 +30,14 @@
                 <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Create", "PromotionHistories")'">Add Promotion</button>
             </div>
         </div>
+        <div class="col-md-6 text-right">
+            <div class="btn-group">
+                <button type="button" onclick="location.href='@Url.Action("PrintPromotionHistoryReport", "Reports" ,new {EmployeeId= @ViewBag.EmpId, fromSalary = @ViewBag.FromSalary , toSalary= @ViewBag.ToSalary, fromDesignationId = @ViewBag.FromDesignationId, toDesignationId = ViewBag.ToDesignationid })'" target="_blank" class="btn btn-info btn-sm">
+                    <span class="glyphicon glyphicon-print"></span> Download PDF
+                </button>
+            </div>
+        </div>
+        <br /><br />
         <div class="col-md-12 col-sm-12 col-xs-12">
             @{int rowNo = 0;}
             <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
