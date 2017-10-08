@@ -67,7 +67,7 @@ namespace FTL_HRMS.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Invalid username or password.");
-                    TempData["ErrLogin"] = "Invalid Username or Password!!";
+                    TempData["message"] = "0Invalid Username or Password!!";
                     return RedirectToAction("Login", "Account");
                 }
             //}
@@ -397,7 +397,7 @@ namespace FTL_HRMS.Controllers
                     {
                         if (!Request["Password"].Equals(Request["ConfirmPassword"]))
                         {
-                            TempData["message"] = "Password does not match!!!";
+                            TempData["message"] = "0Password does not match!!!";
                         }
                         else
                         {
@@ -405,11 +405,11 @@ namespace FTL_HRMS.Controllers
                             bool isSuccess = await ChangePassword(objUserVm, Request["OldPassword"], Request["Password"], Request["ConfirmPassword"]);
                             if (isSuccess == true)
                             {
-                                TempData["message"] = "Password changed successfully!";
+                                TempData["message"] = "0Password changed successfully!";
                             }
                             else
                             {
-                                TempData["message"] = "Old Password does not match!";
+                                TempData["message"] = "0Old Password does not match!";
                             }
                         }
                     }
@@ -555,7 +555,7 @@ namespace FTL_HRMS.Controllers
                 if (!password.Equals(confirmPassword))
                 {
                     isValidate = false;
-                    TempData["message"] = "Password does not match!!!";
+                    TempData["message"] = "0Password does not match!!!";
                 }
             }
             return isValidate;

@@ -165,7 +165,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] = "Total must be 100% !!";
+                TempData["message"] = "0Total must be 100% !!";
                 return View(salaryDistribution);
             }
         }
