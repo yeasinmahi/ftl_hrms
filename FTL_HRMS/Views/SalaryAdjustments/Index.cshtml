@@ -85,7 +85,7 @@
                                 @(rowNo += 1)
                             </td>
                             <td align="center" width="8%">
-                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "SalaryAdjustments", new { Id = item.Sl })'">Edit</button>
+                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Edit", "SalaryAdjustments", new { Id = item.Sl })'">Edit</button>
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Employee.Code)
