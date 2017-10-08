@@ -163,10 +163,10 @@ namespace FTL_HRMS.Controllers
                 }
                 #endregion
 
-                TempData["message"] ="Promotion" + DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["message"] ="Promotion" + DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             string userName = User.Identity.Name;
             int userid = DbUtility.GetUserId(_db, userName);
 

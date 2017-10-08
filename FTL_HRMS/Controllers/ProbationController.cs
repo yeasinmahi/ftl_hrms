@@ -55,7 +55,7 @@ namespace FTL_HRMS.Controllers
                 {
                     if (_db.Users.Where(u => u.UserName == employee.Code).Count() > 0)
                     {
-                        TempData["message"] = "Username" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                     }
                     else
                     {
@@ -94,7 +94,7 @@ namespace FTL_HRMS.Controllers
                         _db.Entry(user).State = EntityState.Modified;
                         _db.SaveChanges();
 
-                        TempData["message"] ="Information" + DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                     }
                 }
                 else
@@ -130,7 +130,7 @@ namespace FTL_HRMS.Controllers
                     _db.Entry(user).State = EntityState.Modified;
                     _db.SaveChanges();
 
-                    TempData["message"] = "Information" + DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
+                    TempData["message"] =  DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 }
             }
             else

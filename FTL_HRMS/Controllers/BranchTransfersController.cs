@@ -83,10 +83,10 @@ namespace FTL_HRMS.Controllers
                 _db.SaveChanges();
                 #endregion
 
-                TempData["message"] = "Transfer" + DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["message"] = "Transfer" + DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
 

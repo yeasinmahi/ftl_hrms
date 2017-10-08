@@ -373,7 +373,7 @@ namespace FTL_HRMS.Controllers
                 {
                     if (_dbCtx.Users.Where(u => u.Email == user.Email).Count() > 0)
                     {
-                        TempData["message"] = "UserName " + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                     }
                     else
                     {
@@ -548,7 +548,7 @@ namespace FTL_HRMS.Controllers
             if (_dbCtx.Users.Where(i => i.UserName == username).Count() > 0)
             {
                 isValidate = false;
-                TempData["message"] = "UserName " + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] =  DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             else
             {

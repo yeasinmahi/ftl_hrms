@@ -99,7 +99,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] ="Code" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name",department.DepartmentGroupId);
             return View(department);
@@ -150,7 +150,7 @@ namespace FTL_HRMS.Controllers
                 }
                 else
                 {
-                    TempData["message"] ="Code" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                     ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name", department.DepartmentGroupId);
                     return View(department);
                 }
@@ -201,7 +201,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] = "Some Department" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             return RedirectToAction("Index");
         }
