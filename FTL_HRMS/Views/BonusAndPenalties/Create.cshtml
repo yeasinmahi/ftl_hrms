@@ -38,22 +38,22 @@
                                 <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "BonusAndPenalties")'">Back To List</button>
                             </div>
                             <div>
-                                @Html.LabelFor(model => model.EmployeeId, "Employee Code")
+                                @Html.LabelFor(model => model.EmployeeId, "Employee Code", new { @class = "required" })
                             </div>
                             <div>
-                                @Html.DropDownList("EmployeeId", null, htmlAttributes: new { @class = "form-control", style = "width:50%" })
+                                @Html.DropDownList("EmployeeId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @required = true })
                                 @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
                             </div>
                             <div>
-                                @Html.LabelFor(model => model.Date)
+                                @Html.LabelFor(model => model.Date, new { @class = "required" })
                             </div>
                             
                             <div>
-                                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                                 @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                             </div>
                             <div>
-                               @Html.LabelFor(model => model.Type)
+                               @Html.LabelFor(model => model.Type, new { @class = "required" })
                                 @{
                                     List<SelectListItem> listItems = new List<SelectListItem>();
                                     listItems.Add(new SelectListItem
@@ -70,23 +70,23 @@
                                 }
                             </div>
                             <div>
-                                @Html.DropDownListFor(model => model.Type, listItems, "--select--", new { @class = "form-control", style = "width:50%" })
+                                @Html.DropDownListFor(model => model.Type, listItems, "--select--", new { @class = "form-control", style = "width:50%", @required = true })
                                 @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
                             </div>
 
                             <div>
-                                @Html.LabelFor(model => model.Amount)
+                                @Html.LabelFor(model => model.Amount, new { @class = "required" })
                             </div>
                             <div>
-                                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                                 @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
                             </div>
 
                             <div>
-                                @Html.LabelFor(model => model.Remarks)
+                                @Html.LabelFor(model => model.Remarks, new { @class = "required" })
                             </div>
                             <div>
-                                @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                                @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                                 @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
                             </div>
                             <br />

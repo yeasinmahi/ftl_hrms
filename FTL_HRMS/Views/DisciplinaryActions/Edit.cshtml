@@ -52,10 +52,10 @@
                         </div>
 
                         <div>
-                            @Html.LabelFor(model => model.Remarks, new { @class = "required" })
+                            @Html.LabelFor(model => model.Remarks)
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
+                            @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
                             @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
                         </div>
 

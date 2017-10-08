@@ -24,6 +24,7 @@
 
 <div class="content-body">
     <div class="row">
+        @Html.Partial("~/Views/Shared/WarningMessage.cshtml")
         <div class="col-md-6">
             <div class="btn-group">
                 <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Create", "Holidays")'">Add Holiday</button>

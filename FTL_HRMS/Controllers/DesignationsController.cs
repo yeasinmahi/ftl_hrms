@@ -142,7 +142,7 @@ namespace FTL_HRMS.Controllers
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             List<IdentityRole> roleList = new List<IdentityRole>();
             roleList = _db.Roles.Where(i => i.Name != "System Admin" && i.Name != "Super Admin").ToList();
-            if (_db.Designation.Where(i => i.Sl == designation.Sl).Select(i => i.Code).ToString() != designation.Code)
+            if (_db.Designation.Where(i => i.Sl == designation.Sl).Select(i => i.Code).FirstOrDefault() != designation.Code && designation.Code != null)
             {
                 if (_db.Designation.Where(i => i.Code == designation.Code).ToList().Count < 1)
                 {

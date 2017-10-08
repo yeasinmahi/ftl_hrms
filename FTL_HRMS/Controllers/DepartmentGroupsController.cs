@@ -92,7 +92,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,Code,Name,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] DepartmentGroup departmentGroup)
         {
-            if (_db.DepartmentGroup.Where(i => i.Sl == departmentGroup.Sl).Select(i=> i.Code).ToString() != departmentGroup.Code)
+            if (_db.DepartmentGroup.Where(i => i.Sl == departmentGroup.Sl).Select(i=> i.Code).FirstOrDefault() != departmentGroup.Code && departmentGroup.Code != null)
             {
                 if(_db.DepartmentGroup.Where(i => i.Code == departmentGroup.Code).ToList().Count < 1)
                 {
@@ -117,13 +117,13 @@ namespace FTL_HRMS.Controllers
                 int userId = DbUtility.GetUserId(_db, userName);
                 departmentGroup.UpdatedBy = userId;
                 departmentGroup.UpdateDate = DateTime.Now;
-                DbUtility.Status status = _genericData.Update<DepartmentGroup>(departmentGroup);
-                TempData["message"] = DbUtility.GetStatusMessage(status);
+                _db.Entry(departmentGroup).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return View(departmentGroup);
             }
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UnknownError);
             return View(departmentGroup);
-
         }
         #endregion
 
