@@ -3388,6 +3388,8 @@
     <Content Include="Views\SalaryAdjustments\Details.cshtml" />
     <Content Include="Views\SalaryAdjustments\Edit.cshtml" />
     <Content Include="Views\SalaryAdjustments\Index.cshtml" />
+    <Content Include="Views\Resignations\Delete.cshtml" />
+    <Content Include="Views\Resignations\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
