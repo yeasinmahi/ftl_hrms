@@ -129,7 +129,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] = "Types" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             return RedirectToAction("Index");
         }

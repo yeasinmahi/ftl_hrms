@@ -78,7 +78,7 @@ namespace FTL_HRMS.Controllers
                     FileStorage existingFileStorage = _db.FileStorage.FirstOrDefault(x => x.Path.Equals(fullFileName));
                     if (existingFileStorage != null)
                     {
-                        TempData["message"] ="The File" + DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                         ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", fileStorage.EmployeeId);
                         return View(fileStorage);
                     }
@@ -105,7 +105,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] = "File Name" + DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
+                TempData["message"] =  DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
             }
 
             ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", fileStorage.EmployeeId);

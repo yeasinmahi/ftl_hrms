@@ -134,7 +134,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] = "Some employee of this types are"+DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
             }
             return RedirectToAction("Index");
         }
