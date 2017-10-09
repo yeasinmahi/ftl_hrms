@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
+using Microsoft.AspNet.Identity;
 
 namespace FTL_HRMS.Controllers
 {
@@ -117,6 +118,8 @@ namespace FTL_HRMS.Controllers
                     _db.Users.Remove(user);
                     _db.SaveChanges();
                 }
+                string rolll = DbUtility.GetRoll(_db, User.Identity.GetUserId());
+                Session["NotifyList"] = NotificationController.GetInstant().GetNotificationListByRoll(rolll, User.Identity.Name);
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("ResignationApproval", "Resignations");
             }

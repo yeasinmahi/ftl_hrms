@@ -24,13 +24,13 @@ namespace FTL_HRMS.Controllers
         public HomeController()
         {
             this._db = new HRMSDbContext();
-            this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new HRMSDbContext()));
+            this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
         }
 
         public ActionResult AdminDashboard()
         {
             
-            UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new HRMSDbContext()));
+            UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(_db));
 
             string rolll = userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
             string rollId = _db.Roles.Where(t => t.Name == rolll).Select(g => g.Id).FirstOrDefault();
@@ -110,8 +110,9 @@ namespace FTL_HRMS.Controllers
                 {
                     ViewBag.PerformanceRating = 0;
                 }
+                Session["NotifyList"] = NotificationController.GetInstant().GetNotificationListByRoll(rolll, User.Identity.Name);
 
-                UpdateNotification(rolll);
+                //UpdateNotification(rolll);
                 viewName = "~/Views/Home/AdminDashboard.cshtml";
             }
             
@@ -120,65 +121,7 @@ namespace FTL_HRMS.Controllers
             return View(viewName);
             
         }
-        public void UpdateNotification(string rolll)
-        {
-            
-            List<VMNotification> NotificationList = new List<VMNotification>();
-            List<LeaveHistory> NotifyList = new List<LeaveHistory>();
-            List<Resignation> NotifyResignList = new List<Resignation>();
-            if (rolll == "Super Admin" || rolll == "Admin")
-            {
-                NotifyList = _db.LeaveHistories.Where(x => x.Status == "Pending" || x.Status == "Recommended").ToList();
-                NotifyResignList = _db.Resignation.Where(x => x.Status == "Pending").ToList();
-            } else if (rolll == "Department Head")
-            {
-                NotifyList = _db.LeaveHistories.Where(x => x.Status == "Pending").ToList();
-                NotifyResignList = _db.Resignation.Where(x => x.Status == "Pending").ToList();
-            }
-            else if (rolll == "Employee")
-            {
-                NotifyList = _db.LeaveHistories.Where(x => x.Status == "Approved" ||  x.Status == "Cancled").ToList();
-                NotifyResignList = _db.Resignation.Where(x => x.Status == "Approved" || x.Status == "Cancled").ToList();
-            }
-            else
-            {
-
-            }
-            if (NotifyList != null)
-            {
-                foreach (var o in NotifyList)
-                {
-                    var ord = new VMNotification
-                    {
-                        Sl = o.Sl,
-                        Date = o.FromDate,
-                        EmployeeCode = o.Employee.Code,
-                        Type = "Leave",
-                        Status = o.Status,
-                    };
-
-                    NotificationList.Add(ord);
-                }
-            }
-            if (NotifyResignList != null)
-            {
-                foreach (var o in NotifyResignList)
-                {
-                    var ord = new VMNotification
-                    {
-                        Sl = o.Sl,
-                        Date = o.ResignDate,
-                        EmployeeCode = o.Employee.Code,
-                        Type = "Resign",
-                        Status = o.Status,
-                    };
-
-                    NotificationList.Add(ord);
-                }
-            }
-            Session["NotifyList"] = NotificationList.OrderByDescending(d => d.Date).ToList();
-
-        }
+        
 
     }
 }
