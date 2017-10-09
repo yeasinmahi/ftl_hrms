@@ -436,6 +436,10 @@ namespace FTL_HRMS.Controllers
             sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
 
+            List<EmployeeType> employeeTypeList = new List<EmployeeType>();
+            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
+
             return View(employee);
         }
 
@@ -539,6 +543,10 @@ namespace FTL_HRMS.Controllers
             List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
             sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
+
+            List<EmployeeType> employeeTypeList = new List<EmployeeType>();
+            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
 
             return View(employee);
         }
