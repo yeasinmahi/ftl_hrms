@@ -32,7 +32,6 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.Sl)
                     @Html.HiddenFor(model => model.DesignationId)
-                    @Html.HiddenFor(model => model.EmployeeTypeId)
                     @Html.HiddenFor(model => model.BranchId)
                     @Html.HiddenFor(model => model.GrossSalary)
                     @Html.HiddenFor(model => model.CreateDate)
@@ -112,7 +111,7 @@
                                             @Html.LabelFor(model => model.DateOfBirth, "Date Of Birth", new { @class = "required" })
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @type = "DateTime", style = "width:100%", @tabindex = 13, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
@@ -152,6 +151,13 @@
                                             <textarea class="form-control autogrow" cols="5" name="PresentAddress" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 35px;width:100%" id="present_address" required tabindex="5">@Model.PresentAddress</textarea>
                                         </div>
                                         <div>
+                                            @Html.LabelFor(model => model.EmployeeTypeId, "Employee Type", new { @class = "required" })
+                                        </div>
+                                        <div>
+                                            @Html.DropDownList("EmployeeTypeId", null, "Select Type", htmlAttributes: new { @class = "form-control", style = "width:100%", @tabindex = 16, @required = true })
+                                            @Html.ValidationMessageFor(model => model.EmployeeTypeId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
                                             @Html.LabelFor(model => model.Mobile, new { @class = "required" })
                                         </div>
                                         <div>
@@ -169,7 +175,7 @@
                                             @Html.LabelFor(model => model.DateOfJoining, "Date Of Joining", new { @class = "required" })
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 14, @required = true } })
+                                            @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control", @type = "DateTime", style = "width:100%", @tabindex = 14, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfJoining, "", new { @class = "text-danger" })
                                         </div>
                                         <div>

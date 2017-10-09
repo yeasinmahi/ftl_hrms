@@ -2829,6 +2829,7 @@
     <Compile Include="Controllers\LeaveTypesController.cs" />
     <Compile Include="Controllers\MenuItemsController.cs" />
     <Compile Include="Controllers\MonthlyAttendancesController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\PerformanceIssuesController.cs" />
     <Compile Include="Controllers\PerformanceRatingsController.cs" />
     <Compile Include="Controllers\ProbationController.cs" />
@@ -3403,6 +3404,7 @@
     <Content Include="Views\SalaryAdjustments\Index.cshtml" />
     <Content Include="Views\Resignations\Delete.cshtml" />
     <Content Include="Views\Resignations\Edit.cshtml" />
+    <Content Include="Views\Shared\Notification.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3414,6 +3416,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\AdminTemplate\assets\plugins\data-table\" />
     <Folder Include="Content\assets\data\images\" />
+    <Folder Include="Views\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Reports\BranchReport.rpt">
