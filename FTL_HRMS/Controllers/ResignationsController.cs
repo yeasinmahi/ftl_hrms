@@ -186,6 +186,7 @@ namespace FTL_HRMS.Controllers
             Resignation resignation = _db.Resignation.Find(id);
             _db.Resignation.Remove(resignation);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
         #endregion

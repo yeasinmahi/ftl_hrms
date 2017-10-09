@@ -74,10 +74,10 @@ namespace FTL_HRMS.Controllers
                 salaryAdjustment.CreateDate = DateTime.Now;
                 _db.SalaryAdjustment.Add(salaryAdjustment);
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             List<Employee> employeeList = new List<Employee>();
             employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", salaryAdjustment.EmployeeId);
@@ -132,10 +132,10 @@ namespace FTL_HRMS.Controllers
                 salaryAdjustment.UpdateDate = DateTime.Now;
                 _db.Entry(salaryAdjustment).State = System.Data.Entity.EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Added Successfully !!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("Create");
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(salaryAdjustment);
         }
 
@@ -162,6 +162,7 @@ namespace FTL_HRMS.Controllers
             SalaryAdjustment salaryAdjustment = _db.SalaryAdjustment.Find(id);
             _db.SalaryAdjustment.Remove(salaryAdjustment);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
 

@@ -8,6 +8,7 @@ using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Utility;
+using FTL_HRMS.Models.Hr;
 
 namespace FTL_HRMS.Controllers
 {
@@ -22,10 +23,13 @@ namespace FTL_HRMS.Controllers
             var monthlyAttendance = _db.MonthlyAttendance.Include(m => m.Employee);
             return View(monthlyAttendance.ToList());
         }
+
         #region Employee Attendence Report
         public ActionResult EmployeeAttendenceReport()
         {
-            ViewBag.DepartmentGroupId = new SelectList(_db.DepartmentGroup, "Sl", "Name");
+            List<DepartmentGroup> groupList = new List<DepartmentGroup>();
+            groupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name");
             List<MonthlyAttendance> attendenceList = GetEmployeeList(0, 0, Utility.Utility.GetDefaultDate());
             return View(attendenceList);
         }
@@ -39,8 +43,11 @@ namespace FTL_HRMS.Controllers
             Int32.TryParse(ddl_dept, out did);
             DateTime Date = Utility.Utility.GetDefaultDate();
             DateTime.TryParse(Request["Date"], out Date);
-            
-            ViewBag.DepartmentGroupId = new SelectList(_db.DepartmentGroup, "Sl", "Name");
+
+            List<DepartmentGroup> groupList = new List<DepartmentGroup>();
+            groupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name");
+
             ViewBag.Status = "SelectType";
             TempData["dgid"] = dgid;
             TempData["did"] = did;
@@ -83,7 +90,11 @@ namespace FTL_HRMS.Controllers
         #region EmployeeWise Attendence
         public ActionResult EmployeewiseAttendenceReport()
         {
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code");
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             List<MonthlyAttendance> attendenceList = GetEmployeewiseList(0, Utility.Utility.GetDefaultDate(), Utility.Utility.GetDefaultDate());
             return View(attendenceList);
         }
@@ -103,10 +114,11 @@ namespace FTL_HRMS.Controllers
             {
                 DateTime.TryParse(Request["ToDate"], out ToDate);
             }
-          
-           
-
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code");
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             ViewBag.Status = "SelectType";
             TempData["dgid"] = eid;
             TempData["FromDate"] = FromDate;
@@ -117,7 +129,8 @@ namespace FTL_HRMS.Controllers
             List<MonthlyAttendance> attendenceList = GetEmployeewiseList(eid, FromDate, ToDate);
             return View(attendenceList);
         }
-            public List<MonthlyAttendance> GetEmployeewiseList(int employeeId, DateTime FromDate, DateTime ToDate)
+
+        public List<MonthlyAttendance> GetEmployeewiseList(int employeeId, DateTime FromDate, DateTime ToDate)
         {
             List<MonthlyAttendance> attendenceList = new List<MonthlyAttendance>();
             if (FromDate.Equals(Utility.Utility.GetDefaultDate()))
