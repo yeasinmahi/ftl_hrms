@@ -41,6 +41,10 @@ namespace FTL_HRMS.Controllers
             TempData["did"] = did;
             TempData["dsid"] = dsid;
             List<Employee> employeeList = GetEmployeeList(etid, dgid, did, dsid);
+            if (employeeList.Count == 0)
+            {
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
+            }
             return View(employeeList);
 
         }
@@ -179,8 +183,6 @@ namespace FTL_HRMS.Controllers
             {
                 return null;
             }
-            
-            
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeReport", fileName = "Employee Report", selectedFormula = selectedFormula });
         }
         #endregion
@@ -198,6 +200,10 @@ namespace FTL_HRMS.Controllers
             ViewBag.FromDate = fromDate;
             ViewBag.ToDate = toDate;
             List<Resignation> resignEmployeeList = _db.Resignation.Where(t => t.ResignDate >= fromDate && t.ResignDate <= toDate).ToList();
+            if (resignEmployeeList.Count == 0)
+            {
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
+            }
             return View("ResignReport", resignEmployeeList);
         }
         public ActionResult PrintResignReport()
@@ -222,6 +228,10 @@ namespace FTL_HRMS.Controllers
             ViewBag.FromDate = fromDate;
             ViewBag.ToDate = toDate;
             List<DepartmentTransfer> departmentTransferList = _db.DepartmentTransfer.Where(t => t.TransferDate >= fromDate && t.TransferDate <= toDate).ToList();
+            if (departmentTransferList.Count == 0)
+            {
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
+            }
             return View("DepartmentTransferReport", departmentTransferList);
         }
 
@@ -246,6 +256,10 @@ namespace FTL_HRMS.Controllers
             ViewBag.FromDate = fromDate;
             ViewBag.ToDate = toDate;
             List<BranchTransfer> branchTransferList = _db.BranchTransfer.Where(t => t.TransferDate >= fromDate && t.TransferDate <= toDate).ToList();
+            if (branchTransferList.Count == 0)
+            {
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
+            }
             return View("BranchTransferReport", branchTransferList);
         }
         public ActionResult PrintBranchTransferReport()
@@ -406,6 +420,10 @@ namespace FTL_HRMS.Controllers
             ViewBag.FromDate = fromDate;
             ViewBag.ToDate = toDate;
             List<LeaveHistory> leaveList = _db.LeaveHistories.Where(t => t.FromDate >= fromDate && t.FromDate <= toDate).ToList();
+            if (leaveList.Count == 0)
+            {
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
+            }
             return View("LeaveReport", leaveList);
 
         }
@@ -429,7 +447,6 @@ namespace FTL_HRMS.Controllers
             ViewBag.FromDate = fromDate;
             ViewBag.ToDate = toDate;
             return View();
-
         }
         #endregion
 
@@ -502,7 +519,7 @@ namespace FTL_HRMS.Controllers
         }
 
         #endregion
-        
+         
        
     }
 }
