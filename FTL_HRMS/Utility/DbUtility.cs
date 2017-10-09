@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using FTL_HRMS.DAL;
-using FTL_HRMS.Models;
 
 namespace FTL_HRMS.Utility
 {

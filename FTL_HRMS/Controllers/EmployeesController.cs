@@ -604,7 +604,7 @@ namespace FTL_HRMS.Controllers
                 if (!password.Equals(confirmPassword))
                 {
                     isValidate = false;
-                    TempData["message"] = "Password does not match!!!";
+                    TempData["message"] = "0Password does not match!!!";
                 }
             }
             return isValidate;

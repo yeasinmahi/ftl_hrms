@@ -93,7 +93,7 @@ namespace FTL_HRMS.Controllers
                     leaveCountList = _db.LeaveCounts.Where(i => i.EmployeeId == userId).ToList();
                     ViewBag.LeaveCount = leaveCountList;
                     ViewBag.LeaveTypeId = new SelectList(_db.LeaveTypes, "Sl", "Name", leaveHistory.LeaveTypeId);
-                    TempData["message"] = "Exceeds available days !!";
+                    TempData["message"] = "0Exceeds available days !!";
                 }
             }
             return View(leaveHistory);
