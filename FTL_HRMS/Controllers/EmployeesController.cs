@@ -436,6 +436,10 @@ namespace FTL_HRMS.Controllers
             sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
 
+            List<EmployeeType> employeeTypeList = new List<EmployeeType>();
+            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
+
             return View(employee);
         }
 
@@ -540,6 +544,10 @@ namespace FTL_HRMS.Controllers
             sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
 
+            List<EmployeeType> employeeTypeList = new List<EmployeeType>();
+            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
+
             return View(employee);
         }
         #endregion
@@ -604,7 +612,7 @@ namespace FTL_HRMS.Controllers
                 if (!password.Equals(confirmPassword))
                 {
                     isValidate = false;
-                    TempData["message"] = "Password does not match!!!";
+                    TempData["message"] = "0Password does not match!!!";
                 }
             }
             return isValidate;

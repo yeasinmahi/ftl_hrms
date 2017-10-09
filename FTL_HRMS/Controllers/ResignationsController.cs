@@ -157,10 +157,10 @@ namespace FTL_HRMS.Controllers
                 resignation.UpdateDate = DateTime.Now;
                 _db.Entry(resignation).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return View(resignation);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(resignation);
         }
         #endregion

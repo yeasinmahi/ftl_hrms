@@ -19,7 +19,7 @@ namespace FTL_HRMS.Models.Hr
         public int DisciplinaryActionTypeId { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
         ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
         

@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using FTL_HRMS.DAL;
-using FTL_HRMS.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FTL_HRMS.Utility
 {
