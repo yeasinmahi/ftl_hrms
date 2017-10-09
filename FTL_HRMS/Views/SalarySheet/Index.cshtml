@@ -43,176 +43,185 @@
 
     </div>
 
-
     <div class="content-body">
         <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                @{ 
-                    if(ViewBag.FromDate != "" && ViewBag.ToDate != "")
-                    {
-                        <h3>**Last Generated : @ViewBag.FromDate To @ViewBag.ToDate</h3>
-                    }
-                }
-                @{int rowNo = 0;}
-                <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>
-                                SL
-                            </th>
-                            <th>
-                                Employee Code
-                            </th>
-                            <th>
-                                Gross Salary
-                            </th>
-                            <th>
-                                Basic Salary
-                            </th>
-                            <th>
-                                Absent Day
-                            </th>
-                            <th>
-                                Absent Panelty
-                            </th>
-                            <th>
-                                Late Day
-                            </th>
-                            <th>
-                                Late Penalty
-                            </th>
-                            <th>
-                                Unofficial Day
-                            </th>
-                            <th>
-                                Unofficial Penalty
-                            </th>
-                            <th>
-                                Leave Penalty
-                            </th>
-                            <th>
-                                Others Penalty
-                            </th>
-                            <th>
-                                Festival Bonus
-                            </th>
-                            <th>
-                                Others Bonus
-                            </th>
-                            <th>
-                                Net Pay
-                            </th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>
-                                SL
-                            </th>
-                            <th>
-                                Employee Code
-                            </th>
-                            <th>
-                                Gross Salary
-                            </th>
-                            <th>
-                                Basic Salary
-                            </th>
-                            <th>
-                                Absent Day
-                            </th>
-                            <th>
-                                Absent Panelty
-                            </th>
-                            <th>
-                                Late Day
-                            </th>
-                            <th>
-                                Late Penalty
-                            </th>
-                            <th>
-                                Unofficial Day
-                            </th>
-                            <th>
-                                Unofficial Penalty
-                            </th>
-                            <th>
-                                Leave Penalty
-                            </th>
-                            <th>
-                                Others Penalty
-                            </th>
-                            <th>
-                                Festival Bonus
-                            </th>
-                            <th>
-                                Others Bonus
-                            </th>
-                            <th>
-                                Net Pay
-                            </th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td align="center" width="5%">
-                                    @(rowNo += 1)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Employee.Code)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.GrossSalary)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.BasicSalary)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.AbsentDay)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.AbsentPanelty)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LateDay)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LatePenalty)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UnofficialDay)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UnofficialPenalty)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LeavePenalty)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.OthersPenalty)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FestivalBonus)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.OthersBonus)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NetPay)
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+            <div class="col-md-6 text-right">
+                <div class="btn-group">
+                    <button type="button" onclick="location.href='@Url.Action("PrintMonthlySalarySheetReport", "Reports")'" target="_blank" class="btn btn-info btn-sm">
+                        <span class="glyphicon glyphicon-print"></span> Download PDF
+                    </button>
+                </div>
             </div>
-        </div>
-    </div>
-}
+            <br /><br />
+            <div class="content-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        @{
+                            if (ViewBag.FromDate != "" && ViewBag.ToDate != "")
+                            {
+                                <h3>**Last Generated : @ViewBag.FromDate To @ViewBag.ToDate</h3>
+                            }
+                        }
+                        @{int rowNo = 0;}
+                        <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        SL
+                                    </th>
+                                    <th>
+                                        Employee Code
+                                    </th>
+                                    <th>
+                                        Gross Salary
+                                    </th>
+                                    <th>
+                                        Basic Salary
+                                    </th>
+                                    <th>
+                                        Absent Day
+                                    </th>
+                                    <th>
+                                        Absent Panelty
+                                    </th>
+                                    <th>
+                                        Late Day
+                                    </th>
+                                    <th>
+                                        Late Penalty
+                                    </th>
+                                    <th>
+                                        Unofficial Day
+                                    </th>
+                                    <th>
+                                        Unofficial Penalty
+                                    </th>
+                                    <th>
+                                        Leave Penalty
+                                    </th>
+                                    <th>
+                                        Others Penalty
+                                    </th>
+                                    <th>
+                                        Festival Bonus
+                                    </th>
+                                    <th>
+                                        Others Bonus
+                                    </th>
+                                    <th>
+                                        Net Pay
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>
+                                        SL
+                                    </th>
+                                    <th>
+                                        Employee Code
+                                    </th>
+                                    <th>
+                                        Gross Salary
+                                    </th>
+                                    <th>
+                                        Basic Salary
+                                    </th>
+                                    <th>
+                                        Absent Day
+                                    </th>
+                                    <th>
+                                        Absent Panelty
+                                    </th>
+                                    <th>
+                                        Late Day
+                                    </th>
+                                    <th>
+                                        Late Penalty
+                                    </th>
+                                    <th>
+                                        Unofficial Day
+                                    </th>
+                                    <th>
+                                        Unofficial Penalty
+                                    </th>
+                                    <th>
+                                        Leave Penalty
+                                    </th>
+                                    <th>
+                                        Others Penalty
+                                    </th>
+                                    <th>
+                                        Festival Bonus
+                                    </th>
+                                    <th>
+                                        Others Bonus
+                                    </th>
+                                    <th>
+                                        Net Pay
+                                    </th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td align="center" width="5%">
+                                            @(rowNo += 1)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Employee.Code)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.GrossSalary)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.BasicSalary)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.AbsentDay)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.AbsentPanelty)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LateDay)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LatePenalty)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UnofficialDay)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UnofficialPenalty)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LeavePenalty)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.OthersPenalty)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FestivalBonus)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.OthersBonus)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.NetPay)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            }
 
-<script>
-$(document).ready(function(){
-    $('#myTable').DataTable();
-});
-</script>
+            <script>
+                $(document).ready(function () {
+                    $('#myTable').DataTable();
+                });
+            </script>

@@ -299,6 +299,21 @@ namespace FTL_HRMS.Controllers
         }
         #endregion 
 
+        #region MonthlySalarySheetReport
+        public ActionResult PrintMonthlySalarySheetReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "MonthlySalarySheetReport", fileName = "Monthly SalarySheet Report" });
+        }
+        #endregion
+
+        #region SalaryAdjustmentReport
+        public ActionResult PrintSalaryAdjustmentReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "SalaryAdjustmentReport", fileName = "Salary Adjustment Report" });
+        }
+        #endregion
+
+
         #region Resignation Application
         public ActionResult PrintResignationApplicationReport()
         {
@@ -350,6 +365,8 @@ namespace FTL_HRMS.Controllers
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "AttandanceByDateRangeReport", fileName = "Attandance By Date Range Report", selectedFormula = "{tbl_MonthlyAttendance.Date}>=Date (" + fromDate.ToString("yyyy,MM,dd") + ") and {tbl_MonthlyAttendance.Date}<= Date (" + toDate.ToString("yyyy,MM,dd") + " ) and {tbl_Employee.Sl}= "+employeeId+"" });
         }
         #endregion
+
+       
 
         #region Performance Issue
         public ActionResult PrintPerformanceIssueReport()
