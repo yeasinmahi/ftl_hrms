@@ -46,12 +46,6 @@ namespace FTL_HRMS.Controllers
         // GET: DisciplinaryActions/Create
         public ActionResult Create()
         {
-            string userName = User.Identity.Name;
-            int userId = DbUtility.GetUserId(_db, userName);
-
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
             return View();
         }
@@ -63,18 +57,14 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,EmployeeId,DisciplinaryActionTypeId,Date,Remarks")] DisciplinaryAction disciplinaryAction)
         {
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             if (ModelState.IsValid)
             {
                 _db.DisciplinaryAction.Add(disciplinaryAction);
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
-                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
                 ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", disciplinaryAction.EmployeeId);
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(disciplinaryAction);
@@ -94,9 +84,6 @@ namespace FTL_HRMS.Controllers
             {
                 return HttpNotFound();
             }
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", disciplinaryAction.EmployeeId);
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
             return View(disciplinaryAction);
         }
@@ -108,18 +95,14 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,EmployeeId,DisciplinaryActionTypeId,Date,Remarks")] DisciplinaryAction disciplinaryAction)
         {
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             if (ModelState.IsValid)
             {
                 _db.Entry(disciplinaryAction).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
-                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
                 ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", disciplinaryAction.EmployeeId);
             ViewBag.DisciplinaryActionTypeId = new SelectList(_db.DisciplinaryActionType, "Sl", "Name", disciplinaryAction.DisciplinaryActionTypeId);
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(disciplinaryAction);

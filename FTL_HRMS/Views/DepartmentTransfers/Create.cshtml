@@ -4,6 +4,9 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+@section scripts {
+    <script src="~/Scripts/myScript.js" type="text/javascript"></script>
+}
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
         <div class="pull-left">
@@ -35,11 +38,13 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div>
-                                    @Html.LabelFor(model => model.EmployeeId, "Employee Code", new { @class = "required" })
+                                    @Html.LabelFor(model => model.EmployeeId, "Employee Code Or Name", new { @class = "required" })
                                 </div>
                                 <div>
-                                    @Html.DropDownList("EmployeeId", null, "--Select Employee--", htmlAttributes: new { @class = "form-control", style = "width:100%", @name = "Employee", @id = "employee", @onchange = "GetDesignation()", @required = true })
-                                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                                    <input type="hidden" id="EmployeeId" name="EmployeeId" />
+                                    <input type="text" id="EmployeeCode" value="" placeholder="Select Existing Employee" class="form-control" style="width:100%" required  onchange="GetDesignation();"/>
+                                    @*@Html.DropDownList("EmployeeId", null, "--Select Employee--", htmlAttributes: new { @class = "form-control", style = "width:100%", @name = "Employee", @id = "employee", @onchange = "GetDesignation()", @required = true })
+                                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -136,7 +141,7 @@
             url: '/DepartmentTransfers/GetDesignation',
             method: 'POST',
             data: {
-                empId: $('#employee').val(),
+                empId: $('#EmployeeId').val(),
             },
             cache: false,
             error: function () {
