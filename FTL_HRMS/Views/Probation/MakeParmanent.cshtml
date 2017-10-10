@@ -66,16 +66,11 @@
                     @Html.HiddenFor(model => model.Height)
                     @Html.HiddenFor(model => model.Weight)
                     @Html.HiddenFor(model => model.ExtraCurricularActivities)
+                    @Html.HiddenFor(model => model.ProbationStatus)
                     <div class="col-md-offset-3">
                         <div class="col-md-offset-5">
                              <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Probation" )'">Back To List</button>
                          </div>
-                        <div>
-                            @Html.CheckBoxFor(model => model.ProbationStatus)
-                            @Html.ValidationMessageFor(model => model.ProbationStatus, "", new { @class = "text-danger" })
-                            @Html.LabelFor(model => model.ProbationStatus, "Probation Status")
-                        </div>
-                        <br />
                         <div>
                             @Html.LabelFor(model => model.ParmanentDate, "Date Of Parmanent", new { @class = "required" })
                         </div>

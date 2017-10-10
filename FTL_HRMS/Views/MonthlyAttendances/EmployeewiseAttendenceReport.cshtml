@@ -24,36 +24,39 @@
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group">
-                    <div class="col-md-offset-3">
-
+                    <div class="col-md-4">
                         <div class="form-group"><h5>Employee Code Or Name</h5></div>
                         <div style="width:50%">
                             <input type="hidden" id="EmployeeId" name="EmployeeId" />
                             <input type="text" id="EmployeeCode" value="" placeholder="Select Existing Employee" class="form-control" style="width:100%" required />
                             @*@Html.DropDownList("EmployeeId", null, "--All--", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "employeeId", @name = "employeeId" })*@
                         </div>
-                        <br />
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label" for="Fromdate">From Date</label>
-                            <div class="controls">
-                                <input type="text" id="fromdate" name="FromDate" class="form-control datepicker" data-start-view="2" style="width:50%">
+                            <div>
+                                <input type="text" id="fromdate" name="FromDate" class="form-control datepicker" data-start-view="2" >
                             </div>
                         </div>
+                     </div>
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label" for="Todate">To Date</label>
-                            <div class="controls">
-                                <input type="text" id="todate" name="ToDate" class="form-control datepicker" data-start-view="2" style="width:50%">
+                            <div>
+                                <input type="text" id="todate" name="ToDate" class="form-control datepicker" data-start-view="2" >
                             </div>
                         </div>
-                        
-                        <div class="col-md-offset-2" style="margin-left:22%">
-                            <input type="submit" value="Submit" name="Submit" class="btn btn-info" />
-                        </div>
+                       </div>
                     </div>
-                </div>
+                  </div>
+                    <div class="col-md-offset-2" style="margin-left:45%">
+                        <input type="submit" value="Submit" name="Submit" class="btn btn-info" />
+                    </div>
             </div>
         </div>
-    </div>
+
+       
 }
 <header class="panel_header">
     <h2 class="title pull-left">List Of Employee</h2>
