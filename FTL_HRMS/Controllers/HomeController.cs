@@ -46,9 +46,9 @@ namespace FTL_HRMS.Controllers
             }
             else if (rolll == "Super Admin" || rolll == "Admin" || rolll == "Department Head" || rolll == "Employee")
             {
-                ViewBag.TotalEmployee = _db.Employee.Count();
-                ViewBag.TotalAdmin = _db.Designation.Where(x=> x.RoleName == "Admin").Count();
-                ViewBag.TotalBranch = _db.Branches.Count();
+                ViewBag.TotalEmployee = _db.Employee.Where(x=> x.Status== true).Count();
+                ViewBag.TotalAdmin = _db.Designation.Where(x=> x.RoleName == "Admin").Where(x => x.Status == true).Count();
+                ViewBag.TotalBranch = _db.Branches.Where(x => x.Status == true).Count();
                 DateTime d1 = DateTime.Now;
                 DateTime d2 = DateTime.Now.AddDays(30);
                 DateTime d3 = DateTime.Now.AddDays(-30);
@@ -60,10 +60,10 @@ namespace FTL_HRMS.Controllers
                 {
                     ViewBag.Holiday = 0;
                 }
-                ViewBag.DepartmentGroup = _db.DepartmentGroup.Count();
-                ViewBag.Department = _db.Department.Count();
-                ViewBag.Designation = _db.Designation.Count();
-                ViewBag.Probation = _db.Employee.Where(i => i.ProbationStatus == true).Count();
+                ViewBag.DepartmentGroup = _db.DepartmentGroup.Where(x => x.Status == true).Count();
+                ViewBag.Department = _db.Department.Where(x => x.Status == true).Count();
+                ViewBag.Designation = _db.Designation.Where(x => x.Status == true).Count();
+                ViewBag.Probation = _db.Employee.Where(i => i.ProbationStatus == true).Where(x => x.Status == true).Count();
 
                 string UserName = User.Identity.Name;
                 var CustomUserId = _db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
@@ -71,10 +71,10 @@ namespace FTL_HRMS.Controllers
 
                 ViewBag.EarnLeave = _db.LeaveCounts.Where(x => x.EmployeeId == EmployeeId).Where(x => x.LeaveTypeId == 1).Select(x=> x.AvailableDay).FirstOrDefault();
                 var designationId = _db.Employee.Where(x => x.Sl == EmployeeId).Select(x => x.DesignationId).FirstOrDefault();
-                ViewBag.DesignationName = _db.Employee.Where(x => x.Sl == EmployeeId).Select(x => x.Designation.Name).FirstOrDefault();
+                ViewBag.DesignationName = _db.Employee.Where(x => x.Sl == EmployeeId).Where(x => x.Status == true).Select(x => x.Designation.Name).FirstOrDefault();
                 var departmentId = _db.Designation.Where(x => x.Sl == designationId).Select(x => x.DepartmentId).FirstOrDefault();
-                ViewBag.DepartmentName = _db.Designation.Where(x => x.Sl == designationId).Select(x=> x.Department.Name).FirstOrDefault();
-                ViewBag.DepartmentGroupName = _db.Department.Where(x => x.Sl == departmentId).Select(x => x.DepartmentGroup.Name).FirstOrDefault();
+                ViewBag.DepartmentName = _db.Designation.Where(x => x.Sl == designationId).Where(x => x.Status == true).Select(x=> x.Department.Name).FirstOrDefault();
+                ViewBag.DepartmentGroupName = _db.Department.Where(x => x.Sl == departmentId).Where(x => x.Status == true).Select(x => x.DepartmentGroup.Name).FirstOrDefault();
 
                 if (_db.MonthlyAttendance.Where(x => x.EmployeeId == EmployeeId).Where(i => i.Date < d1 && i.Date > d3).Where(x => x.Status == "P").Count() > 0)
                 {

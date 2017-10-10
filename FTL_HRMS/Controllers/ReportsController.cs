@@ -20,8 +20,14 @@ namespace FTL_HRMS.Controllers
         #region Employee Report Print 
         public ActionResult EmployeeTypeReport()
         {
-            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
-            ViewBag.DepartmentGroupId = new SelectList(_db.DepartmentGroup, "Sl", "Name");
+            List<EmployeeType> employeeTypeList = new List<EmployeeType>();
+            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name");
+
+            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
+
             return View();
         }
 
@@ -33,8 +39,13 @@ namespace FTL_HRMS.Controllers
             Int32.TryParse(departmentGroupId, out dgid);
             Int32.TryParse(ddl_dept, out did);
             Int32.TryParse(ddl_designation, out dsid);
-            ViewBag.EmployeeTypeId = new SelectList(_db.EmployeeType, "Sl", "Name");
-            ViewBag.DepartmentGroupId = new SelectList(_db.DepartmentGroup, "Sl", "Name");
+            List<EmployeeType> employeeTypeList = new List<EmployeeType>();
+            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name");
+
+            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
             ViewBag.Status = "SelectType";
             TempData["etid"] = etid;
             TempData["dgid"] = dgid;
@@ -313,6 +324,21 @@ namespace FTL_HRMS.Controllers
         }
         #endregion 
 
+        #region MonthlySalarySheetReport
+        public ActionResult PrintMonthlySalarySheetReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "MonthlySalarySheetReport", fileName = "Monthly SalarySheet Report" });
+        }
+        #endregion
+
+        #region SalaryAdjustmentReport
+        public ActionResult PrintSalaryAdjustmentReport()
+        {
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "SalaryAdjustmentReport", fileName = "Salary Adjustment Report" });
+        }
+        #endregion
+
+
         #region Resignation Application
         public ActionResult PrintResignationApplicationReport()
         {
@@ -364,6 +390,8 @@ namespace FTL_HRMS.Controllers
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "AttandanceByDateRangeReport", fileName = "Attandance By Date Range Report", selectedFormula = "{tbl_MonthlyAttendance.Date}>=Date (" + fromDate.ToString("yyyy,MM,dd") + ") and {tbl_MonthlyAttendance.Date}<= Date (" + toDate.ToString("yyyy,MM,dd") + " ) and {tbl_Employee.Sl}= "+employeeId+"" });
         }
         #endregion
+
+       
 
         #region Performance Issue
         public ActionResult PrintPerformanceIssueReport()
@@ -519,7 +547,5 @@ namespace FTL_HRMS.Controllers
         }
 
         #endregion
-         
-       
     }
 }

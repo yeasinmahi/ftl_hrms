@@ -39,6 +39,7 @@ namespace FTL_HRMS.Controllers
             }
             return View(promotionHistory);
         }
+
         #region Get Information
         [AllowAnonymous]
         [HttpPost]
@@ -69,6 +70,7 @@ namespace FTL_HRMS.Controllers
             return Json(employeeData.ToList(), JsonRequestBehavior.AllowGet);
         }
         #endregion
+
         // GET: PromotionHistories/Create
         public ActionResult Create()
         {
