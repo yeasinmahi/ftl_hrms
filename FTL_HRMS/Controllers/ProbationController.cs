@@ -62,9 +62,9 @@ namespace FTL_HRMS.Controllers
                     {
                         string permanentAddress = Request["PermanentAddress"].ToString();
                         string presentAddress = Request["PresentAddress"].ToString();
-
                         employee.PresentAddress = presentAddress;
                         employee.PermanentAddress = permanentAddress;
+                        employee.ProbationStatus = false;
                         if (employee.ProbationStatus != true)
                         {
                             employee.ParmanentDate = employee.DateOfJoining;
@@ -105,6 +105,7 @@ namespace FTL_HRMS.Controllers
 
                     employee.PresentAddress = presentAddress;
                     employee.PermanentAddress = permanentAddress;
+                    employee.ProbationStatus = false;
                     string userName = User.Identity.Name;
                     int UserId = DbUtility.GetUserId(_db, userName);
                     employee.UpdatedBy = UserId;

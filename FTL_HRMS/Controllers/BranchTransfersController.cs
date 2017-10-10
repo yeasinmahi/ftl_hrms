@@ -47,13 +47,6 @@ namespace FTL_HRMS.Controllers
         // GET: BranchTransfers/Create
         public ActionResult Create()
         {
-            string userName = User.Identity.Name;
-            int userId = DbUtility.GetUserId(_db, userName);
-
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
-
             List<Branch> branchList = new List<Branch>();
             branchList = _db.Branches.Where(i => i.Status == true).ToList();
             ViewBag.BranchId = new SelectList(branchList, "Sl", "Name");
@@ -87,13 +80,6 @@ namespace FTL_HRMS.Controllers
                 return RedirectToAction("Create");
             }
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
-            string userName = User.Identity.Name;
-            int userId = DbUtility.GetUserId(_db, userName);
-
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", branchTransfer.EmployeeId);
-
             List<Branch> branchList = new List<Branch>();
             branchList = _db.Branches.Where(i => i.Status == true).ToList();
             ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", branchTransfer.ToBranchId);

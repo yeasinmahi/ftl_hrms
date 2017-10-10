@@ -4,16 +4,19 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+@section scripts {
+    <script src="~/Scripts/myScript.js" type="text/javascript"></script>
+}
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
         <div class="pull-left">
-            <h1 class="title">Promotion</h1>
+            <h1 class="title">Promotion/Demotion</h1>
         </div>
     </div>
 </div>
 
 <header class="panel_header">
-    <h2 class="title pull-left">Promote Employee</h2>
+    <h2 class="title pull-left">Promote/Demote Employee</h2>
     <div class="actions panel_actions pull-right">
         <i class="box_toggle fa fa-chevron-down"></i>
     </div>
@@ -35,11 +38,13 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div>
-                                    @Html.LabelFor(model => model.EmployeeId, "Employee Code", new { @class = "required" })
+                                    @Html.LabelFor(model => model.EmployeeId, "Employee Code Or Name", new { @class = "required" })
                                 </div>
                                 <div>
-                                    @Html.DropDownList("EmployeeId", null, "--Select Employee--", htmlAttributes: new { @class = "form-control", style = "width:100%", @name = "Employee", @id = "employee", @onchange = "GetDesignation()", @required = true })
-                                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                                    <input type="hidden" id="EmployeeId" name="EmployeeId" />
+                                    <input type="text" id="EmployeeCode" value="" placeholder="Select Existing Employee" class="form-control" style="width:100%" required onchange="GetDesignation();" />
+                                    @*@Html.DropDownList("EmployeeId", null, "--Select Employee--", htmlAttributes: new { @class = "form-control", style = "width:100%", @name = "Employee", @id = "employee", @onchange = "GetDesignation()", @required = true })
+                                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -155,7 +160,7 @@
             url: '/PromotionHistories/GetDesignation',
             method: 'POST',
             data: {
-                empId: $('#employee').val(),
+                empId: $('#EmployeeId').val(),
             },
             cache: false,
             error: function () {
