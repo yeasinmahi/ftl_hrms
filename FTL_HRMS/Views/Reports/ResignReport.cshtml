@@ -12,7 +12,8 @@
 @using (Html.BeginForm("ResignReportDateView", "Reports"))
 {
     <div class="row">
-        <div class="col-md-4" style="margin-left:15%">
+        @Html.Partial("~/Views/Shared/WarningMessage.cshtml")
+        <div class="col-md-4" style="margin-left: 15%">
             <div class="col-xs-7">
                 <div class="form-group">
                     <label class="form-label" for="from_date">From Date</label>
@@ -32,7 +33,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-2" style="margin-left:40%">
+        <div class="col-xs-2" style="margin-left: 40%">
             <button type="submit" class="btn btn-success">Submit</button>
         </div>
 

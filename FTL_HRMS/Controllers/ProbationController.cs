@@ -14,11 +14,12 @@ namespace FTL_HRMS.Controllers
     public class ProbationController : Controller
     {
         private HRMSDbContext _db = new HRMSDbContext();
+
         #region List
         // GET: Probation
         public ActionResult Index()
         {
-            var empList = _db.Employee.Where(x => x.Status == true).ToList();
+            var empList = _db.Employee.Where(x => x.Status == true && x.IsSystemOrSuperAdmin == false).ToList();
             var ProbationList = empList.Where(x=> x.ProbationStatus == true).ToList();
             return View(ProbationList);
         }
