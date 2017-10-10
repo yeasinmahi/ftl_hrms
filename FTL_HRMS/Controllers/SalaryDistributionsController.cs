@@ -111,19 +111,29 @@ namespace FTL_HRMS.Controllers
 
                         for (int a = 0; a < employeeList.Count; a++)
                         {
-                            int distributionId = _db.EmployeeSalaryDistribution.Where(i => i.EmployeeId == employeeList[a].Sl).Select(i => i.Sl).FirstOrDefault();
+                            
+                            int distributionId;
+                            int.TryParse(
+                                _db.EmployeeSalaryDistribution.Where(i => i.EmployeeId == employeeList[a].Sl)
+                                    .Select(i => i.Sl)
+                                    .FirstOrDefault().ToString(), out distributionId);
                             EmployeeSalaryDistribution distribution = _db.EmployeeSalaryDistribution.Find(distributionId);
-                            distribution.EmployeeId = employeeList[a].Sl;
-                            distribution.GrossSalary = employeeList[a].GrossSalary;
-                            distribution.BasicSalary = employeeList[a].GrossSalary * salaryDistribution.BasicSalary / 100;
-                            distribution.HouseRent = employeeList[a].GrossSalary * salaryDistribution.HouseRent / 100;
-                            distribution.MedicalAllowance = employeeList[a].GrossSalary * salaryDistribution.MedicalAllowance / 100;
-                            distribution.LifeInsurance = employeeList[a].GrossSalary * salaryDistribution.LifeInsurance / 100;
-                            distribution.FoodAllowance = employeeList[a].GrossSalary * salaryDistribution.FoodAllowance / 100;
-                            distribution.Entertainment = employeeList[a].GrossSalary * salaryDistribution.Entertainment / 100;
-                            _db.Entry(distribution).State = EntityState.Modified;
-                            _db.SaveChanges();
+                            if (distribution!=null)
+                            {
+                                distribution.EmployeeId = employeeList[a].Sl;
+                                distribution.GrossSalary = employeeList[a].GrossSalary;
+                                distribution.BasicSalary = employeeList[a].GrossSalary * salaryDistribution.BasicSalary / 100;
+                                distribution.HouseRent = employeeList[a].GrossSalary * salaryDistribution.HouseRent / 100;
+                                distribution.MedicalAllowance = employeeList[a].GrossSalary * salaryDistribution.MedicalAllowance / 100;
+                                distribution.LifeInsurance = employeeList[a].GrossSalary * salaryDistribution.LifeInsurance / 100;
+                                distribution.FoodAllowance = employeeList[a].GrossSalary * salaryDistribution.FoodAllowance / 100;
+                                distribution.Entertainment = employeeList[a].GrossSalary * salaryDistribution.Entertainment / 100;
+                                _db.Entry(distribution).State = EntityState.Modified;
+                            }
+                            
+                            
                         }
+                        _db.SaveChanges();
                     }
                     #endregion
 
