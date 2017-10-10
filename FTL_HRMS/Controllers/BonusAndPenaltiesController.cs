@@ -136,7 +136,7 @@ namespace FTL_HRMS.Controllers
             BonusAndPenalty bonusAndPenalty = _db.BonusAndPenalty.Find(id);
             _db.BonusAndPenalty.Remove(bonusAndPenalty);
             _db.SaveChanges();
-            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteFailed);
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
 

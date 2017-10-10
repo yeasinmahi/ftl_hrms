@@ -8,6 +8,7 @@ using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
+using Microsoft.AspNet.Identity;
 
 namespace FTL_HRMS.Controllers
 {
@@ -130,6 +131,8 @@ namespace FTL_HRMS.Controllers
                 _db.Entry(leaveHistory).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
+                string rolll = DbUtility.GetRoll(_db, User.Identity.GetUserId());
+                Session["NotifyList"] = NotificationController.GetInstant().GetNotificationListByRoll(rolll, User.Identity.Name);
                 return RedirectToAction("LeaveRecommendation", "LeaveHistories");
             }
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
@@ -172,12 +175,20 @@ namespace FTL_HRMS.Controllers
                 {
                     int CountId = _db.LeaveCounts.Where(i => i.EmployeeId == leaveHistory.EmployeeId && i.LeaveTypeId == leaveHistory.LeaveTypeId).Select(i => i.Sl).FirstOrDefault();
                     LeaveCount leaveCount = _db.LeaveCounts.Find(CountId);
-                    leaveCount.AvailableDay = leaveCount.AvailableDay - leaveHistory.Day;
+                    if(leaveHistory.LeaveType.Name == "Without Pay")
+                    {
+                        leaveCount.AvailableDay = leaveCount.AvailableDay + leaveHistory.Day;
+                    }
+                    else
+                    {
+                        leaveCount.AvailableDay = leaveCount.AvailableDay - leaveHistory.Day;
+                    }
                     _db.Entry(leaveCount).State = EntityState.Modified;
                     _db.SaveChanges();
                 }
                 #endregion
-
+                string rolll = DbUtility.GetRoll(_db, User.Identity.GetUserId());
+                Session["NotifyList"] = NotificationController.GetInstant().GetNotificationListByRoll(rolll, User.Identity.Name);
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("LeaveApproval", "LeaveHistories");
             }
@@ -217,11 +228,11 @@ namespace FTL_HRMS.Controllers
                 leaveHistory.UpdateDate = DateTime.Now;
                 _db.Entry(leaveHistory).State = EntityState.Modified;
                 _db.SaveChanges();
-                TempData["SuccessMsg"] = "Updated Successfully!";
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 ViewBag.LeaveTypeId = new SelectList(_db.LeaveTypes, "Sl", "Name", leaveHistory.LeaveTypeId);
                 return View(leaveHistory);
             }
-            TempData["WarningMsg"] = "Something went wrong !!";
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             ViewBag.LeaveTypeId = new SelectList(_db.LeaveTypes, "Sl", "Name", leaveHistory.LeaveTypeId);
             return View(leaveHistory);
         }
@@ -251,6 +262,7 @@ namespace FTL_HRMS.Controllers
             LeaveHistory leaveHistory = _db.LeaveHistories.Find(id);
             _db.LeaveHistories.Remove(leaveHistory);
             _db.SaveChanges();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             return RedirectToAction("Index");
         }
         #endregion

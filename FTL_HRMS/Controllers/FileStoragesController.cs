@@ -8,6 +8,7 @@ using FTL_HRMS.Models.Hr;
 using System.IO;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Utility;
+using System.Collections.Generic;
 
 namespace FTL_HRMS.Controllers
 {
@@ -15,8 +16,7 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext _db = new HRMSDbContext();
 
-        #region List
-        
+        #region List        
         // GET: FileStorages
         public ActionResult Index()
         {
@@ -46,7 +46,12 @@ namespace FTL_HRMS.Controllers
         // GET: FileStorages/Create
         public ActionResult Create()
         {
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code");
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             return View();
         }
 
@@ -57,6 +62,8 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,EmployeeId,Path,CreatedBy,CreateDate")] FileStorage fileStorage)
         {
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
 
             string path = Server.MapPath("~/Uploads/");
             if (!Directory.Exists(path))
@@ -88,8 +95,6 @@ namespace FTL_HRMS.Controllers
                     
                     fileStorage.EmployeeId = fileStorage.EmployeeId;
                     fileStorage.Path = fullFileName;
-                    string userName = User.Identity.Name;
-                    int userId = DbUtility.GetUserId(_db, userName);
                     fileStorage.CreatedBy = userId;
                     fileStorage.CreateDate = DateTime.Now;
                     _db.FileStorage.Add(fileStorage);
@@ -107,8 +112,9 @@ namespace FTL_HRMS.Controllers
             {
                 TempData["message"] =  DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
             }
-
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", fileStorage.EmployeeId);
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", fileStorage.EmployeeId);
             return View(fileStorage);
         }
         #endregion

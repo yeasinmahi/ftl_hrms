@@ -122,8 +122,6 @@ namespace FTL_HRMS.Controllers
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return View(departmentGroup);
             }
-            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UnknownError);
-            return View(departmentGroup);
         }
         #endregion
 
@@ -148,10 +146,18 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DepartmentGroup departmentGroup = _genericData.GetById<DepartmentGroup>(id);
-            departmentGroup.Status = false;
-            DbUtility.Status status = _genericData.Update<DepartmentGroup>(departmentGroup);
-            TempData["message"] = DbUtility.GetStatusMessage(status);
+            if (_db.Department.Where(i => i.DepartmentGroupId == id && i.Status == true).ToList().Count < 1)
+            {
+                DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
+                departmentGroup.Status = false;
+                _db.Entry(departmentGroup).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
+            }
+            else
+            {
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+            }
             return RedirectToAction("Index");
         }
         #endregion

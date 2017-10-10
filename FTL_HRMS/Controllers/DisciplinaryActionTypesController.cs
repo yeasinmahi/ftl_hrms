@@ -125,7 +125,7 @@ namespace FTL_HRMS.Controllers
                 DisciplinaryActionType disciplinaryActionType = _db.DisciplinaryActionType.Find(id);
                 _db.DisciplinaryActionType.Remove(disciplinaryActionType);
                 _db.SaveChanges();
-                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             }
             else
             {

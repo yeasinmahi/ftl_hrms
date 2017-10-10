@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using FTL_HRMS.DAL;
+using Microsoft.AspNet.Identity;
 
 namespace FTL_HRMS.Utility
 {
@@ -121,6 +122,12 @@ namespace FTL_HRMS.Utility
         public static int GetUserId(HRMSDbContext db, string userName)
         {
             return db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+        }
+        public static string GetRoll(HRMSDbContext db, string userId)
+        {
+            UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(db));
+            return userManager.GetRoles(userId).FirstOrDefault();
+
         }
         public static void ExecuteSeedOperation(HRMSDbContext context, List<string> scripts)
         {
