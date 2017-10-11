@@ -11,7 +11,7 @@ namespace FTL_HRMS.Models.Payroll
         public int Sl { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 

@@ -38,7 +38,7 @@ namespace FTL_HRMS.Models.Payroll
         public string RegistrationNo { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
         public DateTime RegistrationDate { get; set; }
 
@@ -46,7 +46,7 @@ namespace FTL_HRMS.Models.Payroll
         public string TINNumber { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
         public DateTime StartingDate { get; set; }
     }

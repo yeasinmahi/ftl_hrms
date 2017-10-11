@@ -67,12 +67,12 @@ namespace FTL_HRMS.Models.Hr
         public string PassportNumber { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
         public DateTime DateOfJoining { get; set; }
 
@@ -118,7 +118,7 @@ namespace FTL_HRMS.Models.Hr
         public bool IsSpecialEmployee { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
         public DateTime? ParmanentDate { get; set; }
         

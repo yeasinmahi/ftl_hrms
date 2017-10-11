@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using System.Web.Mvc;
 using CrystalDecisions.CrystalReports.Engine;
-using FTL_HRMS.Models;
 using System.Collections.Generic;
 using System.Linq;
 using FTL_HRMS.DAL;
@@ -390,8 +389,6 @@ namespace FTL_HRMS.Controllers
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "AttandanceByDateRangeReport", fileName = "Attandance By Date Range Report", selectedFormula = "{tbl_MonthlyAttendance.Date}>=Date (" + fromDate.ToString("yyyy,MM,dd") + ") and {tbl_MonthlyAttendance.Date}<= Date (" + toDate.ToString("yyyy,MM,dd") + " ) and {tbl_Employee.Sl}= "+employeeId+"" });
         }
         #endregion
-
-       
 
         #region Performance Issue
         public ActionResult PrintPerformanceIssueReport()
