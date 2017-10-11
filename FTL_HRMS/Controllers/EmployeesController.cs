@@ -14,6 +14,7 @@ using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
 using static FTL_HRMS.Models.AccountViewModels;
 using FTL_HRMS.Models.Payroll;
+using FTL_HRMS.Models.ViewModels;
 
 namespace FTL_HRMS.Controllers
 {
@@ -51,6 +52,27 @@ namespace FTL_HRMS.Controllers
                 return HttpNotFound();
             }
             return View(employee);
+        }
+        #endregion
+
+        #region GetExistingEmployee
+        public ActionResult GetExistingEmployee()
+        {
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+            string CodeOrName = Request["CodeOrName"];
+            List<Employee> EmployeeList = _db.Employee.Where(r => (r.Name.Contains(CodeOrName) || r.Code.Contains(CodeOrName)) && r.Sl != userId && r.Status == true && r.IsSystemOrSuperAdmin == false).ToList();
+
+            List<VMEmployee> EmpList = new List<VMEmployee>();
+            foreach (var item in EmployeeList)
+            {
+                VMEmployee emp = new VMEmployee();
+                emp.Sl = item.Sl;
+                emp.Code = item.Code;
+                emp.Name = item.Name;
+                EmpList.Add(emp);
+            }
+            return Json(EmpList, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

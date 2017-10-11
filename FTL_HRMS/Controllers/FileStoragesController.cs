@@ -46,12 +46,6 @@ namespace FTL_HRMS.Controllers
         // GET: FileStorages/Create
         public ActionResult Create()
         {
-            string userName = User.Identity.Name;
-            int userId = DbUtility.GetUserId(_db, userName);
-
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             return View();
         }
 
@@ -86,7 +80,6 @@ namespace FTL_HRMS.Controllers
                     if (existingFileStorage != null)
                     {
                         TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
-                        ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", fileStorage.EmployeeId);
                         return View(fileStorage);
                     }
 
@@ -112,9 +105,6 @@ namespace FTL_HRMS.Controllers
             {
                 TempData["message"] =  DbUtility.GetStatusMessage(DbUtility.Status.NotFound);
             }
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", fileStorage.EmployeeId);
             return View(fileStorage);
         }
         #endregion

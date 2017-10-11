@@ -8,6 +8,9 @@
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous">
 </script>
+@section scripts {
+    <script src="~/Scripts/myScript.js" type="text/javascript"></script>
+}
 @using (Html.BeginForm())
 {
     <header class="panel_header">
@@ -22,8 +25,12 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group">
                     <div class="col-md-4">
-                        <div><label class="form-label" for="Todate"> Select Employee Code </label></div>
-                        <div >@Html.DropDownList("EmployeeId", null, "--All--", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "employeeId", @name = "employeeId" })</div>
+                        <div class="form-group"><h5>Employee Code Or Name</h5></div>
+                        <div style="width:50%">
+                            <input type="hidden" id="EmployeeId" name="EmployeeId" />
+                            <input type="text" id="EmployeeCode" value="" placeholder="Select Existing Employee" class="form-control" style="width:100%" required />
+                            @*@Html.DropDownList("EmployeeId", null, "--All--", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "employeeId", @name = "employeeId" })*@
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">

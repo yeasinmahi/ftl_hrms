@@ -9,6 +9,7 @@ using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Utility;
 using FTL_HRMS.Models.Hr;
 using System.Collections.Generic;
+using FTL_HRMS.Models.ViewModels;
 
 namespace FTL_HRMS.Controllers
 {
@@ -42,11 +43,6 @@ namespace FTL_HRMS.Controllers
         // GET: BonusAndPenalties/Create
         public ActionResult Create()
         {
-            string userName = User.Identity.Name;
-            int userId = DbUtility.GetUserId(_db, userName);
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             return View();
         }
 
@@ -70,11 +66,7 @@ namespace FTL_HRMS.Controllers
                 return RedirectToAction("Create");
             }
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code",bonusAndPenalty.EmployeeId);
             return View(bonusAndPenalty);
-
         }
 
         // GET: BonusAndPenalties/Edit/5

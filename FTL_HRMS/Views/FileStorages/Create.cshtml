@@ -4,6 +4,9 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+@section scripts {
+    <script src="~/Scripts/myScript.js" type="text/javascript"></script>
+}
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
         <div class="pull-left">
@@ -38,17 +41,19 @@
                                 <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "FileStorages")'">Back To List</button>
                             </div>
                             <div>
-                                @Html.LabelFor(model => model.EmployeeId, "Employee Code")
+                                @Html.LabelFor(model => model.EmployeeId, "Employee Code Or Name", new { @class = "required" })
                             </div>
                             <div>
-                                @Html.DropDownList("EmployeeId", null, htmlAttributes: new { @class = "form-control", style = "width:50%" })
-                                @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                                <input type="hidden" id="EmployeeId" name="EmployeeId" />
+                                <input type="text" id="EmployeeCode" value="" placeholder="Select Existing Employee" class="form-control" style="width:50%" required />
+                                @*@Html.DropDownList("EmployeeId", null, htmlAttributes: new { @class = "form-control", style = "width:50%" })
+                                @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })*@
                             </div>
                             <div>
-                                <label>Upload File</label>
+                                @Html.Label("Upload File", new { @class = "required" })
                             </div>
                             <div>
-                                <input type="file" accept=".pdf" name="EmployeeFile" class="btn btn-info" data-label="Browse" style="width:50%" />
+                                <input type="file" accept=".pdf" name="EmployeeFile" class="btn btn-info" data-label="Browse" style="width:50%" required/>
                             </div>
 
                             <div>

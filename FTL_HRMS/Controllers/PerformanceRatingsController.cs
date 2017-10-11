@@ -46,12 +46,6 @@ namespace FTL_HRMS.Controllers
         // GET: PerformanceRatings/Create
         public ActionResult Create()
         {
-            string userName = User.Identity.Name;
-            int userId = DbUtility.GetUserId(_db, userName);
-
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name");
             return View();
         }
@@ -63,18 +57,14 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Rating,Date,EmployeeId,PerformanceIssueId")] PerformanceRating performanceRating)
         {
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             if (ModelState.IsValid)
             {
                 _db.PerformanceRating.Add(performanceRating);
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
-                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
                 ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", performanceRating.EmployeeId);
             ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(performanceRating);
@@ -94,9 +84,6 @@ namespace FTL_HRMS.Controllers
             {
                 return HttpNotFound();
             }
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", performanceRating.EmployeeId);
             ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
             return View(performanceRating);
         }
@@ -108,18 +95,14 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,Rating,Date,EmployeeId,PerformanceIssueId")] PerformanceRating performanceRating)
         {
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             if (ModelState.IsValid)
             {
                 _db.Entry(performanceRating).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
-                ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
                 ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name");
                 return RedirectToAction("Create");
             }
-            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code", performanceRating.EmployeeId);
             ViewBag.PerformanceIssueId = new SelectList(_db.PerformanceIssue, "Sl", "Name", performanceRating.PerformanceIssueId);
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(performanceRating);

@@ -99,11 +99,11 @@ namespace FTL_HRMS.Controllers
             return View(attendenceList);
         }
         [HttpPost]
-        public ActionResult EmployeewiseAttendenceReport(string employeeId)
+        public ActionResult EmployeewiseAttendenceReport(string EmployeeId)
         {
             att.SyncAttendance();
             int eid;
-            Int32.TryParse(employeeId, out eid);
+            Int32.TryParse(EmployeeId, out eid);
             DateTime FromDate = Utility.Utility.GetDefaultDate();
             if(Request["FromDate"]!="")
             {
@@ -125,7 +125,7 @@ namespace FTL_HRMS.Controllers
             TempData["ToDate"] = ToDate;
             ViewBag.FromDate = FromDate;
             ViewBag.ToDate = ToDate;
-            ViewBag.EmpId = Int32.TryParse(employeeId, out eid);
+            ViewBag.EmpId = Int32.TryParse(EmployeeId, out eid);
             List<MonthlyAttendance> attendenceList = GetEmployeewiseList(eid, FromDate, ToDate);
             return View(attendenceList);
         }
