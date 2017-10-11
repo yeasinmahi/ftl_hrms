@@ -3510,26 +3510,26 @@
     <EmbeddedResource Include="Migrations\201710071448400_UpdateMonthlySalarySheet.resx">
       <DependentUpon>201710071448400_UpdateMonthlySalarySheet.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt">
+    <Content Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AttandanceByDateRangeReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\DisciplinaryActionHistoryReport.rpt">
+    </Content>
+    <Content Include="Reports\DisciplinaryActionHistoryReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DisciplinaryActionHistoryReport.cs</LastGenOutput>
-    </EmbeddedResource>
+    </Content>
     <Content Include="Reports\FestivalBonusReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>FestivalBonusReport.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="Reports\LeaveApplicationReport.rpt">
+    <Content Include="Reports\LeaveApplicationReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LeaveApplicationReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\LeaveTypeReport.rpt">
+    </Content>
+    <Content Include="Reports\LeaveTypeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LeaveTypeReport.cs</LastGenOutput>
-    </EmbeddedResource>
+    </Content>
     <Content Include="Reports\PerformanceIssueReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PerformanceIssueReport.cs</LastGenOutput>
@@ -3554,10 +3554,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>SalaryAdjustmentReport.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="Reports\TodaysAttendanceReport.rpt">
+    <Content Include="Reports\TodaysAttendanceReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TodaysAttendanceReport.cs</LastGenOutput>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

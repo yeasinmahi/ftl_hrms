@@ -18,12 +18,12 @@ namespace FTL_HRMS.Models.Hr
         public string Address { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        DisplayFormat(DataFormatString = "{0:hh:mm tt}",
         ApplyFormatInEditMode = true)]
         public DateTime OpeningTime { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        DisplayFormat(DataFormatString = "{0:hh:mm tt}",
         ApplyFormatInEditMode = true)]
         public DateTime EndingTime { get; set; }
 
