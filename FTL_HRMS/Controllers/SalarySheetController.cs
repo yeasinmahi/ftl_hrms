@@ -60,6 +60,8 @@ namespace FTL_HRMS.Controllers
                         double GrossSalary = GetGrossSalary(sl);
                         double BasicSalary = GetBasicSalary(sl);
                         double PerDaySalary = GetPerDaySalary(GrossSalary, WorkingDays);
+                        double DaysOfSalary = GetDaysOfSalary(StartDate, EndDate);
+                        double EmployeeGrossSalary = GetEmployeeGrossSalary(PerDaySalary, DaysOfSalary);
                         double AbsentDays = GetAbsentDays(sl, StartDate, EndDate);
                         double AbsentPanelty = GetAbsentPanelty(AbsentDays, PerDaySalary);
                         double LateDays = GetLateDays(sl, StartDate, EndDate);
@@ -87,17 +89,21 @@ namespace FTL_HRMS.Controllers
 
                         double LatePanelty = 0;
                         double LeavePanelty = GetLeavePanelty(sl, PerDaySalary, WithoutPayLeave);
-                        double BeforeJoiningDays = GetBeforeJoiningDays(sl, StartDate, EndDate);
-                        double UnofficialPanelty = 0;
-                        if (BeforeJoiningDays > 0)
-                        {
-                            UnofficialPanelty += GetUnofficialPanelty(PerDaySalary, BeforeJoiningDays);
-                        }
-                        double AfterResignDays = GetAfterResignDays(sl, StartDate, EndDate);
-                        if (AfterResignDays > 0)
-                        {
-                            UnofficialPanelty += GetUnofficialPanelty(PerDaySalary, AfterResignDays);
-                        }
+                        double UnofficialDays = GetUnofficialDays(sl, StartDate, EndDate);
+                        double UnofficialPanelty = GetUnofficialPanelty(PerDaySalary, UnofficialDays);
+
+                        //double BeforeJoiningDays = GetBeforeJoiningDays(sl, StartDate, EndDate);
+                        //double UnofficialPanelty = 0;
+                        //if (BeforeJoiningDays > 0)
+                        //{
+                        //    UnofficialPanelty += GetUnofficialPanelty(PerDaySalary, BeforeJoiningDays);
+                        //}
+                        //double AfterResignDays = GetAfterResignDays(sl, StartDate, EndDate);
+                        //if (AfterResignDays > 0)
+                        //{
+                        //    UnofficialPanelty += GetUnofficialPanelty(PerDaySalary, AfterResignDays);
+                        //}
+
                         double OthersPanelty = GetOthersPanelty(sl, StartDate, EndDate);
                         double OthersBonus = GetOthersBonus(sl, StartDate, EndDate);
                         double FestivalBonus = GetFestivalBonus(sl, StartDate, EndDate);
@@ -112,14 +118,14 @@ namespace FTL_HRMS.Controllers
                         monthlySalarySheet.AbsentPanelty = AbsentPanelty;
                         monthlySalarySheet.LateDay = LateDays;
                         monthlySalarySheet.LatePenalty = LatePanelty;
-                        monthlySalarySheet.UnofficialDay = BeforeJoiningDays + AfterResignDays;
+                        monthlySalarySheet.UnofficialDay = UnofficialDays;
                         monthlySalarySheet.UnofficialPenalty = UnofficialPanelty;
                         monthlySalarySheet.LeavePenalty = LeavePanelty;
                         monthlySalarySheet.OthersPenalty = OthersPanelty;
                         monthlySalarySheet.OthersBonus = OthersBonus;
                         monthlySalarySheet.FestivalBonus = FestivalBonus;
                         monthlySalarySheet.AdjustmentAmount = AdjustmentAmount;
-                        monthlySalarySheet.NetPay = CalculateNetPay(GrossSalary, AbsentPanelty, LatePanelty, UnofficialPanelty, LeavePanelty, OthersPanelty, OthersBonus, FestivalBonus, AdjustmentAmount);
+                        monthlySalarySheet.NetPay = CalculateNetPay(EmployeeGrossSalary, AbsentPanelty, LatePanelty, UnofficialPanelty, LeavePanelty, OthersPanelty, OthersBonus, FestivalBonus, AdjustmentAmount);
                         _db.MonthlySalarySheet.Add(monthlySalarySheet);
                         _db.SaveChanges();
                     }
@@ -145,6 +151,11 @@ namespace FTL_HRMS.Controllers
         public double GetWorkingDays(DateTime StartDate)
         {
             return System.DateTime.DaysInMonth(StartDate.Year, StartDate.Month);
+        }
+
+        public double GetDaysOfSalary(DateTime StartDate, DateTime EndDate)
+        {
+            return (EndDate - StartDate).TotalDays + 1;
         }
 
         public int InsertPaidSalaryDuration(DateTime StartDate, DateTime EndDate, double WorkingDays)
@@ -185,6 +196,16 @@ namespace FTL_HRMS.Controllers
                 PerDaySalary = GrossSalary / WorkingDays;
             }
             return PerDaySalary;
+        }
+
+        public double GetEmployeeGrossSalary(double PerDaySalary, double DaysOfSalary)
+        {
+            double EmployeeGrossSalary = 0;
+            if (PerDaySalary > 0 && DaysOfSalary > 0)
+            {
+                EmployeeGrossSalary = DaysOfSalary * PerDaySalary;
+            }
+            return EmployeeGrossSalary;
         }
 
         public double GetAbsentDays(int sl, DateTime StartDate, DateTime EndDate)
@@ -292,6 +313,11 @@ namespace FTL_HRMS.Controllers
             return LeavePanelty;
         }
 
+        public double GetUnofficialDays(int sl, DateTime StartDate, DateTime EndDate)
+        {
+            return _db.MonthlyAttendance.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date && i.Status == "U" && i.IsCalculated == false).ToList().Count;
+        }
+
         public DateTime GetJoiningDate(int sl)
         {
             return _db.Employee.Where(i => i.Sl == sl).Select(i => i.DateOfJoining).FirstOrDefault();
@@ -389,7 +415,7 @@ namespace FTL_HRMS.Controllers
             double UnofficialPanelty = 0;
             if(PerDaySalary > 0 && UnofficialDays > 0)
             {
-                UnofficialPanelty = PerDaySalary * UnofficialPanelty;
+                UnofficialPanelty = PerDaySalary * UnofficialDays;
             }
             else
             {
@@ -461,9 +487,9 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public double CalculateNetPay(double GrossSalary, double AbsentPanelty, double LatePanelty,double UnofficialPanelty,double LeavePanelty,double OthersPanelty,double OthersBonus,double FestivalBonus, double AdjustmentAmount)
+        public double CalculateNetPay(double EmployeeGrossSalary, double AbsentPanelty, double LatePanelty,double UnofficialPanelty,double LeavePanelty,double OthersPanelty,double OthersBonus,double FestivalBonus, double AdjustmentAmount)
         {
-            return GrossSalary - AbsentPanelty - LatePanelty - UnofficialPanelty - LeavePanelty - OthersPanelty + OthersBonus + FestivalBonus + AdjustmentAmount;
+            return EmployeeGrossSalary - AbsentPanelty - LatePanelty - UnofficialPanelty - LeavePanelty - OthersPanelty + OthersBonus + FestivalBonus + AdjustmentAmount;
         }
 
         public List<MonthlyAttendance> GetMonthlyAttendance(DateTime StartDate, DateTime EndDate)
