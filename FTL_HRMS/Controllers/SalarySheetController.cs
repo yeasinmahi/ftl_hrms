@@ -36,86 +36,103 @@ namespace FTL_HRMS.Controllers
 
         public ActionResult CalculateSalarySheet(DateTime StartDate, DateTime EndDate)
         {
-            att.SyncAttendance();
-            List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendance(StartDate, EndDate);
-            double WorkingDays = GetWorkingDays(StartDate);
-            int PaidSalaryDurationId = InsertPaidSalaryDuration(StartDate, EndDate, WorkingDays);
-
-            if (PaidSalaryDurationId > 0)
+            DateTime ToDate = Utility.Utility.GetDefaultDate();
+            int LastPaidSalaryDurationId = 0;
+            if (_db.PaidSalaryDuration.ToList().Count > 0)
             {
-                foreach(var sl in EmployeeSlList)
+                LastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
+            }
+            if (LastPaidSalaryDurationId > 0)
+            {
+                ToDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
+            }
+            if(StartDate.Date > ToDate.Date && EndDate.Date < DateTime.Now.Date)
+            {
+                att.SyncAttendance();
+                List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendance(StartDate, EndDate);
+                double WorkingDays = GetWorkingDays(StartDate);
+                int PaidSalaryDurationId = InsertPaidSalaryDuration(StartDate, EndDate, WorkingDays);
+
+                if (PaidSalaryDurationId > 0)
                 {
-                    double GrossSalary = GetGrossSalary(sl);
-                    double BasicSalary = GetBasicSalary(sl);
-                    double PerDaySalary = GetPerDaySalary(GrossSalary, WorkingDays);
-                    double AbsentDays = GetAbsentDays(sl, StartDate, EndDate);
-                    double AbsentPanelty = GetAbsentPanelty(AbsentDays, PerDaySalary);
-                    double LateDays = GetLateDays(sl, StartDate, EndDate);
-                    double WithoutPayLeave = GetWithoutPayLeave(sl);
-
-                    if (LateDays > 0)
+                    foreach (var sl in EmployeeSlList)
                     {
-                        int LeavePaneltyDays = 0;
-                        int BranchId = GetEmployeeBranchId(sl);
-                        double LateConsiderationDays = (double)GetLateConsiderationDays(BranchId);
-                        if(LateConsiderationDays > 0)
-                        {
-                            LeavePaneltyDays = GetLeavePaneltyDays(LateDays, LateConsiderationDays);
-                        }
-                        double EarnLeave = GetEarnLeave(sl);
-                        if(CalculateLeavePanelty(sl, LeavePaneltyDays, EarnLeave, WithoutPayLeave))
-                        {
-                            //leave counts updated
-                        }
-                        else
-                        {
-                            //leave counts calculation failed
-                        }
-                    }
+                        double GrossSalary = GetGrossSalary(sl);
+                        double BasicSalary = GetBasicSalary(sl);
+                        double PerDaySalary = GetPerDaySalary(GrossSalary, WorkingDays);
+                        double AbsentDays = GetAbsentDays(sl, StartDate, EndDate);
+                        double AbsentPanelty = GetAbsentPanelty(AbsentDays, PerDaySalary);
+                        double LateDays = GetLateDays(sl, StartDate, EndDate);
+                        double WithoutPayLeave = GetWithoutPayLeave(sl);
 
-                    double LatePanelty = 0;
-                    double LeavePanelty = GetLeavePanelty(sl, PerDaySalary, WithoutPayLeave);
-                    double BeforeJoiningDays = GetBeforeJoiningDays(sl, StartDate, EndDate);
-                    double UnofficialPanelty = 0;
-                    if(BeforeJoiningDays > 0)
-                    {
-                        UnofficialPanelty += GetUnofficialPanelty(PerDaySalary, BeforeJoiningDays);
-                    }
-                    double AfterResignDays = GetAfterResignDays(sl, StartDate, EndDate);
-                    if (AfterResignDays > 0)
-                    {
-                        UnofficialPanelty += GetUnofficialPanelty(PerDaySalary, AfterResignDays);
-                    }
-                    double OthersPanelty = GetOthersPanelty(sl, StartDate, EndDate);
-                    double OthersBonus = GetOthersBonus(sl, StartDate, EndDate);
-                    double FestivalBonus = GetFestivalBonus(sl, StartDate, EndDate);
-                    double AdjustmentAmount = GetAdjustmentAmount(sl, StartDate, EndDate);
+                        if (LateDays > 0)
+                        {
+                            int LeavePaneltyDays = 0;
+                            int BranchId = GetEmployeeBranchId(sl);
+                            double LateConsiderationDays = (double)GetLateConsiderationDays(BranchId);
+                            if (LateConsiderationDays > 0)
+                            {
+                                LeavePaneltyDays = GetLeavePaneltyDays(LateDays, LateConsiderationDays);
+                            }
+                            double EarnLeave = GetEarnLeave(sl);
+                            if (CalculateLeavePanelty(sl, LeavePaneltyDays, EarnLeave, WithoutPayLeave))
+                            {
+                                //leave counts updated
+                            }
+                            else
+                            {
+                                //leave counts calculation failed
+                            }
+                        }
 
-                    MonthlySalarySheet monthlySalarySheet = new MonthlySalarySheet();
-                    monthlySalarySheet.EmployeeId = sl;
-                    monthlySalarySheet.PaidSalaryDurationId = PaidSalaryDurationId;
-                    monthlySalarySheet.GrossSalary = GrossSalary;
-                    monthlySalarySheet.BasicSalary = BasicSalary;
-                    monthlySalarySheet.AbsentDay = AbsentDays;
-                    monthlySalarySheet.AbsentPanelty = AbsentPanelty;
-                    monthlySalarySheet.LateDay = LateDays;
-                    monthlySalarySheet.LatePenalty = LatePanelty;
-                    monthlySalarySheet.UnofficialDay = BeforeJoiningDays + AfterResignDays;
-                    monthlySalarySheet.UnofficialPenalty = UnofficialPanelty;
-                    monthlySalarySheet.LeavePenalty = LeavePanelty;
-                    monthlySalarySheet.OthersPenalty = OthersPanelty;
-                    monthlySalarySheet.OthersBonus = OthersBonus;
-                    monthlySalarySheet.FestivalBonus = FestivalBonus;
-                    monthlySalarySheet.AdjustmentAmount = AdjustmentAmount;
-                    monthlySalarySheet.NetPay = CalculateNetPay(GrossSalary, AbsentPanelty, LatePanelty, UnofficialPanelty, LeavePanelty, OthersPanelty, OthersBonus, FestivalBonus, AdjustmentAmount);
-                    _db.MonthlySalarySheet.Add(monthlySalarySheet);
-                    _db.SaveChanges();
+                        double LatePanelty = 0;
+                        double LeavePanelty = GetLeavePanelty(sl, PerDaySalary, WithoutPayLeave);
+                        double BeforeJoiningDays = GetBeforeJoiningDays(sl, StartDate, EndDate);
+                        double UnofficialPanelty = 0;
+                        if (BeforeJoiningDays > 0)
+                        {
+                            UnofficialPanelty += GetUnofficialPanelty(PerDaySalary, BeforeJoiningDays);
+                        }
+                        double AfterResignDays = GetAfterResignDays(sl, StartDate, EndDate);
+                        if (AfterResignDays > 0)
+                        {
+                            UnofficialPanelty += GetUnofficialPanelty(PerDaySalary, AfterResignDays);
+                        }
+                        double OthersPanelty = GetOthersPanelty(sl, StartDate, EndDate);
+                        double OthersBonus = GetOthersBonus(sl, StartDate, EndDate);
+                        double FestivalBonus = GetFestivalBonus(sl, StartDate, EndDate);
+                        double AdjustmentAmount = GetAdjustmentAmount(sl, StartDate, EndDate);
+
+                        MonthlySalarySheet monthlySalarySheet = new MonthlySalarySheet();
+                        monthlySalarySheet.EmployeeId = sl;
+                        monthlySalarySheet.PaidSalaryDurationId = PaidSalaryDurationId;
+                        monthlySalarySheet.GrossSalary = GrossSalary;
+                        monthlySalarySheet.BasicSalary = BasicSalary;
+                        monthlySalarySheet.AbsentDay = AbsentDays;
+                        monthlySalarySheet.AbsentPanelty = AbsentPanelty;
+                        monthlySalarySheet.LateDay = LateDays;
+                        monthlySalarySheet.LatePenalty = LatePanelty;
+                        monthlySalarySheet.UnofficialDay = BeforeJoiningDays + AfterResignDays;
+                        monthlySalarySheet.UnofficialPenalty = UnofficialPanelty;
+                        monthlySalarySheet.LeavePenalty = LeavePanelty;
+                        monthlySalarySheet.OthersPenalty = OthersPanelty;
+                        monthlySalarySheet.OthersBonus = OthersBonus;
+                        monthlySalarySheet.FestivalBonus = FestivalBonus;
+                        monthlySalarySheet.AdjustmentAmount = AdjustmentAmount;
+                        monthlySalarySheet.NetPay = CalculateNetPay(GrossSalary, AbsentPanelty, LatePanelty, UnofficialPanelty, LeavePanelty, OthersPanelty, OthersBonus, FestivalBonus, AdjustmentAmount);
+                        _db.MonthlySalarySheet.Add(monthlySalarySheet);
+                        _db.SaveChanges();
+                    }
+                    UpdateMonthlyAttendanceStatus(StartDate, EndDate);
                 }
-                UpdateMonthlyAttendanceStatus(StartDate, EndDate);
+                else
+                {
+                    //Failed to insert paid salary duration
+                }
             }
             else
             {
-                //Failed to insert paid salary duration
+                //Wrong Input
             }
             return RedirectToAction("Index");
         }
