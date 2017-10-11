@@ -292,7 +292,7 @@ namespace FTL_HRMS.Controllers
         #region Branch
         public ActionResult PrintBranchReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BranchReport", fileName = "Branch Report" });
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BranchReport", fileName = "Branch Report", selectedFormula = "{tbl_Branch.Status} = TRUE" });
         }
         #endregion
 
@@ -428,7 +428,7 @@ namespace FTL_HRMS.Controllers
         #region Bonus and penalties
         public ActionResult PrintBonusAndpenaltiesReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BonusAndPenaltieseReport", fileName = "Bonus And PenaltieseReport"});
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BonusAndPenaltieseReport", fileName = "Bonus And PenaltieseReport" });
         }
         #endregion
 
