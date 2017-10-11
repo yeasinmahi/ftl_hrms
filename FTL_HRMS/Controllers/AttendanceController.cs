@@ -38,7 +38,7 @@ namespace FTL_HRMS.Controllers
                     {
                         if (InsertFilterAttendance(filterAttendance))
                         {
-                            if(!UpdateDeviceAttendanceStatus(code, date))
+                            if (!UpdateDeviceAttendanceStatus(code, date))
                             {
                                 return Status.UpdateFailed;
                             }
@@ -98,7 +98,7 @@ namespace FTL_HRMS.Controllers
         }
 
         public bool InsertFilterAttendance(FilterAttendance filterAttendance)
-        {           
+        {
             try
             {
                 _db.FilterAttendance.Add(filterAttendance);
@@ -133,14 +133,15 @@ namespace FTL_HRMS.Controllers
         #region MoveFilterAttendanceToMonthlyAttendance
         public Status MoveFilterAttendanceToMonthlyAttendance()
         {
+            bool IsError;
             DateTime StartDate = GetFirstDate();
             DateTime LastDate = GetLastDate();
             List<DateTime> DateList = GetDateList(StartDate, LastDate);
             List<Employee> EmployeeList = GetEmployeeList();
 
-            foreach(var date in DateList)
+            foreach (var date in DateList)
             {
-                foreach(var emp in EmployeeList)
+                foreach (var emp in EmployeeList)
                 {
                     MonthlyAttendance monthlyAttendance = GetMonthlyAttendance(date, emp);
                     if (monthlyAttendance != null)
@@ -212,7 +213,7 @@ namespace FTL_HRMS.Controllers
                 else
                 {
                     return false;
-                }                
+                }
             }
             catch
             {
@@ -225,14 +226,14 @@ namespace FTL_HRMS.Controllers
             try
             {
                 List<DateTime> WeekendList = GetWeekendList(BranchId);
-                foreach(var item in WeekendList)
+                foreach (var item in WeekendList)
                 {
-                    if(item.DayOfWeek == date.DayOfWeek)
+                    if (item.DayOfWeek == date.DayOfWeek)
                     {
                         return true;
                     }
                 }
-                return false;               
+                return false;
             }
             catch
             {
@@ -242,25 +243,26 @@ namespace FTL_HRMS.Controllers
 
         public List<DateTime> GetWeekendList(int BranchId)
         {
-            return _db.Weekend.Where(i => i.BranchId == BranchId).Select(i=> i.Day).ToList();
+            return _db.Weekend.Where(i => i.BranchId == BranchId).Select(i => i.Day).ToList();
         }
 
         public bool IsHoliday(DateTime date)
         {
             try
             {
-                if(_db.Holiday.Where(i=> DbFunctions.TruncateTime(i.Date) == date.Date).ToList().Count > 0)
+                if (_db.Holiday.Where(i => DbFunctions.TruncateTime(i.Date) == date.Date).ToList().Count > 0)
                 {
                     return true;
                 }
                 else
                 {
                     return false;
-                }                
+                }
             }
             catch
             {
                 return false;
+
             }
         }
 
@@ -292,14 +294,15 @@ namespace FTL_HRMS.Controllers
             catch
             {
                 return "Not Found";
-            }          
+            }
         }
 
-        public MonthlyAttendance GetMonthlyAttendance(DateTime date,Employee emp)
+        public MonthlyAttendance GetMonthlyAttendance(DateTime date, Employee emp)
         {
+            bool IsError;
             List<FilterAttendance> EmployeeAttendance = GetFilterAttendance(emp.Sl, date);
             MonthlyAttendance monthlyAttendance = null;
-            
+
             try
             {
                 monthlyAttendance = new MonthlyAttendance();
@@ -333,6 +336,10 @@ namespace FTL_HRMS.Controllers
                         monthlyAttendance.Status = "P";
                     }
                 }
+                else if (IsUnofficialDay(emp.Sl, date))
+                {
+                    monthlyAttendance.Status = "U";
+                }
                 else if (IsWeekend(emp.BranchId, date))
                 {
                     monthlyAttendance.Status = "W";
@@ -355,7 +362,30 @@ namespace FTL_HRMS.Controllers
             {
                 return null;
             }
-        return monthlyAttendance;
+            return monthlyAttendance;
+        }
+
+        private bool IsUnofficialDay(int employeeId, DateTime date)
+        {
+            DateTime joiningDate = _db.Employee.Where(x => x.Sl.Equals(employeeId)).Select(x => x.DateOfJoining).FirstOrDefault();
+            DateTime resignDate = _db.Resignation.Where(x => x.Sl.Equals(employeeId) && x.Status.Equals("Approved")).Select(x => x.ResignDate).FirstOrDefault();
+            if (joiningDate!=null)
+            {
+                if (joiningDate>date)
+                {
+                    return true;
+                }
+                if (resignDate!=new DateTime(1,1,1))
+                {
+                    if (resignDate<date)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return true;
+
         }
 
         public bool InsertMonthlyAttendance(MonthlyAttendance monthlyAttendance)
