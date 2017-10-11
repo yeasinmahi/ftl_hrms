@@ -306,14 +306,14 @@ namespace FTL_HRMS.Controllers
         #region Department Group
         public ActionResult PrintDepartmentGroupReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DepartmentGroupReport", fileName = "Department Group Report" });
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DepartmentGroupReport", fileName = "Department Group Report", selectedFormula = "{tbl_DepartmentGroup.Status} = TRUE" });
         }
         #endregion
 
         #region Designation
         public ActionResult PrintDesignationReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DesignationReport", fileName = "Designation Report" });
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "DesignationReport", fileName = "Designation Report", selectedFormula = "{tbl_Designation.Status} = TRUE" });
         }
         #endregion
 
@@ -337,7 +337,6 @@ namespace FTL_HRMS.Controllers
             return RedirectToAction("PrintReport", "Reports", new { sourceName = "SalaryAdjustmentReport", fileName = "Salary Adjustment Report" });
         }
         #endregion
-
 
         #region Resignation Application
         public ActionResult PrintResignationApplicationReport()
@@ -387,11 +386,9 @@ namespace FTL_HRMS.Controllers
             int employeeId = Convert.ToInt32(Request["EmployeeId"]);
             DateTime fromDate = Convert.ToDateTime(Request["fromDate"]);
             DateTime toDate = Convert.ToDateTime(Request["toDate"]);
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "AttandanceByDateRangeReport", fileName = "Attandance By Date Range Report", selectedFormula = "{tbl_MonthlyAttendance.Date}>=Date (" + fromDate.ToString("yyyy,MM,dd") + ") and {tbl_MonthlyAttendance.Date}<= Date (" + toDate.ToString("yyyy,MM,dd") + " ) and {tbl_Employee.Sl}= "+employeeId+"" });
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "AttandanceByDateRangeReport", fileName = "Attandance By Date Range Report", selectedFormula = "{tbl_MonthlyAttendance.Date}>=Date (" + fromDate.ToString("yyyy,MM,dd") + ") and {tbl_MonthlyAttendance.Date}<= Date (" + toDate.ToString("yyyy,MM,dd") + " ) and {tbl_Employee.Sl}= "+employeeId+ "" });
         }
         #endregion
-
-       
 
         #region Performance Issue
         public ActionResult PrintPerformanceIssueReport()
@@ -431,7 +428,7 @@ namespace FTL_HRMS.Controllers
         #region Bonus and penalties
         public ActionResult PrintBonusAndpenaltiesReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BonusAndPenaltieseReport", fileName = "Bonus And PenaltieseReport", selectedFormula = "{tbl_Employee.ProbationStatus} = TRUE" });
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "BonusAndPenaltieseReport", fileName = "Bonus And PenaltieseReport"});
         }
         #endregion
 

@@ -154,7 +154,7 @@ namespace FTL_HRMS.Controllers
             }
             else 
             {
-                attendenceList = _db.MonthlyAttendance.Include(x => x.Employee).Where(x => x.Date.Day == ToDate.Day && x.Date.Month == ToDate.Month && x.Date.Year == ToDate.Year).ToList();
+                attendenceList = _db.MonthlyAttendance.Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
             }
             ViewBag.FromDate = FromDate;
             ViewBag.ToDate = ToDate;

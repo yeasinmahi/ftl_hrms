@@ -20,6 +20,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult Index()
         {
             var bonusAndPenalty = _db.BonusAndPenalty.Include(b => b.CreateEmployee).Include(b => b.Employee).Include(b => b.UpdateEmployee);
+
             return View(bonusAndPenalty.ToList());
         }
 
