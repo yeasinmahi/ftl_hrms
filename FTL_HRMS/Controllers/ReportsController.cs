@@ -320,7 +320,7 @@ namespace FTL_HRMS.Controllers
         #region Employee Type
         public ActionResult PrintEmployeeTypeReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeTypeReport", fileName = "Employee Type Report" });
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "EmployeeTypeReport", fileName = "Employee Type Report", selectedFormula = "{tbl_EmployeeType.Status} = TRUE" });
         }
         #endregion 
 
