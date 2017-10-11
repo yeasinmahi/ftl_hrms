@@ -376,7 +376,7 @@ namespace FTL_HRMS.Controllers
         #region Leave Application
         public ActionResult PrintLeaveApplicationReport()
         {
-            return RedirectToAction("PrintReport", "Reports", new { sourceName = "LeaveApplicationReport", fileName = "Leave Application Report" });
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "LeaveApplicationReport", fileName = "Leave Application Report",selectedFormula = "{tbl_LeaveHistory.Status} = Approved" });
         }
         #endregion
 
