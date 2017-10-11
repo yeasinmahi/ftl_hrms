@@ -375,7 +375,7 @@ namespace FTL_HRMS.Controllers
                 {
                     return true;
                 }
-                if (resignDate!=null)
+                if (resignDate!=new DateTime(1,1,1))
                 {
                     if (resignDate<date)
                     {
