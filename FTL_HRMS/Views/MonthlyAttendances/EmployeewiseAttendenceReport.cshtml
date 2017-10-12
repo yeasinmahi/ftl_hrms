@@ -25,8 +25,8 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group">
                     <div class="col-md-4">
-                        <div class="form-group"><h5>Employee Code Or Name</h5></div>
-                        <div style="width:50%">
+                        <label class="form-label" for="Fromdate">Employee Code Or Name</label>
+                        <div>
                             <input type="hidden" id="EmployeeId" name="EmployeeId" />
                             <input type="text" id="EmployeeCode" value="" placeholder="Select Existing Employee" class="form-control" style="width:100%" required />
                             @*@Html.DropDownList("EmployeeId", null, "--All--", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "employeeId", @name = "employeeId" })*@
@@ -67,7 +67,7 @@
 <br /> <br />
 <div class="content-body">
     <div class="row">
-        <div class="col-md-6 text-right">
+        <div class="col-md-1 text-right">
             <div class="btn-group">
                 <button type="button" onclick="location.href='@Url.Action("PrintAttandanceByDateRangeReport", "Reports",new {EmployeeId= @ViewBag.EmpId, fromDate = @ViewBag.FromDate, toDate= @ViewBag.Todate })'" target="_blank" class="btn btn-info btn-sm">
                     <span class="glyphicon glyphicon-print"></span> Download PDF

@@ -2786,7 +2786,6 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <None Include="Scripts\_references.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\myScript.js" />
     <Content Include="Scripts\perfect-scrollbar.css" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -2899,8 +2898,8 @@
     <Compile Include="Models\Hr\Designation.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\RolePermission.cs" />
-    <Compile Include="Models\ViewModels\VMNotification.cs" />
     <Compile Include="Models\ViewModels\VMEmployee.cs" />
+    <Compile Include="Models\ViewModels\VMNotification.cs" />
     <Compile Include="Models\ViewModels\VMTodaysAttendance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\AttandanceByDateRangeReport.cs">
@@ -3510,26 +3509,26 @@
     <EmbeddedResource Include="Migrations\201710071448400_UpdateMonthlySalarySheet.resx">
       <DependentUpon>201710071448400_UpdateMonthlySalarySheet.cs</DependentUpon>
     </EmbeddedResource>
-    <Content Include="Reports\AttandanceByDateRangeReport.rpt">
+    <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AttandanceByDateRangeReport.cs</LastGenOutput>
-    </Content>
-    <Content Include="Reports\DisciplinaryActionHistoryReport.rpt">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\DisciplinaryActionHistoryReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DisciplinaryActionHistoryReport.cs</LastGenOutput>
-    </Content>
+    </EmbeddedResource>
     <Content Include="Reports\FestivalBonusReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>FestivalBonusReport.cs</LastGenOutput>
     </Content>
-    <Content Include="Reports\LeaveApplicationReport.rpt">
+    <EmbeddedResource Include="Reports\LeaveApplicationReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LeaveApplicationReport.cs</LastGenOutput>
-    </Content>
-    <Content Include="Reports\LeaveTypeReport.rpt">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LeaveTypeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LeaveTypeReport.cs</LastGenOutput>
-    </Content>
+    </EmbeddedResource>
     <Content Include="Reports\PerformanceIssueReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PerformanceIssueReport.cs</LastGenOutput>
@@ -3544,7 +3543,6 @@
     </Content>
     <Content Include="Reports\PromotionHistoryReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>PromotionHistoryReport.cs</LastGenOutput>
     </Content>
     <Content Include="Reports\MonthlySalarySheetReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -3554,10 +3552,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>SalaryAdjustmentReport.cs</LastGenOutput>
     </Content>
-    <Content Include="Reports\TodaysAttendanceReport.rpt">
+    <EmbeddedResource Include="Reports\TodaysAttendanceReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TodaysAttendanceReport.cs</LastGenOutput>
-    </Content>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
