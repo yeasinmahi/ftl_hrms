@@ -48,6 +48,7 @@ namespace FTL_HRMS.DAL
         public DbSet<SalaryAdjustment> SalaryAdjustment { get; set; }
         public DbSet<FestivalBonus> FestivalBonus { get; set; }
         public DbSet<FileStorage> FileStorage { get; set; }
+        public DbSet<EmployeeLeaveCountHistory> EmployeeLeaveCountHistory { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

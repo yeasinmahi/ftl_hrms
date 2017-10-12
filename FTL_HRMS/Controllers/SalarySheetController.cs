@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using FTL_HRMS.DAL;
+using FTL_HRMS.Models.Hr;
 
 namespace FTL_HRMS.Controllers
 {
@@ -79,6 +80,20 @@ namespace FTL_HRMS.Controllers
                             double EarnLeave = GetEarnLeave(sl);
                             if (CalculateLeavePanelty(sl, LeavePaneltyDays, EarnLeave, WithoutPayLeave))
                             {
+                                EmployeeLeaveCountHistory empLeaveCount = new EmployeeLeaveCountHistory();
+                                empLeaveCount.EmployeeId = sl;
+                                empLeaveCount.PaidSalaryDurationId = PaidSalaryDurationId;
+                                if (EarnLeave > LeavePaneltyDays)
+                                {
+                                    empLeaveCount.EarnLeaveDays = LeavePaneltyDays;
+                                }
+                                else
+                                {
+                                    empLeaveCount.EarnLeaveDays = EarnLeave;
+                                }
+                                empLeaveCount.WithoutPayLeaveDays = WithoutPayLeave;
+                                _db.EmployeeLeaveCountHistory.Add(empLeaveCount);
+                                _db.SaveChanges();
                                 //leave counts updated
                             }
                             else
