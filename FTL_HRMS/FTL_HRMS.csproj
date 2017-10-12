@@ -2857,9 +2857,14 @@
     <Compile Include="Migrations\201710071448400_UpdateMonthlySalarySheet.Designer.cs">
       <DependentUpon>201710071448400_UpdateMonthlySalarySheet.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710121017144_AddingEmployeeLeaveCountHistory.cs" />
+    <Compile Include="Migrations\201710121017144_AddingEmployeeLeaveCountHistory.Designer.cs">
+      <DependentUpon>201710121017144_AddingEmployeeLeaveCountHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
+    <Compile Include="Models\Hr\EmployeeLeaveCountHistory.cs" />
     <Compile Include="Models\Payroll\SalaryAdjustment.cs" />
     <Compile Include="Models\Payroll\BonusAndPenalty.cs" />
     <Compile Include="Models\Hr\LeaveCount.cs" />
@@ -3555,6 +3560,9 @@
     <EmbeddedResource Include="Reports\TodaysAttendanceReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TodaysAttendanceReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710121017144_AddingEmployeeLeaveCountHistory.resx">
+      <DependentUpon>201710121017144_AddingEmployeeLeaveCountHistory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

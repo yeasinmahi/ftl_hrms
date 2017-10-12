@@ -16,5 +16,22 @@ namespace FTL_HRMS.Utility
                 return System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath(path));
             return null;
         }
+
+        public enum DateTimeFormat
+        {
+            
+            DisplayDateFormat,
+            DisplayTimeFormat
+                
+        }
+
+        public static string GetDisplayDateFormat()
+        {
+            return "";
+        }
+        public static string GetDisplayTimeFormat()
+        {
+            return "{0:hh:mm tt}";
+        }
     }
 }
