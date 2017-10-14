@@ -104,6 +104,7 @@ namespace FTL_HRMS.Controllers
                         }
 
                         double LatePanelty = 0;
+                        WithoutPayLeave = GetWithoutPayLeave(sl);
                         double LeavePanelty = GetLeavePanelty(sl, PerDaySalary, WithoutPayLeave);
                         double UnofficialDays = GetUnofficialDays(sl, StartDate, EndDate);
                         double UnofficialPanelty = GetUnofficialPanelty(PerDaySalary, UnofficialDays);
@@ -162,6 +163,11 @@ namespace FTL_HRMS.Controllers
         public List<int> GetEmployeeSlFromMonthlyAttendance(DateTime StartDate, DateTime EndDate)
         {
             return _db.MonthlyAttendance.Where(i => i.IsCalculated == false && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Select(m => m.EmployeeId).Distinct().ToList();
+        }
+
+        public List<int> GetEmployeeSlFromMonthlyAttendanceForReverse(DateTime StartDate, DateTime EndDate)
+        {
+            return _db.MonthlyAttendance.Where(i => i.IsCalculated == true && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Select(m => m.EmployeeId).Distinct().ToList();
         }
 
         public double GetWorkingDays(DateTime StartDate)
@@ -546,7 +552,7 @@ namespace FTL_HRMS.Controllers
                     var lastPaidSalary = _db.PaidSalaryDuration.Find(LastPaidSalaryDurationId);
                     FromDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.FromDate).FirstOrDefault();
                     ToDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
-                    List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendance(FromDate, ToDate);
+                    List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendanceForReverse(FromDate, ToDate);
                     UpdateReverseMonthlyAttendanceStatus(FromDate, ToDate);
                     RemoveMonthlySalarySheetData(LastPaidSalaryDurationId);
                     foreach (var sl in EmployeeSlList)
@@ -615,10 +621,12 @@ namespace FTL_HRMS.Controllers
             try
             {
                 int LeaveCountHistoryId = _db.EmployeeLeaveCountHistory.Where(i => i.EmployeeId == sl && i.PaidSalaryDurationId == LastPaidSalaryDurationId).Select(i=> i.Sl).FirstOrDefault();
-                var history = _db.EmployeeLeaveCountHistory.Find(LeaveCountHistoryId);
+                EmployeeLeaveCountHistory history = _db.EmployeeLeaveCountHistory.Find(LeaveCountHistoryId);
                 double EarnLeave = history.EarnLeaveDays;
                 double WithoutPayLeave = history.WithoutPayLeaveDays;
                 UpdateEmployeeLeaveCounts(sl, EarnLeave, WithoutPayLeave);
+                _db.EmployeeLeaveCountHistory.Remove(history);
+                _db.SaveChanges();
                 return true;
             }
             catch
@@ -637,7 +645,7 @@ namespace FTL_HRMS.Controllers
                 _db.Entry(earnLeaveCount).State = EntityState.Modified;
                 _db.SaveChanges();
 
-                int WithoutLeaveCountId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Leave").Select(i => i.Sl).FirstOrDefault();
+                int WithoutLeaveCountId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay").Select(i => i.Sl).FirstOrDefault();
                 var withoutLeaveCount = _db.LeaveCounts.Find(WithoutLeaveCountId);
                 withoutLeaveCount.AvailableDay = withoutLeaveCount.AvailableDay + WithoutPayLeave;
                 _db.Entry(withoutLeaveCount).State = EntityState.Modified;
