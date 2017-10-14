@@ -57,7 +57,7 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         @{
-                            if (ViewBag.FromDate != "" && ViewBag.ToDate != "")
+                            if (ViewBag.FromDate != null && ViewBag.ToDate != null)
                             {
                                 <h3>**Last Generated : @ViewBag.FromDate To @ViewBag.ToDate</h3>
                             }
@@ -88,16 +88,13 @@
                                         Late Day
                                     </th>
                                     <th>
-                                        Late Penalty
+                                        Leave Penalty
                                     </th>
                                     <th>
                                         Unofficial Day
                                     </th>
                                     <th>
                                         Unofficial Penalty
-                                    </th>
-                                    <th>
-                                        Leave Penalty
                                     </th>
                                     <th>
                                         Others Penalty
@@ -140,16 +137,13 @@
                                         Late Day
                                     </th>
                                     <th>
-                                        Late Penalty
+                                        Leave Penalty
                                     </th>
                                     <th>
                                         Unofficial Day
                                     </th>
                                     <th>
                                         Unofficial Penalty
-                                    </th>
-                                    <th>
-                                        Leave Penalty
                                     </th>
                                     <th>
                                         Others Penalty
@@ -194,16 +188,13 @@
                                             @Html.DisplayFor(modelItem => item.LateDay)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.LatePenalty)
+                                            @Html.DisplayFor(modelItem => item.LeavePenalty)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.UnofficialDay)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.UnofficialPenalty)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.LeavePenalty)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.OthersPenalty)
@@ -227,7 +218,6 @@
                     </div>
                 </div>
             </div>
-            }
         </div>
     </div>
 }

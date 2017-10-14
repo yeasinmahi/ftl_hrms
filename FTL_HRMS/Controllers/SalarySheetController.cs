@@ -35,6 +35,7 @@ namespace FTL_HRMS.Controllers
             return View(SalarySheet);
         }
 
+        #region Generate Salary Sheet
         public ActionResult CalculateSalarySheet(DateTime StartDate, DateTime EndDate)
         {
             DateTime ToDate = Utility.Utility.GetDefaultDate();
@@ -103,6 +104,7 @@ namespace FTL_HRMS.Controllers
                         }
 
                         double LatePanelty = 0;
+                        WithoutPayLeave = GetWithoutPayLeave(sl);
                         double LeavePanelty = GetLeavePanelty(sl, PerDaySalary, WithoutPayLeave);
                         double UnofficialDays = GetUnofficialDays(sl, StartDate, EndDate);
                         double UnofficialPanelty = GetUnofficialPanelty(PerDaySalary, UnofficialDays);
@@ -161,6 +163,11 @@ namespace FTL_HRMS.Controllers
         public List<int> GetEmployeeSlFromMonthlyAttendance(DateTime StartDate, DateTime EndDate)
         {
             return _db.MonthlyAttendance.Where(i => i.IsCalculated == false && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Select(m => m.EmployeeId).Distinct().ToList();
+        }
+
+        public List<int> GetEmployeeSlFromMonthlyAttendanceForReverse(DateTime StartDate, DateTime EndDate)
+        {
+            return _db.MonthlyAttendance.Where(i => i.IsCalculated == true && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Select(m => m.EmployeeId).Distinct().ToList();
         }
 
         public double GetWorkingDays(DateTime StartDate)
@@ -529,5 +536,128 @@ namespace FTL_HRMS.Controllers
                 return false;
             }
         }
+        #endregion
+
+        #region Reverse Salary Sheet
+        public bool ReverseSalarySheet()
+        {
+            try
+            {
+                int LastPaidSalaryDurationId = 0;
+                DateTime FromDate = Utility.Utility.GetDefaultDate();
+                DateTime ToDate = Utility.Utility.GetDefaultDate();
+                if (_db.PaidSalaryDuration.ToList().Count > 0)
+                {
+                    LastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
+                    var lastPaidSalary = _db.PaidSalaryDuration.Find(LastPaidSalaryDurationId);
+                    FromDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.FromDate).FirstOrDefault();
+                    ToDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
+                    List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendanceForReverse(FromDate, ToDate);
+                    UpdateReverseMonthlyAttendanceStatus(FromDate, ToDate);
+                    RemoveMonthlySalarySheetData(LastPaidSalaryDurationId);
+                    foreach (var sl in EmployeeSlList)
+                    {
+                        ReverseLeaveCounts(sl, LastPaidSalaryDurationId);
+                    }
+                    RemovePaidSalaryDuration(LastPaidSalaryDurationId);
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateReverseMonthlyAttendanceStatus(DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+                List<MonthlyAttendance> EmployeeAttendance = GetMonthlyAttendance(StartDate, EndDate);
+                if (EmployeeAttendance.Count > 0)
+                {
+                    EmployeeAttendance.ForEach(x => x.IsCalculated = false);
+                }
+                _db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool RemoveMonthlySalarySheetData(int LastPaidSalaryDurationId)
+        {
+            try
+            {
+                _db.MonthlySalarySheet.RemoveRange(_db.MonthlySalarySheet.Where(u => u.PaidSalaryDurationId == LastPaidSalaryDurationId));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool RemovePaidSalaryDuration(int LastPaidSalaryDurationId)
+        {
+            try
+            {
+                PaidSalaryDuration paidSalaryDuration = _db.PaidSalaryDuration.Find(LastPaidSalaryDurationId);
+                _db.PaidSalaryDuration.Remove(paidSalaryDuration);
+                _db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool ReverseLeaveCounts(int sl, int LastPaidSalaryDurationId)
+        {
+            try
+            {
+                int LeaveCountHistoryId = _db.EmployeeLeaveCountHistory.Where(i => i.EmployeeId == sl && i.PaidSalaryDurationId == LastPaidSalaryDurationId).Select(i=> i.Sl).FirstOrDefault();
+                EmployeeLeaveCountHistory history = _db.EmployeeLeaveCountHistory.Find(LeaveCountHistoryId);
+                double EarnLeave = history.EarnLeaveDays;
+                double WithoutPayLeave = history.WithoutPayLeaveDays;
+                UpdateEmployeeLeaveCounts(sl, EarnLeave, WithoutPayLeave);
+                _db.EmployeeLeaveCountHistory.Remove(history);
+                _db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateEmployeeLeaveCounts(int sl, double EarnLeave, double WithoutPayLeave)
+        {
+            try
+            {
+                int EarnLeaveCountId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Earn").Select(i => i.Sl).FirstOrDefault();
+                var earnLeaveCount = _db.LeaveCounts.Find(EarnLeaveCountId);
+                earnLeaveCount.AvailableDay = earnLeaveCount.AvailableDay + EarnLeave;
+                _db.Entry(earnLeaveCount).State = EntityState.Modified;
+                _db.SaveChanges();
+
+                int WithoutLeaveCountId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay").Select(i => i.Sl).FirstOrDefault();
+                var withoutLeaveCount = _db.LeaveCounts.Find(WithoutLeaveCountId);
+                withoutLeaveCount.AvailableDay = withoutLeaveCount.AvailableDay + WithoutPayLeave;
+                _db.Entry(withoutLeaveCount).State = EntityState.Modified;
+                _db.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        #endregion
     }
 }
