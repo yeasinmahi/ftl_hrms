@@ -49,7 +49,12 @@ namespace FTL_HRMS.DAL
         public DbSet<FestivalBonus> FestivalBonus { get; set; }
         public DbSet<FileStorage> FileStorage { get; set; }
         public DbSet<EmployeeLeaveCountHistory> EmployeeLeaveCountHistory { get; set; }
-
+        public DbSet<Branch> Branches { get; set; }
+        public DbSet<LeaveType> LeaveTypes { get; set; }
+        public DbSet<LeaveCount> LeaveCounts { get; set; }
+        public DbSet<LeaveHistory> LeaveHistories { get; set; }
+        public DbSet<PromotionHistory> PromotionHistories { get; set; }
+        public DbSet<Loan> Loan { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -57,15 +62,5 @@ namespace FTL_HRMS.DAL
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
         }
-
-        public System.Data.Entity.DbSet<Branch> Branches { get; set; }
-
-        public System.Data.Entity.DbSet<LeaveType> LeaveTypes { get; set; }
-
-        public System.Data.Entity.DbSet<LeaveCount> LeaveCounts { get; set; }
-
-        public System.Data.Entity.DbSet<LeaveHistory> LeaveHistories { get; set; }
-
-        public System.Data.Entity.DbSet<FTL_HRMS.Models.Hr.PromotionHistory> PromotionHistories { get; set; }
     }
 }

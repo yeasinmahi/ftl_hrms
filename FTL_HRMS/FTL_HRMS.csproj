@@ -2865,10 +2865,15 @@
     <Compile Include="Migrations\201710150905181_UpdatePaidSalaryDuration.Designer.cs">
       <DependentUpon>201710150905181_UpdatePaidSalaryDuration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710151019498_add load.cs" />
+    <Compile Include="Migrations\201710151019498_add load.Designer.cs">
+      <DependentUpon>201710151019498_add load.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
     <Compile Include="Models\Hr\EmployeeLeaveCountHistory.cs" />
+    <Compile Include="Models\Payroll\Loan.cs" />
     <Compile Include="Models\Payroll\SalaryAdjustment.cs" />
     <Compile Include="Models\Payroll\BonusAndPenalty.cs" />
     <Compile Include="Models\Hr\LeaveCount.cs" />
@@ -3521,6 +3526,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710150905181_UpdatePaidSalaryDuration.resx">
       <DependentUpon>201710150905181_UpdatePaidSalaryDuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710151019498_add load.resx">
+      <DependentUpon>201710151019498_add load.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

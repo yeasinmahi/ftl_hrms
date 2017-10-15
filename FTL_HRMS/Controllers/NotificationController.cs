@@ -1,63 +1,61 @@
 ﻿using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Models.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace FTL_HRMS.Controllers
 {
     class NotificationController : Controller
     {
-        public HRMSDbContext _db;
-        private static NotificationController notificationController = null;
+        public HRMSDbContext Db;
+        private static NotificationController _notificationController = null;
         // GET: Notification
         
         public static NotificationController GetInstant()
         {
-            if (notificationController==null)
+            if (_notificationController==null)
             {
-                notificationController = new NotificationController();
+                _notificationController = new NotificationController();
             }
-            return notificationController;
+            return _notificationController;
         }
         public ActionResult Index()
         {
             return View();
         }
-        public List<VMNotification> GetNotificationListByRoll(string rolll,string UserName)
+        public List<VMNotification> GetNotificationListByRoll(string rolll,string userName)
         {
-            _db = new HRMSDbContext();
-            List<VMNotification> NotificationList = new List<VMNotification>();
-            List<LeaveHistory> NotifyList = new List<LeaveHistory>();
-            List<Resignation> NotifyResignList = new List<Resignation>();
+            Db = new HRMSDbContext();
+            List<VMNotification> notificationList = new List<VMNotification>();
+            List<LeaveHistory> leaveHistories = new List<LeaveHistory>();
+            List<Resignation> resignations = new List<Resignation>();
             if (rolll == "Super Admin" || rolll == "Admin")
             {
-                NotifyList = _db.LeaveHistories.Where(x => x.Status == "Pending" || x.Status == "Recommended").ToList();
-                NotifyResignList = _db.Resignation.Where(x => x.Status == "Pending").ToList();
+                leaveHistories = Db.LeaveHistories.Where(x => x.Status == "Pending" || x.Status == "Recommended").ToList();
+                resignations = Db.Resignation.Where(x => x.Status == "Pending").ToList();
             }
             else if (rolll == "Department Head")
             {
-                NotifyList = _db.LeaveHistories.Where(x => x.Status == "Pending").ToList();
-                NotifyResignList = _db.Resignation.Where(x => x.Status == "Pending").ToList();
+                leaveHistories = Db.LeaveHistories.Where(x => x.Status == "Pending").ToList();
+                resignations = Db.Resignation.Where(x => x.Status == "Pending").ToList();
             }
             else if (rolll == "Employee")
             {
-                var CustomUserId = _db.Users.Where(i => i.UserName == UserName).Select(s => s.CustomUserId).FirstOrDefault();
-                int EmployeeId = _db.Employee.Where(x => x.Sl == CustomUserId).Select(x => x.Sl).FirstOrDefault();
+                var customUserId = Db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                int employeeId = Db.Employee.Where(x => x.Sl == customUserId).Select(x => x.Sl).FirstOrDefault();
 
-                NotifyList = _db.LeaveHistories.Where(x => x.Status == "Approved" || x.Status == "Cancled").Where(x => x.EmployeeId == EmployeeId).ToList();
-                NotifyResignList = _db.Resignation.Where(x => x.Status == "Approved" || x.Status == "Cancled").Where(x => x.EmployeeId == EmployeeId).ToList();
+                leaveHistories = Db.LeaveHistories.Where(x => x.Status == "Approved" || x.Status == "Cancled").Where(x => x.EmployeeId == employeeId).ToList();
+                resignations = Db.Resignation.Where(x => x.Status == "Approved" || x.Status == "Cancled").Where(x => x.EmployeeId == employeeId).ToList();
             }
             else
             {
 
             }
-            if (NotifyList != null)
+            if (leaveHistories != null)
             {
-                foreach (var o in NotifyList)
+                foreach (var o in leaveHistories)
                 {
                     var ord = new VMNotification
                     {
@@ -68,12 +66,12 @@ namespace FTL_HRMS.Controllers
                         Status = o.Status,
                     };
 
-                    NotificationList.Add(ord);
+                    notificationList.Add(ord);
                 }
             }
-            if (NotifyResignList != null)
+            if (resignations != null)
             {
-                foreach (var o in NotifyResignList)
+                foreach (var o in resignations)
                 {
                     var ord = new VMNotification
                     {
@@ -84,10 +82,10 @@ namespace FTL_HRMS.Controllers
                         Status = o.Status,
                     };
 
-                    NotificationList.Add(ord);
+                    notificationList.Add(ord);
                 }
             }
-            return NotificationList.OrderByDescending(d => d.Date).ToList();
+            return notificationList.OrderByDescending(d => d.Date).ToList();
 
         }
     }
