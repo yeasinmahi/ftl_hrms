@@ -11,16 +11,28 @@ namespace FTL_HRMS.Models.Payroll
         public int Sl { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
         public DateTime FromDate { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
         public DateTime ToDate { get; set; }
 
         [Required(ErrorMessage = "Working Day cannot be empty")]
         public double WorkingDay { get; set; }
+
+        [DataType(DataType.Date),
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
+        ApplyFormatInEditMode = true)]
+        public DateTime GenerateDate { get; set; }
+
+        [DataType(DataType.Date),
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
+        ApplyFormatInEditMode = true)]
+        public DateTime? PaidDate { get; set; }
+
+        public bool IsPaid { get; set; }
     }
 }
