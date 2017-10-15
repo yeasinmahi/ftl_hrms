@@ -2842,6 +2842,7 @@
     <Compile Include="Controllers\SalarySheetController.cs" />
     <Compile Include="Controllers\SourceOfHiresController.cs" />
     <Compile Include="Controllers\WeekendsController.cs" />
+    <Compile Include="DAL\DeviceDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
