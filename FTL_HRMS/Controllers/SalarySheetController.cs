@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Hr;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -35,6 +36,31 @@ namespace FTL_HRMS.Controllers
             return View(SalarySheet);
         }
 
+        public ActionResult PaidSalaryDurationList()
+        {
+            return View(_db.PaidSalaryDuration.ToList());
+        }
+
+        public ActionResult IsPaid(int id)
+        {
+            try
+            {
+                int LastPaidSalaryDurationId = id;
+                PaidSalaryDuration lastPaidSalary = _db.PaidSalaryDuration.Find(LastPaidSalaryDurationId);
+                lastPaidSalary.IsPaid = true;
+                lastPaidSalary.PaidDate = DateTime.Now;
+                _db.Entry(lastPaidSalary).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
+                return RedirectToAction("PaidSalaryDurationList", "SalarySheet");
+            }
+            catch
+            {
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
+                return RedirectToAction("PaidSalaryDurationList", "SalarySheet");
+            }
+        }
+
         #region Generate Salary Sheet
         public ActionResult CalculateSalarySheet(DateTime StartDate, DateTime EndDate)
         {
@@ -48,7 +74,8 @@ namespace FTL_HRMS.Controllers
             {
                 ToDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
             }
-            if(StartDate.Date > ToDate.Date && EndDate.Date < DateTime.Now.Date)
+            int PendingSheet = _db.PaidSalaryDuration.Where(i => i.IsPaid == false).ToList().Count;
+            if(StartDate.Date > ToDate.Date && EndDate.Date < DateTime.Now.Date && PendingSheet == 0)
             {
                 att.SyncAttendance();
                 List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendance(StartDate, EndDate);
@@ -147,15 +174,16 @@ namespace FTL_HRMS.Controllers
                         _db.SaveChanges();
                     }
                     UpdateMonthlyAttendanceStatus(StartDate, EndDate);
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 }
                 else
                 {
-                    //Failed to insert paid salary duration
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
                 }
             }
             else
             {
-                //Wrong Input
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             }
             return RedirectToAction("Index");
         }
@@ -189,6 +217,9 @@ namespace FTL_HRMS.Controllers
                 paidSalaryDuration.FromDate = StartDate;
                 paidSalaryDuration.ToDate = EndDate;
                 paidSalaryDuration.WorkingDay = WorkingDays;
+                paidSalaryDuration.GenerateDate = DateTime.Now;
+                paidSalaryDuration.IsPaid = false;
+                paidSalaryDuration.PaidDate = null;
                 _db.PaidSalaryDuration.Add(paidSalaryDuration);
                 _db.SaveChanges();
                 sl = paidSalaryDuration.Sl;
@@ -539,34 +570,29 @@ namespace FTL_HRMS.Controllers
         #endregion
 
         #region Reverse Salary Sheet
-        public bool ReverseSalarySheet()
+        public ActionResult ReverseSalarySheet(int id)
         {
             try
             {
-                int LastPaidSalaryDurationId = 0;
-                DateTime FromDate = Utility.Utility.GetDefaultDate();
-                DateTime ToDate = Utility.Utility.GetDefaultDate();
-                if (_db.PaidSalaryDuration.ToList().Count > 0)
+                int LastPaidSalaryDurationId = id;
+                var lastPaidSalary = _db.PaidSalaryDuration.Find(LastPaidSalaryDurationId);
+                DateTime FromDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.FromDate).FirstOrDefault();
+                DateTime ToDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
+                List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendanceForReverse(FromDate, ToDate);
+                UpdateReverseMonthlyAttendanceStatus(FromDate, ToDate);
+                RemoveMonthlySalarySheetData(LastPaidSalaryDurationId);
+                foreach (var sl in EmployeeSlList)
                 {
-                    LastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
-                    var lastPaidSalary = _db.PaidSalaryDuration.Find(LastPaidSalaryDurationId);
-                    FromDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.FromDate).FirstOrDefault();
-                    ToDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
-                    List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendanceForReverse(FromDate, ToDate);
-                    UpdateReverseMonthlyAttendanceStatus(FromDate, ToDate);
-                    RemoveMonthlySalarySheetData(LastPaidSalaryDurationId);
-                    foreach (var sl in EmployeeSlList)
-                    {
-                        ReverseLeaveCounts(sl, LastPaidSalaryDurationId);
-                    }
-                    RemovePaidSalaryDuration(LastPaidSalaryDurationId);
-                    return true;
+                    ReverseLeaveCounts(sl, LastPaidSalaryDurationId);
                 }
-                return false;
+                RemovePaidSalaryDuration(LastPaidSalaryDurationId);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
+                return RedirectToAction("PaidSalaryDurationList", "SalarySheet");
             }
             catch
             {
-                return false;
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
+                return RedirectToAction("PaidSalaryDurationList", "SalarySheet");
             }
         }
 

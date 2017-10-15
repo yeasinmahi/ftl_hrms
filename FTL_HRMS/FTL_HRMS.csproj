@@ -2861,6 +2861,10 @@
     <Compile Include="Migrations\201710121017144_AddingEmployeeLeaveCountHistory.Designer.cs">
       <DependentUpon>201710121017144_AddingEmployeeLeaveCountHistory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710150905181_UpdatePaidSalaryDuration.cs" />
+    <Compile Include="Migrations\201710150905181_UpdatePaidSalaryDuration.Designer.cs">
+      <DependentUpon>201710150905181_UpdatePaidSalaryDuration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
@@ -3423,6 +3427,7 @@
     <Content Include="Views\Resignations\Delete.cshtml" />
     <Content Include="Views\Resignations\Edit.cshtml" />
     <Content Include="Views\Shared\Notification.cshtml" />
+    <Content Include="Views\SalarySheet\PaidSalaryDurationList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3513,6 +3518,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710071448400_UpdateMonthlySalarySheet.resx">
       <DependentUpon>201710071448400_UpdateMonthlySalarySheet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710150905181_UpdatePaidSalaryDuration.resx">
+      <DependentUpon>201710150905181_UpdatePaidSalaryDuration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
