@@ -4,12 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.DAL;
-using FTL_HRMS.Models;
 using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Utility;
-using FTL_HRMS.Models.Hr;
-using System.Collections.Generic;
-using FTL_HRMS.Models.ViewModels;
 
 namespace FTL_HRMS.Controllers
 {

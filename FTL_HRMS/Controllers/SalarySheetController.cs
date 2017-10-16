@@ -1,5 +1,4 @@
-﻿using FTL_HRMS.Models;
-using FTL_HRMS.Models.Payroll;
+﻿using FTL_HRMS.Models.Payroll;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
