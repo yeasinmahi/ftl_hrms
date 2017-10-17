@@ -10,8 +10,8 @@ namespace FTL_HRMS.Controllers
 {
     public class HomeController : Controller
     {
-        public HRMSDbContext _db = null;
-        public UserManager<ApplicationUser> UserManager = null;
+        private readonly HRMSDbContext _db;
+        public UserManager<ApplicationUser> UserManager;
 
         public ActionResult Index()
         {
@@ -20,8 +20,8 @@ namespace FTL_HRMS.Controllers
 
         public HomeController()
         {
-            this._db = new HRMSDbContext();
-            this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
+            _db = new HRMSDbContext();
+            UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
         }
 
         public ActionResult AdminDashboard()
