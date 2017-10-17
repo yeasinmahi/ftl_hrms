@@ -5,9 +5,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using FTL_HRMS.Models;
 using System;
 using FTL_HRMS.DAL;
-using FTL_HRMS.Models.ViewModels;
-using System.Collections.Generic;
-using FTL_HRMS.Models.Hr;
 
 namespace FTL_HRMS.Controllers
 {

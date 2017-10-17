@@ -1,15 +1,11 @@
 ﻿  using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+  using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
-using System.Web.Mvc;
+  using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Utility;
-using FTL_HRMS.Models.Hr;
 
 namespace FTL_HRMS.Controllers
 {

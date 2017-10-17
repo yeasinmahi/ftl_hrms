@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace FTL_HRMS.Models.ViewModels
+﻿namespace FTL_HRMS.Models.ViewModels
 {
     public class VMEmployee
     {
