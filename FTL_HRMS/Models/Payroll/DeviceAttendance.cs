@@ -12,6 +12,8 @@ namespace FTL_HRMS.Models.Payroll
         [MaxLength(15)]
         public string EmployeeCode { get; set; }
 
+        public int UserId { get; set; }
+
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
         ApplyFormatInEditMode = true)]
