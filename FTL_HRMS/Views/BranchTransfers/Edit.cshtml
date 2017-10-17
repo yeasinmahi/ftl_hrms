@@ -56,7 +56,7 @@
                             @Html.LabelFor(model => model.TransferDate, "Transfer Date", new { @class = "required" })
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.TransferDate, new { htmlAttributes = new { @class = "form-control", @type = "DateTime", style = "width:50%" } })
+                            @Html.EditorFor(model => model.TransferDate, new { htmlAttributes = new { @class = "form-control datepicker", @type = "DateTime", style = "width:50%" } })
                             @Html.ValidationMessageFor(model => model.TransferDate, "", new { @class = "text-danger" })
                         </div>
                         <br />
