@@ -54,7 +54,7 @@
                             @Html.LabelFor(model => model.FromDate, "From Date", new { @class = "required" })
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", @type = "DateTime", style = "width:50%", @required = true } })
+                            @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control datepicker", @type = "DateTime", style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger" })
                         </div>
 
@@ -62,7 +62,7 @@
                             @Html.LabelFor(model => model.ToDate, "To Date", new { @class = "required" })
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control", @type = "DateTime", style = "width:50%", @required = true } })
+                            @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control datepicker", @type = "DateTime", style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger" })
                         </div>
 

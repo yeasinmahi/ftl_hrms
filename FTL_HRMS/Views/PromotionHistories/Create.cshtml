@@ -52,7 +52,7 @@
                                     @Html.LabelFor(model => model.PromotionDate, "Promotion Date", new { @class = "required" })
                                 </div>
                                 <div>
-                                    @Html.EditorFor(model => model.PromotionDate, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @required = true } })
+                                    @Html.EditorFor(model => model.PromotionDate, new { htmlAttributes = new { @class = "form-control datepicker", style = "width:100%", @required = true } })
                                     @Html.ValidationMessageFor(model => model.PromotionDate, "", new { @class = "text-danger" })
                                 </div>
                             </div>

@@ -103,7 +103,7 @@
                                             @Html.LabelFor(model => model.DateOfBirth, "Date Of Birth", new { @class = "required" })
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control datepicker", style = "width:100%", @tabindex = 13, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
@@ -186,7 +186,7 @@
                                             @Html.LabelFor(model => model.DateOfJoining, "Date Of Joining", new { @class = "required" })
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 17, @required = true } })
+                                            @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control datepicker", style = "width:100%", @tabindex = 17, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfJoining, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
