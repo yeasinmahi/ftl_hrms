@@ -67,7 +67,7 @@
                                 @Html.LabelFor(model => model.RegistrationDate, "Registration Date")
                             </div>
                             <div>
-                                @Html.EditorFor(model => model.RegistrationDate, new { htmlAttributes = new { @class = "form-control", @type = "DateTime", style = "width:80%" } })
+                                @Html.EditorFor(model => model.RegistrationDate, new { htmlAttributes = new { @class = "form-control datepicker", @type = "DateTime", style = "width:80%" } })
                                 @Html.ValidationMessageFor(model => model.RegistrationDate, "", new { @class = "text-danger" })
                             </div>
 
@@ -75,7 +75,7 @@
                                 @Html.LabelFor(model => model.StartingDate, "Starting Date")
                             </div>
                             <div>
-                                @Html.EditorFor(model => model.StartingDate, new { htmlAttributes = new { @class = "form-control", @type = "DateTime", style = "width:80%" } })
+                                @Html.EditorFor(model => model.StartingDate, new { htmlAttributes = new { @class = "form-control datepicker", @type = "DateTime", style = "width:80%" } })
                                 @Html.ValidationMessageFor(model => model.StartingDate, "", new { @class = "text-danger" })
                             </div>
                             <br />
