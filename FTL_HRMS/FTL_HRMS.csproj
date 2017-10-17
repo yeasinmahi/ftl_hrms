@@ -2827,6 +2827,7 @@
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\LeaveHistoriesController.cs" />
     <Compile Include="Controllers\LeaveTypesController.cs" />
+    <Compile Include="Controllers\LoansController.cs" />
     <Compile Include="Controllers\MenuItemsController.cs" />
     <Compile Include="Controllers\MonthlyAttendancesController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
@@ -3434,6 +3435,11 @@
     <Content Include="Views\Resignations\Edit.cshtml" />
     <Content Include="Views\Shared\Notification.cshtml" />
     <Content Include="Views\SalarySheet\PaidSalaryDurationList.cshtml" />
+    <Content Include="Views\Loans\Create.cshtml" />
+    <Content Include="Views\Loans\Delete.cshtml" />
+    <Content Include="Views\Loans\Details.cshtml" />
+    <Content Include="Views\Loans\Edit.cshtml" />
+    <Content Include="Views\Loans\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
