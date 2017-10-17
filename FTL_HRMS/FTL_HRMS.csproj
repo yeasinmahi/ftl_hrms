@@ -2843,6 +2843,8 @@
     <Compile Include="Controllers\SalarySheetController.cs" />
     <Compile Include="Controllers\SourceOfHiresController.cs" />
     <Compile Include="Controllers\WeekendsController.cs" />
+    <Compile Include="DAL\ConnectionGateway.cs" />
+    <Compile Include="DAL\Device.cs" />
     <Compile Include="DAL\DeviceDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

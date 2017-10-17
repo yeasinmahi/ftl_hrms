@@ -1,81 +1,224 @@
 ﻿@model IEnumerable<FTL_HRMS.Models.Payroll.Loan>
-
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+</script>
+<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class="page-title">
+        <div class="pull-left">
+            <h1 class="title">Loan Approval</h1>
+        </div>
+    </div>
+</div>
+<header class="panel_header">
+    <h2 class="title pull-left">Loan Application List</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
 
-<h2>Index</h2>
+<div class="content-body">
+    <div class="row">
+        @Html.Partial("~/Views/Shared/WarningMessage.cshtml")
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @{int rowNo = 0;}
+            <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>Action</th>
+                        <th>
+                            Employee Code
+                        </th>
+                        <th>
+                            Employee Name
+                        </th>
+                        <th>
+                            Create Date
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LoanReason)
+                        </th>
+                        <th>
+                            Loan Duration
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            Updated By
+                        </th>
+                        <th>
+                            Update Date
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Remarks)
+                        </th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>SL</th>
+                        <th>Action</th>
+                        <th>
+                            Employee Code
+                        </th>
+                        <th>
+                            Employee Name
+                        </th>
+                        <th>
+                            Create Date
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LoanReason)
+                        </th>
+                        <th>
+                            Loan Duration
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            Updated By
+                        </th>
+                        <th>
+                            Update Date
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Remarks)
+                        </th>
+                    </tr>
+                </tfoot>
+                <tbody>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Employee.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdateEmployee.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanReason)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanDuration)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdateDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Remarks)
-        </th>
-        <th></th>
-    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td align="center" width="5%">
+                                @(rowNo += 1)
+                            </td>
+                            @if (item.Status == "Pending")
+                            {
+                                <td width="6%" align="center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a data-toggle="modal" href="#ultraModal-7" onclick="LoanApproval('Approved', @item.Sl)">Approve</a></li>
+                                            <li><a data-toggle="modal" href="#ultraModal-7" onclick="LoanApproval('Considered', @item.Sl)">Consider</a></li>
+                                            <li><a data-toggle="modal" href="#ultraModal-7" onclick="LoanApproval('Canceled', @item.Sl)">Cancel</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <button type="button" class="btn btn-success btn-sm" aria-expanded="false">Action Taken</button>
+                                </td>
+                            }
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.Code)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreateDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LoanReason)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdateEmployee.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdateDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Remarks)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <!-- modal start -->
+            @using (Html.BeginForm("Create", "Loans", FormMethod.Post))
+            {
+                <div class="modal fade" id="ultraModal-7" tabindex="-1" role="dialog" aria-labelledby="ultraModal-Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Loan Approval</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employee.Code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdateEmployee.Code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanReason)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanDuration)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdateDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Remarks)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Sl }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Sl }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Sl })
-        </td>
-    </tr>
+                                        <div class="form-group">
+                                            <label for="field-1" class="control-label">Application ID</label>
+
+                                            <input type="text" style="text-align:center" readonly class="form-control" id="field-1" name="field-1">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="field-2" class="control-label">Status</label>
+
+                                            <input type="text" style="text-align:center" readonly class="form-control" id="field-2" name="field-2">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="field-3" class="control-label">Remarks</label>
+                                            <textarea class="form-control" id="field-3" name="field-3" style="height:35px"></textarea>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="field-4" class="control-label">Approve Date</label>
+
+                                            <input type="text" style="text-align:center" readonly class="form-control" id="field-4" name="field-4" value="@DateTime.Now">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-info">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <!-- modal end -->
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+    $('#myTable').DataTable();
+});
+function LoanApproval(status, loan_id) {
+    $('#field-1').val(loan_id);
+    $('#field-2').val(status);
 }
-
-</table>
+</script>
