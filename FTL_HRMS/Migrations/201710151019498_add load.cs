@@ -26,10 +26,6 @@ namespace FTL_HRMS.Migrations
                 .ForeignKey("dbo.tbl_Employee", t => t.UpdatedBy)
                 .Index(t => t.EmployeeId)
                 .Index(t => t.UpdatedBy);
-            
-            AddColumn("dbo.tbl_PaidSalaryDuration", "GenerateDate", c => c.DateTime(nullable: false));
-            AddColumn("dbo.tbl_PaidSalaryDuration", "PaidDate", c => c.DateTime());
-            AddColumn("dbo.tbl_PaidSalaryDuration", "IsPaid", c => c.Boolean(nullable: false));
         }
         
         public override void Down()
@@ -38,9 +34,6 @@ namespace FTL_HRMS.Migrations
             DropForeignKey("dbo.tbl_Loan", "EmployeeId", "dbo.tbl_Employee");
             DropIndex("dbo.tbl_Loan", new[] { "UpdatedBy" });
             DropIndex("dbo.tbl_Loan", new[] { "EmployeeId" });
-            DropColumn("dbo.tbl_PaidSalaryDuration", "IsPaid");
-            DropColumn("dbo.tbl_PaidSalaryDuration", "PaidDate");
-            DropColumn("dbo.tbl_PaidSalaryDuration", "GenerateDate");
             DropTable("dbo.tbl_Loan");
         }
     }
