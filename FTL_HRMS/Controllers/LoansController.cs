@@ -41,11 +41,10 @@ namespace FTL_HRMS.Controllers
             return View(loan);
         }
 
+        #region Loan Application
         // GET: Loans/Create
         public ActionResult Create()
         {
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code");
-            ViewBag.UpdatedBy = new SelectList(_db.Employee, "Sl", "Code");
             return View();
         }
 
@@ -56,15 +55,19 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,EmployeeId,LoanAmount,CreateDate,LoanReason,LoanDuration,Status,UpdateDate,UpdatedBy,Remarks")] Loan loan)
         {
-            if (ModelState.IsValid)
+            if (loan.LoanAmount != 0)
             {
+                string userName = User.Identity.Name;
+                int userId = DbUtility.GetUserId(_db, userName);
+                loan.EmployeeId = userId;
+                loan.CreateDate = DateTime.Now;
+                loan.Status = "Pending";
                 _db.Loan.Add(loan);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
+                return RedirectToAction("Create");
             }
-
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", loan.EmployeeId);
-            ViewBag.UpdatedBy = new SelectList(_db.Employee, "Sl", "Code", loan.UpdatedBy);
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(loan);
         }
 
@@ -84,7 +87,9 @@ namespace FTL_HRMS.Controllers
             ViewBag.UpdatedBy = new SelectList(_db.Employee, "Sl", "Code", loan.UpdatedBy);
             return View(loan);
         }
+        #endregion
 
+        #region Edit Loan Application
         // POST: Loans/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -92,16 +97,59 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,EmployeeId,LoanAmount,CreateDate,LoanReason,LoanDuration,Status,UpdateDate,UpdatedBy,Remarks")] Loan loan)
         {
-            if (ModelState.IsValid)
+            if (loan.LoanAmount != 0)
             {
+                string userName = User.Identity.Name;
+                int userId = DbUtility.GetUserId(_db, userName);
+                loan.EmployeeId = userId;
+                loan.CreateDate = DateTime.Now;
+                loan.Status = "Pending";
                 _db.Entry(loan).State = EntityState.Modified;
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
+                return RedirectToAction("Edit");
             }
-            ViewBag.EmployeeId = new SelectList(_db.Employee, "Sl", "Code", loan.EmployeeId);
-            ViewBag.UpdatedBy = new SelectList(_db.Employee, "Sl", "Code", loan.UpdatedBy);
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             return View(loan);
         }
+        #endregion
+
+        #region Loan Approval
+
+        public ActionResult LoanApproval()
+        {
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+            List<Loan> loanHistoryList = _db.Loan.Include(i => i.Employee).Include(a => a.UpdateEmployee).Where(x => x.EmployeeId != userId).ToList();
+            return View(loanHistoryList);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult LoanApproval([Bind(Include = "Sl,EmployeeId,LoanAmount,CreateDate,LoanReason,LoanDuration,Status,UpdateDate,UpdatedBy,Remarks")] Loan loan)
+        {
+            int id = Convert.ToInt32(Request["field-1"]);
+            string status = Convert.ToString(Request["field-2"]);
+            string remarks = Convert.ToString(Request["field-3"]);
+            string userName = User.Identity.Name;
+            int userId = DbUtility.GetUserId(_db, userName);
+
+            loan = _db.Loan.Find(id);
+            if (loan != null)
+            {
+                loan.Status = status;
+                loan.Remarks = remarks;
+                loan.UpdatedBy = userId;
+                loan.UpdateDate = DateTime.Now;
+                _db.Entry(loan).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
+                return RedirectToAction("LoanApproval", "Loans");
+            }
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
+            return RedirectToAction("LoanApproval", "Loans");
+        }
+        #endregion
 
         // GET: Loans/Delete/5
         public ActionResult Delete(int? id)

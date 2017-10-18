@@ -10,12 +10,12 @@
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class="page-title">
         <div class="pull-left">
-            <h1 class="title">Loan</h1>
+            <h1 class="title">Loan Approval</h1>
         </div>
     </div>
 </div>
 <header class="panel_header">
-    <h2 class="title pull-left">Loan List</h2>
+    <h2 class="title pull-left">Leave Application List</h2>
     <div class="actions panel_actions pull-right">
         <i class="box_toggle fa fa-chevron-down"></i>
     </div>
@@ -107,16 +107,25 @@
                             <td align="center" width="5%">
                                 @(rowNo += 1)
                             </td>
-                            <td align="center" width="6%">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>@Html.ActionLink("Edit", "Edit", new { id = item.Sl })</li>
-                                        <li>@Html.ActionLink("Details", "Details", new { id = item.Sl })</li>
-                                        <li>@Html.ActionLink("Delete", "Delete", new { id = item.Sl })</li>
-                                    </ul>
-                                </div>
-                            </td>
+                            @if (item.Status == "Pending")
+                            {
+                                <td width="6%" align="center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">Options <span class="caret"></span></button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a data-toggle="modal" href="#ultraModal-7" onclick="LoanRecommendation('Approved', @item.Sl)">Approved</a></li>
+                                            <li><a data-toggle="modal" href="#ultraModal-7" onclick="LoanRecommendation('Considered', @item.Sl)">Considered</a></li>
+                                            <li><a data-toggle="modal" href="#ultraModal-7" onclick="LoanRecommendation('Canceled', @item.Sl)">Cancel</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <button type="button" class="btn btn-success btn-sm" aria-expanded="false">Action Taken</button>
+                                </td>
+                            }
                             <td>
                                 @Html.DisplayFor(modelItem => item.Employee.Code)
                             </td>
