@@ -10,9 +10,9 @@ namespace FTL_HRMS.DAL
         public List<DeviceAttendance> GetDailyAttendance()
         {
             List<DeviceAttendance> deviceAttendances = new List<DeviceAttendance>();
-            Query = "CHECKINOUTVIEW";
+            Query = "select * from CHECKINOUTVIEW";
             Command.CommandText = Query;
-            Command.CommandType = CommandType.StoredProcedure;
+            Command.CommandType = CommandType.Text;
             Command.Parameters.Clear();
             Connection.Open();
             try
@@ -46,8 +46,6 @@ namespace FTL_HRMS.DAL
         }
         public bool UpdateCheckInOutStatus(List<int> userIds)
         {
-            Query = "Update CHECKINOUT set IsCalculated = true where USERID = ";
-            Command.CommandText = Query;
             Command.CommandType = CommandType.Text;
             Connection.Open();
             try

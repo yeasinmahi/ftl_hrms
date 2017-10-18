@@ -16,10 +16,38 @@ namespace FTL_HRMS.Controllers
 
         public void SyncAttendance()
         {
+            MoveDeviceToDeviceAttendance();
             MoveDeviceAttendanceToFilterAttendance();
             MoveFilterAttendanceToMonthlyAttendance();
         }
 
+        #region MoveDeviceToDeviceAttendance
+        public void MoveDeviceToDeviceAttendance()
+        {
+            Device device = new Device();
+            List<DeviceAttendance> deviceAttendances = device.GetDailyAttendance();
+            if (deviceAttendances.Count>0)
+            {
+                List<int> userIds = new List<int>();
+                foreach (DeviceAttendance deviceAttendance in deviceAttendances)
+                {
+                    _db.DeviceAttendance.Add(deviceAttendance);
+                    userIds.Add(deviceAttendance.UserId);
+                }
+                try
+                {
+                    _db.SaveChanges();
+                    device.UpdateCheckInOutStatus(userIds);
+
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+            
+        }
+        #endregion
         #region MoveDeviceAttendanceToFilterAttendance
         // GET: Attendance
         public Status MoveDeviceAttendanceToFilterAttendance()
@@ -368,15 +396,15 @@ namespace FTL_HRMS.Controllers
         {
             DateTime joiningDate = _db.Employee.Where(x => x.Sl.Equals(employeeId)).Select(x => x.DateOfJoining).FirstOrDefault();
             DateTime resignDate = _db.Resignation.Where(x => x.Sl.Equals(employeeId) && x.Status.Equals("Approved")).Select(x => x.ResignDate).FirstOrDefault();
-            if (joiningDate!=null)
+            if (joiningDate != null)
             {
-                if (joiningDate>date)
+                if (joiningDate > date)
                 {
                     return true;
                 }
-                if (resignDate!=new DateTime(1,1,1))
+                if (resignDate != new DateTime(1, 1, 1))
                 {
-                    if (resignDate<date)
+                    if (resignDate < date)
                     {
                         return true;
                     }
