@@ -151,6 +151,7 @@ namespace FTL_HRMS.Controllers
                         double OthersBonus = GetOthersBonus(sl, StartDate, EndDate);
                         double FestivalBonus = GetFestivalBonus(sl, StartDate, EndDate);
                         double AdjustmentAmount = GetAdjustmentAmount(sl, StartDate, EndDate);
+                        double LoanAmount = GetLoanAmount(sl, PaidSalaryDurationId);
 
                         MonthlySalarySheet monthlySalarySheet = new MonthlySalarySheet();
                         monthlySalarySheet.EmployeeId = sl;
@@ -168,7 +169,8 @@ namespace FTL_HRMS.Controllers
                         monthlySalarySheet.OthersBonus = OthersBonus;
                         monthlySalarySheet.FestivalBonus = FestivalBonus;
                         monthlySalarySheet.AdjustmentAmount = AdjustmentAmount;
-                        monthlySalarySheet.NetPay = CalculateNetPay(EmployeeGrossSalary, AbsentPanelty, LatePanelty, UnofficialPanelty, LeavePanelty, OthersPanelty, OthersBonus, FestivalBonus, AdjustmentAmount);
+                        monthlySalarySheet.LoanAmount = LoanAmount;
+                        monthlySalarySheet.NetPay = CalculateNetPay(EmployeeGrossSalary, AbsentPanelty, LatePanelty, UnofficialPanelty, LeavePanelty, OthersPanelty, OthersBonus, FestivalBonus, AdjustmentAmount, LoanAmount);
                         _db.MonthlySalarySheet.Add(monthlySalarySheet);
                         _db.SaveChanges();
                     }
@@ -539,9 +541,46 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public double CalculateNetPay(double EmployeeGrossSalary, double AbsentPanelty, double LatePanelty,double UnofficialPanelty,double LeavePanelty,double OthersPanelty,double OthersBonus,double FestivalBonus, double AdjustmentAmount)
+        public double GetLoanAmount(int sl, int PaidSalaryDurationId)
         {
-            return EmployeeGrossSalary - AbsentPanelty - LatePanelty - UnofficialPanelty - LeavePanelty - OthersPanelty + OthersBonus + FestivalBonus + AdjustmentAmount;
+            List<LoanCalculation> LoanList = _db.LoanCalculation.Where(i => i.EmployeeId == sl).ToList();
+            double LoanAmount = 0;
+            if (LoanList.Count > 0)
+            {
+                foreach(var item in LoanList)
+                {
+                    if(item.LoanDuration > 0)
+                    {
+                        double Amount = item.LoanAmount / item.LoanDuration;
+
+                        LoanCalculation calculation = _db.LoanCalculation.Find(item.Sl);
+                        calculation.LoanAmount -= Amount;
+                        calculation.LoanDuration -= 1;
+                        _db.Entry(calculation).State = EntityState.Modified;
+                        _db.SaveChanges();
+
+                        LoanCalculationHistory history = new LoanCalculationHistory();
+                        history.EmployeeId = sl;
+                        history.LoanCalculationId = calculation.Sl;
+                        history.PaidSalaryDurationId = PaidSalaryDurationId;
+                        history.LoanAmount = Amount;
+                        _db.LoanCalculationHistory.Add(history);
+                        _db.SaveChanges();
+
+                        LoanAmount += Amount;
+                    }
+                }
+                return LoanAmount;
+            }
+            else
+            {
+                return LoanAmount;
+            }
+        }
+
+        public double CalculateNetPay(double EmployeeGrossSalary, double AbsentPanelty, double LatePanelty,double UnofficialPanelty,double LeavePanelty,double OthersPanelty,double OthersBonus,double FestivalBonus, double AdjustmentAmount, double LoanAmount)
+        {
+            return EmployeeGrossSalary - AbsentPanelty - LatePanelty - UnofficialPanelty - LeavePanelty - OthersPanelty + OthersBonus + FestivalBonus + AdjustmentAmount - LoanAmount;
         }
 
         public List<MonthlyAttendance> GetMonthlyAttendance(DateTime StartDate, DateTime EndDate)
@@ -583,6 +622,7 @@ namespace FTL_HRMS.Controllers
                 foreach (var sl in EmployeeSlList)
                 {
                     ReverseLeaveCounts(sl, LastPaidSalaryDurationId);
+                    ReverseLoanCalculation(sl, LastPaidSalaryDurationId);
                 }
                 RemovePaidSalaryDuration(LastPaidSalaryDurationId);
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
@@ -652,6 +692,33 @@ namespace FTL_HRMS.Controllers
                 UpdateEmployeeLeaveCounts(sl, EarnLeave, WithoutPayLeave);
                 _db.EmployeeLeaveCountHistory.Remove(history);
                 _db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool ReverseLoanCalculation(int sl, int LastPaidSalaryDurationId)
+        {
+            try
+            {
+                List<LoanCalculationHistory> LoanCalculationHistoryList = _db.LoanCalculationHistory.Where(i => i.EmployeeId == sl && i.PaidSalaryDurationId == LastPaidSalaryDurationId).ToList();
+                if(LoanCalculationHistoryList.Count > 0)
+                {
+                    foreach (var item in LoanCalculationHistoryList)
+                    {
+                        LoanCalculation calculation = _db.LoanCalculation.Find(item.LoanCalculationId);
+                        calculation.LoanAmount += item.LoanAmount;
+                        calculation.LoanDuration += 1;
+                        _db.Entry(calculation).State = EntityState.Modified;
+                        _db.SaveChanges();
+                    }
+                    _db.LoanCalculationHistory.RemoveRange(_db.LoanCalculationHistory.Where(u => u.EmployeeId == sl && u.PaidSalaryDurationId == LastPaidSalaryDurationId));
+                    _db.SaveChanges();
+                    return true;
+                }
                 return true;
             }
             catch
