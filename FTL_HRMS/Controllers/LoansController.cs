@@ -143,6 +143,18 @@ namespace FTL_HRMS.Controllers
                 loan.UpdateDate = DateTime.Now;
                 _db.Entry(loan).State = EntityState.Modified;
                 _db.SaveChanges();
+
+                if(status == "Approved")
+                {
+                    LoanCalculation calculation = new LoanCalculation();
+                    calculation.EmployeeId = loan.EmployeeId;
+                    calculation.LoanId = loan.Sl;
+                    calculation.LoanAmount = loan.LoanAmount;
+                    calculation.LoanDuration = loan.LoanDuration;
+                    _db.LoanCalculation.Add(calculation);
+                    _db.SaveChanges();
+                }
+
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("LoanApproval", "Loans");
             }
