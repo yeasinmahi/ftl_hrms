@@ -272,6 +272,11 @@ namespace FTL_HRMS.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Synchronization()
+        {
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
