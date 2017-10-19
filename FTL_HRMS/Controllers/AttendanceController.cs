@@ -16,10 +16,38 @@ namespace FTL_HRMS.Controllers
 
         public void SyncAttendance()
         {
+            MoveDeviceToDeviceAttendance();
             MoveDeviceAttendanceToFilterAttendance();
             MoveFilterAttendanceToMonthlyAttendance();
         }
 
+        #region MoveDeviceToDeviceAttendance
+        public void MoveDeviceToDeviceAttendance()
+        {
+            Device device = new Device();
+            List<DeviceAttendance> deviceAttendances = device.GetDailyAttendance();
+            if (deviceAttendances.Count>0)
+            {
+                List<int> userIds = new List<int>();
+                foreach (DeviceAttendance deviceAttendance in deviceAttendances)
+                {
+                    _db.DeviceAttendance.Add(deviceAttendance);
+                    userIds.Add(deviceAttendance.UserId);
+                }
+                try
+                {
+                    _db.SaveChanges();
+                    device.UpdateCheckInOutStatus(userIds);
+
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+            
+        }
+        #endregion
         #region MoveDeviceAttendanceToFilterAttendance
         // GET: Attendance
         public Status MoveDeviceAttendanceToFilterAttendance()
@@ -168,7 +196,7 @@ namespace FTL_HRMS.Controllers
             DateTime FirstDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             if (_db.MonthlyAttendance.ToList().Count > 0)
             {
-                FirstDate = _db.MonthlyAttendance.ToList().Max(i => i.Date.Date).AddDays(1);
+                FirstDate = _db.FilterAttendance.Where(i=> i.IsCalculated == true).ToList().Max(i => i.Date.Date).AddDays(1);
             }
             return FirstDate;
         }
@@ -368,15 +396,15 @@ namespace FTL_HRMS.Controllers
         {
             DateTime joiningDate = _db.Employee.Where(x => x.Sl.Equals(employeeId)).Select(x => x.DateOfJoining).FirstOrDefault();
             DateTime resignDate = _db.Resignation.Where(x => x.Sl.Equals(employeeId) && x.Status.Equals("Approved")).Select(x => x.ResignDate).FirstOrDefault();
-            if (joiningDate!=null)
+            if (joiningDate != null)
             {
-                if (joiningDate>date)
+                if (joiningDate > date)
                 {
                     return true;
                 }
-                if (resignDate!=new DateTime(1,1,1))
+                if (resignDate != new DateTime(1, 1, 1))
                 {
-                    if (resignDate<date)
+                    if (resignDate < date)
                     {
                         return true;
                     }
@@ -391,7 +419,17 @@ namespace FTL_HRMS.Controllers
         {
             try
             {
-                _db.MonthlyAttendance.Add(monthlyAttendance);
+                if(_db.MonthlyAttendance.Where(i=> i.EmployeeId == monthlyAttendance.EmployeeId && DbFunctions.TruncateTime(i.Date) == monthlyAttendance.Date.Date && i.IsCalculated == false).ToList().Count > 0)
+                {
+                    int id = _db.MonthlyAttendance.Where(i => i.EmployeeId == monthlyAttendance.EmployeeId && DbFunctions.TruncateTime(i.Date) == monthlyAttendance.Date.Date && i.IsCalculated == false).Select(i => i.Sl).FirstOrDefault();
+                    MonthlyAttendance monthly = _db.MonthlyAttendance.Find(id);
+                    monthly.Status = monthlyAttendance.Status;
+                    _db.Entry(monthly).State = EntityState.Modified;
+                }
+                else
+                {
+                    _db.MonthlyAttendance.Add(monthlyAttendance);
+                }                
                 return true;
             }
             catch

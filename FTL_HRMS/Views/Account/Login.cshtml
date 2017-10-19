@@ -8,42 +8,44 @@
 
     @if (@TempData["ErrLogin"] != null)
     {
-    <div class="alert alert-danger fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        @TempData["ErrLogin"]
-    </div>
+        <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["ErrLogin"]
+        </div>
     }
     @using (Html.BeginForm("Login", "Account", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
+
         <h1><a href="#" title="Login Page" tabindex="-1">Human Resource Management System</a></h1>
-                <form name="loginform" id="loginform" action="index.html" method="post">
-                    <p>
+            <div class="panel panel-primary" style="margin-bottom:40%">
+                <div class="panel-heading" style="text-align:center; font-size:18px">Capita Development Limited</div>
+                
+                <div class="panel-body">
+                    <form name="loginform" id="loginform" action="index.html" method="post">
+                        <label style="font-size:18px;color:black; margin-left:2%">Sign In</label>
+                        <label style="font-size:13px;color:black; margin-left:2%">to continue to HRMS</label>
                         <label for="user_login">
-                            Username<br />
-                            <input type="text" name="UserName" id="user_login" class="input" value="" size="20" required />
+                            <input type="text" name="UserName" id="user_login" class="input" value="" size="20" required placeholder="username" />
                         </label>
-                    </p>
-                    <p>
                         <label for="user_pass">
-                            Password<br />
-                            <input type="password" name="Password" id="user_pass" class="input" value="" size="20" required />
+                            <input type="password" name="Password" id="user_pass" class="input" value="" size="20" required placeholder="password" />
                         </label>
+                        @*<p class="forgetmenot">
+                                <label class="icheck-label form-label" for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever" class="skin-square-orange" checked> Remember me</label>
+                            </p>*@
+                        <p class="submit">
+                            <input type="submit" name="wp-submit" id="wp-submit" class="btn btn-info btn-block" value="Sign In" />
+                        </p>
+                    </form>
+                    <p id="nav" >
+                        <a class="pull-left" href="#" style="color:black">Contact Us</a>
+                        <a class="pull-right" href="~/Content/AdminTemplate/ui-register.html" style="color:black">About</a>
                     </p>
-                    <p class="forgetmenot">
-                        <label class="icheck-label form-label" for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever" class="skin-square-orange" checked> Remember me</label>
-                    </p>
-
-
-
-                    <p class="submit">
-                        <input type="submit" name="wp-submit" id="wp-submit" class="btn btn-orange btn-block" value="Sign In" />
-                    </p>
-                </form>
-
-                <p id="nav">
-                    <a class="pull-left" href="#" title="Password Lost and Found">Forgot password?</a>
-                    <a class="pull-right" href="~/Content/AdminTemplate/ui-register.html" title="Sign Up">Sign Up</a>
-                </p>
+                </div>
+            </div>
     }
 </div>
+
+
+
