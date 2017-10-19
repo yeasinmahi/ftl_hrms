@@ -69,7 +69,7 @@
                                 }
 
                             }
-                            else
+                            else if (@leave.Type == "Resign")
                             {
                                 <td align="center">
                                     <div class="btn-group">
@@ -77,6 +77,26 @@
                                     </div>
                                 </td>
                             }
+                            else if (@leave.Type == "Loan")
+                            {
+                                <td align="center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("LoanApproval", "Loans")'">Details</button>
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        @if (User.IsInRole("Department Head")|| User.IsInRole("Employee") && @leave.Type == "Loan")
+                        {
+                        <td align="center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Loans")'">Details</button>
+                            </div>
+                        </td>
                         }
                     </tr>
                 }
