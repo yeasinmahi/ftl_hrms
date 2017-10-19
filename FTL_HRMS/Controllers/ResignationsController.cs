@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Hr;
+using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Utility;
 using Microsoft.AspNet.Identity;
 
@@ -116,6 +117,13 @@ namespace FTL_HRMS.Controllers
                     string employeeUserId = _db.Users.Where(u => u.UserName == employeeCode).Select(i => i.Id).FirstOrDefault();
                     ApplicationUser user = _db.Users.Find(employeeUserId);
                     _db.Users.Remove(user);
+                    _db.SaveChanges();
+
+                    List<LoanCalculation> LoanList = _db.LoanCalculation.Where(i => i.EmployeeId == resignation.EmployeeId).ToList();
+                    if (LoanList.Count > 0)
+                    {
+                        LoanList.ForEach(x => x.LoanDuration = 1);
+                    }
                     _db.SaveChanges();
                 }
                 string rolll = DbUtility.GetRoll(_db, User.Identity.GetUserId());

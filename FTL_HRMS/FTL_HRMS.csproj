@@ -2877,10 +2877,16 @@
     <Compile Include="Migrations\201710180830199_change device attendance model.Designer.cs">
       <DependentUpon>201710180830199_change device attendance model.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710191027446_Adding Loan Calculation.cs" />
+    <Compile Include="Migrations\201710191027446_Adding Loan Calculation.Designer.cs">
+      <DependentUpon>201710191027446_Adding Loan Calculation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
     <Compile Include="Models\Hr\EmployeeLeaveCountHistory.cs" />
+    <Compile Include="Models\Payroll\LoanCalculationHistory.cs" />
+    <Compile Include="Models\Payroll\LoanCalculation.cs" />
     <Compile Include="Models\Payroll\Loan.cs" />
     <Compile Include="Models\Payroll\SalaryAdjustment.cs" />
     <Compile Include="Models\Payroll\BonusAndPenalty.cs" />
@@ -3546,6 +3552,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710180830199_change device attendance model.resx">
       <DependentUpon>201710180830199_change device attendance model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710191027446_Adding Loan Calculation.resx">
+      <DependentUpon>201710191027446_Adding Loan Calculation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

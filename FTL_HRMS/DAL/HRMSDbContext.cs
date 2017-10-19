@@ -55,6 +55,8 @@ namespace FTL_HRMS.DAL
         public DbSet<LeaveHistory> LeaveHistories { get; set; }
         public DbSet<PromotionHistory> PromotionHistories { get; set; }
         public DbSet<Loan> Loan { get; set; }
+        public DbSet<LoanCalculation> LoanCalculation { get; set; }
+        public DbSet<LoanCalculationHistory> LoanCalculationHistory { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
