@@ -217,7 +217,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\AdminTemplate\Help.html" />
+    <Content Include="Content\AdminTemplate\ContactUs.html" />
     <Content Include="Content\AdminTemplate\assets\css\animate.min.css" />
+    <Content Include="Content\AdminTemplate\About.html" />
     <Content Include="Content\animate.min.css" />
     <Content Include="Content\AdminTemplate\assets\css\index.html" />
     <Content Include="Content\AdminTemplate\assets\css\responsive.css" />
