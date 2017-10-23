@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -109,8 +110,10 @@ namespace FTL_HRMS.Models.Hr
         ApplyFormatInEditMode = true)]
         public DateTime? UpdateDate { get; set; }
 
+        [DefaultValue(false)]
         public bool IsSystemOrSuperAdmin { get; set; }
 
+        [DefaultValue(true)]
         public bool Status { get; set; }
 
         public bool ProbationStatus { get; set; }

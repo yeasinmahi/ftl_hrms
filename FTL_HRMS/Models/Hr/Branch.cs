@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -43,6 +44,7 @@ namespace FTL_HRMS.Models.Hr
 
         public double? OvertimePaymentPercentage { get; set; }
 
+        [DefaultValue(true)]
         public bool Status { get; set; }
     }
 }

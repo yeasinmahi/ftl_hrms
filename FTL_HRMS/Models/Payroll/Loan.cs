@@ -1,5 +1,6 @@
 ﻿using FTL_HRMS.Models.Hr;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -41,6 +42,9 @@ namespace FTL_HRMS.Models.Payroll
         public int? UpdatedBy { get; set; }
 
         public string Remarks { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsSeen { get; set; }
 
         public virtual Employee Employee { get; set; }
         public virtual Employee UpdateEmployee { get; set; }

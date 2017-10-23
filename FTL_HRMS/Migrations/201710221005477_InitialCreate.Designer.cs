@@ -7,13 +7,13 @@ namespace FTL_HRMS.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddingLoanCalculation : IMigrationMetadata
+    public sealed partial class InitialCreate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddingLoanCalculation));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
         
         string IMigrationMetadata.Id
         {
-            get { return "201710191027446_Adding Loan Calculation"; }
+            get { return "201710221005477_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

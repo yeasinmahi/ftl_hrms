@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FTL_HRMS.Models.Hr;
+using System.ComponentModel;
 
 namespace FTL_HRMS.Models.Payroll
 {
@@ -31,6 +32,7 @@ namespace FTL_HRMS.Models.Payroll
         ApplyFormatInEditMode = true)]
         public DateTime? UpdateDate { get; set; }
 
+        [DefaultValue(false)]
         public bool IsCalculated { get; set; }
 
         public virtual Employee Employee { get; set; }

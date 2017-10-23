@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -40,6 +41,9 @@ namespace FTL_HRMS.Models.Hr
         [Required(ErrorMessage = "Employee cannot be empty")]
         [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsSeen { get; set; }
 
         public virtual Employee UpdateEmployee { get; set; }
         public virtual Employee Employee { get; set; }

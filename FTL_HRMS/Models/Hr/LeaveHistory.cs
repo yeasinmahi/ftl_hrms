@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -51,6 +52,9 @@ namespace FTL_HRMS.Models.Hr
         public string Status { get; set; }
 
         public string Remarks { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsSeen { get; set; }
 
         public virtual Employee UpdateEmployee { get; set; }
         public virtual Employee Employee { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FTL_HRMS.Models.Hr
@@ -16,6 +17,7 @@ namespace FTL_HRMS.Models.Hr
         [Required(ErrorMessage = "Day cannot be empty")]
         public double Day { get; set; }
 
+        [DefaultValue(true)]
         public bool IsEditable { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 namespace FTL_HRMS.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
     
     public partial class InitialCreate : DbMigration
@@ -53,7 +54,7 @@ namespace FTL_HRMS.Migrations
                         EmployeeTypeId = c.Int(nullable: false),
                         BranchId = c.Int(nullable: false),
                         GrossSalary = c.Double(nullable: false),
-                        CreatedBy = c.Int(nullable: false),
+                        CreatedBy = c.Int(),
                         CreateDate = c.DateTime(nullable: false),
                         UpdatedBy = c.Int(),
                         UpdateDate = c.DateTime(),
@@ -112,14 +113,14 @@ namespace FTL_HRMS.Migrations
                         Name = c.String(nullable: false, maxLength: 250),
                         DepartmentId = c.Int(nullable: false),
                         RoleName = c.String(nullable: false),
-                        CreatedBy = c.Int(nullable: false),
+                        CreatedBy = c.Int(),
                         CreateDate = c.DateTime(nullable: false),
                         UpdatedBy = c.Int(),
                         UpdateDate = c.DateTime(),
                         Status = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Sl)
-                .ForeignKey("dbo.tbl_Employee", t => t.CreatedBy, cascadeDelete: false)
+                .ForeignKey("dbo.tbl_Employee", t => t.CreatedBy)
                 .ForeignKey("dbo.tbl_Department", t => t.DepartmentId, cascadeDelete: true)
                 .ForeignKey("dbo.tbl_Employee", t => t.UpdatedBy)
                 .Index(t => t.DepartmentId)
@@ -134,14 +135,14 @@ namespace FTL_HRMS.Migrations
                         Code = c.String(),
                         Name = c.String(nullable: false, maxLength: 250),
                         DepartmentGroupId = c.Int(nullable: false),
-                        CreatedBy = c.Int(nullable: false),
+                        CreatedBy = c.Int(),
                         CreateDate = c.DateTime(nullable: false),
                         UpdatedBy = c.Int(),
                         UpdateDate = c.DateTime(),
                         Status = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Sl)
-                .ForeignKey("dbo.tbl_Employee", t => t.CreatedBy, cascadeDelete: false)
+                .ForeignKey("dbo.tbl_Employee", t => t.CreatedBy)
                 .ForeignKey("dbo.tbl_DepartmentGroup", t => t.DepartmentGroupId, cascadeDelete: true)
                 .ForeignKey("dbo.tbl_Employee", t => t.UpdatedBy)
                 .Index(t => t.DepartmentGroupId)
@@ -155,14 +156,14 @@ namespace FTL_HRMS.Migrations
                         Sl = c.Int(nullable: false, identity: true),
                         Code = c.String(),
                         Name = c.String(nullable: false, maxLength: 250),
-                        CreatedBy = c.Int(nullable: false),
+                        CreatedBy = c.Int(),
                         CreateDate = c.DateTime(nullable: false),
                         UpdatedBy = c.Int(),
                         UpdateDate = c.DateTime(),
                         Status = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Sl)
-                .ForeignKey("dbo.tbl_Employee", t => t.CreatedBy, cascadeDelete: false)
+                .ForeignKey("dbo.tbl_Employee", t => t.CreatedBy)
                 .ForeignKey("dbo.tbl_Employee", t => t.UpdatedBy)
                 .Index(t => t.CreatedBy)
                 .Index(t => t.UpdatedBy);
@@ -295,6 +296,7 @@ namespace FTL_HRMS.Migrations
                     {
                         Sl = c.Int(nullable: false, identity: true),
                         EmployeeCode = c.String(maxLength: 15),
+                        UserId = c.Int(nullable: false),
                         CheckTime = c.DateTime(nullable: false),
                         IsCalculated = c.Boolean(nullable: false),
                     })
@@ -322,6 +324,36 @@ namespace FTL_HRMS.Migrations
                     {
                         Sl = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 250),
+                    })
+                .PrimaryKey(t => t.Sl);
+            
+            CreateTable(
+                "dbo.tbl_EmployeeLeaveCountHistory",
+                c => new
+                    {
+                        Sl = c.Int(nullable: false, identity: true),
+                        EmployeeId = c.Int(nullable: false),
+                        PaidSalaryDurationId = c.Int(nullable: false),
+                        EarnLeaveDays = c.Double(nullable: false),
+                        WithoutPayLeaveDays = c.Double(nullable: false),
+                    })
+                .PrimaryKey(t => t.Sl)
+                .ForeignKey("dbo.tbl_Employee", t => t.EmployeeId, cascadeDelete: true)
+                .ForeignKey("dbo.tbl_PaidSalaryDuration", t => t.PaidSalaryDurationId, cascadeDelete: true)
+                .Index(t => t.EmployeeId)
+                .Index(t => t.PaidSalaryDurationId);
+            
+            CreateTable(
+                "dbo.tbl_PaidSalaryDuration",
+                c => new
+                    {
+                        Sl = c.Int(nullable: false, identity: true),
+                        FromDate = c.DateTime(nullable: false),
+                        ToDate = c.DateTime(nullable: false),
+                        WorkingDay = c.Double(nullable: false),
+                        GenerateDate = c.DateTime(nullable: false),
+                        PaidDate = c.DateTime(),
+                        IsPaid = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Sl);
             
@@ -438,6 +470,7 @@ namespace FTL_HRMS.Migrations
                         UpdateDate = c.DateTime(),
                         Status = c.String(),
                         Remarks = c.String(),
+                        IsSeen = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Sl)
                 .ForeignKey("dbo.tbl_Employee", t => t.EmployeeId, cascadeDelete: true)
@@ -446,6 +479,62 @@ namespace FTL_HRMS.Migrations
                 .Index(t => t.EmployeeId)
                 .Index(t => t.LeaveTypeId)
                 .Index(t => t.UpdatedBy);
+            
+            CreateTable(
+                "dbo.tbl_Loan",
+                c => new
+                    {
+                        Sl = c.Int(nullable: false, identity: true),
+                        EmployeeId = c.Int(nullable: false),
+                        LoanAmount = c.Double(nullable: false),
+                        CreateDate = c.DateTime(nullable: false),
+                        LoanReason = c.String(nullable: false),
+                        LoanDuration = c.Int(nullable: false),
+                        Status = c.String(nullable: false),
+                        UpdateDate = c.DateTime(),
+                        UpdatedBy = c.Int(),
+                        Remarks = c.String(),
+                        IsSeen = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Sl)
+                .ForeignKey("dbo.tbl_Employee", t => t.EmployeeId, cascadeDelete: true)
+                .ForeignKey("dbo.tbl_Employee", t => t.UpdatedBy)
+                .Index(t => t.EmployeeId)
+                .Index(t => t.UpdatedBy);
+            
+            CreateTable(
+                "dbo.tbl_LoanCalculation",
+                c => new
+                    {
+                        Sl = c.Int(nullable: false, identity: true),
+                        LoanId = c.Int(nullable: false),
+                        EmployeeId = c.Int(nullable: false),
+                        LoanAmount = c.Double(nullable: false),
+                        LoanDuration = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Sl)
+                .ForeignKey("dbo.tbl_Employee", t => t.EmployeeId, cascadeDelete: true)
+                .ForeignKey("dbo.tbl_Loan", t => t.LoanId, cascadeDelete: false)
+                .Index(t => t.LoanId)
+                .Index(t => t.EmployeeId);
+            
+            CreateTable(
+                "dbo.tbl_LoanCalculationHistory",
+                c => new
+                    {
+                        Sl = c.Int(nullable: false, identity: true),
+                        PaidSalaryDurationId = c.Int(nullable: false),
+                        LoanCalculationId = c.Int(nullable: false),
+                        EmployeeId = c.Int(nullable: false),
+                        LoanAmount = c.Double(nullable: false),
+                    })
+                .PrimaryKey(t => t.Sl)
+                .ForeignKey("dbo.tbl_Employee", t => t.EmployeeId, cascadeDelete: true)
+                .ForeignKey("dbo.tbl_LoanCalculation", t => t.LoanCalculationId, cascadeDelete: false)
+                .ForeignKey("dbo.tbl_PaidSalaryDuration", t => t.PaidSalaryDurationId, cascadeDelete: true)
+                .Index(t => t.PaidSalaryDurationId)
+                .Index(t => t.LoanCalculationId)
+                .Index(t => t.EmployeeId);
             
             CreateTable(
                 "dbo.MenuItems",
@@ -501,6 +590,8 @@ namespace FTL_HRMS.Migrations
                         OthersPenalty = c.Double(nullable: false),
                         FestivalBonus = c.Double(nullable: false),
                         OthersBonus = c.Double(nullable: false),
+                        AdjustmentAmount = c.Double(nullable: false),
+                        LoanAmount = c.Double(nullable: false),
                         NetPay = c.Double(nullable: false),
                     })
                 .PrimaryKey(t => t.Sl)
@@ -508,17 +599,6 @@ namespace FTL_HRMS.Migrations
                 .ForeignKey("dbo.tbl_PaidSalaryDuration", t => t.PaidSalaryDurationId, cascadeDelete: true)
                 .Index(t => t.EmployeeId)
                 .Index(t => t.PaidSalaryDurationId);
-            
-            CreateTable(
-                "dbo.tbl_PaidSalaryDuration",
-                c => new
-                    {
-                        Sl = c.Int(nullable: false, identity: true),
-                        FromDate = c.DateTime(nullable: false),
-                        ToDate = c.DateTime(nullable: false),
-                        WorkingDay = c.Double(nullable: false),
-                    })
-                .PrimaryKey(t => t.Sl);
             
             CreateTable(
                 "dbo.tbl_PerformanceIssue",
@@ -579,6 +659,7 @@ namespace FTL_HRMS.Migrations
                         UpdateDate = c.DateTime(),
                         Remarks = c.String(),
                         EmployeeId = c.Int(nullable: false),
+                        IsSeen = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Sl)
                 .ForeignKey("dbo.tbl_Employee", t => t.EmployeeId, cascadeDelete: true)
@@ -746,6 +827,13 @@ namespace FTL_HRMS.Migrations
             DropForeignKey("dbo.tbl_MonthlySalarySheet", "EmployeeId", "dbo.tbl_Employee");
             DropForeignKey("dbo.tbl_MonthlyAttendance", "UpdatedBy", "dbo.tbl_Employee");
             DropForeignKey("dbo.tbl_MonthlyAttendance", "EmployeeId", "dbo.tbl_Employee");
+            DropForeignKey("dbo.tbl_LoanCalculationHistory", "PaidSalaryDurationId", "dbo.tbl_PaidSalaryDuration");
+            DropForeignKey("dbo.tbl_LoanCalculationHistory", "LoanCalculationId", "dbo.tbl_LoanCalculation");
+            DropForeignKey("dbo.tbl_LoanCalculationHistory", "EmployeeId", "dbo.tbl_Employee");
+            DropForeignKey("dbo.tbl_LoanCalculation", "LoanId", "dbo.tbl_Loan");
+            DropForeignKey("dbo.tbl_LoanCalculation", "EmployeeId", "dbo.tbl_Employee");
+            DropForeignKey("dbo.tbl_Loan", "UpdatedBy", "dbo.tbl_Employee");
+            DropForeignKey("dbo.tbl_Loan", "EmployeeId", "dbo.tbl_Employee");
             DropForeignKey("dbo.tbl_LeaveHistory", "UpdatedBy", "dbo.tbl_Employee");
             DropForeignKey("dbo.tbl_LeaveHistory", "LeaveTypeId", "dbo.tbl_LeaveType");
             DropForeignKey("dbo.tbl_LeaveHistory", "EmployeeId", "dbo.tbl_Employee");
@@ -755,6 +843,8 @@ namespace FTL_HRMS.Migrations
             DropForeignKey("dbo.tbl_FileStorage", "EmployeeId", "dbo.tbl_Employee");
             DropForeignKey("dbo.tbl_FileStorage", "CreatedBy", "dbo.tbl_Employee");
             DropForeignKey("dbo.tbl_EmployeeSalaryDistribution", "EmployeeId", "dbo.tbl_Employee");
+            DropForeignKey("dbo.tbl_EmployeeLeaveCountHistory", "PaidSalaryDurationId", "dbo.tbl_PaidSalaryDuration");
+            DropForeignKey("dbo.tbl_EmployeeLeaveCountHistory", "EmployeeId", "dbo.tbl_Employee");
             DropForeignKey("dbo.tbl_DisciplinaryAction", "EmployeeId", "dbo.tbl_Employee");
             DropForeignKey("dbo.tbl_DisciplinaryAction", "DisciplinaryActionTypeId", "dbo.tbl_DisciplinaryActionType");
             DropForeignKey("dbo.tbl_DepartmentTransfer", "ToDesignationId", "dbo.tbl_Designation");
@@ -802,6 +892,13 @@ namespace FTL_HRMS.Migrations
             DropIndex("dbo.tbl_MonthlySalarySheet", new[] { "EmployeeId" });
             DropIndex("dbo.tbl_MonthlyAttendance", new[] { "UpdatedBy" });
             DropIndex("dbo.tbl_MonthlyAttendance", new[] { "EmployeeId" });
+            DropIndex("dbo.tbl_LoanCalculationHistory", new[] { "EmployeeId" });
+            DropIndex("dbo.tbl_LoanCalculationHistory", new[] { "LoanCalculationId" });
+            DropIndex("dbo.tbl_LoanCalculationHistory", new[] { "PaidSalaryDurationId" });
+            DropIndex("dbo.tbl_LoanCalculation", new[] { "EmployeeId" });
+            DropIndex("dbo.tbl_LoanCalculation", new[] { "LoanId" });
+            DropIndex("dbo.tbl_Loan", new[] { "UpdatedBy" });
+            DropIndex("dbo.tbl_Loan", new[] { "EmployeeId" });
             DropIndex("dbo.tbl_LeaveHistory", new[] { "UpdatedBy" });
             DropIndex("dbo.tbl_LeaveHistory", new[] { "LeaveTypeId" });
             DropIndex("dbo.tbl_LeaveHistory", new[] { "EmployeeId" });
@@ -811,6 +908,8 @@ namespace FTL_HRMS.Migrations
             DropIndex("dbo.tbl_FileStorage", new[] { "CreatedBy" });
             DropIndex("dbo.tbl_FileStorage", new[] { "EmployeeId" });
             DropIndex("dbo.tbl_EmployeeSalaryDistribution", new[] { "EmployeeId" });
+            DropIndex("dbo.tbl_EmployeeLeaveCountHistory", new[] { "PaidSalaryDurationId" });
+            DropIndex("dbo.tbl_EmployeeLeaveCountHistory", new[] { "EmployeeId" });
             DropIndex("dbo.tbl_DisciplinaryAction", new[] { "DisciplinaryActionTypeId" });
             DropIndex("dbo.tbl_DisciplinaryAction", new[] { "EmployeeId" });
             DropIndex("dbo.tbl_DepartmentTransfer", new[] { "ToDesignationId" });
@@ -852,10 +951,12 @@ namespace FTL_HRMS.Migrations
             DropTable("dbo.tbl_PromotionHistory");
             DropTable("dbo.tbl_PerformanceRating");
             DropTable("dbo.tbl_PerformanceIssue");
-            DropTable("dbo.tbl_PaidSalaryDuration");
             DropTable("dbo.tbl_MonthlySalarySheet");
             DropTable("dbo.tbl_MonthlyAttendance");
             DropTable("dbo.MenuItems");
+            DropTable("dbo.tbl_LoanCalculationHistory");
+            DropTable("dbo.tbl_LoanCalculation");
+            DropTable("dbo.tbl_Loan");
             DropTable("dbo.tbl_LeaveHistory");
             DropTable("dbo.tbl_LeaveType");
             DropTable("dbo.tbl_LeaveCount");
@@ -864,6 +965,8 @@ namespace FTL_HRMS.Migrations
             DropTable("dbo.tbl_FileStorage");
             DropTable("dbo.tbl_FestivalBonus");
             DropTable("dbo.tbl_EmployeeSalaryDistribution");
+            DropTable("dbo.tbl_PaidSalaryDuration");
+            DropTable("dbo.tbl_EmployeeLeaveCountHistory");
             DropTable("dbo.tbl_DisciplinaryActionType");
             DropTable("dbo.tbl_DisciplinaryAction");
             DropTable("dbo.tbl_DeviceAttendance");

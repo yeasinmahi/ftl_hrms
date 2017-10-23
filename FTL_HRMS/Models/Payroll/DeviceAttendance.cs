@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,6 +20,7 @@ namespace FTL_HRMS.Models.Payroll
         ApplyFormatInEditMode = true)]
         public DateTime CheckTime { get; set; }
 
+        [DefaultValue(false)]
         public bool IsCalculated { get; set; }
         
     }

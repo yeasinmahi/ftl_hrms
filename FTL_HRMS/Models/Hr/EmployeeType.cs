@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FTL_HRMS.Models.Hr
@@ -13,6 +14,7 @@ namespace FTL_HRMS.Models.Hr
         [MaxLength(250)]
         public string Name { get; set; }
 
+        [DefaultValue(true)]
         public bool Status { get; set; }
     }
 }
