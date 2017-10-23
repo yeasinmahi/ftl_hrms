@@ -57,6 +57,7 @@ namespace FTL_HRMS.DAL
         public DbSet<Loan> Loan { get; set; }
         public DbSet<LoanCalculation> LoanCalculation { get; set; }
         public DbSet<LoanCalculationHistory> LoanCalculationHistory { get; set; }
+        public DbSet<Subscription> Subscription { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
