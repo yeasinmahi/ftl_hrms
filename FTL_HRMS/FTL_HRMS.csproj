@@ -2856,8 +2856,13 @@
     <Compile Include="Migrations\201710221005477_InitialCreate.Designer.cs">
       <DependentUpon>201710221005477_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710231032476_Adding Subscription.cs" />
+    <Compile Include="Migrations\201710231032476_Adding Subscription.Designer.cs">
+      <DependentUpon>201710231032476_Adding Subscription.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Hr\Subscription.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
     <Compile Include="Models\Hr\EmployeeLeaveCountHistory.cs" />
     <Compile Include="Models\Payroll\LoanCalculationHistory.cs" />
@@ -3513,6 +3518,9 @@
     </Content>
     <EmbeddedResource Include="Migrations\201710221005477_InitialCreate.resx">
       <DependentUpon>201710221005477_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710231032476_Adding Subscription.resx">
+      <DependentUpon>201710231032476_Adding Subscription.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

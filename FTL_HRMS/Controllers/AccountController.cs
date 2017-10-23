@@ -12,6 +12,7 @@ using FTL_HRMS.DAL;
 using FTL_HRMS.Models;
 using static FTL_HRMS.Models.AccountViewModels;
 using FTL_HRMS.Utility;
+using FTL_HRMS.Models.Hr;
 
 namespace FTL_HRMS.Controllers
 {
@@ -43,8 +44,34 @@ namespace FTL_HRMS.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-
+            if (_dbCtx.Subscription.Select(i => i.Sl).Count() > 0)
+            {
+                int id = _dbCtx.Subscription.Select(i => i.Sl).FirstOrDefault();
+                Subscription subscription = _dbCtx.Subscription.Find(id);
+                if(subscription.Code == "ABC")
+                {
+                    if(subscription.Date.Date >= DateTime.Now.Date)
+                    {
+                        TempData["Subscription"] = "Subscribed";
+                        ViewBag.ReturnUrl = returnUrl;
+                    }
+                    else
+                    {
+                        subscription.Code = "XYZ";
+                        _dbCtx.Entry(subscription).State = EntityState.Modified;
+                        _dbCtx.SaveChanges();
+                        TempData["Subscription"] = null;
+                    }
+                }
+                else
+                {
+                    TempData["Subscription"] = null;
+                }
+            }
+            else
+            {
+                TempData["Subscription"] = null;
+            }
             return View();
         }
 
