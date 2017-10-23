@@ -2,8 +2,10 @@
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace FTL_HRMS.Controllers
@@ -112,5 +114,41 @@ namespace FTL_HRMS.Controllers
             return notificationList.OrderByDescending(d => d.Date).ToList();
 
         }
+
+        public bool SendMail(Employee employee, string MailSubject, string EmailBody)
+        {
+            try
+            {
+                //Configuring webMail class to send emails  
+                //gmail smtp server  
+                WebMail.SmtpServer = "smtp.gmail.com";
+                //gmail port to send emails  
+                WebMail.SmtpPort = 587;
+                WebMail.SmtpUseDefaultCredentials = true;
+                //sending emails with secure protocol  
+                WebMail.EnableSsl = true;
+                //EmailId used to send emails from application  
+                WebMail.UserName = "futuristictechdev@gmail.com";
+                WebMail.Password = "wasimakram123";
+
+                //Sender email address.  
+                WebMail.From = "futuristictechdev@gmail.com";
+
+                //Send email  
+                WebMail.Send(to: employee.Email, subject: MailSubject, body: EmailBody, isBodyHtml: true);
+                return true;
+            }
+            catch (Exception ex)
+            {   
+                return false;
+            }
+        }
+
+        public bool IsEmailActive ()
+        {
+
+            return true;
+        }
+
     }
 }
