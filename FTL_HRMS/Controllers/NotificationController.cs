@@ -5,6 +5,7 @@ using FTL_HRMS.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using static FTL_HRMS.Utility.Utility;
@@ -115,7 +116,7 @@ namespace FTL_HRMS.Controllers
 
         }
 
-        public bool SendMail(string email, string MailSubject, string EmailBody)
+        public async Task<bool> SendMail(string email, string MailSubject, string EmailBody)
         {
             try
             {
@@ -150,18 +151,26 @@ namespace FTL_HRMS.Controllers
             return true;
         }
 
-        public bool SentMailToAll(NotificationType notificationType, NotificationStatus notificationStatus, int employeeId)
+        public async Task<bool> SentMailToAll(NotificationType notificationType, NotificationStatus notificationStatus, int employeeId)
         {
             if (IsEmailActive())
             {
                 List<string> emails = GetEmails(notificationType, notificationStatus, employeeId);
                 string mailSubject = GetMailSubject(notificationType, notificationStatus);
                 string mailBody = GetMailBody(notificationType, notificationStatus, employeeId);
+                bool isSentMail = true;
                 foreach (string email in emails)
                 {
-                    SendMail(email, mailSubject, mailBody);
+                    if (!await SendMail(email, mailSubject, mailBody))
+                    {
+                        isSentMail = false;
+                    }
                 }
-                return true;
+                if (isSentMail)
+                {
+                    return true;
+                }
+                return false;
             }
             return false;
         }
@@ -183,7 +192,7 @@ namespace FTL_HRMS.Controllers
             {
                 //Department Head
                 int departmentId = Db.Employee.Where(x => x.Sl == employeeId).Select(x => x.Designation.DepartmentId).FirstOrDefault();
-                emails = Db.Employee.Where(x => x.Designation.DepartmentId.Equals(departmentId)).Where(x => x.Designation.RoleName.Equals("Department Head")).Select(x => x.Email).ToList();
+                emails.AddRange(Db.Employee.Where(x => x.Designation.DepartmentId.Equals(departmentId)).Where(x => x.Designation.RoleName.Equals("Department Head")).Select(x => x.Email).ToList());
                 
             }
 

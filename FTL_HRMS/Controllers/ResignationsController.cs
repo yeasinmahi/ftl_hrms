@@ -71,9 +71,9 @@ namespace FTL_HRMS.Controllers
                 _db.Resignation.Add(resignation);
                 _db.SaveChanges();
                 int employeeId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-                NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Pending, employeeId);
+                NotificationController.GetInstant().SentMailToAll(NotificationType.Resign, NotificationStatus.Pending, employeeId);
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
-                return RedirectToAction("Index");
+                return RedirectToAction("Create");
             }
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
             return View(resignation);
@@ -128,11 +128,11 @@ namespace FTL_HRMS.Controllers
                         LoanList.ForEach(x => x.LoanDuration = 1);
                     }
                     _db.SaveChanges();
-                    NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Approve, employeeId);
+                    NotificationController.GetInstant().SentMailToAll(NotificationType.Resign, NotificationStatus.Approve, employeeId);
                 }
                 else if (status == "Canceled")
                 {
-                    NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Cancel, employeeId);
+                    NotificationController.GetInstant().SentMailToAll(NotificationType.Resign, NotificationStatus.Cancel, employeeId);
                 }
                 string rolll = DbUtility.GetRoll(_db, User.Identity.GetUserId());
                 Session["NotifyList"] = NotificationController.GetInstant().GetNotificationListByRoll(rolll, User.Identity.Name);
