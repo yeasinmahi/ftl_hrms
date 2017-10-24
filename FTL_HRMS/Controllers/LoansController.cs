@@ -9,6 +9,7 @@ using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
 using Microsoft.AspNet.Identity;
 using FTL_HRMS.Models.Payroll;
+using static FTL_HRMS.Utility.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -64,6 +65,8 @@ namespace FTL_HRMS.Controllers
                 loan.Status = "Pending";
                 _db.Loan.Add(loan);
                 _db.SaveChanges();
+                int employeeId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Pending, employeeId);
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
@@ -143,7 +146,15 @@ namespace FTL_HRMS.Controllers
                 loan.UpdateDate = DateTime.Now;
                 _db.Entry(loan).State = EntityState.Modified;
                 _db.SaveChanges();
-
+                int employeeId = loan.EmployeeId;
+                if (status == "Considered")
+                {
+                    NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Consider, employeeId);
+                }
+                else if (status == "Canceled")
+                {
+                    NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Cancel, employeeId);
+                }
                 if(status == "Approved")
                 {
                     LoanCalculation calculation = new LoanCalculation();
@@ -153,8 +164,8 @@ namespace FTL_HRMS.Controllers
                     calculation.LoanDuration = loan.LoanDuration;
                     _db.LoanCalculation.Add(calculation);
                     _db.SaveChanges();
+                    NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Approve, employeeId);
                 }
-
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("LoanApproval", "Loans");
             }

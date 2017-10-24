@@ -115,7 +115,7 @@ namespace FTL_HRMS.Controllers
 
         }
 
-        public bool SendMail(Employee employee, string MailSubject, string EmailBody)
+        public bool SendMail(string email, string MailSubject, string EmailBody)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace FTL_HRMS.Controllers
                 WebMail.From = "futuristictechdev@gmail.com";
 
                 //Send email  
-                WebMail.Send(to: employee.Email, subject: MailSubject, body: EmailBody, isBodyHtml: true);
+                WebMail.Send(to: email, subject: MailSubject, body: EmailBody, isBodyHtml: true);
                 return true;
             }
             catch (Exception ex)
@@ -150,27 +150,36 @@ namespace FTL_HRMS.Controllers
             return true;
         }
 
-        public bool SentMailToAll()
+        public bool SentMailToAll(NotificationType notificationType, NotificationStatus notificationStatus, int employeeId)
         {
-            return true;
+            if (IsEmailActive())
+            {
+                List<string> emails = GetEmails(notificationType, notificationStatus, employeeId);
+                string mailSubject = GetMailSubject(notificationType, notificationStatus);
+                string mailBody = GetMailBody(notificationType, notificationStatus, employeeId);
+                foreach (string email in emails)
+                {
+                    SendMail(email, mailSubject, mailBody);
+                }
+                return true;
+            }
+            return false;
         }
 
-        public List<string> GetEmails(NotificationType notificationType,NotificationStatus notificationStatus, string userName)
+        public List<string> GetEmails(NotificationType notificationType,NotificationStatus notificationStatus, int employeeId)
         {
             Db = new HRMSDbContext();
-            int employeeId = Db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-            
             List<string> emails = new List<string>();
             if(notificationStatus.Equals(NotificationStatus.Pending) || notificationStatus.Equals(NotificationStatus.Recommendation))
             {
                 //admin and super admin
-                emails = Db.Employee.Where(x => x.Designation.RoleName.Equals("Super Admin")).Where(x => x.Designation.RoleName.Equals("Admin")).Select(x => x.Email).ToList();
+                emails = Db.Employee.Where(x => x.Designation.RoleName.Equals("Super Admin") || x.Designation.RoleName.Equals("Admin")).Select(x => x.Email).ToList();
             }else if (notificationStatus.Equals(NotificationStatus.Approve) || notificationStatus.Equals(NotificationStatus.Cancel) || notificationStatus.Equals(NotificationStatus.Cancel))
             {
                 //employee
                 emails = Db.Employee.Where(x => x.Sl.Equals(employeeId)).Select(x => x.Email).ToList();
             }
-            else if (notificationStatus.Equals(NotificationStatus.Pending) && (notificationType.Equals(NotificationType.Leave) || notificationType.Equals(NotificationType.Resign)))
+            if (notificationStatus.Equals(NotificationStatus.Pending) && (notificationType.Equals(NotificationType.Leave) || notificationType.Equals(NotificationType.Resign)))
             {
                 //Department Head
                 int departmentId = Db.Employee.Where(x => x.Sl == employeeId).Select(x => x.Designation.DepartmentId).FirstOrDefault();
@@ -179,6 +188,19 @@ namespace FTL_HRMS.Controllers
             }
 
             return emails;
+        }
+
+        public string GetMailSubject(NotificationType notificationType, NotificationStatus notificationStatus)
+        {
+            return notificationType.ToString() + " " + notificationStatus.ToString();
+        }
+        public string GetMailBody(NotificationType notificationType, NotificationStatus notificationStatus, int employeeId)
+        {
+            string name = "X";
+            name = Db.Employee.Where(x => x.Sl.Equals(employeeId)).Select(x => x.Name).FirstOrDefault();
+
+
+            return "Have To Write A Body";
         }
     }
 }

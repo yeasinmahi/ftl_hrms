@@ -10,6 +10,7 @@ using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Utility;
 using Microsoft.AspNet.Identity;
+using static FTL_HRMS.Utility.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -69,6 +70,8 @@ namespace FTL_HRMS.Controllers
                 resignation.Status = "Pending";
                 _db.Resignation.Add(resignation);
                 _db.SaveChanges();
+                int employeeId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Pending, employeeId);
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Index");
             }
@@ -106,7 +109,8 @@ namespace FTL_HRMS.Controllers
                 resignation.UpdateDate = DateTime.Now;
                 _db.Entry(resignation).State = EntityState.Modified;
                 _db.SaveChanges();
-                if(status == "Approved")
+                int employeeId = resignation.EmployeeId;
+                if (status == "Approved")
                 {
                     Employee employee = _db.Employee.Find(resignation.EmployeeId);
                     employee.Status = false;
@@ -118,13 +122,17 @@ namespace FTL_HRMS.Controllers
                     ApplicationUser user = _db.Users.Find(employeeUserId);
                     _db.Users.Remove(user);
                     _db.SaveChanges();
-
                     List<LoanCalculation> LoanList = _db.LoanCalculation.Where(i => i.EmployeeId == resignation.EmployeeId).ToList();
                     if (LoanList.Count > 0)
                     {
                         LoanList.ForEach(x => x.LoanDuration = 1);
                     }
                     _db.SaveChanges();
+                    NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Approve, employeeId);
+                }
+                else if (status == "Canceled")
+                {
+                    NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Cancel, employeeId);
                 }
                 string rolll = DbUtility.GetRoll(_db, User.Identity.GetUserId());
                 Session["NotifyList"] = NotificationController.GetInstant().GetNotificationListByRoll(rolll, User.Identity.Name);

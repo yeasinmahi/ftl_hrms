@@ -8,6 +8,7 @@ using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
 using Microsoft.AspNet.Identity;
+using static FTL_HRMS.Utility.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -75,6 +76,8 @@ namespace FTL_HRMS.Controllers
             {
                 _db.LeaveHistories.Add(leaveHistory);
                 _db.SaveChanges();
+                int employeeId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Pending, employeeId);
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Index");
             }
@@ -84,6 +87,8 @@ namespace FTL_HRMS.Controllers
                 {
                     _db.LeaveHistories.Add(leaveHistory);
                     _db.SaveChanges();
+                    int employeeId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                    NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Pending, employeeId);
                     TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                     return RedirectToAction("Index");
                 }
@@ -96,6 +101,7 @@ namespace FTL_HRMS.Controllers
                     TempData["message"] = "0Exceeds available days !!";
                 }
             }
+            
             return View(leaveHistory);
         }
         #endregion
@@ -129,6 +135,8 @@ namespace FTL_HRMS.Controllers
                 leaveHistory.UpdateDate = DateTime.Now;
                 _db.Entry(leaveHistory).State = EntityState.Modified;
                 _db.SaveChanges();
+                int employeeId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Recommendation, employeeId);
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 string rolll = DbUtility.GetRoll(_db, User.Identity.GetUserId());
                 Session["NotifyList"] = NotificationController.GetInstant().GetNotificationListByRoll(rolll, User.Identity.Name);
@@ -188,7 +196,16 @@ namespace FTL_HRMS.Controllers
                 #endregion
                 string rolll = DbUtility.GetRoll(_db, User.Identity.GetUserId());
                 Session["NotifyList"] = NotificationController.GetInstant().GetNotificationListByRoll(rolll, User.Identity.Name);
-                NotificationController.GetInstant().SentMailToAll();
+                int employeeId = leaveHistory.EmployeeId;
+                if (status == "Approved")
+                {
+                    NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Approve, employeeId);
+                }
+                else if (status == "Canceled")
+                {
+                    NotificationController.GetInstant().SentMailToAll(NotificationType.Leave, NotificationStatus.Cancel, employeeId);
+                }
+               
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("LeaveApproval", "LeaveHistories");
             }
