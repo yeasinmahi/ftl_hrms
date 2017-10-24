@@ -24,6 +24,20 @@ namespace FTL_HRMS.Utility
             DisplayTimeFormat
                 
         }
+        public enum NotificationType
+        {
+            Leave,
+            Resign,
+            Loan
+        }
+        public enum NotificationStatus
+        {
+            Pending,
+            Approve,
+            Cancel,
+            Recommendation,
+            Consider
+        }
 
         public static string GetDisplayDateFormat()
         {

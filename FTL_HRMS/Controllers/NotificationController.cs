@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using static FTL_HRMS.Utility.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -43,18 +44,17 @@ namespace FTL_HRMS.Controllers
             }
             else if (rolll == "Department Head")
             {
-                leaveHistories = Db.LeaveHistories.Where(x => x.Status == "Pending").ToList();
-                resignations = Db.Resignation.Where(x => x.Status == "Pending").ToList();
-
                 var customUserId = Db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
                 int employeeId = Db.Employee.Where(x => x.Sl == customUserId).Select(x => x.Sl).FirstOrDefault();
+                int departmentId = Db.Employee.Where(x => x.Sl == employeeId).Select(x => x.Designation.DepartmentId).FirstOrDefault();
+                leaveHistories = Db.LeaveHistories.Where(x => x.Status == "Pending").Where(x => x.Employee.Designation.DepartmentId.Equals(departmentId)).ToList();
+                resignations = Db.Resignation.Where(x => x.Status == "Pending").Where(x => x.Employee.Designation.DepartmentId.Equals(departmentId)).ToList();
                 loans = Db.Loan.Where(x => x.Status == "Considered" || x.Status== "Canceled" || x.Status=="Approved").Where(x => x.EmployeeId == employeeId).ToList();
             }
             else if (rolll == "Employee")
             {
-                var customUserId = Db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-                int employeeId = Db.Employee.Where(x => x.Sl == customUserId).Select(x => x.Sl).FirstOrDefault();
-
+                int employeeId = Db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+                
                 leaveHistories = Db.LeaveHistories.Where(x => x.Status == "Approved" || x.Status == "Cancled").Where(x => x.EmployeeId == employeeId).ToList();
                 resignations = Db.Resignation.Where(x => x.Status == "Approved" || x.Status == "Cancled").Where(x => x.EmployeeId == employeeId).ToList();
                 loans = Db.Loan.Where(x => x.Status == "Considered" || x.Status == "Canceled" || x.Status == "Approved").Where(x => x.EmployeeId == employeeId).ToList();
@@ -150,5 +150,35 @@ namespace FTL_HRMS.Controllers
             return true;
         }
 
+        public bool SentMailToAll()
+        {
+            return true;
+        }
+
+        public List<string> GetEmails(NotificationType notificationType,NotificationStatus notificationStatus, string userName)
+        {
+            Db = new HRMSDbContext();
+            int employeeId = Db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
+            
+            List<string> emails = new List<string>();
+            if(notificationStatus.Equals(NotificationStatus.Pending) || notificationStatus.Equals(NotificationStatus.Recommendation))
+            {
+                //admin and super admin
+                emails = Db.Employee.Where(x => x.Designation.RoleName.Equals("Super Admin")).Where(x => x.Designation.RoleName.Equals("Admin")).Select(x => x.Email).ToList();
+            }else if (notificationStatus.Equals(NotificationStatus.Approve) || notificationStatus.Equals(NotificationStatus.Cancel) || notificationStatus.Equals(NotificationStatus.Cancel))
+            {
+                //employee
+                emails = Db.Employee.Where(x => x.Sl.Equals(employeeId)).Select(x => x.Email).ToList();
+            }
+            else if (notificationStatus.Equals(NotificationStatus.Pending) && (notificationType.Equals(NotificationType.Leave) || notificationType.Equals(NotificationType.Resign)))
+            {
+                //Department Head
+                int departmentId = Db.Employee.Where(x => x.Sl == employeeId).Select(x => x.Designation.DepartmentId).FirstOrDefault();
+                emails = Db.Employee.Where(x => x.Designation.DepartmentId.Equals(departmentId)).Where(x => x.Designation.RoleName.Equals("Department Head")).Select(x => x.Email).ToList();
+                
+            }
+
+            return emails;
+        }
     }
 }

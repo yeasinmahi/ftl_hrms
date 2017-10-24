@@ -188,6 +188,7 @@ namespace FTL_HRMS.Controllers
                 #endregion
                 string rolll = DbUtility.GetRoll(_db, User.Identity.GetUserId());
                 Session["NotifyList"] = NotificationController.GetInstant().GetNotificationListByRoll(rolll, User.Identity.Name);
+                NotificationController.GetInstant().SentMailToAll();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("LeaveApproval", "LeaveHistories");
             }
