@@ -284,7 +284,6 @@ namespace FTL_HRMS.Controllers
                     employee.ParmanentDate = employee.DateOfJoining;
                 }
                 _db.Employee.Add(employee);
-                _db.SaveChanges();
 
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
@@ -309,8 +308,18 @@ namespace FTL_HRMS.Controllers
                 if (chkUser.Succeeded)
                 {
                     var result1 = userManager.AddToRole(user.Id, role);
+                    try
+                    {
+                        _db.SaveChanges();
+                    }
+                    catch (Exception exception)
+                    {
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+                        return View("Create");
+                    }
+                   
                 }
-                _db.SaveChanges();
+                
                 #endregion
 
                 #region Add Education
