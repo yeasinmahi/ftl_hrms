@@ -233,6 +233,11 @@ namespace FTL_HRMS.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
+            Session["EducationList"] = new List<Education>();
+            Session["ExperienceList"] = new List<Experience>();
+
+            Employee employee = (Employee) TempData["Employee"];
+            
             List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
             sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name");
@@ -249,8 +254,11 @@ namespace FTL_HRMS.Controllers
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
-            Session["EducationList"] = new List<Education>();
-            Session["ExperienceList"] = new List<Experience>();
+            if (employee != null)
+            {
+                return View(employee);
+            }
+
             return View();
         }
 
@@ -321,7 +329,7 @@ namespace FTL_HRMS.Controllers
                 }
                 else
                 {
-                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+                    TempData["message"] = "0Enter only alphabets and digits as Code";
                     return EmployeeDefaultList(employee);
                 }
                 
@@ -705,24 +713,8 @@ namespace FTL_HRMS.Controllers
 
         public ActionResult EmployeeDefaultList(Employee employee)
         {
-            List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
-            sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
-            ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
-
-            List<Branch> branchList = new List<Branch>();
-            branchList = _db.Branches.Where(i => i.Status == true).ToList();
-            ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", employee.BranchId);
-
-            List<EmployeeType> employeeTypeList = new List<EmployeeType>();
-            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
-            ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
-
-            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
-            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
-
-            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
-            return RedirectToAction("Create","Employees");
+            TempData["Employee"] = employee;
+            return RedirectToAction("Create", "Employees");
         }
 
     }
