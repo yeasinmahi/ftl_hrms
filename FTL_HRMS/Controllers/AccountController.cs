@@ -48,7 +48,7 @@ namespace FTL_HRMS.Controllers
             {
                 int id = _dbCtx.Subscription.Select(i => i.Sl).FirstOrDefault();
                 Subscription subscription = _dbCtx.Subscription.Find(id);
-                if(subscription.Code == "ABC")
+                if(subscription.Code == "▓╖▓╖▓╖")
                 {
                     if(subscription.Date.Date >= DateTime.Now.Date)
                     {
@@ -57,7 +57,7 @@ namespace FTL_HRMS.Controllers
                     }
                     else
                     {
-                        subscription.Code = "XYZ";
+                        subscription.Code = "╖▓╖▓╖▓";
                         _dbCtx.Entry(subscription).State = EntityState.Modified;
                         _dbCtx.SaveChanges();
                         TempData["Subscription"] = null;

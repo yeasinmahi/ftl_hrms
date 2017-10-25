@@ -2845,6 +2845,7 @@
     <Compile Include="Controllers\SalaryDistributionsController.cs" />
     <Compile Include="Controllers\SalarySheetController.cs" />
     <Compile Include="Controllers\SourceOfHiresController.cs" />
+    <Compile Include="Controllers\SubscriptionsController.cs" />
     <Compile Include="Controllers\WeekendsController.cs" />
     <Compile Include="DAL\ConnectionGateway.cs" />
     <Compile Include="DAL\Device.cs" />
@@ -3434,6 +3435,11 @@
     <Content Include="Views\Loans\Index.cshtml" />
     <Content Include="Views\Loans\LoanApproval.cshtml" />
     <Content Include="Views\MonthlyAttendances\Synchronization.cshtml" />
+    <Content Include="Views\Subscriptions\Create.cshtml" />
+    <Content Include="Views\Subscriptions\Delete.cshtml" />
+    <Content Include="Views\Subscriptions\Details.cshtml" />
+    <Content Include="Views\Subscriptions\Edit.cshtml" />
+    <Content Include="Views\Subscriptions\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
