@@ -93,6 +93,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Sl,Code,Date")] Subscription subscription)
         {
+            string strEncrypted = "ABC";
+            subscription.Code = EncryptString(strEncrypted);
+
             if (subscription.Sl != 0)
             {
                 db.Entry(subscription).State = System.Data.Entity.EntityState.Modified;
@@ -148,5 +151,15 @@ namespace FTL_HRMS.Controllers
             base.Dispose(disposing);
         }
         #endregion
+
+
+        #region Encrypt And Decrypt
+        public string EncryptString(string strEncrypted)
+        {
+            byte[] b = System.Text.ASCIIEncoding.ASCII.GetBytes(strEncrypted);
+            string encrypted = Convert.ToBase64String(b);
+            return encrypted;
+        }
+        #endregion
     }
-}
+    }
