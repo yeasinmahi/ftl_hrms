@@ -20,6 +20,7 @@ namespace FTL_HRMS.Models.Hr
         public int Sl { get; set; }
         [MaxLength(15)]
         [Required(ErrorMessage ="Code can not be empty")]
+        [RegularExpression("^([a-zA-Z0-9]*)$", ErrorMessage = "Enter only alphabets and digits")]
         [Index(IsUnique =true)]
         public string Code { get; set; }
 
