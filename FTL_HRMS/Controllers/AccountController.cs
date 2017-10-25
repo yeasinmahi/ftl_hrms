@@ -13,6 +13,9 @@ using FTL_HRMS.Models;
 using static FTL_HRMS.Models.AccountViewModels;
 using FTL_HRMS.Utility;
 using FTL_HRMS.Models.Hr;
+using System.Security.Cryptography;
+using System.IO;
+using System.Text;
 
 namespace FTL_HRMS.Controllers
 {
@@ -66,7 +69,7 @@ namespace FTL_HRMS.Controllers
                     {
                         int id = _dbCtx.Subscription.Select(i => i.Sl).FirstOrDefault();
                         Subscription subscription = _dbCtx.Subscription.Find(id);
-                        if (DecryptString(subscription.Code) == "ABC")
+                        if (DecryptString(subscription.Code) == "▓╖▓╖▓╖")
                         {
                             if (subscription.Date.Date >= DateTime.Now.Date)
                             {
@@ -75,7 +78,7 @@ namespace FTL_HRMS.Controllers
                             }
                             else
                             {
-                                string strEncrypted = "XYZ";
+                                string strEncrypted = "╖▓╖▓╖▓";
                                 subscription.Code = EncryptString(strEncrypted);
                                 _dbCtx.Entry(subscription).State = EntityState.Modified;
                                 _dbCtx.SaveChanges();
@@ -110,27 +113,61 @@ namespace FTL_HRMS.Controllers
         }
 
         #region Encrypt And Decrypt
-        public string EncryptString(string strEncrypted)
+        //public string EncryptString(string strEncrypted)
+        //{
+        //    byte[] b = System.Text.ASCIIEncoding.ASCII.GetBytes(strEncrypted);
+        //    string encrypted = Convert.ToBase64String(b);
+        //    return encrypted;
+        //}
+
+        //public string DecryptString(string encrString)
+        //{
+        //    byte[] b;
+        //    string decrypted;
+        //    try
+        //    {
+        //        b = Convert.FromBase64String(encrString);
+        //        decrypted = System.Text.ASCIIEncoding.ASCII.GetString(b);
+        //    }
+        //    catch (FormatException fe)
+        //    {
+        //        decrypted = "";
+        //    }
+        //    return decrypted;
+        //}
+
+        public string EncryptString(string str)
         {
-            byte[] b = System.Text.ASCIIEncoding.ASCII.GetBytes(strEncrypted);
-            string encrypted = Convert.ToBase64String(b);
-            return encrypted;
+            string EncrptKey = "2013;[pnuLIT)WebCodeExpert";
+            byte[] byKey = { };
+            byte[] IV = { 18, 52, 86, 120, 144, 171, 205, 239 };
+            byKey = System.Text.Encoding.UTF8.GetBytes(EncrptKey.Substring(0, 8));
+            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
+            byte[] inputByteArray = Encoding.UTF8.GetBytes(str);
+            MemoryStream ms = new MemoryStream();
+            CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(byKey, IV), CryptoStreamMode.Write);
+            cs.Write(inputByteArray, 0, inputByteArray.Length);
+            cs.FlushFinalBlock();
+            return Convert.ToBase64String(ms.ToArray());
         }
 
-        public string DecryptString(string encrString)
+        public string DecryptString(string str)
         {
-            byte[] b;
-            string decrypted;
-            try
-            {
-                b = Convert.FromBase64String(encrString);
-                decrypted = System.Text.ASCIIEncoding.ASCII.GetString(b);
-            }
-            catch (FormatException fe)
-            {
-                decrypted = "";
-            }
-            return decrypted;
+            str = str.Replace(" ", "+");
+            string DecryptKey = "2013;[pnuLIT)WebCodeExpert";
+            byte[] byKey = { };
+            byte[] IV = { 18, 52, 86, 120, 144, 171, 205, 239 };
+            byte[] inputByteArray = new byte[str.Length];
+
+            byKey = System.Text.Encoding.UTF8.GetBytes(DecryptKey.Substring(0, 8));
+            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
+            inputByteArray = Convert.FromBase64String(str.Replace(" ", "+"));
+            MemoryStream ms = new MemoryStream();
+            CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(byKey, IV), CryptoStreamMode.Write);
+            cs.Write(inputByteArray, 0, inputByteArray.Length);
+            cs.FlushFinalBlock();
+            System.Text.Encoding encoding = System.Text.Encoding.UTF8;
+            return encoding.GetString(ms.ToArray());
         }
         #endregion
 
