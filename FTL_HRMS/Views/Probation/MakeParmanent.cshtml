@@ -75,7 +75,7 @@
                             @Html.LabelFor(model => model.ParmanentDate, "Date Of Parmanent", new { @class = "required" })
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.ParmanentDate, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
+                            @Html.EditorFor(model => model.ParmanentDate, new { htmlAttributes = new { @type = "text", @placeholder = "mm/dd/yyyy", @class = "form-control datepicker", style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.ParmanentDate, "", new { @class = "text-danger" })
                         </div>
                     </div>

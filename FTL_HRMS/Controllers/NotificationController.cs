@@ -209,7 +209,7 @@ namespace FTL_HRMS.Controllers
             name = Db.Employee.Where(x => x.Sl.Equals(employeeId)).Select(x => x.Name).FirstOrDefault();
 
 
-            return "You have a notification from Mr/s"+ name + "for"+ notificationType;
+            return "You have a notification from Mr/s " + name + "for " + notificationType;
         }
     }
 }
