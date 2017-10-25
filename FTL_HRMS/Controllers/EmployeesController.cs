@@ -314,10 +314,15 @@ namespace FTL_HRMS.Controllers
                     }
                     catch (Exception exception)
                     {
-                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
-                        return View("Create");
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UnknownError);
+                        return EmployeeDefaultList(employee);
                     }
-                   
+
+                }
+                else
+                {
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+                    return EmployeeDefaultList(employee);
                 }
                 
                 #endregion
@@ -697,6 +702,29 @@ namespace FTL_HRMS.Controllers
             return new FileContentResult(defaultImage, "image/jpeg");
         }
         #endregion
+
+        public ActionResult EmployeeDefaultList(Employee employee)
+        {
+            List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
+            sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+            ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
+
+            List<Branch> branchList = new List<Branch>();
+            branchList = _db.Branches.Where(i => i.Status == true).ToList();
+            ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", employee.BranchId);
+
+            List<EmployeeType> employeeTypeList = new List<EmployeeType>();
+            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
+
+            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
+            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
+
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+            return RedirectToAction("Create","Employees");
+        }
+
     }
 }
 
