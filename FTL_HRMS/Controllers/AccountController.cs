@@ -13,6 +13,9 @@ using FTL_HRMS.Models;
 using static FTL_HRMS.Models.AccountViewModels;
 using FTL_HRMS.Utility;
 using FTL_HRMS.Models.Hr;
+using System.Security.Cryptography;
+using System.IO;
+using System.Text;
 
 namespace FTL_HRMS.Controllers
 {
@@ -44,34 +47,7 @@ namespace FTL_HRMS.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            if (_dbCtx.Subscription.Select(i => i.Sl).Count() > 0)
-            {
-                int id = _dbCtx.Subscription.Select(i => i.Sl).FirstOrDefault();
-                Subscription subscription = _dbCtx.Subscription.Find(id);
-                if(subscription.Code == "ABC")
-                {
-                    if(subscription.Date.Date >= DateTime.Now.Date)
-                    {
-                        TempData["Subscription"] = "Subscribed";
-                        ViewBag.ReturnUrl = returnUrl;
-                    }
-                    else
-                    {
-                        subscription.Code = "XYZ";
-                        _dbCtx.Entry(subscription).State = EntityState.Modified;
-                        _dbCtx.SaveChanges();
-                        TempData["Subscription"] = null;
-                    }
-                }
-                else
-                {
-                    TempData["Subscription"] = null;
-                }
-            }
-            else
-            {
-                TempData["Subscription"] = null;
-            }
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -82,26 +58,96 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl, string captchaText)
         {
-            //if (ModelState.IsValid)
-            //{
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
+            var user = await UserManager.FindAsync(model.UserName, model.Password);
+            if (user != null)
+            {
+                int CustomUserId = _dbCtx.Users.Where(i => i.UserName == model.UserName).Select(i => i.CustomUserId).FirstOrDefault();
+                string Code = _dbCtx.Employee.Where(i => i.Sl == CustomUserId).Select(i => i.Code).FirstOrDefault();
+                if (Code != "SystemAdmin")
                 {
-                    await SignInAsync(user, model.RememberMe);
-                    //return RedirectToLocal(returnUrl);
-                    return RedirectToAction("AdminDashboard", "Home");
+                    if (_dbCtx.Subscription.Select(i => i.Sl).Count() > 0)
+                    {
+                        int id = _dbCtx.Subscription.Select(i => i.Sl).FirstOrDefault();
+                        Subscription subscription = _dbCtx.Subscription.Find(id);
+                        if (DecryptString(subscription.Code) == "▓╖▓╖▓╖")
+                        {
+                            if (subscription.Date.Date >= DateTime.Now.Date)
+                            {
+                                await SignInAsync(user, model.RememberMe);
+                                return RedirectToAction("AdminDashboard", "Home");
+                            }
+                            else
+                            {
+                                string strEncrypted = "╖▓╖▓╖▓";
+                                subscription.Code = EncryptString(strEncrypted);
+                                _dbCtx.Entry(subscription).State = EntityState.Modified;
+                                _dbCtx.SaveChanges();
+                                TempData["ErrLogin"] = "Subscription Failed !!";
+                                return RedirectToAction("Login", "Account");
+                            }
+                        }
+                        else
+                        {
+                            TempData["ErrLogin"] = "Subscription Failed !!";
+                            return RedirectToAction("Login", "Account");
+                        }
+                    }
+                    else
+                    {
+                        TempData["ErrLogin"] = "Subscription Failed !!";
+                        return RedirectToAction("Login", "Account");
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                    TempData["message"] = "0Invalid Username or Password!!";
-                    return RedirectToAction("Login", "Account");
+                    await SignInAsync(user, model.RememberMe);
+                    return RedirectToAction("AdminDashboard", "Home");
                 }
-            //}
-
-            // If we got this far, something failed, redisplay form
-            //return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Invalid username or password.");
+                TempData["ErrLogin"] = "Invalid Username or Password!!";
+                return RedirectToAction("Login", "Account");
+            }
         }
+
+        #region Encrypt And Decrypt
+        public string EncryptString(string str)
+        {
+            string EncrptKey = "2013;[pnuLIT)WebCodeExpert";
+            byte[] byKey = { };
+            byte[] IV = { 18, 52, 86, 120, 144, 171, 205, 239 };
+            byKey = System.Text.Encoding.UTF8.GetBytes(EncrptKey.Substring(0, 8));
+            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
+            byte[] inputByteArray = Encoding.UTF8.GetBytes(str);
+            MemoryStream ms = new MemoryStream();
+            CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(byKey, IV), CryptoStreamMode.Write);
+            cs.Write(inputByteArray, 0, inputByteArray.Length);
+            cs.FlushFinalBlock();
+            return Convert.ToBase64String(ms.ToArray());
+        }
+
+        public string DecryptString(string str)
+        {
+            str = str.Replace(" ", "+");
+            string DecryptKey = "2013;[pnuLIT)WebCodeExpert";
+            byte[] byKey = { };
+            byte[] IV = { 18, 52, 86, 120, 144, 171, 205, 239 };
+            byte[] inputByteArray = new byte[str.Length];
+
+            byKey = System.Text.Encoding.UTF8.GetBytes(DecryptKey.Substring(0, 8));
+            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
+            inputByteArray = Convert.FromBase64String(str.Replace(" ", "+"));
+            MemoryStream ms = new MemoryStream();
+            CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(byKey, IV), CryptoStreamMode.Write);
+            cs.Write(inputByteArray, 0, inputByteArray.Length);
+            cs.FlushFinalBlock();
+            System.Text.Encoding encoding = System.Text.Encoding.UTF8;
+            return encoding.GetString(ms.ToArray());
+        }
+        #endregion
+
 
         protected string GetIpAddress()
         {
