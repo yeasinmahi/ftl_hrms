@@ -44,34 +44,7 @@ namespace FTL_HRMS.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            if (_dbCtx.Subscription.Select(i => i.Sl).Count() > 0)
-            {
-                int id = _dbCtx.Subscription.Select(i => i.Sl).FirstOrDefault();
-                Subscription subscription = _dbCtx.Subscription.Find(id);
-                if(subscription.Code == "▓╖▓╖▓╖")
-                {
-                    if(subscription.Date.Date >= DateTime.Now.Date)
-                    {
-                        TempData["Subscription"] = "Subscribed";
-                        ViewBag.ReturnUrl = returnUrl;
-                    }
-                    else
-                    {
-                        subscription.Code = "╖▓╖▓╖▓";
-                        _dbCtx.Entry(subscription).State = EntityState.Modified;
-                        _dbCtx.SaveChanges();
-                        TempData["Subscription"] = null;
-                    }
-                }
-                else
-                {
-                    TempData["Subscription"] = null;
-                }
-            }
-            else
-            {
-                TempData["Subscription"] = null;
-            }
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -82,26 +55,85 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl, string captchaText)
         {
-            //if (ModelState.IsValid)
-            //{
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
+            var user = await UserManager.FindAsync(model.UserName, model.Password);
+            if (user != null)
+            {
+                int CustomUserId = _dbCtx.Users.Where(i => i.UserName == model.UserName).Select(i => i.CustomUserId).FirstOrDefault();
+                string Code = _dbCtx.Employee.Where(i => i.Sl == CustomUserId).Select(i => i.Code).FirstOrDefault();
+                if (Code != "SystemAdmin")
                 {
-                    await SignInAsync(user, model.RememberMe);
-                    //return RedirectToLocal(returnUrl);
-                    return RedirectToAction("AdminDashboard", "Home");
+                    if (_dbCtx.Subscription.Select(i => i.Sl).Count() > 0)
+                    {
+                        int id = _dbCtx.Subscription.Select(i => i.Sl).FirstOrDefault();
+                        Subscription subscription = _dbCtx.Subscription.Find(id);
+                        if (DecryptString(subscription.Code) == "ABC")
+                        {
+                            if (subscription.Date.Date >= DateTime.Now.Date)
+                            {
+                                await SignInAsync(user, model.RememberMe);
+                                return RedirectToAction("AdminDashboard", "Home");
+                            }
+                            else
+                            {
+                                string strEncrypted = "XYZ";
+                                subscription.Code = EncryptString(strEncrypted);
+                                _dbCtx.Entry(subscription).State = EntityState.Modified;
+                                _dbCtx.SaveChanges();
+                                TempData["ErrLogin"] = "Subscription Failed !!";
+                                return RedirectToAction("Login", "Account");
+                            }
+                        }
+                        else
+                        {
+                            TempData["ErrLogin"] = "Subscription Failed !!";
+                            return RedirectToAction("Login", "Account");
+                        }
+                    }
+                    else
+                    {
+                        TempData["ErrLogin"] = "Subscription Failed !!";
+                        return RedirectToAction("Login", "Account");
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                    TempData["message"] = "0Invalid Username or Password!!";
-                    return RedirectToAction("Login", "Account");
+                    await SignInAsync(user, model.RememberMe);
+                    return RedirectToAction("AdminDashboard", "Home");
                 }
-            //}
-
-            // If we got this far, something failed, redisplay form
-            //return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Invalid username or password.");
+                TempData["ErrLogin"] = "Invalid Username or Password!!";
+                return RedirectToAction("Login", "Account");
+            }
         }
+
+        #region Encrypt And Decrypt
+        public string EncryptString(string strEncrypted)
+        {
+            byte[] b = System.Text.ASCIIEncoding.ASCII.GetBytes(strEncrypted);
+            string encrypted = Convert.ToBase64String(b);
+            return encrypted;
+        }
+
+        public string DecryptString(string encrString)
+        {
+            byte[] b;
+            string decrypted;
+            try
+            {
+                b = Convert.FromBase64String(encrString);
+                decrypted = System.Text.ASCIIEncoding.ASCII.GetString(b);
+            }
+            catch (FormatException fe)
+            {
+                decrypted = "";
+            }
+            return decrypted;
+        }
+        #endregion
+
 
         protected string GetIpAddress()
         {
