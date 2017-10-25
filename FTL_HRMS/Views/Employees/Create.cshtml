@@ -103,7 +103,7 @@
                                             @Html.LabelFor(model => model.DateOfBirth, "Date Of Birth", new { @class = "required" })
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control datepicker", style = "width:100%", @tabindex = 13, @required = true } })
+                                            @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @type = "text", @placeholder = "mm/dd/yyyy", @class = "form-control datepicker", style = "width:100%", @tabindex = 13, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
@@ -186,7 +186,7 @@
                                             @Html.LabelFor(model => model.DateOfJoining, "Date Of Joining", new { @class = "required" })
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control datepicker", style = "width:100%", @tabindex = 17, @required = true } })
+                                            @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @type = "text", @placeholder = "mm/dd/yyyy", @class = "form-control datepicker", style = "width:100%", @tabindex = 17, @required = true } })
                                             @Html.ValidationMessageFor(model => model.DateOfJoining, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
@@ -394,12 +394,12 @@
                                                 </th>
                                                 <th>
                                                     <div class="input-group">
-                                                        <input type="date" class="form-control" style="width:100%" id="edu_fromdate" name="Edu_FromDate" placeholder="FromDate" />
+                                                        <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" style="width:100%" id="edu_fromdate" name="Edu_FromDate" placeholder="FromDate" />
                                                     </div>                                                     
                                                 </th>
                                                 <th>
                                                     <div class="input-group">
-                                                        <input type="date" class="form-control" style="width:100%" id="edu_todate" name="Edu_ToDate" placeholder="ToDate" />
+                                                        <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" style="width:100%" id="edu_todate" name="Edu_ToDate" placeholder="ToDate" />
                                                     </div>                                                     
                                                 </th>
                                                 <th>
@@ -464,12 +464,12 @@
                                                 </th>
                                                 <th>
                                                     <div class="input-group">
-                                                        <input type="date" class="form-control" style="width:100%" id="exp_fromdate" name="Exp_FromDate" placeholder="FromDate" />
+                                                        <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" style="width:100%" id="exp_fromdate" name="Exp_FromDate" placeholder="FromDate" />
                                                     </div>
                                                 </th>
                                                 <th>
                                                     <div class="input-group">
-                                                        <input type="date" class="form-control" style="width:100%" id="exp_todate" name="Exp_ToDate" placeholder="ToDate" />
+                                                        <input type="text" class="form-control datepicker" placeholder="mm/dd/yyyy" style="width:100%" id="exp_todate" name="Exp_ToDate" placeholder="ToDate" />
                                                     </div>
                                                 </th>
                                                 <th>
