@@ -155,15 +155,7 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
-
-        #region Encrypt And Decrypt
-        //public string EncryptString(string strEncrypted)
-        //{
-        //    byte[] b = System.Text.ASCIIEncoding.ASCII.GetBytes(strEncrypted);
-        //    string encrypted = Convert.ToBase64String(b);
-        //    return encrypted;
-        //}
-
+        #region Encrypt
         public string EncryptString(string str)
         {
             string EncrptKey = "2013;[pnuLIT)WebCodeExpert";
