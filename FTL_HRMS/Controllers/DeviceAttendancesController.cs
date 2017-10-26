@@ -12,12 +12,13 @@ namespace FTL_HRMS.Controllers
 {
     public class DeviceAttendancesController : Controller
     {
-        private HRMSDbContext _db = new HRMSDbContext();
-
+        private readonly HRMSDbContext _db = new HRMSDbContext();
+        readonly AttendanceController _attendanceController = new AttendanceController();
         #region List
         // GET: DeviceAttendances
         public ActionResult Index()
-        {         
+        {
+            
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
             var Codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
             foreach (var item in Codes)
@@ -45,7 +46,7 @@ namespace FTL_HRMS.Controllers
             {
                 type = Request["SelectType"].ToString();
             }
-
+            _attendanceController.MoveDeviceToDeviceAttendance();
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
             if (type == "Present")
             {
