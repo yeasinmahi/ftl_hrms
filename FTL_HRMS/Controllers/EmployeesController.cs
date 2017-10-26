@@ -233,6 +233,11 @@ namespace FTL_HRMS.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
+            Session["EducationList"] = new List<Education>();
+            Session["ExperienceList"] = new List<Experience>();
+
+            Employee employee = (Employee) TempData["Employee"];
+            
             List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
             sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name");
@@ -249,8 +254,11 @@ namespace FTL_HRMS.Controllers
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
-            Session["EducationList"] = new List<Education>();
-            Session["ExperienceList"] = new List<Experience>();
+            if (employee != null)
+            {
+                return View(employee);
+            }
+
             return View();
         }
 
@@ -284,7 +292,15 @@ namespace FTL_HRMS.Controllers
                     employee.ParmanentDate = employee.DateOfJoining;
                 }
                 _db.Employee.Add(employee);
-                _db.SaveChanges();
+                try
+                {
+                    _db.SaveChanges();
+                }
+                catch (Exception exception)
+                {
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UnknownError);
+                    return EmployeeDefaultList(employee);
+                }
 
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
@@ -309,8 +325,23 @@ namespace FTL_HRMS.Controllers
                 if (chkUser.Succeeded)
                 {
                     var result1 = userManager.AddToRole(user.Id, role);
+                    try
+                    {
+                        _db.SaveChanges();
+                    }
+                    catch (Exception exception)
+                    {
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UnknownError);
+                        return EmployeeDefaultList(employee);
+                    }
+
                 }
-                _db.SaveChanges();
+                else
+                {
+                    TempData["message"] = "0Enter only alphabets and digits as Code";
+                    return EmployeeDefaultList(employee);
+                }
+                
                 #endregion
 
                 #region Add Education
@@ -688,6 +719,13 @@ namespace FTL_HRMS.Controllers
             return new FileContentResult(defaultImage, "image/jpeg");
         }
         #endregion
+
+        public ActionResult EmployeeDefaultList(Employee employee)
+        {
+            TempData["Employee"] = employee;
+            return RedirectToAction("Create", "Employees");
+        }
+
     }
 }
 
