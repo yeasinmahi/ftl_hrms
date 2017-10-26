@@ -40,15 +40,15 @@
                         </div>
                         <div>
                             <input type="hidden" id="EmployeeId" name="EmployeeId" />
-                            <input type="text" id="EmployeeCode" value="" placeholder="Select Existing Employee" class="form-control" style="width:50%" required onchange="GetBranch();"/>
+                            <input type="text" id="EmployeeCode" value="" placeholder="Select Existing Employee" class="form-control" style="width:50%" required onchange="GetBranch();" />
                             @*@Html.DropDownList("EmployeeId", null, "--Select Employee--", htmlAttributes: new { @class = "form-control", style = "width:50%", @name = "Employee", @id = "employee", @onchange = "GetBranch()", @required = true })
-                            @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })*@
+                                @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })*@
                         </div>
                         <div>
                             @Html.LabelFor(model => model.FromBranchId, "From Branch", new { @class = "required" })
                         </div>
                         <div>
-                            @Html.DropDownList("BranchId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @name = "ddl_branch", @id = "ddl_branch", @required = true })
+                            @Html.Editor("Branch Name", new { htmlAttributes = new { @class = "form-control", style = "width:50%", @id = "branchname", @placeholder = "Branch Name", @required = true } })
                             @Html.ValidationMessageFor(model => model.FromBranchId, "", new { @class = "text-danger" })
                         </div>
 
@@ -56,10 +56,10 @@
                             @Html.LabelFor(model => model.ToBranchId, "To Branch", new { @class = "required" })
                         </div>
                         <div>
-                            @Html.DropDownList("BranchId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @name="ddl_branch", @id = "ddl_branch", @required = true })
+                            @Html.DropDownList("BranchId", null, htmlAttributes: new { @class = "form-control", style = "width:50%", @name = "ddl_branch", @id = "ddl_branch", @required = true })
                             @Html.ValidationMessageFor(model => model.ToBranchId, "", new { @class = "text-danger" })
                         </div>
-                        
+
 
                         <div>
                             @Html.LabelFor(model => model.TransferDate, "Transfer Date", new { @class = "required" })
@@ -80,7 +80,7 @@
         </div>
     </div>
 </div>
-@*<script>
+<script>
     function GetBranch() {
         $.ajax({
             url: '/BranchTransfers/GetBranch',
@@ -105,4 +105,4 @@
             }
         });
     };
-    </script>*@
+</script>
