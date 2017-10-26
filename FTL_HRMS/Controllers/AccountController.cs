@@ -401,29 +401,13 @@ namespace FTL_HRMS.Controllers
         {
             UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new HRMSDbContext()));
             string rolll = userManager.GetRoles(User.Identity.GetUserId()).FirstOrDefault();
-            if (rolll == "Receptionist")
-            {                
-                return RedirectToAction("AccountInformation", "Receptionists");
-            }
-            else if(rolll == "Accountant")
+            if (rolll == "System Admin" || rolll == "Super Admin")
             {
-                return RedirectToAction("AccountInformation", "Accountants");
-            }
-            else if (rolll == "Pathologist")
-            {
-                return RedirectToAction("AccountInformation", "Pathologists");
-            }
-            else if (rolll == "Pharmacy")
-            {
-                return RedirectToAction("AccountInformation", "Pharmacies");
-            }
-            else if (rolll == "Doctor")
-            {
-                return RedirectToAction("AccountInformation", "Doctors");
+                return RedirectToAction("AdminInformation", "Account");
             }
             else
             {
-                return RedirectToAction("AdminInformation", "Account");
+                return RedirectToAction("AccountInformation", "Account");
             }
         }
 
@@ -489,6 +473,42 @@ namespace FTL_HRMS.Controllers
                 }
             }
             return View(user);
+        }
+
+        [AllowAnonymous]
+        public ActionResult AccountInformation()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AccountInformation(int? id)
+        {
+            if (Request["OldPassword"] != "")
+            {
+                if (Request["Password"] != "" && Request["ConfirmPassword"] != "")
+                {
+                    if (!Request["Password"].Equals(Request["ConfirmPassword"]))
+                    {
+                        TempData["message"] = "0Password does not match!!!";
+                    }
+                    else
+                    {
+                        ManageUserViewModel objUserVm = new ManageUserViewModel();
+                        bool isSuccess = await ChangePassword(objUserVm, Request["OldPassword"], Request["Password"], Request["ConfirmPassword"]);
+                        if (isSuccess == true)
+                        {
+                            TempData["message"] = "0Password changed successfully!";
+                        }
+                        else
+                        {
+                            TempData["message"] = "0Old Password does not match!";
+                        }
+                    }
+                }
+            }
+            return View();
         }
         #endregion
 

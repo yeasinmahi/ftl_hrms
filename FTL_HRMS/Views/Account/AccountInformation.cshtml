@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class="page-title">
+        <div class="pull-left">
+            <h1 class="title">Account Information</h1>
+        </div>
+    </div>
+</div>
+<header class="panel_header">
+    <h2 class="title pull-left">Edit Information</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    @Html.Partial("~/Views/Shared/WarningMessage.cshtml")
+                    <div class="col-md-offset-3">
+                        <div class="changepassword">
+                            <label>Old Password</label>
+                            <input name="OldPassword" type="password" class="form-control" style="width:50%" id="oldpassword">
+                            <label>New Password</label>
+                            <input name="Password" type="password" class="form-control" style="width:50%" id="password">
+                            <label>Confirm Password</label>
+                            <input name="ConfirmPassword" type="password" class="form-control" style="width:50%" id="confirmPass">
+                        </div><br />
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">
+                                <input type="submit" value="Update" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              }
+        </div>
+    </div>
+</div>
+<script src="~/Content/AdminTemplate/assets/js/jquery-1.11.2.min.js" type="text/javascript"></script>
