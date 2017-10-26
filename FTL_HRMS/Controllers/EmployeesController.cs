@@ -292,6 +292,15 @@ namespace FTL_HRMS.Controllers
                     employee.ParmanentDate = employee.DateOfJoining;
                 }
                 _db.Employee.Add(employee);
+                try
+                {
+                    _db.SaveChanges();
+                }
+                catch (Exception exception)
+                {
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UnknownError);
+                    return EmployeeDefaultList(employee);
+                }
 
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
