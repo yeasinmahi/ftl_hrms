@@ -462,7 +462,7 @@ namespace FTL_HRMS.Controllers
                             bool isSuccess = await ChangePassword(objUserVm, Request["OldPassword"], Request["Password"], Request["ConfirmPassword"]);
                             if (isSuccess == true)
                             {
-                                TempData["message"] = "0Password changed successfully!";
+                                TempData["message"] = "1Password changed successfully!";
                             }
                             else
                             {
@@ -499,7 +499,7 @@ namespace FTL_HRMS.Controllers
                         bool isSuccess = await ChangePassword(objUserVm, Request["OldPassword"], Request["Password"], Request["ConfirmPassword"]);
                         if (isSuccess == true)
                         {
-                            TempData["message"] = "0Password changed successfully!";
+                            TempData["message"] = "1Password changed successfully!";
                         }
                         else
                         {

@@ -37,6 +37,7 @@
                     <tr>
                         <th>SL</th>
                         <th>Action</th>
+                        <th>Password</th>
                         <th>Education</th>
                         <th>Experience</th>
                         <th>Image</th>
@@ -138,6 +139,7 @@
                     <tr>
                         <th>SL</th>
                         <th>Action</th>
+                        <th>Password</th>
                         <th>Education</th>
                         <th>Experience</th>
                         <th>Image</th>
@@ -251,6 +253,9 @@
                                         <li>@Html.ActionLink("Delete", "Delete", new { id = item.Sl })</li>
                                     </ul>
                                 </div>
+                            </td>
+                            <td align="center" width="8%">
+                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("ResetPassword", "Employees", new { employeeId = item.Sl })'">Reset Password</button>
                             </td>
                             <td align="center" width="8%">
                                 <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Educations", new { employeeId = item.Sl })'">Education</button>
