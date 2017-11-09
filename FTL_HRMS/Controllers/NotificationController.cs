@@ -56,8 +56,8 @@ namespace FTL_HRMS.Controllers
             {
                 int employeeId = Db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
                 
-                leaveHistories = Db.LeaveHistories.Where(x => x.Status == "Approved" || x.Status == "Cancled").Where(x => x.EmployeeId == employeeId).ToList();
-                resignations = Db.Resignation.Where(x => x.Status == "Approved" || x.Status == "Cancled").Where(x => x.EmployeeId == employeeId).ToList();
+                leaveHistories = Db.LeaveHistories.Where(x => x.Status == "Approved" || x.Status == "Canceled").Where(x => x.EmployeeId == employeeId).ToList();
+                resignations = Db.Resignation.Where(x => x.Status == "Approved" || x.Status == "Canceled").Where(x => x.EmployeeId == employeeId).ToList();
                 loans = Db.Loan.Where(x => x.Status == "Considered" || x.Status == "Canceled" || x.Status == "Approved").Where(x => x.EmployeeId == employeeId).ToList();
             }
             else
