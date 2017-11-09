@@ -28,11 +28,11 @@ namespace FTL_HRMS.Controllers
             List<DeviceAttendance> deviceAttendances = device.GetDailyAttendance();
             if (deviceAttendances.Count>0)
             {
-                List<int> userIds = new List<int>();
+                List<int> userIds = deviceAttendances.Select(x => x.UserId).Distinct().ToList();
                 foreach (DeviceAttendance deviceAttendance in deviceAttendances)
                 {
+                    if (_db.DeviceAttendance.Any(o => o.CheckTime == deviceAttendance.CheckTime && o.EmployeeCode == deviceAttendance.EmployeeCode)) continue;
                     _db.DeviceAttendance.Add(deviceAttendance);
-                    userIds.Add(deviceAttendance.UserId);
                 }
                 try
                 {
@@ -77,7 +77,15 @@ namespace FTL_HRMS.Controllers
                     }
                 }
             }
-            _db.SaveChanges();
+            try
+            {
+                _db.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                // ignored
+            }
+
             return Status.AddSuccess;
         }
 
@@ -131,7 +139,7 @@ namespace FTL_HRMS.Controllers
                 _db.FilterAttendance.Add(filterAttendance);
                 return true;
             }
-            catch
+            catch(Exception exception)
             {
                 return false;
             }
@@ -145,7 +153,7 @@ namespace FTL_HRMS.Controllers
                 device.ForEach(x => x.IsCalculated = true);
                 return true;
             }
-            catch
+            catch (Exception expection)
             {
                 return false;
             }

@@ -11,9 +11,7 @@ namespace FTL_HRMS.Models.Payroll
     {       
         [Key]
         public int Sl { get; set; }
-
-        [Required(ErrorMessage = "Employee cannot be empty")]
-        [ForeignKey("Employee")]
+        
         public int EmployeeId { get; set; }
 
         [DataType(DataType.Date),
@@ -33,7 +31,5 @@ namespace FTL_HRMS.Models.Payroll
 
         [DefaultValue(false)]
         public bool IsCalculated { get; set; }
-
-        public virtual Employee Employee { get; set; }
     }
 }
