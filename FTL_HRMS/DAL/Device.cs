@@ -52,7 +52,7 @@ namespace FTL_HRMS.DAL
             {
                 foreach (int id in userIds)
                 {
-                    Query = "Update CHECKINOUT set IsCalculated = true where USERID = "+id;
+                    Query = "Update CHECKINOUT set IsCalculate = 1 where USERID = " + id;
                     Command.CommandText = Query;
                     Command.ExecuteNonQuery();
                 }
