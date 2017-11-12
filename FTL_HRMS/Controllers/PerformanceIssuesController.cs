@@ -128,7 +128,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NotAllowed);
             }
             return RedirectToAction("Index");
         }

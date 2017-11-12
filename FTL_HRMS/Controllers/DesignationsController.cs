@@ -74,7 +74,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,DepartmentId,RoleName,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
         {
-            if (_db.Designation.Where(i => i.Code == designation.Code).ToList().Count < 1)
+            if (_db.Designation.Where(i => i.Name == designation.Name).ToList().Count < 1)
             {
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
@@ -211,7 +211,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.NotAllowed);
             }
             return RedirectToAction("Index");
         }
