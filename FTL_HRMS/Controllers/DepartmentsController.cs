@@ -82,7 +82,7 @@ namespace FTL_HRMS.Controllers
         {
             List<DepartmentGroup> groupList = new List<DepartmentGroup>();
             groupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            if (_db.Department.Where(i => i.Code == department.Code).ToList().Count < 1)
+            if (_db.Department.Where(i => i.Name == department.Name).ToList().Count < 1)
             {
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
@@ -200,7 +200,7 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NotAllowed);
             }
             return RedirectToAction("Index");
         }

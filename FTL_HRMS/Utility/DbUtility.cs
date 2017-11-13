@@ -23,7 +23,9 @@ namespace FTL_HRMS.Utility
             UnknownError,
             BlankError,
             Error,
-            NotFound
+            NotFound,
+            NotAllowed,
+            DateRangeExceed
         }
 
         public static string GetStatusMessage(Status status)
@@ -52,6 +54,10 @@ namespace FTL_HRMS.Utility
                     return "0Error";
                 case Status.NotFound:
                     return "0Not Found";
+                case Status.NotAllowed:
+                    return "0Not allowed to Delete this item";
+                case Status.DateRangeExceed:
+                    return "0Date Range Exceed";
                 default:
                     return "0Cannot get the error";
             }

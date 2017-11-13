@@ -48,6 +48,7 @@ namespace FTL_HRMS.Controllers
             
         }
         #endregion
+
         #region MoveDeviceAttendanceToFilterAttendance
         // GET: Attendance
         public Status MoveDeviceAttendanceToFilterAttendance()

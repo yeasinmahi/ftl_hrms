@@ -179,12 +179,12 @@ namespace FTL_HRMS.Controllers
                 }
                 else
                 {
-                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DateRangeExceed);
                 }
             }
             else
             {
-                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DateRangeExceed);
             }
             return RedirectToAction("Index");
         }
