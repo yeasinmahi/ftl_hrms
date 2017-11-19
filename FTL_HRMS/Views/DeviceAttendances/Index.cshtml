@@ -25,7 +25,7 @@
                 alert("An error occoured!");
             },
             success: function (response) {
-                
+
                 $('#myTable tbody').empty();
                 var row = 1;
                 for (var i = 0; i < response.length; i++) {
@@ -50,7 +50,7 @@
                 $('#myTable').DataTable();
             }
         });
-        
+
     }
 </script>
 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
@@ -98,89 +98,89 @@
                     Value = "Leave"
                 });
             }
-                <center>
-                    <select class="form-control" id="SelectType" name="SelectType" onchange="TodaysAttendance();" style="width:25%">
-                        <option value="Present">Present</option>
-                        <option value="Absent">Absent</option>
-                        <option value="Leave">Leave</option>
-                    </select>
-                </center>
-                @{int rowNo = 0;}
-                <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>SL</th>
-                            <th>
-                                Code
-                            </th>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                In Time
-                            </th>
-                            <th>
-                                Status
-                            </th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>SL</th>
-                            <th>
-                                Code
-                            </th>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                In Time
-                            </th>
-                            <th>
-                                Status
-                            </th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td align="center" width="5%">
-                                    @(rowNo += 1)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Code)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CheckTime)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+        </center>
+        <center>
+            <select class="form-control" id="SelectType" name="SelectType" onchange="TodaysAttendance();" style="width:25%">
+                <option value="Present">Present</option>
+                <option value="Absent">Absent</option>
+                <option value="Leave">Leave</option>
+            </select>
+        </center>
+        @{int rowNo = 0;}
+        <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>SL</th>
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        In Time
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>SL</th>
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        In Time
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td align="center" width="5%">
+                            @(rowNo += 1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
 <script>
-$(document).ready(function(){
-    $('#myTable').DataTable();
-});
-function parseTime(date) {
-    var value = new Date
-            (
-                 parseInt(date.replace(/(^.*\()|([+-].*$)/g, ''))
-            );
-    if (value.toLocaleDateString() == "1/1/1999") {
-        return "No Time"
+    $(document).ready(function(){
+        $('#myTable').DataTable();
+    });
+    function parseTime(date) {
+        var value = new Date
+                (
+                     parseInt(date.replace(/(^.*\()|([+-].*$)/g, ''))
+                );
+        if (value.toLocaleDateString() == "1/1/1999") {
+            return "No Time";
+        }
+        var dat = value.toLocaleTimeString();
+        return dat;
     }
-    var dat = value.toLocaleTimeString();
-    return dat;
-}
 </script>
