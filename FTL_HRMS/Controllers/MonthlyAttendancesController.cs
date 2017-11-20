@@ -163,6 +163,80 @@ namespace FTL_HRMS.Controllers
 
         #endregion
 
+
+        #region EmployeeWise Attendence
+        public ActionResult EmployeewiseFilterAttendenceReport()
+        {
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
+            List<FilterAttendance> attendenceList = GetEmployeewiseFilterList(0, Utility.Utility.GetDefaultDate(), Utility.Utility.GetDefaultDate());
+            return View(attendenceList);
+        }
+        [HttpPost]
+        public ActionResult EmployeewiseFilterAttendenceReport(string EmployeeId)
+        {
+            att.SyncAttendance();
+            int eid;
+            Int32.TryParse(EmployeeId, out eid);
+            DateTime FromDate = Utility.Utility.GetDefaultDate();
+            if (Request["FromDate"] != "")
+            {
+                DateTime.TryParse(Request["FromDate"], out FromDate);
+            }
+            DateTime ToDate = Utility.Utility.GetDefaultDate();
+            if (Request["ToDate"] != "")
+            {
+                DateTime.TryParse(Request["ToDate"], out ToDate);
+            }
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
+            ViewBag.Status = "SelectType";
+            TempData["dgid"] = eid;
+            TempData["FromDate"] = FromDate;
+            TempData["ToDate"] = ToDate;
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
+            ViewBag.EmpId = Int32.TryParse(EmployeeId, out eid);
+            List<FilterAttendance> attendenceList = GetEmployeewiseFilterList(eid, FromDate, ToDate);
+            return View(attendenceList);
+        }
+
+        public List<FilterAttendance> GetEmployeewiseFilterList(int employeeId, DateTime FromDate, DateTime ToDate)
+        {
+            List<FilterAttendance> attendenceList = new List<FilterAttendance>();
+            if (FromDate.Equals(Utility.Utility.GetDefaultDate()))
+            {
+                FromDate = DateTime.Now.AddDays(-1);
+                ToDate = DateTime.Now.AddDays(-1);
+            }
+            if (ToDate.Equals(Utility.Utility.GetDefaultDate()))
+            {
+                ToDate = DateTime.Now.AddDays(-1);
+            }
+            if (employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] != "" ||
+                employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] != "" ||
+                employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] == "")
+            {
+                attendenceList = _db.FilterAttendance.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => x.Date >= FromDate && x.Date <= ToDate).ToList();
+            }
+            else if (employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] == "")
+            {
+                attendenceList = _db.FilterAttendance.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+            }
+            else
+            {
+                attendenceList = _db.FilterAttendance.Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+            }
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
+            ViewBag.EmpId = employeeId;
+            return attendenceList;
+        }
+
+        #endregion
+
         public ActionResult Details(int? id)
         {
             if (id == null)

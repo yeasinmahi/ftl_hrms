@@ -108,12 +108,20 @@ namespace FTL_HRMS.Controllers
                 {
                     DateTime InTime = device.Min(p => p.CheckTime);
                     DateTime OutTime = device.Max(p => p.CheckTime);
+                    int empId = GetEmployeeSlByEmployeeCode(code);
 
-                    filterAttendance.EmployeeId = GetEmployeeSlByEmployeeCode(code);
-                    filterAttendance.Date = date.Date;
-                    filterAttendance.InTime = InTime;
-                    filterAttendance.OutTime = OutTime;
-                    filterAttendance.IsCalculated = false;
+                    if (empId > 0)
+                    {
+                        filterAttendance.EmployeeId = empId;
+                        filterAttendance.Date = date.Date;
+                        filterAttendance.InTime = InTime;
+                        filterAttendance.OutTime = OutTime;
+                        filterAttendance.IsCalculated = false;
+                    }
+                    else
+                    {
+                        filterAttendance = null;
+                    }
                 }
                 catch
                 {

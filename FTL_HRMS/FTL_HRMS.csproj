@@ -3445,6 +3445,7 @@
     <Content Include="Views\Subscriptions\Edit.cshtml" />
     <Content Include="Views\Subscriptions\Index.cshtml" />
     <Content Include="Views\Account\AccountInformation.cshtml" />
+    <Content Include="Views\MonthlyAttendances\EmployeewiseFilterAttendenceReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
