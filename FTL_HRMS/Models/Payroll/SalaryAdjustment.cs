@@ -23,7 +23,7 @@ namespace FTL_HRMS.Models.Payroll
         [Required(ErrorMessage = "Amount cannot be empty")]
         public double Amount { get; set; }
 
-        [Required(ErrorMessage = "Remarks cannot be empty")]
+       
         public string Remarks { get; set; }
 
         [ForeignKey("CreateEmployee")]

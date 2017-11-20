@@ -33,7 +33,7 @@
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "LeaveTypes" )'">Back To List</button>
                         </div>
                         <div>
-                            @Html.LabelFor(model => model.Name, new { @class = "required" })
+                            @Html.LabelFor(model => model.Name, "Leave Type", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })

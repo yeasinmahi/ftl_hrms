@@ -41,7 +41,7 @@
                                 <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "SalaryAdjustments")'">Back To List</button>
                             </div>
                             <div>
-                                @Html.LabelFor(model => model.EmployeeId, "Employee Code Or Name")
+                                @Html.LabelFor(model => model.EmployeeId, "Employee Code Or Name", new { @class = "required" })
                             </div>
                             <div>
                                 <input type="hidden" id="EmployeeId" name="EmployeeId" />
@@ -54,7 +54,7 @@
                             </div>
 
                             <div>
-                                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @type = "text", @placeholder = "mm/dd/yyyy", @class = "form-control datepicker", style = "width:50%" } })
+                                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @type = "text", @placeholder = "mm/dd/yyyy", @class = "form-control datepicker", style = "width:50%", @required = true } })
                                 @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                             </div>
                             <div>
@@ -78,10 +78,10 @@
                             </div>
 
                             <div>
-                                @Html.LabelFor(model => model.Amount)
+                                @Html.LabelFor(model => model.Amount, new { @class = "required" })
                             </div>
                             <div>
-                                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                                 @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
                             </div>
 

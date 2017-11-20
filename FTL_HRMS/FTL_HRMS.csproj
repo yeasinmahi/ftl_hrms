@@ -2865,6 +2865,10 @@
     <Compile Include="Migrations\201711091111025_Change Filterattendance.Designer.cs">
       <DependentUpon>201711091111025_Change Filterattendance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711200712510_update_tbl_salary_adjustment_201117.cs" />
+    <Compile Include="Migrations\201711200712510_update_tbl_salary_adjustment_201117.Designer.cs">
+      <DependentUpon>201711200712510_update_tbl_salary_adjustment_201117.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\Subscription.cs" />
@@ -3535,6 +3539,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711091111025_Change Filterattendance.resx">
       <DependentUpon>201711091111025_Change Filterattendance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711200712510_update_tbl_salary_adjustment_201117.resx">
+      <DependentUpon>201711200712510_update_tbl_salary_adjustment_201117.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
