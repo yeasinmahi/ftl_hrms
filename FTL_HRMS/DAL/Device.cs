@@ -26,8 +26,8 @@ namespace FTL_HRMS.DAL
                     deviceAttendance.CheckTime = (Reader["CHECKTIME"]) != DBNull.Value
                         ? DateTime.Parse(Reader["CHECKTIME"].ToString())
                         : DateTime.MinValue;
-                    deviceAttendance.IsCalculated = (bool) ((Reader["IsCalculate"]) != DBNull.Value
-                        ? Reader["IsCalculate"]
+                    deviceAttendance.IsCalculated = (bool) ((Reader["IsCalculated"]) != DBNull.Value
+                        ? Reader["IsCalculated"]
                         : 0);
                     deviceAttendances.Add(deviceAttendance);
                 }
@@ -52,7 +52,7 @@ namespace FTL_HRMS.DAL
             {
                 foreach (int id in userIds)
                 {
-                    Query = "Update CHECKINOUT set IsCalculate = 1 where USERID = " + id;
+                    Query = "Update CHECKINOUT set IsCalculated = 1 where USERID = " + id;
                     Command.CommandText = Query;
                     Command.ExecuteNonQuery();
                 }
