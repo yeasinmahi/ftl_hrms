@@ -37,6 +37,7 @@ namespace FTL_HRMS.DAL
         public DbSet<Company> Company { get; set; }
         public DbSet<DeviceAttendance> DeviceAttendance { get; set; }
         public DbSet<FilterAttendance> FilterAttendance { get; set; }
+        public DbSet<FilterAttendanceView> FilterAttendanceView { get; set; }
         public DbSet<Holiday> Holiday { get; set; }
         public DbSet<MonthlyAttendance> MonthlyAttendance { get; set; }
         public DbSet<MonthlySalarySheet> MonthlySalarySheet { get; set; }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FTL_HRMS.Models.Payroll.FilterAttendance>
+﻿@model IEnumerable<FTL_HRMS.Models.Payroll.FilterAttendanceView>
 
 @{
     ViewBag.Title = "Employee List";
@@ -83,9 +83,11 @@
                     <tr>
                         <th style="text-align:center">SL</th>
                         <th data-priority="1" style="text-align:center">Date</th>
-                        <th data-priority="1" style="text-align:center">Id</th>
+                        <th data-priority="1" style="text-align:center">Code</th>
+                        <th data-priority="1" style="text-align:center">Name</th>
                         <th data-priority="1" style="text-align:center">InTime</th>
                         <th data-priority="3" style="text-align:center">OutTime</th>
+                        <th data-priority="3" style="text-align:center">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,7 +101,10 @@
                                 @Html.DisplayFor(modelItem => item.Date)
                             </td>
                             <td width="10%" align="center">
-                                @Html.DisplayFor(modelItem => item.EmployeeId)
+                                @Html.DisplayFor(modelItem => item.Code)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td width="10%" align="center">
                                 @Html.DisplayFor(modelItem => item.InTime)
@@ -107,6 +112,10 @@
                             <td width="10%" align="center">
                                 @Html.DisplayFor(modelItem => item.OutTime)
                             </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+
                         </tr>
                     }
 
