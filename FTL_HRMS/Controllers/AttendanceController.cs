@@ -170,7 +170,7 @@ namespace FTL_HRMS.Controllers
 
         public List<DeviceAttendance> GetDeviceAttendance(string code, DateTime date)
         {
-            return _db.DeviceAttendance.Where(i => i.EmployeeCode == code && DbFunctions.TruncateTime(i.CheckTime) == date.Date).ToList();
+            return _db.DeviceAttendance.Where(i => i.EmployeeCode == code && DbFunctions.TruncateTime(i.CheckTime) == date.Date && i.IsCalculated == false).ToList();
         }
         #endregion
 

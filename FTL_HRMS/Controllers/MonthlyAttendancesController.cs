@@ -220,7 +220,7 @@ namespace FTL_HRMS.Controllers
                 employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] != "" ||
                 employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] == "")
             {
-                attendenceList = _db.FilterAttendanceView.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => x.Date >= FromDate && x.Date <= ToDate).ToList();
+                attendenceList = _db.FilterAttendanceView.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
             }
             else if (employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] == "")
             {

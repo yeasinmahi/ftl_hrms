@@ -60,10 +60,11 @@ join tbl_Employee as e on e.Sl = p.EmployeeId";
             string executeFilterAttendanceView =
             @"CREATE view FilterAttendanceView
 as
-select e.Name, e.Code, f.EmployeeId, f.Date, f.InTime, f.OutTime, m.Status from tbl_Employee as e 
-join tbl_MonthlyAttendance as m on e.Sl = m.EmployeeId 
-left join tbl_FilterAttendance as f on (m.EmployeeId = f.EmployeeId and m.Date = f.Date)
-where e.Status = 1";
+SELECT        e.Name, e.Code, m.EmployeeId, m.Date, f.InTime, f.OutTime, m.Status
+FROM            dbo.tbl_Employee AS e INNER JOIN
+                         dbo.tbl_MonthlyAttendance AS m ON e.Sl = m.EmployeeId LEFT OUTER JOIN
+                         dbo.tbl_FilterAttendance AS f ON m.EmployeeId = f.EmployeeId AND m.Date = f.Date
+WHERE        (e.Status = 1)";
             scripts.Add(executeFilterAttendanceView);
 
 

@@ -17,19 +17,19 @@ namespace FTL_HRMS.Models.Payroll
         public string Code { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
-        [DataType(DataType.Date),
+        [DataType(DataType.Time),
         DisplayFormat(DataFormatString = "{0:HH:mm:ss tt}",
         ApplyFormatInEditMode = true)]
-        public DateTime InTime { get; set; }
+        public DateTime? InTime { get; set; }
 
-        [DataType(DataType.Date),
+        [DataType(DataType.Time),
         DisplayFormat(DataFormatString = "{0:HH:mm:ss tt}",
         ApplyFormatInEditMode = true)]
-        public DateTime OutTime { get; set; }
+        public DateTime? OutTime { get; set; }
 
         public string Status { get; set; }
     }
