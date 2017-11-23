@@ -1,4 +1,4 @@
-﻿using FTL_HRMS.Models.Payroll;
+﻿using FTL_HRMS.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;

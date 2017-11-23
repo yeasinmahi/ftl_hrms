@@ -2,12 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FTL_HRMS.Models.Payroll
+namespace FTL_HRMS.Models.ViewModels
 {
     [Table("FilterAttendanceView")]
     public class FilterAttendanceView
     {    
-        [Key]   
         public int EmployeeId { get; set; }
 
         public string Name { get; set; }

@@ -6,6 +6,7 @@ using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Payroll;
+using FTL_HRMS.Models.ViewModels;
 using FTL_HRMS.Utility;
 using FTL_HRMS.Models.Hr;
 

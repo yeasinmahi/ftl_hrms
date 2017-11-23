@@ -2879,7 +2879,7 @@
     <Compile Include="Models\Hr\Subscription.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
     <Compile Include="Models\Hr\EmployeeLeaveCountHistory.cs" />
-    <Compile Include="Models\Payroll\FilterAttendanceView.cs" />
+    <Compile Include="Models\ViewModels\FilterAttendanceView.cs" />
     <Compile Include="Models\Payroll\LoanCalculationHistory.cs" />
     <Compile Include="Models\Payroll\LoanCalculation.cs" />
     <Compile Include="Models\Payroll\Loan.cs" />
