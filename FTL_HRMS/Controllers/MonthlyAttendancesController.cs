@@ -8,6 +8,7 @@ using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Utility;
 using FTL_HRMS.Models.Hr;
+using FTL_HRMS.Models.ViewModels;
 
 namespace FTL_HRMS.Controllers
 {

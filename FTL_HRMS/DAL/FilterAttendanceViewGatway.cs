@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using FTL_HRMS.Models.ViewModels;
 
 namespace FTL_HRMS.DAL
 {
