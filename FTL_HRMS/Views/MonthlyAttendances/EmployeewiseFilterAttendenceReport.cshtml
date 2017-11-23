@@ -1,4 +1,4 @@
-﻿@model List<FTL_HRMS.Models.ViewModels.FilterAttendanceView>
+@model List<FTL_HRMS.Models.ViewModels.FilterAttendanceView>
 
 @{
     ViewBag.Title = "Employee List";
@@ -67,14 +67,14 @@
 <br /> <br />
 <div class="content-body">
     <div class="row">
-        <div class="col-md-1 text-right">
+        @*<div class="col-md-1 text-right">
             <div class="btn-group">
-                @*<button type="button" onclick="location.href='@Url.Action("PrintAttandanceByDateRangeReport", "Reports",new {EmployeeId= @ViewBag.EmpId, fromDate = @ViewBag.FromDate, toDate= @ViewBag.Todate })'" target="_blank" class="btn btn-info btn-sm">
+                <button type="button" onclick="location.href='@Url.Action("PrintAttandanceByDateRangeReport", "Reports",new {EmployeeId= @ViewBag.EmpId, fromDate = @ViewBag.FromDate, toDate= @ViewBag.Todate })'" target="_blank" class="btn btn-info btn-sm">
                     <span class="glyphicon glyphicon-print"></span> Download PDF
-                </button>*@
+                </button>
             </div>
         </div>
-        <br /><br />
+        <br /><br />*@
         <div class="col-md-12 col-sm-12 col-xs-12">
             @{int rowNo = 0;}
             <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">

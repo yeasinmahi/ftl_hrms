@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FTL_HRMS.Models.ViewModels
 {
+    [Table("FilterAttendanceView")]
     public class FilterAttendanceView
     {    
         public int EmployeeId { get; set; }
@@ -19,7 +21,7 @@ namespace FTL_HRMS.Models.ViewModels
         DisplayFormat(DataFormatString = "{0:hh:mm:ss tt}",
         ApplyFormatInEditMode = true)]
         public DateTime? InTime { get; set; }
-        
+
         [DataType(DataType.Time),
         DisplayFormat(DataFormatString = "{0:hh:mm:ss tt}",
         ApplyFormatInEditMode = true)]
