@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using FTL_HRMS.Models.Hr;
-using System.ComponentModel;
 
 namespace FTL_HRMS.Models.Payroll
 {
-    [Table("dbo.FilterAttendanceView")]
+    [Table("FilterAttendanceView")]
     public class FilterAttendanceView
     {    
         [Key]   
@@ -17,8 +15,7 @@ namespace FTL_HRMS.Models.Payroll
         public string Code { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
-        ApplyFormatInEditMode = true)]
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
         public DateTime Date { get; set; }
 
         [DataType(DataType.Time),

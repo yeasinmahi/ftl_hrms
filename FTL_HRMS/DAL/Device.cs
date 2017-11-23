@@ -11,13 +11,13 @@ namespace FTL_HRMS.DAL
         {
             List<DeviceAttendance> deviceAttendances = new List<DeviceAttendance>();
             Query = "select * from CHECKINOUTVIEW";
-            Command.CommandText = Query;
-            Command.CommandType = CommandType.Text;
-            Command.Parameters.Clear();
-            Connection.Open();
+            DeviceCommand.CommandText = Query;
+            DeviceCommand.CommandType = CommandType.Text;
+            DeviceCommand.Parameters.Clear();
+            DeviceConnection.Open();
             try
             {
-                Reader = Command.ExecuteReader();
+                Reader = DeviceCommand.ExecuteReader();
                 while (Reader.Read())
                 {
                     DeviceAttendance deviceAttendance = new DeviceAttendance();
@@ -39,22 +39,22 @@ namespace FTL_HRMS.DAL
             finally
             {
                 Reader?.Close();
-                Connection?.Close();
+                DeviceConnection?.Close();
             }
 
             return deviceAttendances;
         }
         public bool UpdateCheckInOutStatus(List<int> userIds)
         {
-            Command.CommandType = CommandType.Text;
-            Connection.Open();
+            DeviceCommand.CommandType = CommandType.Text;
+            DeviceConnection.Open();
             try
             {
                 foreach (int id in userIds)
                 {
                     Query = "Update CHECKINOUT set IsCalculated = 1 where USERID = " + id;
-                    Command.CommandText = Query;
-                    Command.ExecuteNonQuery();
+                    DeviceCommand.CommandText = Query;
+                    DeviceCommand.ExecuteNonQuery();
                 }
 
                 return true;
@@ -67,7 +67,7 @@ namespace FTL_HRMS.DAL
             finally
             {
                 Reader?.Close();
-                Connection?.Close();
+                DeviceConnection?.Close();
             }
             
         }

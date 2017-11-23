@@ -205,7 +205,7 @@ namespace FTL_HRMS.Controllers
 
         public List<FilterAttendanceView> GetEmployeewiseFilterList(int employeeId, DateTime FromDate, DateTime ToDate)
         {
-            
+            string query = String.Empty;
             List<FilterAttendanceView> attendenceList = new List<FilterAttendanceView>();
             if (FromDate.Equals(Utility.Utility.GetDefaultDate()))
             {
@@ -220,16 +220,22 @@ namespace FTL_HRMS.Controllers
                 employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] != "" ||
                 employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] == "")
             {
-                attendenceList = _db.FilterAttendanceView.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+                //attendenceList = _db.FilterAttendanceView.SqlQuery("select * from FilterAttendanceView").ToList();
+                //attendenceList = _db.FilterAttendanceView.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+                query = "select * from FilterAttendanceView where EmployeeId = "+employeeId +" and Date between '"+FromDate.Date+"' and '"+ToDate.Date+"'";
             }
             else if (employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] == "")
             {
-                attendenceList = _db.FilterAttendanceView.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+                //attendenceList = _db.FilterAttendanceView.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+                query = "select * from FilterAttendanceView where EmployeeId = " + employeeId + " and Date between '" + FromDate.Date + "' and '" + ToDate.Date + "'";
             }
             else
             {
-                attendenceList = _db.FilterAttendanceView.Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+                //attendenceList = _db.FilterAttendanceView.Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+                query = "select * from FilterAttendanceView where Date between '" + FromDate.Date + "' and '" + ToDate.Date + "'";
             }
+            FilterAttendanceViewGatway filterAttendanceViewGatway = new FilterAttendanceViewGatway();
+            attendenceList = filterAttendanceViewGatway.GetFilterAttendanceView(query);
             ViewBag.FromDate = FromDate;
             ViewBag.ToDate = ToDate;
             ViewBag.EmpId = employeeId;

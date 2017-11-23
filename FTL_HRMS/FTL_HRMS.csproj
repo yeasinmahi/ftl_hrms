@@ -2850,6 +2850,7 @@
     <Compile Include="DAL\ConnectionGateway.cs" />
     <Compile Include="DAL\Device.cs" />
     <Compile Include="DAL\DeviceDbContext.cs" />
+    <Compile Include="DAL\FilterAttendanceViewGatway.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2869,9 +2870,9 @@
     <Compile Include="Migrations\201711200712510_update_tbl_salary_adjustment_201117.Designer.cs">
       <DependentUpon>201711200712510_update_tbl_salary_adjustment_201117.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201711211142501_FilterAttendanceView.cs" />
-    <Compile Include="Migrations\201711211142501_FilterAttendanceView.Designer.cs">
-      <DependentUpon>201711211142501_FilterAttendanceView.cs</DependentUpon>
+    <Compile Include="Migrations\201711230834596_FilterAttendanceview.cs" />
+    <Compile Include="Migrations\201711230834596_FilterAttendanceview.Designer.cs">
+      <DependentUpon>201711230834596_FilterAttendanceview.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -3549,8 +3550,8 @@
     <EmbeddedResource Include="Migrations\201711200712510_update_tbl_salary_adjustment_201117.resx">
       <DependentUpon>201711200712510_update_tbl_salary_adjustment_201117.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711211142501_FilterAttendanceView.resx">
-      <DependentUpon>201711211142501_FilterAttendanceView.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711230834596_FilterAttendanceview.resx">
+      <DependentUpon>201711230834596_FilterAttendanceview.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt" />
     <Content Include="Reports\AttandanceByDateRangeReport.rpt">

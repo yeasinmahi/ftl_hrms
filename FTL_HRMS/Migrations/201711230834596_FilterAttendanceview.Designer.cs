@@ -7,13 +7,13 @@ namespace FTL_HRMS.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class FilterAttendanceView : IMigrationMetadata
+    public sealed partial class FilterAttendanceview : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(FilterAttendanceView));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(FilterAttendanceview));
         
         string IMigrationMetadata.Id
         {
-            get { return "201711211142501_FilterAttendanceView"; }
+            get { return "201711230834596_FilterAttendanceview"; }
         }
         
         string IMigrationMetadata.Source
