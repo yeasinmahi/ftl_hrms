@@ -54,6 +54,19 @@ join tbl_Designation as td on p.ToDesignationId = td.Sl
 join tbl_Employee as e on e.Sl = p.EmployeeId";
             scripts.Add(executePromotionHistoryView);
 
+            string checkFilterAttendanceView = DbUtility.GetViewCheckQuery("FilterAttendanceView");
+            scripts.Add(checkFilterAttendanceView);
+
+            string executeFilterAttendanceView =
+            @"CREATE view FilterAttendanceView
+as
+SELECT        e.Name, e.Code, m.EmployeeId, m.Date, f.InTime, f.OutTime, m.Status
+FROM            dbo.tbl_Employee AS e INNER JOIN
+                         dbo.tbl_MonthlyAttendance AS m ON e.Sl = m.EmployeeId LEFT OUTER JOIN
+                         dbo.tbl_FilterAttendance AS f ON m.EmployeeId = f.EmployeeId AND m.Date = f.Date
+WHERE        (e.Status = 1)";
+            scripts.Add(executeFilterAttendanceView);
+
 
             DbUtility.ExecuteSeedOperation(context, scripts);
             //  This method will be called after migrating to the latest version.

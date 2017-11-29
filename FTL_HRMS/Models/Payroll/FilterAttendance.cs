@@ -20,12 +20,12 @@ namespace FTL_HRMS.Models.Payroll
         public DateTime Date { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        DisplayFormat(DataFormatString = "{0:HH:mm:ss tt}",
         ApplyFormatInEditMode = true)]
         public DateTime InTime { get; set; }
 
         [DataType(DataType.Date),
-        DisplayFormat(DataFormatString = "{0:dd-MM-yy}",
+        DisplayFormat(DataFormatString = "{0:HH:mm:ss tt}",
         ApplyFormatInEditMode = true)]
         public DateTime OutTime { get; set; }
 

@@ -6,8 +6,10 @@ using System.Net;
 using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Payroll;
+using FTL_HRMS.Models.ViewModels;
 using FTL_HRMS.Utility;
 using FTL_HRMS.Models.Hr;
+using FTL_HRMS.Models.ViewModels;
 
 namespace FTL_HRMS.Controllers
 {
@@ -155,6 +157,87 @@ namespace FTL_HRMS.Controllers
             {
                 attendenceList = _db.MonthlyAttendance.Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
             }
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
+            ViewBag.EmpId = employeeId;
+            return attendenceList;
+        }
+
+        #endregion
+
+
+        #region EmployeeWise Attendence
+        public ActionResult EmployeewiseFilterAttendenceReport()
+        {
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
+            List<FilterAttendanceView> attendenceList = GetEmployeewiseFilterList(0, Utility.Utility.GetDefaultDate(), Utility.Utility.GetDefaultDate());
+            return View(attendenceList);
+        }
+        [HttpPost]
+        public ActionResult EmployeewiseFilterAttendenceReport(string EmployeeId)
+        {
+            att.SyncAttendance();
+            int eid;
+            Int32.TryParse(EmployeeId, out eid);
+            DateTime FromDate = Utility.Utility.GetDefaultDate();
+            if (Request["FromDate"] != "")
+            {
+                DateTime.TryParse(Request["FromDate"], out FromDate);
+            }
+            DateTime ToDate = Utility.Utility.GetDefaultDate();
+            if (Request["ToDate"] != "")
+            {
+                DateTime.TryParse(Request["ToDate"], out ToDate);
+            }
+            List<Employee> employeeList = new List<Employee>();
+            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
+            ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
+            ViewBag.Status = "SelectType";
+            TempData["dgid"] = eid;
+            TempData["FromDate"] = FromDate;
+            TempData["ToDate"] = ToDate;
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
+            ViewBag.EmpId = Int32.TryParse(EmployeeId, out eid);
+            List<FilterAttendanceView> attendenceList = GetEmployeewiseFilterList(eid, FromDate, ToDate);
+            return View(attendenceList);
+        }
+
+        public List<FilterAttendanceView> GetEmployeewiseFilterList(int employeeId, DateTime FromDate, DateTime ToDate)
+        {
+            string query = String.Empty;
+            List<FilterAttendanceView> attendenceList = new List<FilterAttendanceView>();
+            if (FromDate.Equals(Utility.Utility.GetDefaultDate()))
+            {
+                FromDate = DateTime.Now.AddDays(-1);
+                ToDate = DateTime.Now.AddDays(-1);
+            }
+            if (ToDate.Equals(Utility.Utility.GetDefaultDate()))
+            {
+                ToDate = DateTime.Now.AddDays(-1);
+            }
+            if (employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] != "" ||
+                employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] != "" ||
+                employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] == "")
+            {
+                //attendenceList = _db.FilterAttendanceView.SqlQuery("select * from FilterAttendanceView").ToList();
+                //attendenceList = _db.FilterAttendanceView.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+                query = "select * from FilterAttendanceView where EmployeeId = "+employeeId +" and Date between '"+FromDate.Date+"' and '"+ToDate.Date+"'";
+            }
+            else if (employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] == "")
+            {
+                //attendenceList = _db.FilterAttendanceView.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+                query = "select * from FilterAttendanceView where EmployeeId = " + employeeId + " and Date between '" + FromDate.Date + "' and '" + ToDate.Date + "'";
+            }
+            else
+            {
+                //attendenceList = _db.FilterAttendanceView.Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+                query = "select * from FilterAttendanceView where Date between '" + FromDate.Date + "' and '" + ToDate.Date + "'";
+            }
+            FilterAttendanceViewGatway filterAttendanceViewGatway = new FilterAttendanceViewGatway();
+            attendenceList = filterAttendanceViewGatway.GetFilterAttendanceView(query);
             ViewBag.FromDate = FromDate;
             ViewBag.ToDate = ToDate;
             ViewBag.EmpId = employeeId;

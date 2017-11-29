@@ -2850,6 +2850,7 @@
     <Compile Include="DAL\ConnectionGateway.cs" />
     <Compile Include="DAL\Device.cs" />
     <Compile Include="DAL\DeviceDbContext.cs" />
+    <Compile Include="DAL\FilterAttendanceViewGatway.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2869,11 +2870,16 @@
     <Compile Include="Migrations\201711200712510_update_tbl_salary_adjustment_201117.Designer.cs">
       <DependentUpon>201711200712510_update_tbl_salary_adjustment_201117.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711230834596_FilterAttendanceview.cs" />
+    <Compile Include="Migrations\201711230834596_FilterAttendanceview.Designer.cs">
+      <DependentUpon>201711230834596_FilterAttendanceview.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\Subscription.cs" />
     <Compile Include="Models\Hr\FileStorage.cs" />
     <Compile Include="Models\Hr\EmployeeLeaveCountHistory.cs" />
+    <Compile Include="Models\ViewModels\FilterAttendanceView.cs" />
     <Compile Include="Models\Payroll\LoanCalculationHistory.cs" />
     <Compile Include="Models\Payroll\LoanCalculation.cs" />
     <Compile Include="Models\Payroll\Loan.cs" />
@@ -3449,6 +3455,7 @@
     <Content Include="Views\Subscriptions\Edit.cshtml" />
     <Content Include="Views\Subscriptions\Index.cshtml" />
     <Content Include="Views\Account\AccountInformation.cshtml" />
+    <Content Include="Views\MonthlyAttendances\EmployeewiseFilterAttendenceReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3543,7 +3550,10 @@
     <EmbeddedResource Include="Migrations\201711200712510_update_tbl_salary_adjustment_201117.resx">
       <DependentUpon>201711200712510_update_tbl_salary_adjustment_201117.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt"/>
+    <EmbeddedResource Include="Migrations\201711230834596_FilterAttendanceview.resx">
+      <DependentUpon>201711230834596_FilterAttendanceview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt" />
     <Content Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AttandanceByDateRangeReport.cs</LastGenOutput>

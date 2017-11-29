@@ -1,0 +1,134 @@
+@model List<FTL_HRMS.Models.ViewModels.FilterAttendanceView>
+
+@{
+    ViewBag.Title = "Employee List";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+</script>
+@section scripts {
+    <script src="~/Scripts/myScript.js" type="text/javascript"></script>
+}
+@using (Html.BeginForm())
+{
+    <header class="panel_header">
+        <h2 class="title pull-left">Selection</h2>
+        <div class="actions panel_actions pull-right">
+            <i class="box_toggle fa fa-chevron-down"></i>
+        </div>
+    </header>
+    <br /> <br />
+    <div class="content-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <label class="form-label" for="Fromdate">Employee Code Or Name</label>
+                        <div>
+                            <input type="hidden" id="EmployeeId" name="EmployeeId" />
+                            <input type="text" id="EmployeeCode" value="" placeholder="Select Existing Employee" class="form-control" style="width:100%" />
+                            @*@Html.DropDownList("EmployeeId", null, "--All--", htmlAttributes: new { @class = "form-control", style = "width:100%", @id = "employeeId", @name = "employeeId" })*@
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" for="Fromdate">From Date</label>
+                            <div>
+                                <input type="text" id="fromdate" name="FromDate" class="form-control datepicker" data-start-view="2" placeholder="mm/dd/yyyy" >
+                            </div>
+                        </div>
+                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" for="Todate">To Date</label>
+                            <div>
+                                <input type="text" id="todate" name="ToDate" class="form-control datepicker" data-start-view="2" placeholder="mm/dd/yyyy" >
+                            </div>
+                        </div>
+                       </div>
+                    </div>
+                  </div>
+                    <div class="col-md-offset-2" style="margin-left:45%">
+                        <input type="submit" value="Submit" name="Submit" class="btn btn-info" />
+                    </div>
+            </div>
+        </div>
+
+       
+}
+<header class="panel_header">
+    <h2 class="title pull-left">Attend Employee's List</h2>
+    <div class="actions panel_actions pull-right">
+        <i class="box_toggle fa fa-chevron-down"></i>
+    </div>
+</header>
+<br /> <br />
+<div class="content-body">
+    <div class="row">
+        @*<div class="col-md-1 text-right">
+            <div class="btn-group">
+                <button type="button" onclick="location.href='@Url.Action("PrintAttandanceByDateRangeReport", "Reports",new {EmployeeId= @ViewBag.EmpId, fromDate = @ViewBag.FromDate, toDate= @ViewBag.Todate })'" target="_blank" class="btn btn-info btn-sm">
+                    <span class="glyphicon glyphicon-print"></span> Download PDF
+                </button>
+            </div>
+        </div>
+        <br /><br />*@
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @{int rowNo = 0;}
+            <table id="myTable" class="table table-striped dt-responsive display" cellspacing="0" width="100%">
+
+                <thead>
+                    <tr>
+                        <th style="text-align:center">SL</th>
+                        <th data-priority="1" style="text-align:center">Date</th>
+                        <th data-priority="1" style="text-align:center">Code</th>
+                        <th data-priority="1" style="text-align:center">Name</th>
+                        <th data-priority="1" style="text-align:center">InTime</th>
+                        <th data-priority="3" style="text-align:center">OutTime</th>
+                        <th data-priority="3" style="text-align:center">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td align="center" width="5%">
+                                @(rowNo += 1)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Code)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.InTime)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.OutTime)
+                            </td>
+                            <td width="10%" align="center">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+
+</script>

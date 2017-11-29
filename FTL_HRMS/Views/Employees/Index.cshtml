@@ -255,7 +255,7 @@
                                 </div>
                             </td>
                             <td align="center" width="8%">
-                                <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("ResetPassword", "Employees", new { employeeId = item.Sl })'">Reset Password</button>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" href="#ultraModal-7" onclick="ResetPassword(@item.Code)" aria-expanded="false">Reset Password</button>
                             </td>
                             <td align="center" width="8%">
                                 <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Educations", new { employeeId = item.Sl })'">Education</button>
@@ -363,6 +363,48 @@
                     }
                 </tbody>
             </table>
+            <!-- modal start -->
+            @using (Html.BeginForm("ResetPassword", "Employees", FormMethod.Post))
+            {
+                <div class="modal fade" id="ultraModal-7" tabindex="-1" role="dialog" aria-labelledby="ultraModal-Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Reset Password</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="field-1" class="control-label">Employee Code</label>
+
+                                            <input type="text" style="text-align:center" readonly class="form-control" id="field-1" name="field-1">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="field-2" class="control-label">New Password</label>
+
+                                            <input type="password" style="text-align:center" class="form-control" id="field-2" name="field-2">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-info">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <!-- modal end -->
         </div>
     </div>
 </div>
@@ -371,4 +413,7 @@
 $(document).ready(function(){
     $('#myTable').DataTable();
 });
+function ResetPassword(emp_code) {
+    $('#field-1').val(emp_code);
+}
 </script>

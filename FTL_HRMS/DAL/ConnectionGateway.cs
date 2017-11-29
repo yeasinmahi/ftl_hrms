@@ -5,17 +5,22 @@ namespace FTL_HRMS.DAL
 {
     public class ConnectionGateway
     {
-        public string ConnectionString = WebConfigurationManager.ConnectionStrings["DeviceDbContext"].ConnectionString;
+        public string DeviceConnectionString = WebConfigurationManager.ConnectionStrings["DeviceDbContext"].ConnectionString;
+        public string HrmsConnectionString = WebConfigurationManager.ConnectionStrings["HRMSDbContext"].ConnectionString;
 
-        public SqlConnection Connection { get; set; }
-        public SqlCommand Command { get; set; }
+        public SqlConnection DeviceConnection { get; set; }
+        public SqlCommand DeviceCommand { get; set; }
+        public SqlConnection HrmsConnection { get; set; }
+        public SqlCommand HrmsCommand { get; set; }
         public SqlDataReader Reader { get; set; }
         public string Query { get; set; }
 
         public ConnectionGateway()
         {
-            Connection = new SqlConnection(ConnectionString);
-            Command = new SqlCommand {Connection = Connection};
+            DeviceConnection = new SqlConnection(DeviceConnectionString);
+            DeviceCommand = new SqlCommand {Connection = DeviceConnection};
+            HrmsConnection = new SqlConnection(HrmsConnectionString);
+            HrmsCommand = new SqlCommand { Connection = HrmsConnection };
         }
 
     }

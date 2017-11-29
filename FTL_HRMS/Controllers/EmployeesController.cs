@@ -39,14 +39,15 @@ namespace FTL_HRMS.Controllers
         #endregion
 
         #region Reset Password
-        public async Task<ActionResult> ResetPassword(int employeeId)
+        public async Task<ActionResult> ResetPassword()
        {
             try
             { 
                 UserStore<ApplicationUser> store = new UserStore<ApplicationUser>(_db);
                 UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(store);
-                String userId = _db.Users.Where(u => u.CustomUserId == employeeId).Select(i => i.Id).FirstOrDefault();//"<YourLogicAssignsRequestedUserId>";
-                String newPassword = "123456"; //"<PasswordAsTypedByUser>";
+                string empCode = Convert.ToString(Request["field-1"]);
+                String userId = _db.Users.Where(u => u.UserName == empCode).Select(i => i.Id).FirstOrDefault();//"<YourLogicAssignsRequestedUserId>";
+                String newPassword = Convert.ToString(Request["field-2"]); //"<PasswordAsTypedByUser>";
                 String hashedNewPassword = UserManager.PasswordHasher.HashPassword(newPassword);
                 ApplicationUser cUser = await store.FindByIdAsync(userId);
                 await store.SetPasswordHashAsync(cUser, hashedNewPassword);
