@@ -20,12 +20,17 @@ namespace FTL_HRMS.Utility
             UpdateFailed,
             DeleteFailed,
             Exist,
+            NameExist,
+            CodeExist,
             UnknownError,
             BlankError,
             Error,
             NotFound,
             NotAllowed,
-            DateRangeExceed
+            DateRangeExceed,
+            PasswordMismatch,
+            CodeFormat,
+            RoleAddFailed
         }
 
         public static string GetStatusMessage(Status status)
@@ -46,6 +51,10 @@ namespace FTL_HRMS.Utility
                     return "0Delete Failed";
                 case Status.Exist:
                     return "0Already Exist";
+                case Status.NameExist:
+                    return "0Name Already Exist";
+                case Status.CodeExist:
+                    return "0Code Already Exist";
                 case Status.BlankError:
                     return "0Can not be blank";
                 case Status.UnknownError:
@@ -58,6 +67,12 @@ namespace FTL_HRMS.Utility
                     return "0Not allowed to Delete this item";
                 case Status.DateRangeExceed:
                     return "0Date Range Exceed";
+                case Status.PasswordMismatch:
+                    return "0Password doesn't match";
+                case Status.CodeFormat:
+                    return "0Enter only alphabets and digits as Code";
+                case Status.RoleAddFailed:
+                    return "0Role Add Failed";
                 default:
                     return "0Cannot get the error";
             }

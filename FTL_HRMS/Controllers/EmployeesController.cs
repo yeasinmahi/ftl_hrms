@@ -322,7 +322,7 @@ namespace FTL_HRMS.Controllers
                 }
                 catch (Exception exception)
                 {
-                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UnknownError);
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
                     return EmployeeDefaultList(employee);
                 }
 
@@ -355,14 +355,20 @@ namespace FTL_HRMS.Controllers
                     }
                     catch (Exception exception)
                     {
-                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UnknownError);
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.RoleAddFailed);
                         return EmployeeDefaultList(employee);
                     }
 
                 }
                 else
                 {
-                    TempData["message"] = "0Enter only alphabets and digits as Code";
+                    try
+                    {
+                        Employee emp = _db.Employee.Find(employee.Sl);
+                        _db.Employee.Remove(emp);
+                        _db.SaveChanges();
+                    }
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.CodeFormat);
                     return EmployeeDefaultList(employee);
                 }
                 
@@ -489,7 +495,6 @@ namespace FTL_HRMS.Controllers
                 departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
                 ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
-                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
                 return View(employee);
             }
         }
@@ -682,14 +687,14 @@ namespace FTL_HRMS.Controllers
             if (_db.Users.Where(i => i.UserName == username).Count() > 0)
             {
                 isValidate = false;
-                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.CodeExist);
             }
             else
             {
                 if (!password.Equals(confirmPassword))
                 {
                     isValidate = false;
-                    TempData["message"] = "0Password does not match!!!";
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.PasswordMismatch);
                 }
             }
             return isValidate;

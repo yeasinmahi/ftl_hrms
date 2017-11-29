@@ -17,7 +17,7 @@ namespace FTL_HRMS.Controllers
         // GET: DepartmentGroups
         public ActionResult Index()
         {
-            return View(_db.DepartmentGroup.Include(a => a.CreateEmployee).Include(a => a.UpdateEmployee).Where(i=> i.Status==true).ToList());
+            return View(_db.DepartmentGroup.Include(a => a.CreateEmployee).Include(a => a.UpdateEmployee).Where(i => i.Status == true).ToList());
         }
         #endregion
 
@@ -52,18 +52,29 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] DepartmentGroup departmentGroup)
         {
-            if (_db.DepartmentGroup.Where(i=> i.Name == departmentGroup.Name).ToList().Count < 1)
+            if (_db.DepartmentGroup.Where(i => i.Code == departmentGroup.Code).ToList().Count < 1)
             {
-                string userName = User.Identity.Name;
-                int userId = DbUtility.GetUserId(_db, userName);
-                departmentGroup.CreatedBy = userId;
-                departmentGroup.CreateDate = DateTime.Now;
-                departmentGroup.Status = true;
-                DbUtility.Status status = _genericData.Insert<DepartmentGroup>(departmentGroup);
-                TempData["message"] = DbUtility.GetStatusMessage(status);
-                return RedirectToAction("Create");
+                if (_db.DepartmentGroup.Where(i => i.Name == departmentGroup.Name).ToList().Count < 1)
+                {
+                    string userName = User.Identity.Name;
+                    int userId = DbUtility.GetUserId(_db, userName);
+                    departmentGroup.CreatedBy = userId;
+                    departmentGroup.CreateDate = DateTime.Now;
+                    departmentGroup.Status = true;
+                    DbUtility.Status status = _genericData.Insert<DepartmentGroup>(departmentGroup);
+                    TempData["message"] = DbUtility.GetStatusMessage(status);
+                    return RedirectToAction("Create");
+                }
+                else
+                {
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NameExist);
+                }
             }
-            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.BlankError);
+            else
+            {
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.CodeExist);
+            }
+                        
             return View(departmentGroup);
         }
         #endregion

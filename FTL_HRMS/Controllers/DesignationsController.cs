@@ -74,22 +74,29 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,DepartmentId,RoleName,CreatedBy,CreateDate,UpdatedBy,UpdateDate,Status")] Designation designation)
         {
-            if (_db.Designation.Where(i => i.Name == designation.Name).ToList().Count < 1)
+            if (_db.Designation.Where(i => i.Code == designation.Code).ToList().Count < 1)
             {
-                string userName = User.Identity.Name;
-                int userId = DbUtility.GetUserId(_db, userName);
-                designation.CreatedBy = userId;
-                designation.CreateDate = DateTime.Now;
-                designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
-                designation.Status = true;
-                _db.Designation.Add(designation);
-                _db.SaveChanges();
-                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
-                return RedirectToAction("Create");
+                if (_db.Designation.Where(i => i.Name == designation.Name && i.DepartmentId == designation.DepartmentId).ToList().Count < 1)
+                {
+                    string userName = User.Identity.Name;
+                    int userId = DbUtility.GetUserId(_db, userName);
+                    designation.CreatedBy = userId;
+                    designation.CreateDate = DateTime.Now;
+                    designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
+                    designation.Status = true;
+                    _db.Designation.Add(designation);
+                    _db.SaveChanges();
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
+                    return RedirectToAction("Create");
+                }
+                else
+                {
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NameExist);
+                }
             }
             else
             {
-                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.CodeExist);
             }
             List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
             departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
