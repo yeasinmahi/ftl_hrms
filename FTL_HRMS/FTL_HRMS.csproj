@@ -2926,9 +2926,6 @@
     <Compile Include="Models\ViewModels\VMTodaysAttendance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\AttandanceByDateRangeReport.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AttandanceByDateRangeReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\BonusAndPenaltieseReport.cs">
@@ -3553,7 +3550,6 @@
     <EmbeddedResource Include="Migrations\201711230834596_FilterAttendanceview.resx">
       <DependentUpon>201711230834596_FilterAttendanceview.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\AttandanceByDateRangeReport.rpt" />
     <Content Include="Reports\AttandanceByDateRangeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AttandanceByDateRangeReport.cs</LastGenOutput>
@@ -3570,10 +3566,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LeaveApplicationReport.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="Reports\LeaveTypeReport.rpt">
+    <Content Include="Reports\LeaveTypeReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LeaveTypeReport.cs</LastGenOutput>
-    </EmbeddedResource>
+    </Content>
     <Content Include="Reports\PerformanceIssueReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PerformanceIssueReport.cs</LastGenOutput>

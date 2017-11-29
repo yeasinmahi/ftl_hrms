@@ -368,6 +368,10 @@ namespace FTL_HRMS.Controllers
                         _db.Employee.Remove(emp);
                         _db.SaveChanges();
                     }
+                    catch (Exception ex)
+                    {
+                        
+                    }
                     TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.CodeFormat);
                     return EmployeeDefaultList(employee);
                 }
