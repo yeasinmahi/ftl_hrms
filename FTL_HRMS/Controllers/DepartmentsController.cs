@@ -82,23 +82,30 @@ namespace FTL_HRMS.Controllers
         {
             List<DepartmentGroup> groupList = new List<DepartmentGroup>();
             groupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
-            if (_db.Department.Where(i => i.Name == department.Name).ToList().Count < 1)
+            if (_db.Department.Where(i => i.Code == department.Code).ToList().Count < 1)
             {
-                string userName = User.Identity.Name;
-                int userId = DbUtility.GetUserId(_db, userName);
-                department.CreatedBy = userId;
-                department.CreateDate = DateTime.Now;
-                department.Status = true;
-                _db.Department.Add(department);
-                _db.SaveChanges();
-                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
-                ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name");
-                ViewBag.Departments = groupList;
-                return RedirectToAction("Create");
+                if (_db.Department.Where(i => i.Name == department.Name && i.DepartmentGroupId == department.DepartmentGroupId).ToList().Count < 1)
+                {
+                    string userName = User.Identity.Name;
+                    int userId = DbUtility.GetUserId(_db, userName);
+                    department.CreatedBy = userId;
+                    department.CreateDate = DateTime.Now;
+                    department.Status = true;
+                    _db.Department.Add(department);
+                    _db.SaveChanges();
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
+                    ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name");
+                    ViewBag.Departments = groupList;
+                    return RedirectToAction("Create");
+                }
+                else
+                {
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.NameExist);
+                }
             }
             else
             {
-                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.CodeExist);
             }
             ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name",department.DepartmentGroupId);
             return View(department);

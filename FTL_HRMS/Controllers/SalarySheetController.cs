@@ -297,7 +297,7 @@ namespace FTL_HRMS.Controllers
             int LeavePanelty = 0;
             if(LateDays > 0 && LateConsiderationDays > 0)
             {
-                LeavePanelty = Convert.ToInt32(LateDays / LateConsiderationDays);
+                LeavePanelty = Convert.ToInt32(Math.Floor(LateDays / LateConsiderationDays));
             }
             return LeavePanelty;
         }
