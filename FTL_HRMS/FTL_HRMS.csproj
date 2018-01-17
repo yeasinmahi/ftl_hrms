@@ -2874,6 +2874,10 @@
     <Compile Include="Migrations\201711230834596_FilterAttendanceview.Designer.cs">
       <DependentUpon>201711230834596_FilterAttendanceview.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711291030036_change brach model.cs" />
+    <Compile Include="Migrations\201711291030036_change brach model.Designer.cs">
+      <DependentUpon>201711291030036_change brach model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Hr\Subscription.cs" />
@@ -3597,6 +3601,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TodaysAttendanceReport.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Migrations\201711291030036_change brach model.resx">
+      <DependentUpon>201711291030036_change brach model.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

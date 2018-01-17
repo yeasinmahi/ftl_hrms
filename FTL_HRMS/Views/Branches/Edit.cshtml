@@ -105,8 +105,13 @@
 </div>
 <script src="~/Content/AdminTemplate/assets/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-        $(".Is_Late_Calculated").hide();
-        $("#IsLateCalculated").click(function () {
+    
+</script>
+<script type="text/javascript">
+    $(".Is_Late_Calculated").hide();
+    $("#IsLateCalculated").click(function () {
+        var a = @Model.Name;
+        alert(a);
         if ($(this).is(":checked")) {
             $(".Is_Late_Calculated").show(200);
             $("#LateConsiderationTime").prop('required', true);

@@ -10,13 +10,13 @@ namespace FTL_HRMS.Controllers
 {
     public class BranchesController : Controller
     {
-        private HRMSDbContext _db = new HRMSDbContext();
+        private readonly HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: Branches
         public ActionResult Index()
         {
-            return View(_db.Branches.Where(i => i.Status == true).ToList());
+            return View(_db.Branches.Where(i => i.Status).ToList());
         }
         #endregion
 
@@ -120,11 +120,14 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if(_db.Employee.Where(i=> i.BranchId == id && i.Status == true).ToList().Count < 1)
+            if(_db.Employee.Where(i=> i.BranchId == id && i.Status).ToList().Count < 1)
             {
                 Branch branch = _db.Branches.Find(id);
-                branch.Status = false;
-                _db.Entry(branch).State = EntityState.Modified;
+                if (branch != null)
+                {
+                    branch.Status = false;
+                    _db.Entry(branch).State = EntityState.Modified;
+                }
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
             }
