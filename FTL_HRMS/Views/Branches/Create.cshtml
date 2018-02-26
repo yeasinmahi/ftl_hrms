@@ -73,11 +73,11 @@
                         </div>
                             <div class="Is_Late_Calculated">
                                 <label>Late Consideration Time (mins)</label>
-                                <input name="LateConsiderationTime" type="text" class="form-control" style="width:50%" id="LateConsiderationTime">
+                                <input name="LateConsiderationTime" type="number" class="form-control" style="width:50%" id="LateConsiderationTime">
                                 <label>Late Consideration Day (days)</label>
-                                <input name="LateConsiderationDay" type="text" class="form-control" style="width:50%" id="LateConsiderationDay">
+                                <input name="LateConsiderationDay" type="number" class="form-control" style="width:50%" id="LateConsiderationDay">
                                 <label>Late Deduction Percentage (%)</label>
-                                <input name="LateDeductionPercentage" type="text" class="form-control" style="width:50%" id="LateDeductionPercentage">
+                                <input name="LateDeductionPercentage" type="number" class="form-control" style="width:50%" id="LateDeductionPercentage">
                             </div><br />
                         <div>
                             @Html.CheckBoxFor(model => model.IsOvertimeCalculated)
@@ -87,9 +87,9 @@
                     
                     <div class="Is_Overtime_Calculated">
                         <label>Overtime Consideration Time (mins)</label>
-                        <input name="OvertimeConsiderationTime" type="text" class="form-control" style="width:50%" id="OvertimeConsiderationTime">
+                        <input name="OvertimeConsiderationTime" type="number" class="form-control" style="width:50%" id="OvertimeConsiderationTime">
                         <label>Overtime Payment Percentage (%)</label>
-                        <input name="OvertimePaymentPercentage" type="text" class="form-control" style="width:50%" id="OvertimePaymentPercentage">
+                        <input name="OvertimePaymentPercentage" type="number" class="form-control" style="width:50%" id="OvertimePaymentPercentage">
                     </div><br />
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-9" style="margin-left:180px;">

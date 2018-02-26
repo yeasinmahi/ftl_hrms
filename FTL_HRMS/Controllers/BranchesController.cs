@@ -54,6 +54,7 @@ namespace FTL_HRMS.Controllers
             if (branch.Name != "")
             {
                 branch.Status = true;
+
                 _db.Branches.Add(branch);
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
