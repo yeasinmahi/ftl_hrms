@@ -31,11 +31,11 @@ namespace FTL_HRMS.Models.Hr
         [Required(ErrorMessage = "IsLateCalculated cannot be empty")]
         public bool IsLateCalculated { get; set; }
 
-        public double? LateConsiderationTime { get; set; }
+        public double LateConsiderationTime { get; set; }
 
-        public double? LateConsiderationDay { get; set; }
+        public double LateConsiderationDay { get; set; }
 
-        public double? LateDeductionPercentage { get; set; }
+        public double LateDeductionPercentage { get; set; }
 
         [Required(ErrorMessage = "IsOvertimeCalculated cannot be empty")]
         public bool IsOvertimeCalculated { get; set; }

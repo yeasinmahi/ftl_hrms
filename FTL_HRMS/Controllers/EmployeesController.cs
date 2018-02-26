@@ -262,20 +262,16 @@ namespace FTL_HRMS.Controllers
 
             Employee employee = (Employee) TempData["Employee"];
             
-            List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
-            sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+            List<SourceOfHire> sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name");
-
-            List<Branch> branchList = new List<Branch>();
-            branchList = _db.Branches.Where(i => i.Status == true).ToList();
+            
+            List<Branch> branchList = _db.Branches.Where(i => i.Status == true).ToList();
             ViewBag.BranchId = new SelectList(branchList, "Sl", "Name");
-
-            List<EmployeeType> employeeTypeList = new List<EmployeeType>();
-            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            
+            List<EmployeeType> employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
             ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name");
-
-            List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
-            departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            
+            List<DepartmentGroup> departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
             if (employee != null)
@@ -483,20 +479,16 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
-                sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+                List<SourceOfHire> sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
                 ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
-
-                List<Branch> branchList = new List<Branch>();
-                branchList = _db.Branches.Where(i => i.Status == true).ToList();
+                
+                List<Branch> branchList = _db.Branches.Where(i => i.Status == true).ToList();
                 ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", employee.BranchId);
-
-                List<EmployeeType> employeeTypeList = new List<EmployeeType>();
-                employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+                
+                List<EmployeeType> employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
                 ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
-
-                List<DepartmentGroup> departmentGroupList = new List<DepartmentGroup>();
-                departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+                
+                List<DepartmentGroup> departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
                 ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
                 return View(employee);
