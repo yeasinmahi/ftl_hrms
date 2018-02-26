@@ -35,7 +35,7 @@ namespace FTL_HRMS.Controllers
             RolePermission rolePermission = _db.RolePermission.Where(rr => rr.RoleId == rollId).FirstOrDefault();
 
 
-            Session.Add("UserName", User.Identity.GetUserName());
+            //Session.Add("UserName", User.Identity.GetUserName());
             Session.Add("RoleName", rolll);
             if (rolll == "System Admin")
             {

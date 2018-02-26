@@ -18,7 +18,7 @@
         <div class="profile-details col-md-8 col-sm-8 col-xs-8">
 
             <h3>
-                <a>@Session["UserName"]</a>
+                <a>@User.Identity.Name</a>
 
                 <!-- Available statuses: online, idle, busy, away and offline -->
                 <span class="profile-status online"></span>
