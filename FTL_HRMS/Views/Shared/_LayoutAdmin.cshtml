@@ -178,5 +178,12 @@
     <script src="~/Content/AdminTemplate/assets/js/chart-sparkline.js" type="text/javascript"></script>
     <!-- Sidebar Graph - END -->
     @RenderSection("scripts", required: false)
+    <script>
+        $(function () {
+            $("ul.wraplist ul.sub-menu").find('.active').first().parent("li").parent().parent().addClass("open");
+            $("ul.wraplist ul.sub-menu").find('.active').first().parent("li").parent().find("a").css("display", "block");
+            $("ul.wraplist ul.sub-menu").find('.active').first().parent("li").parent().parent().find("span").addClass("open");
+        });
+    </script>
 </body>
 </html>

@@ -34,7 +34,7 @@
 
 
     <ul class='wraplist'>
-        <li class="open">
+        <li class="">
             <a href="@Url.Action("AdminDashboard", "Home")">
                 <i class="fa fa-dashboard"></i>
                 <span class="title">Dashboard</span>
@@ -42,6 +42,8 @@
         </li>
         @if (Model != null)
         {
+            var ControllerName = ViewContext.RouteData.Values["Controller"];
+            var ActionName = ViewContext.RouteData.Values["Action"];
             List<VMMenuByRole> par = Model.Where(t => t.ParentId == null).OrderBy(p => p.MenuOrder).ToList();
 
             List<VMMenuByRole> child = null;
@@ -58,8 +60,8 @@
                     <ul class="sub-menu">
                         @foreach (var ch in child)
                         {
-                            <li id="@ch.Id">
-                                <a class="" href="@Url.Action(ch.ActionName, ch.ControllerName)">@ch.MenuItemName</a>
+                            <li id="@ch.Id" >
+                                <a class="@(ControllerName + ActionName.ToString() == ch.ControllerName+ch.ActionName ? "active" : "")" href="@Url.Action(ch.ActionName, ch.ControllerName)">@ch.MenuItemName</a>
                             </li>
                         }
                     </ul>

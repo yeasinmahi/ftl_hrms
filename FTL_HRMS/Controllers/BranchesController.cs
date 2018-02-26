@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -54,7 +55,11 @@ namespace FTL_HRMS.Controllers
             if (branch.Name != "")
             {
                 branch.Status = true;
-
+                if (branch.OpeningTime.Equals(new DateTime(1, 1, 0001)) || branch.EndingTime.Equals(new DateTime(1, 1, 0001)))
+                {
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DateRangeExceed);
+                    return RedirectToAction("Create");
+                }
                 _db.Branches.Add(branch);
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
@@ -121,7 +126,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if(_db.Employee.Where(i=> i.BranchId == id && i.Status).ToList().Count < 1)
+            if (_db.Employee.Where(i => i.BranchId == id && i.Status).ToList().Count < 1)
             {
                 Branch branch = _db.Branches.Find(id);
                 if (branch != null)

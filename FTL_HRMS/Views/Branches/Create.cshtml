@@ -35,7 +35,7 @@
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Branches" )'">Back To List</button>
                         </div>
                         <div>
-                          @Html.LabelFor(model => model.Name)
+                          @Html.LabelFor(model => model.Name, new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -43,24 +43,24 @@
                         </div>
 
                         <div>
-                           @Html.LabelFor(model => model.Address)
+                           @Html.LabelFor(model => model.Address, new { @class = "required" })
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", style = "width:50%" } })
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                         </div>
 
 
                         <div>
-                           @Html.LabelFor(model => model.OpeningTime,"Opening Time")
+                           @Html.LabelFor(model => model.OpeningTime,"Opening Time", new { @class = "required" })
                         </div>
                         <div>
-                            @Html.EditorFor(model => model.OpeningTime, new { htmlAttributes = new { @class = "form-control timepicker-holdOffTime", type = "time", step = 1, style = "width:50%" } })
+                            @Html.EditorFor(model => model.OpeningTime, new { htmlAttributes = new { @class = "form-control timepicker-holdOffTime", type = "time", step = 1, style = "width:50%", @required = true } })
                             @Html.ValidationMessageFor(model => model.OpeningTime, "", new { @class = "text-danger" })
                         </div>
 
                         <div>
-                            @Html.LabelFor(model => model.EndingTime, "Ending Time")
+                            @Html.LabelFor(model => model.EndingTime, "Ending Time", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.EndingTime, new { htmlAttributes = new { @class = "form-control timepicker-holdOffTime", type = "time", step = 1, style = "width:50%" } })
