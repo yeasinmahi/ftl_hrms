@@ -55,7 +55,7 @@ namespace FTL_HRMS.Controllers
             {
                 employeeType.Status = true;
                 EmployeeType type = _db.EmployeeType.ToList().FirstOrDefault(x => x.Name.Equals(employeeType.Name) && x.Status);
-                if (type !=null)
+                if (type ==null)
                 {
                     _db.EmployeeType.Add(employeeType);
                     _db.SaveChanges();
