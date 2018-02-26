@@ -35,7 +35,7 @@
                             <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="location.href='@Url.Action("Index", "Experiences", new { employeeId = Model.EmployeeId })'">Back To List</button>
                         </div>
                         <div>
-                            @Html.LabelFor(model => model.InstituteName, "Institute Name", new { @class = "required" })
+                            @Html.LabelFor(model => model.InstituteName, "Company Name", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.InstituteName, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
@@ -43,7 +43,7 @@
                         </div>
 
                         <div>
-                            @Html.LabelFor(model => model.InstituteAddress, "Institute Address", new { @class = "required" })
+                            @Html.LabelFor(model => model.InstituteAddress, "Address", new { @class = "required" })
                         </div>
                         <div>
                             @Html.EditorFor(model => model.InstituteAddress, new { htmlAttributes = new { @class = "form-control", style = "width:50%", @required = true } })
