@@ -10,13 +10,13 @@ namespace FTL_HRMS.Controllers
 {
     public class EmployeeTypesController : Controller
     {
-        private HRMSDbContext _db = new HRMSDbContext();
+        private readonly HRMSDbContext _db = new HRMSDbContext();
 
         #region List
         // GET: EmployeeTypes
         public ActionResult Index()
         {
-            return View(_db.EmployeeType.Where(i => i.Status == true).ToList());
+            return View(_db.EmployeeType.Where(i => i.Status).ToList());
         }
         #endregion
 
@@ -54,9 +54,18 @@ namespace FTL_HRMS.Controllers
             if (employeeType.Name != "")
             {
                 employeeType.Status = true;
-                _db.EmployeeType.Add(employeeType);
-                _db.SaveChanges();
-                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
+                EmployeeType type = _db.EmployeeType.ToList().FirstOrDefault(x => x.Name.Equals(employeeType.Name) && x.Status);
+                if (type !=null)
+                {
+                    _db.EmployeeType.Add(employeeType);
+                    _db.SaveChanges();
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
+                }
+                else
+                {
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                }
+               
                 return RedirectToAction("Create");
             }
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
@@ -120,7 +129,7 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (_db.Employee.Where(i => i.EmployeeTypeId == id && i.Status == true).ToList().Count < 1)
+            if (_db.Employee.Where(i => i.EmployeeTypeId == id && i.Status).ToList().Count < 1)
             {
                 EmployeeType employeeType = _db.EmployeeType.Find(id);
                 if (employeeType != null)
