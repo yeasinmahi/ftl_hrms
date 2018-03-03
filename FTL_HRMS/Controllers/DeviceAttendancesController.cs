@@ -18,7 +18,7 @@ namespace FTL_HRMS.Controllers
         // GET: DeviceAttendances
         public ActionResult Index()
         {
-            
+            _attendanceController.SyncAttendance();
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
             var Codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
             foreach (var item in Codes)
@@ -46,7 +46,6 @@ namespace FTL_HRMS.Controllers
             {
                 type = Request["SelectType"].ToString();
             }
-            _attendanceController.MoveDeviceToDeviceAttendance();
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
             if (type == "Present")
             {

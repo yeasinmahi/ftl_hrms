@@ -28,6 +28,7 @@ namespace FTL_HRMS.Controllers
         #region Employee Attendence Report
         public ActionResult EmployeeAttendenceReport()
         {
+            att.SyncAttendance();
             List<DepartmentGroup> groupList = new List<DepartmentGroup>();
             groupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name");
@@ -38,7 +39,6 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult EmployeeAttendenceReport(string departmentGroupId, string ddl_dept)
         {
-            att.SyncAttendance();
             int dgid, did;
             Int32.TryParse(departmentGroupId, out dgid);
             Int32.TryParse(ddl_dept, out did);
@@ -91,6 +91,7 @@ namespace FTL_HRMS.Controllers
         #region EmployeeWise Attendence
         public ActionResult EmployeewiseAttendenceReport()
         {
+            att.SyncAttendance();
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
             List<Employee> employeeList = new List<Employee>();
@@ -102,7 +103,6 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult EmployeewiseAttendenceReport(string EmployeeId)
         {
-            att.SyncAttendance();
             int eid;
             Int32.TryParse(EmployeeId, out eid);
             DateTime FromDate = Utility.Utility.GetDefaultDate();
@@ -169,6 +169,7 @@ namespace FTL_HRMS.Controllers
         #region EmployeeWise Attendence
         public ActionResult EmployeewiseFilterAttendenceReport()
         {
+            att.SyncAttendance();
             List<Employee> employeeList = new List<Employee>();
             employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
@@ -178,7 +179,6 @@ namespace FTL_HRMS.Controllers
         [HttpPost]
         public ActionResult EmployeewiseFilterAttendenceReport(string EmployeeId)
         {
-            att.SyncAttendance();
             int eid;
             Int32.TryParse(EmployeeId, out eid);
             DateTime FromDate = Utility.Utility.GetDefaultDate();
