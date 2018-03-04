@@ -211,7 +211,7 @@ namespace FTL_HRMS.Controllers
         public DateTime GetFirstDate()
         {
             DateTime FirstDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            if (_db.MonthlyAttendance.ToList().Count > 0)
+            if (_db.FilterAttendance.Where(i => i.IsCalculated == true).ToList().Count > 0)
             {
                 FirstDate = _db.FilterAttendance.Where(i=> i.IsCalculated == true).ToList().Max(i => i.Date.Date).AddDays(1);
             }
