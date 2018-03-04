@@ -96,7 +96,7 @@
                                             @Html.LabelFor(model => model.NIDorBirthCirtificate, "NID / Birth Certificate", new { @class = "required" })
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.NIDorBirthCirtificate, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 10, @required = true } })
+                                            @Html.EditorFor(model => model.NIDorBirthCirtificate, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 10, @required = true, @type = "number" } })
                                             @Html.ValidationMessageFor(model => model.NIDorBirthCirtificate, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
