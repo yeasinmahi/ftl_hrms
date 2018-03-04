@@ -12,7 +12,7 @@ namespace FTL_HRMS.Controllers
 {
     public class AttendanceController : Controller
     {
-        private HRMSDbContext _db = new HRMSDbContext();
+        private readonly HRMSDbContext _db = new HRMSDbContext();
 
         public void SyncAttendance()
         {
