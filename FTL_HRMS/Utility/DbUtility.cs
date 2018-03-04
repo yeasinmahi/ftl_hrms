@@ -146,7 +146,7 @@ namespace FTL_HRMS.Utility
         }
         public static string GetRoll(HRMSDbContext db, string userId)
         {
-            UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(db));
+            UserManager<Models.ApplicationUser> userManager = new UserManager<Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<Models.ApplicationUser>(db));
             return userManager.GetRoles(userId).FirstOrDefault();
 
         }
@@ -164,8 +164,5 @@ namespace FTL_HRMS.Utility
             string view = @"IF OBJECT_ID('dbo." + viewName + "', 'V') IS NOT NULL DROP VIEW dbo." + viewName;
             return view;
         }
-        
-
-        
     }
 }
