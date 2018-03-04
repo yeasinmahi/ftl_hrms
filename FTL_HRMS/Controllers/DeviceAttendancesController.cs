@@ -23,16 +23,17 @@ namespace FTL_HRMS.Controllers
             var codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
             foreach (var item in codes)
             {
-                List<DeviceAttendance> device;
-                device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
+                var device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
                 if(device.Count > 0)
                 {
                     DateTime checkTime = device.Min(p => p.CheckTime);
-                    VMTodaysAttendance attendance = new VMTodaysAttendance();
-                    attendance.Code = item;
-                    attendance.Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
-                    attendance.CheckTime = checkTime;
-                    attendance.Status = "Present";
+                    VMTodaysAttendance attendance = new VMTodaysAttendance
+                    {
+                        Code = item,
+                        Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault(),
+                        CheckTime = checkTime,
+                        Status = "Present"
+                    };
                     todaysAttendance.Add(attendance);
                 }
             }
@@ -56,11 +57,13 @@ namespace FTL_HRMS.Controllers
                     if (device.Count > 0)
                     {
                         DateTime checkTime = device.Min(p => p.CheckTime);
-                        VMTodaysAttendance attendance = new VMTodaysAttendance();
-                        attendance.Code = item;
-                        attendance.Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
-                        attendance.CheckTime = checkTime;
-                        attendance.Status = "Present";
+                        VMTodaysAttendance attendance = new VMTodaysAttendance
+                        {
+                            Code = item,
+                            Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault(),
+                            CheckTime = checkTime,
+                            Status = "Present"
+                        };
                         todaysAttendance.Add(attendance);
                     }
                 }
