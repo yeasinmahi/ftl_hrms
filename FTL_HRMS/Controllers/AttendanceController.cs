@@ -42,7 +42,7 @@ namespace FTL_HRMS.Controllers
                 }
                 catch (Exception)
                 {
-
+                    // ignored
                 }
             }
             
@@ -53,13 +53,13 @@ namespace FTL_HRMS.Controllers
         // GET: Attendance
         public Status MoveDeviceAttendanceToFilterAttendance()
         {
-            List<DateTime> DateListExceptToday = DistinctDateListFromDeviceAttendance();
+            List<DateTime> dateListExceptToday = DistinctDateListFromDeviceAttendance();
 
-            var Codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
+            var codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
 
-            foreach (var date in DateListExceptToday)
+            foreach (var date in dateListExceptToday)
             {
-                foreach (var code in Codes)
+                foreach (var code in codes)
                 {
                     FilterAttendance filterAttendance = GetFilterAttendanceByDate(code, date);
                     if (filterAttendance != null)
@@ -82,7 +82,7 @@ namespace FTL_HRMS.Controllers
             {
                 _db.SaveChanges();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 // ignored
             }
@@ -92,9 +92,9 @@ namespace FTL_HRMS.Controllers
 
         public List<DateTime> DistinctDateListFromDeviceAttendance()
         {
-            List<DateTime> DateList = _db.DeviceAttendance.Where(i => i.IsCalculated == false).ToList().Select(m => m.CheckTime.Date).Distinct().ToList();
-            DateList.Remove(DateTime.Now.Date);
-            return DateList;
+            List<DateTime> dateList = _db.DeviceAttendance.Where(i => i.IsCalculated == false).ToList().Select(m => m.CheckTime.Date).Distinct().ToList();
+            dateList.Remove(DateTime.Now.Date);
+            return dateList;
         }
 
         public FilterAttendance GetFilterAttendanceByDate(string code, DateTime date)
@@ -106,16 +106,16 @@ namespace FTL_HRMS.Controllers
                 filterAttendance = new FilterAttendance();
                 try
                 {
-                    DateTime InTime = device.Min(p => p.CheckTime);
-                    DateTime OutTime = device.Max(p => p.CheckTime);
+                    DateTime inTime = device.Min(p => p.CheckTime);
+                    DateTime outTime = device.Max(p => p.CheckTime);
                     int empId = GetEmployeeSlByEmployeeCode(code);
 
                     if (empId > 0)
                     {
                         filterAttendance.EmployeeId = empId;
                         filterAttendance.Date = date.Date;
-                        filterAttendance.InTime = InTime;
-                        filterAttendance.OutTime = OutTime;
+                        filterAttendance.InTime = inTime;
+                        filterAttendance.OutTime = outTime;
                         filterAttendance.IsCalculated = false;
                     }
                     else
@@ -148,7 +148,7 @@ namespace FTL_HRMS.Controllers
                 _db.FilterAttendance.Add(filterAttendance);
                 return true;
             }
-            catch(Exception exception)
+            catch(Exception)
             {
                 return false;
             }
@@ -162,7 +162,7 @@ namespace FTL_HRMS.Controllers
                 device.ForEach(x => x.IsCalculated = true);
                 return true;
             }
-            catch (Exception expection)
+            catch (Exception)
             {
                 return false;
             }
@@ -177,15 +177,14 @@ namespace FTL_HRMS.Controllers
         #region MoveFilterAttendanceToMonthlyAttendance
         public Status MoveFilterAttendanceToMonthlyAttendance()
         {
-            bool IsError;
-            DateTime StartDate = GetFirstDate();
-            DateTime LastDate = GetLastDate();
-            List<DateTime> DateList = GetDateList(StartDate, LastDate);
-            List<Employee> EmployeeList = GetEmployeeList();
+            DateTime startDate = GetFirstDate();
+            DateTime lastDate = GetLastDate();
+            List<DateTime> dateList = GetDateList(startDate, lastDate);
+            List<Employee> employeeList = GetEmployeeList();
 
-            foreach (var date in DateList)
+            foreach (var date in dateList)
             {
-                foreach (var emp in EmployeeList)
+                foreach (var emp in employeeList)
                 {
                     MonthlyAttendance monthlyAttendance = GetMonthlyAttendance(date, emp);
                     if (monthlyAttendance != null)
@@ -210,34 +209,34 @@ namespace FTL_HRMS.Controllers
 
         public DateTime GetFirstDate()
         {
-            DateTime FirstDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            if (_db.FilterAttendance.Where(i => i.IsCalculated == true).ToList().Count > 0)
+            DateTime firstDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            if (_db.FilterAttendance.Where(i => i.IsCalculated).ToList().Count > 0)
             {
-                FirstDate = _db.FilterAttendance.Where(i=> i.IsCalculated == true).ToList().Max(i => i.Date.Date).AddDays(1);
+                firstDate = _db.FilterAttendance.Where(i=> i.IsCalculated).ToList().Max(i => i.Date.Date).AddDays(1);
             }
-            return FirstDate;
+            return firstDate;
         }
 
         public DateTime GetLastDate()
         {
-            DateTime LastDate = DateTime.Now.AddDays(-1).Date;
-            return LastDate;
+            DateTime lastDate = DateTime.Now.AddDays(-1).Date;
+            return lastDate;
         }
 
-        public List<DateTime> GetDateList(DateTime StartDate, DateTime LastDate)
+        public List<DateTime> GetDateList(DateTime startDate, DateTime lastDate)
         {
-            List<DateTime> DateList = new List<DateTime>();
-            while (StartDate.Date <= LastDate.Date)
+            List<DateTime> dateList = new List<DateTime>();
+            while (startDate.Date <= lastDate.Date)
             {
-                DateList.Add(StartDate);
-                StartDate = StartDate.Date.AddDays(+1);
+                dateList.Add(startDate);
+                startDate = startDate.Date.AddDays(+1);
             }
-            return DateList;
+            return dateList;
         }
 
         public List<Employee> GetEmployeeList()
         {
-            return _db.Employee.Where(i => i.Status != false && i.IsSystemOrSuperAdmin != true).ToList();
+            return _db.Employee.Where(i => i.Status && i.IsSystemOrSuperAdmin != true).ToList();
         }
 
         public List<FilterAttendance> GetFilterAttendance(int sl, DateTime date)
@@ -245,12 +244,12 @@ namespace FTL_HRMS.Controllers
             return _db.FilterAttendance.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) == date.Date).ToList();
         }
 
-        public bool IsEmployeeLate(DateTime InTime, DateTime OpeningTime, double LateConsiderationTime)
+        public bool IsEmployeeLate(DateTime inTime, DateTime openingTime, double lateConsiderationTime)
         {
             try
             {
-                DateTime OpeningTimeWithConsidration = OpeningTime.AddMinutes(LateConsiderationTime);
-                if (InTime.TimeOfDay >= OpeningTimeWithConsidration.TimeOfDay)
+                DateTime openingTimeWithConsidration = openingTime.AddMinutes(lateConsiderationTime);
+                if (inTime.TimeOfDay >= openingTimeWithConsidration.TimeOfDay)
                 {
                     return true;
                 }
@@ -265,12 +264,12 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public bool IsWeekend(int BranchId, DateTime date)
+        public bool IsWeekend(int branchId, DateTime date)
         {
             try
             {
-                List<DateTime> WeekendList = GetWeekendList(BranchId);
-                foreach (var item in WeekendList)
+                List<DateTime> weekendList = GetWeekendList(branchId);
+                foreach (var item in weekendList)
                 {
                     if (item.DayOfWeek == date.DayOfWeek)
                     {
@@ -285,9 +284,9 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public List<DateTime> GetWeekendList(int BranchId)
+        public List<DateTime> GetWeekendList(int branchId)
         {
-            return _db.Weekend.Where(i => i.BranchId == BranchId).Select(i => i.Day).ToList();
+            return _db.Weekend.Where(i => i.BranchId == branchId).Select(i => i.Day).ToList();
         }
 
         public bool IsHoliday(DateTime date)
@@ -343,9 +342,8 @@ namespace FTL_HRMS.Controllers
 
         public MonthlyAttendance GetMonthlyAttendance(DateTime date, Employee emp)
         {
-            bool IsError;
-            List<FilterAttendance> EmployeeAttendance = GetFilterAttendance(emp.Sl, date);
-            MonthlyAttendance monthlyAttendance = null;
+            List<FilterAttendance> employeeAttendance = GetFilterAttendance(emp.Sl, date);
+            MonthlyAttendance monthlyAttendance;
 
             try
             {
@@ -354,14 +352,15 @@ namespace FTL_HRMS.Controllers
                 monthlyAttendance.EmployeeId = emp.Sl;
                 monthlyAttendance.IsCalculated = false;
 
-                if (EmployeeAttendance.Count > 0)
+                if (employeeAttendance.Count > 0)
                 {
                     if (emp.IsSpecialEmployee == false)
                     {
-                        if (emp.Branch.IsLateCalculated == true)
+                        if (emp.Branch.IsLateCalculated)
                         {
-                            double LateConsiderationTime = (double)emp.Branch.LateConsiderationTime;
-                            if (IsEmployeeLate(EmployeeAttendance.FirstOrDefault().InTime, emp.Branch.OpeningTime, LateConsiderationTime))
+                            double lateConsiderationTime = emp.Branch.LateConsiderationTime;
+                            FilterAttendance filterAttendance = employeeAttendance.FirstOrDefault();
+                            if (filterAttendance != null && IsEmployeeLate(filterAttendance.InTime, emp.Branch.OpeningTime, lateConsiderationTime))
                             {
                                 monthlyAttendance.Status = "L";
                             }
@@ -394,8 +393,8 @@ namespace FTL_HRMS.Controllers
                 }
                 else if (IsLeave(emp.Sl, date))
                 {
-                    string LeaveType = GetLeaveType(emp.Sl, date);
-                    monthlyAttendance.Status = LeaveType.Substring(0, 2) + "L";
+                    string leaveType = GetLeaveType(emp.Sl, date);
+                    monthlyAttendance.Status = leaveType.Substring(0, 2) + "L";
                 }
                 else
                 {
@@ -413,22 +412,18 @@ namespace FTL_HRMS.Controllers
         {
             DateTime joiningDate = _db.Employee.Where(x => x.Sl.Equals(employeeId)).Select(x => x.DateOfJoining).FirstOrDefault();
             DateTime resignDate = _db.Resignation.Where(x => x.Sl.Equals(employeeId) && x.Status.Equals("Approved")).Select(x => x.ResignDate).FirstOrDefault();
-            if (joiningDate != null)
+            if (joiningDate > date)
             {
-                if (joiningDate > date)
+                return true;
+            }
+            if (resignDate != new DateTime(1, 1, 1))
+            {
+                if (resignDate < date)
                 {
                     return true;
                 }
-                if (resignDate != new DateTime(1, 1, 1))
-                {
-                    if (resignDate < date)
-                    {
-                        return true;
-                    }
-                }
-                return false;
             }
-            return true;
+            return false;
 
         }
 
@@ -440,8 +435,11 @@ namespace FTL_HRMS.Controllers
                 {
                     int id = _db.MonthlyAttendance.Where(i => i.EmployeeId == monthlyAttendance.EmployeeId && DbFunctions.TruncateTime(i.Date) == monthlyAttendance.Date.Date && i.IsCalculated == false).Select(i => i.Sl).FirstOrDefault();
                     MonthlyAttendance monthly = _db.MonthlyAttendance.Find(id);
-                    monthly.Status = monthlyAttendance.Status;
-                    _db.Entry(monthly).State = EntityState.Modified;
+                    if (monthly != null)
+                    {
+                        monthly.Status = monthlyAttendance.Status;
+                        _db.Entry(monthly).State = EntityState.Modified;
+                    }
                 }
                 else
                 {
@@ -459,10 +457,10 @@ namespace FTL_HRMS.Controllers
         {
             try
             {
-                List<FilterAttendance> EmployeeAttendance = GetFilterAttendance(sl, date);
-                if (EmployeeAttendance.Count > 0)
+                List<FilterAttendance> employeeAttendance = GetFilterAttendance(sl, date);
+                if (employeeAttendance.Count > 0)
                 {
-                    EmployeeAttendance.ForEach(x => x.IsCalculated = true);
+                    employeeAttendance.ForEach(x => x.IsCalculated = true);
                 }
                 return true;
             }
