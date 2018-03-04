@@ -122,10 +122,10 @@ namespace FTL_HRMS.Controllers
                     ApplicationUser user = _db.Users.Find(employeeUserId);
                     _db.Users.Remove(user);
                     _db.SaveChanges();
-                    List<LoanCalculation> LoanList = _db.LoanCalculation.Where(i => i.EmployeeId == resignation.EmployeeId).ToList();
-                    if (LoanList.Count > 0)
+                    List<LoanCalculation> loanList = _db.LoanCalculation.Where(i => i.EmployeeId == resignation.EmployeeId).ToList();
+                    if (loanList.Count > 0)
                     {
-                        LoanList.ForEach(x => x.LoanDuration = 1);
+                        loanList.ForEach(x => x.LoanDuration = 1);
                     }
                     _db.SaveChanges();
                     NotificationController.GetInstant().SentMailToAll(NotificationType.Resign, NotificationStatus.Approve, employeeId);

@@ -52,8 +52,8 @@ namespace FTL_HRMS.Controllers
             int userId = DbUtility.GetUserId(_db, userName);
             if (salaryAdjustment.Amount > 0)
             {
-                string Type = Request["Type"].ToString();
-                if(Type == "Addition")
+                string type = Request["Type"].ToString();
+                if(type == "Addition")
                 {
                     salaryAdjustment.Amount = +salaryAdjustment.Amount;
                 }
@@ -105,8 +105,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                string Type = Request["Type"].ToString();
-                if (Type == "Addition")
+                string type = Request["Type"].ToString();
+                if (type == "Addition")
                 {
                     salaryAdjustment.Amount = +salaryAdjustment.Amount;
                 }
@@ -115,8 +115,8 @@ namespace FTL_HRMS.Controllers
                     salaryAdjustment.Amount = -salaryAdjustment.Amount;
                 }
                 string userName = User.Identity.Name;
-                int UserId = DbUtility.GetUserId(_db, userName);
-                salaryAdjustment.UpdatedBy = UserId;
+                int userId = DbUtility.GetUserId(_db, userName);
+                salaryAdjustment.UpdatedBy = userId;
                 salaryAdjustment.UpdateDate = DateTime.Now;
                 _db.Entry(salaryAdjustment).State = System.Data.Entity.EntityState.Modified;
                 _db.SaveChanges();

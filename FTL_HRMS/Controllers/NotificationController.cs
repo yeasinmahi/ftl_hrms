@@ -116,7 +116,7 @@ namespace FTL_HRMS.Controllers
 
         }
 
-        public async Task<bool> SendMail(string email, string MailSubject, string EmailBody)
+        public async Task<bool> SendMail(string email, string mailSubject, string emailBody)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace FTL_HRMS.Controllers
                 WebMail.From = "futuristictechdev@gmail.com";
 
                 //Send email  
-                WebMail.Send(to: email, subject: MailSubject, body: EmailBody, isBodyHtml: true);
+                WebMail.Send(to: email, subject: mailSubject, body: emailBody, isBodyHtml: true);
                 return true;
             }
             catch (Exception ex)

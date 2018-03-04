@@ -22,9 +22,9 @@ namespace FTL_HRMS.Controllers
         {
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
-            List<Loan> LoanHistoryList = new List<Loan>();
-            LoanHistoryList = _db.Loan.Include(a => a.UpdateEmployee).Where(i => i.EmployeeId == userId).ToList();
-            return View(LoanHistoryList);
+            List<Loan> loanHistoryList = new List<Loan>();
+            loanHistoryList = _db.Loan.Include(a => a.UpdateEmployee).Where(i => i.EmployeeId == userId).ToList();
+            return View(loanHistoryList);
         }
 
         // GET: Loans/Details/5

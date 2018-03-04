@@ -90,8 +90,8 @@ namespace FTL_HRMS.Controllers
             if (ModelState.IsValid)
             {
                 string userName = User.Identity.Name;
-                int UserId = DbUtility.GetUserId(_db, userName);
-                bonusAndPenalty.UpdatedBy = UserId;
+                int userId = DbUtility.GetUserId(_db, userName);
+                bonusAndPenalty.UpdatedBy = userId;
                 bonusAndPenalty.UpdateDate = DateTime.Now;
                 _db.Entry(bonusAndPenalty).State = EntityState.Modified;
                 _db.SaveChanges();

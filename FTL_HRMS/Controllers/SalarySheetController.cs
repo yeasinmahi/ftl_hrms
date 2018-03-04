@@ -14,25 +14,25 @@ namespace FTL_HRMS.Controllers
     { 
         // GET: SalarySheet
         private HRMSDbContext _db = new HRMSDbContext();
-        AttendanceController att = new AttendanceController();
+        AttendanceController _att = new AttendanceController();
 
         public ActionResult Index()
         {
-            int LastPaidSalaryDurationId = 0;
+            int lastPaidSalaryDurationId = 0;
             if (_db.PaidSalaryDuration.ToList().Count > 0)
             {
-                LastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
+                lastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
             }            
-            List<MonthlySalarySheet> SalarySheet = new List<MonthlySalarySheet>();
-            if (LastPaidSalaryDurationId > 0)
+            List<MonthlySalarySheet> salarySheet = new List<MonthlySalarySheet>();
+            if (lastPaidSalaryDurationId > 0)
             {
-                SalarySheet = _db.MonthlySalarySheet.Include(i=> i.Employee).Include(i=> i.PaidSalaryDuration).Where(i => i.PaidSalaryDurationId == LastPaidSalaryDurationId).ToList();
-                DateTime FromDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.FromDate).FirstOrDefault();
-                DateTime ToDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
-                ViewBag.FromDate = FromDate.ToShortDateString();
-                ViewBag.ToDate = ToDate.ToShortDateString();
+                salarySheet = _db.MonthlySalarySheet.Include(i=> i.Employee).Include(i=> i.PaidSalaryDuration).Where(i => i.PaidSalaryDurationId == lastPaidSalaryDurationId).ToList();
+                DateTime fromDate = _db.PaidSalaryDuration.Where(i => i.Sl == lastPaidSalaryDurationId).Select(i => i.FromDate).FirstOrDefault();
+                DateTime toDate = _db.PaidSalaryDuration.Where(i => i.Sl == lastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
+                ViewBag.FromDate = fromDate.ToShortDateString();
+                ViewBag.ToDate = toDate.ToShortDateString();
             }
-            return View(SalarySheet);
+            return View(salarySheet);
         }
 
         public ActionResult PaidSalaryDurationList()
@@ -44,8 +44,8 @@ namespace FTL_HRMS.Controllers
         {
             try
             {
-                int LastPaidSalaryDurationId = id;
-                PaidSalaryDuration lastPaidSalary = _db.PaidSalaryDuration.Find(LastPaidSalaryDurationId);
+                int lastPaidSalaryDurationId = id;
+                PaidSalaryDuration lastPaidSalary = _db.PaidSalaryDuration.Find(lastPaidSalaryDurationId);
                 lastPaidSalary.IsPaid = true;
                 lastPaidSalary.PaidDate = DateTime.Now;
                 _db.Entry(lastPaidSalary).State = EntityState.Modified;
@@ -61,64 +61,64 @@ namespace FTL_HRMS.Controllers
         }
 
         #region Generate Salary Sheet
-        public ActionResult CalculateSalarySheet(DateTime StartDate, DateTime EndDate)
+        public ActionResult CalculateSalarySheet(DateTime startDate, DateTime endDate)
         {
-            DateTime ToDate = Utility.Utility.GetDefaultDate();
-            int LastPaidSalaryDurationId = 0;
+            DateTime toDate = Utility.Utility.GetDefaultDate();
+            int lastPaidSalaryDurationId = 0;
             if (_db.PaidSalaryDuration.ToList().Count > 0)
             {
-                LastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
+                lastPaidSalaryDurationId = _db.PaidSalaryDuration.Max(i => i.Sl);
             }
-            if (LastPaidSalaryDurationId > 0)
+            if (lastPaidSalaryDurationId > 0)
             {
-                ToDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
+                toDate = _db.PaidSalaryDuration.Where(i => i.Sl == lastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
             }
-            int PendingSheet = _db.PaidSalaryDuration.Where(i => i.IsPaid == false).ToList().Count;
-            if(StartDate.Date > ToDate.Date && EndDate.Date < DateTime.Now.Date && PendingSheet == 0)
+            int pendingSheet = _db.PaidSalaryDuration.Where(i => i.IsPaid == false).ToList().Count;
+            if(startDate.Date > toDate.Date && endDate.Date < DateTime.Now.Date && pendingSheet == 0)
             {
-                att.SyncAttendance();
-                List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendance(StartDate, EndDate);
-                double WorkingDays = GetWorkingDays(StartDate);
-                int PaidSalaryDurationId = InsertPaidSalaryDuration(StartDate, EndDate, WorkingDays);
+                _att.SyncAttendance();
+                List<int> employeeSlList = GetEmployeeSlFromMonthlyAttendance(startDate, endDate);
+                double workingDays = GetWorkingDays(startDate);
+                int paidSalaryDurationId = InsertPaidSalaryDuration(startDate, endDate, workingDays);
 
-                if (PaidSalaryDurationId > 0)
+                if (paidSalaryDurationId > 0)
                 {
-                    foreach (var sl in EmployeeSlList)
+                    foreach (var sl in employeeSlList)
                     {
-                        double GrossSalary = GetGrossSalary(sl);
-                        double BasicSalary = GetBasicSalary(sl);
-                        double PerDaySalary = GetPerDaySalary(GrossSalary, WorkingDays);
-                        double DaysOfSalary = GetDaysOfSalary(StartDate, EndDate);
-                        double EmployeeGrossSalary = GetEmployeeGrossSalary(PerDaySalary, DaysOfSalary);
-                        double AbsentDays = GetAbsentDays(sl, StartDate, EndDate);
-                        double AbsentPanelty = GetAbsentPanelty(AbsentDays, PerDaySalary);
-                        double LateDays = GetLateDays(sl, StartDate, EndDate);
-                        double WithoutPayLeave = GetWithoutPayLeave(sl);
+                        double grossSalary = GetGrossSalary(sl);
+                        double basicSalary = GetBasicSalary(sl);
+                        double perDaySalary = GetPerDaySalary(grossSalary, workingDays);
+                        double daysOfSalary = GetDaysOfSalary(startDate, endDate);
+                        double employeeGrossSalary = GetEmployeeGrossSalary(perDaySalary, daysOfSalary);
+                        double absentDays = GetAbsentDays(sl, startDate, endDate);
+                        double absentPanelty = GetAbsentPanelty(absentDays, perDaySalary);
+                        double lateDays = GetLateDays(sl, startDate, endDate);
+                        double withoutPayLeave = GetWithoutPayLeave(sl);
 
-                        if (LateDays > 0)
+                        if (lateDays > 0)
                         {
-                            int LeavePaneltyDays = 0;
-                            int BranchId = GetEmployeeBranchId(sl);
-                            double LateConsiderationDays = (double)GetLateConsiderationDays(BranchId);
-                            if (LateConsiderationDays > 0)
+                            int leavePaneltyDays = 0;
+                            int branchId = GetEmployeeBranchId(sl);
+                            double lateConsiderationDays = (double)GetLateConsiderationDays(branchId);
+                            if (lateConsiderationDays > 0)
                             {
-                                LeavePaneltyDays = GetLeavePaneltyDays(LateDays, LateConsiderationDays);
+                                leavePaneltyDays = GetLeavePaneltyDays(lateDays, lateConsiderationDays);
                             }
-                            double EarnLeave = GetEarnLeave(sl);
-                            if (CalculateLeavePanelty(sl, LeavePaneltyDays, EarnLeave, WithoutPayLeave))
+                            double earnLeave = GetEarnLeave(sl);
+                            if (CalculateLeavePanelty(sl, leavePaneltyDays, earnLeave, withoutPayLeave))
                             {
                                 EmployeeLeaveCountHistory empLeaveCount = new EmployeeLeaveCountHistory();
                                 empLeaveCount.EmployeeId = sl;
-                                empLeaveCount.PaidSalaryDurationId = PaidSalaryDurationId;
-                                if (EarnLeave > LeavePaneltyDays)
+                                empLeaveCount.PaidSalaryDurationId = paidSalaryDurationId;
+                                if (earnLeave > leavePaneltyDays)
                                 {
-                                    empLeaveCount.EarnLeaveDays = LeavePaneltyDays;
+                                    empLeaveCount.EarnLeaveDays = leavePaneltyDays;
                                 }
                                 else
                                 {
-                                    empLeaveCount.EarnLeaveDays = EarnLeave;
+                                    empLeaveCount.EarnLeaveDays = earnLeave;
                                 }
-                                empLeaveCount.WithoutPayLeaveDays = WithoutPayLeave;
+                                empLeaveCount.WithoutPayLeaveDays = withoutPayLeave;
                                 _db.EmployeeLeaveCountHistory.Add(empLeaveCount);
                                 _db.SaveChanges();
                                 //leave counts updated
@@ -129,11 +129,11 @@ namespace FTL_HRMS.Controllers
                             }
                         }
 
-                        double LatePanelty = 0;
-                        WithoutPayLeave = GetWithoutPayLeave(sl);
-                        double LeavePanelty = GetLeavePanelty(sl, PerDaySalary, WithoutPayLeave);
-                        double UnofficialDays = GetUnofficialDays(sl, StartDate, EndDate);
-                        double UnofficialPanelty = GetUnofficialPanelty(PerDaySalary, UnofficialDays);
+                        double latePanelty = 0;
+                        withoutPayLeave = GetWithoutPayLeave(sl);
+                        double leavePanelty = GetLeavePanelty(sl, perDaySalary, withoutPayLeave);
+                        double unofficialDays = GetUnofficialDays(sl, startDate, endDate);
+                        double unofficialPanelty = GetUnofficialPanelty(perDaySalary, unofficialDays);
 
                         //double BeforeJoiningDays = GetBeforeJoiningDays(sl, StartDate, EndDate);
                         //double UnofficialPanelty = 0;
@@ -147,34 +147,34 @@ namespace FTL_HRMS.Controllers
                         //    UnofficialPanelty += GetUnofficialPanelty(PerDaySalary, AfterResignDays);
                         //}
 
-                        double OthersPanelty = GetOthersPanelty(sl, StartDate, EndDate);
-                        double OthersBonus = GetOthersBonus(sl, StartDate, EndDate);
-                        double FestivalBonus = GetFestivalBonus(sl, StartDate, EndDate);
-                        double AdjustmentAmount = GetAdjustmentAmount(sl, StartDate, EndDate);
-                        double LoanAmount = GetLoanAmount(sl, PaidSalaryDurationId);
+                        double othersPanelty = GetOthersPanelty(sl, startDate, endDate);
+                        double othersBonus = GetOthersBonus(sl, startDate, endDate);
+                        double festivalBonus = GetFestivalBonus(sl, startDate, endDate);
+                        double adjustmentAmount = GetAdjustmentAmount(sl, startDate, endDate);
+                        double loanAmount = GetLoanAmount(sl, paidSalaryDurationId);
 
                         MonthlySalarySheet monthlySalarySheet = new MonthlySalarySheet();
                         monthlySalarySheet.EmployeeId = sl;
-                        monthlySalarySheet.PaidSalaryDurationId = PaidSalaryDurationId;
-                        monthlySalarySheet.GrossSalary = GrossSalary;
-                        monthlySalarySheet.BasicSalary = BasicSalary;
-                        monthlySalarySheet.AbsentDay = AbsentDays;
-                        monthlySalarySheet.AbsentPanelty = AbsentPanelty;
-                        monthlySalarySheet.LateDay = LateDays;
-                        monthlySalarySheet.LatePenalty = LatePanelty;
-                        monthlySalarySheet.UnofficialDay = UnofficialDays;
-                        monthlySalarySheet.UnofficialPenalty = UnofficialPanelty;
-                        monthlySalarySheet.LeavePenalty = LeavePanelty;
-                        monthlySalarySheet.OthersPenalty = OthersPanelty;
-                        monthlySalarySheet.OthersBonus = OthersBonus;
-                        monthlySalarySheet.FestivalBonus = FestivalBonus;
-                        monthlySalarySheet.AdjustmentAmount = AdjustmentAmount;
-                        monthlySalarySheet.LoanAmount = LoanAmount;
-                        monthlySalarySheet.NetPay = CalculateNetPay(EmployeeGrossSalary, AbsentPanelty, LatePanelty, UnofficialPanelty, LeavePanelty, OthersPanelty, OthersBonus, FestivalBonus, AdjustmentAmount, LoanAmount);
+                        monthlySalarySheet.PaidSalaryDurationId = paidSalaryDurationId;
+                        monthlySalarySheet.GrossSalary = grossSalary;
+                        monthlySalarySheet.BasicSalary = basicSalary;
+                        monthlySalarySheet.AbsentDay = absentDays;
+                        monthlySalarySheet.AbsentPanelty = absentPanelty;
+                        monthlySalarySheet.LateDay = lateDays;
+                        monthlySalarySheet.LatePenalty = latePanelty;
+                        monthlySalarySheet.UnofficialDay = unofficialDays;
+                        monthlySalarySheet.UnofficialPenalty = unofficialPanelty;
+                        monthlySalarySheet.LeavePenalty = leavePanelty;
+                        monthlySalarySheet.OthersPenalty = othersPanelty;
+                        monthlySalarySheet.OthersBonus = othersBonus;
+                        monthlySalarySheet.FestivalBonus = festivalBonus;
+                        monthlySalarySheet.AdjustmentAmount = adjustmentAmount;
+                        monthlySalarySheet.LoanAmount = loanAmount;
+                        monthlySalarySheet.NetPay = CalculateNetPay(employeeGrossSalary, absentPanelty, latePanelty, unofficialPanelty, leavePanelty, othersPanelty, othersBonus, festivalBonus, adjustmentAmount, loanAmount);
                         _db.MonthlySalarySheet.Add(monthlySalarySheet);
                         _db.SaveChanges();
                     }
-                    UpdateMonthlyAttendanceStatus(StartDate, EndDate);
+                    UpdateMonthlyAttendanceStatus(startDate, endDate);
                     TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 }
                 else
@@ -189,35 +189,35 @@ namespace FTL_HRMS.Controllers
             return RedirectToAction("Index");
         }
 
-        public List<int> GetEmployeeSlFromMonthlyAttendance(DateTime StartDate, DateTime EndDate)
+        public List<int> GetEmployeeSlFromMonthlyAttendance(DateTime startDate, DateTime endDate)
         {
-            return _db.MonthlyAttendance.Where(i => i.IsCalculated == false && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Select(m => m.EmployeeId).Distinct().ToList();
+            return _db.MonthlyAttendance.Where(i => i.IsCalculated == false && DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date).ToList().Select(m => m.EmployeeId).Distinct().ToList();
         }
 
-        public List<int> GetEmployeeSlFromMonthlyAttendanceForReverse(DateTime StartDate, DateTime EndDate)
+        public List<int> GetEmployeeSlFromMonthlyAttendanceForReverse(DateTime startDate, DateTime endDate)
         {
-            return _db.MonthlyAttendance.Where(i => i.IsCalculated == true && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Select(m => m.EmployeeId).Distinct().ToList();
+            return _db.MonthlyAttendance.Where(i => i.IsCalculated == true && DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date).ToList().Select(m => m.EmployeeId).Distinct().ToList();
         }
 
-        public double GetWorkingDays(DateTime StartDate)
+        public double GetWorkingDays(DateTime startDate)
         {
-            return System.DateTime.DaysInMonth(StartDate.Year, StartDate.Month);
+            return System.DateTime.DaysInMonth(startDate.Year, startDate.Month);
         }
 
-        public double GetDaysOfSalary(DateTime StartDate, DateTime EndDate)
+        public double GetDaysOfSalary(DateTime startDate, DateTime endDate)
         {
-            return (EndDate - StartDate).TotalDays + 1;
+            return (endDate - startDate).TotalDays + 1;
         }
 
-        public int InsertPaidSalaryDuration(DateTime StartDate, DateTime EndDate, double WorkingDays)
+        public int InsertPaidSalaryDuration(DateTime startDate, DateTime endDate, double workingDays)
         {
             int sl = 0;
             try
             {
                 PaidSalaryDuration paidSalaryDuration = new PaidSalaryDuration();
-                paidSalaryDuration.FromDate = StartDate;
-                paidSalaryDuration.ToDate = EndDate;
-                paidSalaryDuration.WorkingDay = WorkingDays;
+                paidSalaryDuration.FromDate = startDate;
+                paidSalaryDuration.ToDate = endDate;
+                paidSalaryDuration.WorkingDay = workingDays;
                 paidSalaryDuration.GenerateDate = DateTime.Now;
                 paidSalaryDuration.IsPaid = false;
                 paidSalaryDuration.PaidDate = null;
@@ -242,44 +242,44 @@ namespace FTL_HRMS.Controllers
             return _db.EmployeeSalaryDistribution.Where(i => i.EmployeeId == sl).Select(i => i.BasicSalary).FirstOrDefault();
         }
 
-        public double GetPerDaySalary(double GrossSalary, double WorkingDays)
+        public double GetPerDaySalary(double grossSalary, double workingDays)
         {
-            double PerDaySalary = 0;
-            if(GrossSalary > 0 && WorkingDays > 0)
+            double perDaySalary = 0;
+            if(grossSalary > 0 && workingDays > 0)
             {
-                PerDaySalary = GrossSalary / WorkingDays;
+                perDaySalary = grossSalary / workingDays;
             }
-            return PerDaySalary;
+            return perDaySalary;
         }
 
-        public double GetEmployeeGrossSalary(double PerDaySalary, double DaysOfSalary)
+        public double GetEmployeeGrossSalary(double perDaySalary, double daysOfSalary)
         {
-            double EmployeeGrossSalary = 0;
-            if (PerDaySalary > 0 && DaysOfSalary > 0)
+            double employeeGrossSalary = 0;
+            if (perDaySalary > 0 && daysOfSalary > 0)
             {
-                EmployeeGrossSalary = DaysOfSalary * PerDaySalary;
+                employeeGrossSalary = daysOfSalary * perDaySalary;
             }
-            return EmployeeGrossSalary;
+            return employeeGrossSalary;
         }
 
-        public double GetAbsentDays(int sl, DateTime StartDate, DateTime EndDate)
+        public double GetAbsentDays(int sl, DateTime startDate, DateTime endDate)
         {
-            return _db.MonthlyAttendance.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date && i.Status == "A" && i.IsCalculated == false).ToList().Count;
+            return _db.MonthlyAttendance.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date && i.Status == "A" && i.IsCalculated == false).ToList().Count;
         }
 
-        public double GetAbsentPanelty(double AbsentDays, double PerDaySalary)
+        public double GetAbsentPanelty(double absentDays, double perDaySalary)
         {
-            double AbsentPanelty = 0;
-            if(AbsentDays > 0 && PerDaySalary > 0)
+            double absentPanelty = 0;
+            if(absentDays > 0 && perDaySalary > 0)
             {
-                AbsentPanelty = AbsentDays * PerDaySalary;
+                absentPanelty = absentDays * perDaySalary;
             }
-            return AbsentPanelty;
+            return absentPanelty;
         }
 
-        public double GetLateDays(int sl, DateTime StartDate, DateTime EndDate)
+        public double GetLateDays(int sl, DateTime startDate, DateTime endDate)
         {
-            return _db.MonthlyAttendance.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date && i.Status == "L" && i.IsCalculated == false).ToList().Count;
+            return _db.MonthlyAttendance.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date && i.Status == "L" && i.IsCalculated == false).ToList().Count;
         }
 
         public int GetEmployeeBranchId(int sl)
@@ -287,19 +287,19 @@ namespace FTL_HRMS.Controllers
             return _db.Employee.Where(i => i.Sl == sl).Select(i => i.BranchId).FirstOrDefault();
         }
 
-        public double? GetLateConsiderationDays(int BranchId)
+        public double? GetLateConsiderationDays(int branchId)
         {
-            return _db.Branches.Where(i => i.Sl == BranchId).Select(i => i.LateConsiderationDay).FirstOrDefault();
+            return _db.Branches.Where(i => i.Sl == branchId).Select(i => i.LateConsiderationDay).FirstOrDefault();
         }
 
-        public int GetLeavePaneltyDays(double LateDays, double LateConsiderationDays)
+        public int GetLeavePaneltyDays(double lateDays, double lateConsiderationDays)
         {
-            int LeavePanelty = 0;
-            if(LateDays > 0 && LateConsiderationDays > 0)
+            int leavePanelty = 0;
+            if(lateDays > 0 && lateConsiderationDays > 0)
             {
-                LeavePanelty = Convert.ToInt32(Math.Floor(LateDays / LateConsiderationDays));
+                leavePanelty = Convert.ToInt32(Math.Floor(lateDays / lateConsiderationDays));
             }
-            return LeavePanelty;
+            return leavePanelty;
         }
 
         public double GetEarnLeave(int sl)
@@ -312,11 +312,11 @@ namespace FTL_HRMS.Controllers
             return _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay").Select(i => i.AvailableDay).FirstOrDefault();
         }
 
-        public bool CalculateLeavePanelty(int sl, int LeavePaneltyDays, double EarnLeave, double WithoutPayLeave)
+        public bool CalculateLeavePanelty(int sl, int leavePaneltyDays, double EarnLeave, double WithoutPayLeave)
         {
             try
             {
-                double result = EarnLeave - LeavePaneltyDays;
+                double result = EarnLeave - leavePaneltyDays;
                 if (result < 0)
                 {
                     int earnLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Earn").Select(i => i.Sl).FirstOrDefault();
@@ -347,12 +347,12 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public double GetLeavePanelty(int sl, double PerDaySalary, double WithoutPayLeave)
+        public double GetLeavePanelty(int sl, double perDaySalary, double WithoutPayLeave)
         {
-            double LeavePanelty = 0;
-            if(PerDaySalary > 0 && WithoutPayLeave > 0)
+            double leavePanelty = 0;
+            if(perDaySalary > 0 && WithoutPayLeave > 0)
             {
-                LeavePanelty = PerDaySalary * WithoutPayLeave;
+                leavePanelty = perDaySalary * WithoutPayLeave;
 
                 int withoutPayLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay").Select(i => i.Sl).FirstOrDefault();
                 var withoutPayLeave = _db.LeaveCounts.Find(withoutPayLeaveId);
@@ -362,14 +362,14 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                LeavePanelty = 0;
+                leavePanelty = 0;
             }
-            return LeavePanelty;
+            return leavePanelty;
         }
 
-        public double GetUnofficialDays(int sl, DateTime StartDate, DateTime EndDate)
+        public double GetUnofficialDays(int sl, DateTime startDate, DateTime endDate)
         {
-            return _db.MonthlyAttendance.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date && i.Status == "U" && i.IsCalculated == false).ToList().Count;
+            return _db.MonthlyAttendance.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date && i.Status == "U" && i.IsCalculated == false).ToList().Count;
         }
 
         public DateTime GetJoiningDate(int sl)
@@ -377,9 +377,9 @@ namespace FTL_HRMS.Controllers
             return _db.Employee.Where(i => i.Sl == sl).Select(i => i.DateOfJoining).FirstOrDefault();
         }
 
-        public bool CheckJoiningDateContains(DateTime StartDate, DateTime EndDate, DateTime JoiningDate)
+        public bool CheckJoiningDateContains(DateTime startDate, DateTime endDate, DateTime joiningDate)
         {
-            if(JoiningDate.Date >= StartDate.Date && JoiningDate.Date <= EndDate)
+            if(joiningDate.Date >= startDate.Date && joiningDate.Date <= endDate)
             {
                 return true;
             }
@@ -389,33 +389,33 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public double CalculateBeforeJoiningDays(DateTime StartDate, DateTime JoiningDate)
+        public double CalculateBeforeJoiningDays(DateTime startDate, DateTime joiningDate)
         {
-            double BeforeJoiningDays = 0;
-            if(JoiningDate.Date > StartDate.Date)
+            double beforeJoiningDays = 0;
+            if(joiningDate.Date > startDate.Date)
             {
-                BeforeJoiningDays = JoiningDate.Day - StartDate.Day;
+                beforeJoiningDays = joiningDate.Day - startDate.Day;
             }
             else
             {
-                BeforeJoiningDays = 0;
+                beforeJoiningDays = 0;
             }
-            return BeforeJoiningDays;
+            return beforeJoiningDays;
         }
 
-        public double GetBeforeJoiningDays(int sl, DateTime StartDate, DateTime EndDate)
+        public double GetBeforeJoiningDays(int sl, DateTime startDate, DateTime endDate)
         {
-            double BeforeJoiningDays = 0;
-            DateTime JoiningDate = GetJoiningDate(sl);
-            if(CheckJoiningDateContains(StartDate, EndDate, JoiningDate))
+            double beforeJoiningDays = 0;
+            DateTime joiningDate = GetJoiningDate(sl);
+            if(CheckJoiningDateContains(startDate, endDate, joiningDate))
             {
-                BeforeJoiningDays = CalculateBeforeJoiningDays(StartDate, JoiningDate);
+                beforeJoiningDays = CalculateBeforeJoiningDays(startDate, joiningDate);
             }
             else
             {
-                BeforeJoiningDays = 0;
+                beforeJoiningDays = 0;
             }
-            return BeforeJoiningDays;
+            return beforeJoiningDays;
         }
 
         public DateTime GetResignDate(int sl)
@@ -423,9 +423,9 @@ namespace FTL_HRMS.Controllers
             return _db.Resignation.Where(i => i.EmployeeId == sl && i.Status == "Approved").Select(i => i.ResignDate).FirstOrDefault();
         }
 
-        public bool CheckResignDateContains(DateTime StartDate, DateTime EndDate, DateTime ResignDate)
+        public bool CheckResignDateContains(DateTime startDate, DateTime endDate, DateTime resignDate)
         {
-            if (ResignDate.Date >= StartDate.Date && ResignDate.Date <= EndDate)
+            if (resignDate.Date >= startDate.Date && resignDate.Date <= endDate)
             {
                 return true;
             }
@@ -435,54 +435,54 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public double CalculateAfterResignDays(DateTime EndDate, DateTime ResignDate)
+        public double CalculateAfterResignDays(DateTime endDate, DateTime resignDate)
         {
-            double AfterResignDays = 0;
-            if (ResignDate.Date < EndDate.Date)
+            double afterResignDays = 0;
+            if (resignDate.Date < endDate.Date)
             {
-                AfterResignDays = EndDate.Day - ResignDate.Day;
+                afterResignDays = endDate.Day - resignDate.Day;
             }
             else
             {
-                AfterResignDays = 0;
+                afterResignDays = 0;
             }
-            return AfterResignDays;
+            return afterResignDays;
         }
 
-        public double GetAfterResignDays(int sl, DateTime StartDate, DateTime EndDate)
+        public double GetAfterResignDays(int sl, DateTime startDate, DateTime endDate)
         {
-            double AfterResignDays = 0;
-            DateTime ResignDate = GetResignDate(sl);
-            if (CheckResignDateContains(StartDate, EndDate, ResignDate))
+            double afterResignDays = 0;
+            DateTime resignDate = GetResignDate(sl);
+            if (CheckResignDateContains(startDate, endDate, resignDate))
             {
-                AfterResignDays = CalculateAfterResignDays(EndDate, ResignDate);
+                afterResignDays = CalculateAfterResignDays(endDate, resignDate);
             }
             else
             {
-                AfterResignDays = 0;
+                afterResignDays = 0;
             }
-            return AfterResignDays;
+            return afterResignDays;
         }
 
-        public double GetUnofficialPanelty(double PerDaySalary, double UnofficialDays)
+        public double GetUnofficialPanelty(double perDaySalary, double unofficialDays)
         {
-            double UnofficialPanelty = 0;
-            if(PerDaySalary > 0 && UnofficialDays > 0)
+            double unofficialPanelty = 0;
+            if(perDaySalary > 0 && unofficialDays > 0)
             {
-                UnofficialPanelty = PerDaySalary * UnofficialDays;
+                unofficialPanelty = perDaySalary * unofficialDays;
             }
             else
             {
-                UnofficialPanelty = 0;
+                unofficialPanelty = 0;
             }
-            return UnofficialPanelty;
+            return unofficialPanelty;
         }
 
-        public double GetOthersPanelty(int sl, DateTime StartDate, DateTime EndDate)
+        public double GetOthersPanelty(int sl, DateTime startDate, DateTime endDate)
         {
-            if(_db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Penalty" && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Count > 0)
+            if(_db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Penalty" && DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date).ToList().Count > 0)
             {
-                return _db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Penalty" && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).Sum(i => i.Amount);
+                return _db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Penalty" && DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date).Sum(i => i.Amount);
             }
             else
             {
@@ -490,11 +490,11 @@ namespace FTL_HRMS.Controllers
             }            
         }
 
-        public double GetOthersBonus(int sl, DateTime StartDate, DateTime EndDate)
+        public double GetOthersBonus(int sl, DateTime startDate, DateTime endDate)
         {
-            if(_db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Bonus" && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Count > 0)
+            if(_db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Bonus" && DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date).ToList().Count > 0)
             {
-                return _db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Bonus" && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).Sum(i => i.Amount);
+                return _db.BonusAndPenalty.Where(i => i.EmployeeId == sl && i.Type == "Bonus" && DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date).Sum(i => i.Amount);
             }
             else
             {
@@ -502,38 +502,38 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public double GetFestivalBonus(int sl, DateTime StartDate, DateTime EndDate)
+        public double GetFestivalBonus(int sl, DateTime startDate, DateTime endDate)
         {
-            double FestivalBonus = 0;
-            List<FestivalBonus> FestivalBonusList =  _db.FestivalBonus.Where(i => DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList();
-            if(FestivalBonusList.Count > 0)
+            double festivalBonus = 0;
+            List<FestivalBonus> festivalBonusList =  _db.FestivalBonus.Where(i => DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date).ToList();
+            if(festivalBonusList.Count > 0)
             {
-                foreach(var item in FestivalBonusList)
+                foreach(var item in festivalBonusList)
                 {
                     if(item.BasedOn == "Gross")
                     {
-                        double GrossSalary = GetGrossSalary(sl);
-                        FestivalBonus = FestivalBonus + GrossSalary * item.BonusPersentage / 100;
+                        double grossSalary = GetGrossSalary(sl);
+                        festivalBonus = festivalBonus + grossSalary * item.BonusPersentage / 100;
                     }
                     else if(item.BasedOn == "Basic")
                     {
-                        double BasicSalary = GetBasicSalary(sl);
-                        FestivalBonus = FestivalBonus + BasicSalary * item.BonusPersentage / 100;
+                        double basicSalary = GetBasicSalary(sl);
+                        festivalBonus = festivalBonus + basicSalary * item.BonusPersentage / 100;
                     }
                     else
                     {
-                        FestivalBonus = 0;
+                        festivalBonus = 0;
                     }
                 }
             }
-            return FestivalBonus;
+            return festivalBonus;
         }
 
-        public double GetAdjustmentAmount(int sl, DateTime StartDate, DateTime EndDate)
+        public double GetAdjustmentAmount(int sl, DateTime startDate, DateTime endDate)
         {
-            if (_db.SalaryAdjustment.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList().Count > 0)
+            if (_db.SalaryAdjustment.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date).ToList().Count > 0)
             {
-                return _db.SalaryAdjustment.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).Sum(i => i.Amount);
+                return _db.SalaryAdjustment.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date).Sum(i => i.Amount);
             }
             else
             {
@@ -541,20 +541,20 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public double GetLoanAmount(int sl, int PaidSalaryDurationId)
+        public double GetLoanAmount(int sl, int paidSalaryDurationId)
         {
-            List<LoanCalculation> LoanList = _db.LoanCalculation.Where(i => i.EmployeeId == sl).ToList();
-            double LoanAmount = 0;
-            if (LoanList.Count > 0)
+            List<LoanCalculation> loanList = _db.LoanCalculation.Where(i => i.EmployeeId == sl).ToList();
+            double loanAmount = 0;
+            if (loanList.Count > 0)
             {
-                foreach(var item in LoanList)
+                foreach(var item in loanList)
                 {
                     if(item.LoanDuration > 0)
                     {
-                        double Amount = item.LoanAmount / item.LoanDuration;
+                        double amount = item.LoanAmount / item.LoanDuration;
 
                         LoanCalculation calculation = _db.LoanCalculation.Find(item.Sl);
-                        calculation.LoanAmount -= Amount;
+                        calculation.LoanAmount -= amount;
                         calculation.LoanDuration -= 1;
                         _db.Entry(calculation).State = EntityState.Modified;
                         _db.SaveChanges();
@@ -562,40 +562,40 @@ namespace FTL_HRMS.Controllers
                         LoanCalculationHistory history = new LoanCalculationHistory();
                         history.EmployeeId = sl;
                         history.LoanCalculationId = calculation.Sl;
-                        history.PaidSalaryDurationId = PaidSalaryDurationId;
-                        history.LoanAmount = Amount;
+                        history.PaidSalaryDurationId = paidSalaryDurationId;
+                        history.LoanAmount = amount;
                         _db.LoanCalculationHistory.Add(history);
                         _db.SaveChanges();
 
-                        LoanAmount += Amount;
+                        loanAmount += amount;
                     }
                 }
-                return LoanAmount;
+                return loanAmount;
             }
             else
             {
-                return LoanAmount;
+                return loanAmount;
             }
         }
 
-        public double CalculateNetPay(double EmployeeGrossSalary, double AbsentPanelty, double LatePanelty,double UnofficialPanelty,double LeavePanelty,double OthersPanelty,double OthersBonus,double FestivalBonus, double AdjustmentAmount, double LoanAmount)
+        public double CalculateNetPay(double employeeGrossSalary, double absentPanelty, double latePanelty,double unofficialPanelty,double leavePanelty,double othersPanelty,double othersBonus,double festivalBonus, double adjustmentAmount, double loanAmount)
         {
-            return EmployeeGrossSalary - AbsentPanelty - LatePanelty - UnofficialPanelty - LeavePanelty - OthersPanelty + OthersBonus + FestivalBonus + AdjustmentAmount - LoanAmount;
+            return employeeGrossSalary - absentPanelty - latePanelty - unofficialPanelty - leavePanelty - othersPanelty + othersBonus + festivalBonus + adjustmentAmount - loanAmount;
         }
 
-        public List<MonthlyAttendance> GetMonthlyAttendance(DateTime StartDate, DateTime EndDate)
+        public List<MonthlyAttendance> GetMonthlyAttendance(DateTime startDate, DateTime endDate)
         {
-            return _db.MonthlyAttendance.Where(i => DbFunctions.TruncateTime(i.Date) >= StartDate.Date && DbFunctions.TruncateTime(i.Date) <= EndDate.Date).ToList();
+            return _db.MonthlyAttendance.Where(i => DbFunctions.TruncateTime(i.Date) >= startDate.Date && DbFunctions.TruncateTime(i.Date) <= endDate.Date).ToList();
         }
 
-        public bool UpdateMonthlyAttendanceStatus(DateTime StartDate, DateTime EndDate)
+        public bool UpdateMonthlyAttendanceStatus(DateTime startDate, DateTime endDate)
         {
             try
             {
-                List<MonthlyAttendance> EmployeeAttendance = GetMonthlyAttendance(StartDate, EndDate);
-                if (EmployeeAttendance.Count > 0)
+                List<MonthlyAttendance> employeeAttendance = GetMonthlyAttendance(startDate, endDate);
+                if (employeeAttendance.Count > 0)
                 {
-                    EmployeeAttendance.ForEach(x => x.IsCalculated = true);
+                    employeeAttendance.ForEach(x => x.IsCalculated = true);
                 }
                 _db.SaveChanges();
                 return true;
@@ -612,19 +612,19 @@ namespace FTL_HRMS.Controllers
         {
             try
             {
-                int LastPaidSalaryDurationId = id;
-                var lastPaidSalary = _db.PaidSalaryDuration.Find(LastPaidSalaryDurationId);
-                DateTime FromDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.FromDate).FirstOrDefault();
-                DateTime ToDate = _db.PaidSalaryDuration.Where(i => i.Sl == LastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
-                List<int> EmployeeSlList = GetEmployeeSlFromMonthlyAttendanceForReverse(FromDate, ToDate);
-                UpdateReverseMonthlyAttendanceStatus(FromDate, ToDate);
-                RemoveMonthlySalarySheetData(LastPaidSalaryDurationId);
-                foreach (var sl in EmployeeSlList)
+                int lastPaidSalaryDurationId = id;
+                var lastPaidSalary = _db.PaidSalaryDuration.Find(lastPaidSalaryDurationId);
+                DateTime fromDate = _db.PaidSalaryDuration.Where(i => i.Sl == lastPaidSalaryDurationId).Select(i => i.FromDate).FirstOrDefault();
+                DateTime toDate = _db.PaidSalaryDuration.Where(i => i.Sl == lastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
+                List<int> employeeSlList = GetEmployeeSlFromMonthlyAttendanceForReverse(fromDate, toDate);
+                UpdateReverseMonthlyAttendanceStatus(fromDate, toDate);
+                RemoveMonthlySalarySheetData(lastPaidSalaryDurationId);
+                foreach (var sl in employeeSlList)
                 {
-                    ReverseLeaveCounts(sl, LastPaidSalaryDurationId);
-                    ReverseLoanCalculation(sl, LastPaidSalaryDurationId);
+                    ReverseLeaveCounts(sl, lastPaidSalaryDurationId);
+                    ReverseLoanCalculation(sl, lastPaidSalaryDurationId);
                 }
-                RemovePaidSalaryDuration(LastPaidSalaryDurationId);
+                RemovePaidSalaryDuration(lastPaidSalaryDurationId);
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("PaidSalaryDurationList", "SalarySheet");
             }
@@ -635,14 +635,14 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public bool UpdateReverseMonthlyAttendanceStatus(DateTime StartDate, DateTime EndDate)
+        public bool UpdateReverseMonthlyAttendanceStatus(DateTime startDate, DateTime endDate)
         {
             try
             {
-                List<MonthlyAttendance> EmployeeAttendance = GetMonthlyAttendance(StartDate, EndDate);
-                if (EmployeeAttendance.Count > 0)
+                List<MonthlyAttendance> employeeAttendance = GetMonthlyAttendance(startDate, endDate);
+                if (employeeAttendance.Count > 0)
                 {
-                    EmployeeAttendance.ForEach(x => x.IsCalculated = false);
+                    employeeAttendance.ForEach(x => x.IsCalculated = false);
                 }
                 _db.SaveChanges();
                 return true;
@@ -653,11 +653,11 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public bool RemoveMonthlySalarySheetData(int LastPaidSalaryDurationId)
+        public bool RemoveMonthlySalarySheetData(int lastPaidSalaryDurationId)
         {
             try
             {
-                _db.MonthlySalarySheet.RemoveRange(_db.MonthlySalarySheet.Where(u => u.PaidSalaryDurationId == LastPaidSalaryDurationId));
+                _db.MonthlySalarySheet.RemoveRange(_db.MonthlySalarySheet.Where(u => u.PaidSalaryDurationId == lastPaidSalaryDurationId));
                 return true;
             }
             catch
@@ -666,11 +666,11 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public bool RemovePaidSalaryDuration(int LastPaidSalaryDurationId)
+        public bool RemovePaidSalaryDuration(int lastPaidSalaryDurationId)
         {
             try
             {
-                PaidSalaryDuration paidSalaryDuration = _db.PaidSalaryDuration.Find(LastPaidSalaryDurationId);
+                PaidSalaryDuration paidSalaryDuration = _db.PaidSalaryDuration.Find(lastPaidSalaryDurationId);
                 _db.PaidSalaryDuration.Remove(paidSalaryDuration);
                 _db.SaveChanges();
                 return true;
@@ -681,15 +681,15 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public bool ReverseLeaveCounts(int sl, int LastPaidSalaryDurationId)
+        public bool ReverseLeaveCounts(int sl, int lastPaidSalaryDurationId)
         {
             try
             {
-                int LeaveCountHistoryId = _db.EmployeeLeaveCountHistory.Where(i => i.EmployeeId == sl && i.PaidSalaryDurationId == LastPaidSalaryDurationId).Select(i=> i.Sl).FirstOrDefault();
-                EmployeeLeaveCountHistory history = _db.EmployeeLeaveCountHistory.Find(LeaveCountHistoryId);
-                double EarnLeave = history.EarnLeaveDays;
-                double WithoutPayLeave = history.WithoutPayLeaveDays;
-                UpdateEmployeeLeaveCounts(sl, EarnLeave, WithoutPayLeave);
+                int leaveCountHistoryId = _db.EmployeeLeaveCountHistory.Where(i => i.EmployeeId == sl && i.PaidSalaryDurationId == lastPaidSalaryDurationId).Select(i=> i.Sl).FirstOrDefault();
+                EmployeeLeaveCountHistory history = _db.EmployeeLeaveCountHistory.Find(leaveCountHistoryId);
+                double earnLeave = history.EarnLeaveDays;
+                double withoutPayLeave = history.WithoutPayLeaveDays;
+                UpdateEmployeeLeaveCounts(sl, earnLeave, withoutPayLeave);
                 _db.EmployeeLeaveCountHistory.Remove(history);
                 _db.SaveChanges();
                 return true;
@@ -700,14 +700,14 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public bool ReverseLoanCalculation(int sl, int LastPaidSalaryDurationId)
+        public bool ReverseLoanCalculation(int sl, int lastPaidSalaryDurationId)
         {
             try
             {
-                List<LoanCalculationHistory> LoanCalculationHistoryList = _db.LoanCalculationHistory.Where(i => i.EmployeeId == sl && i.PaidSalaryDurationId == LastPaidSalaryDurationId).ToList();
-                if(LoanCalculationHistoryList.Count > 0)
+                List<LoanCalculationHistory> loanCalculationHistoryList = _db.LoanCalculationHistory.Where(i => i.EmployeeId == sl && i.PaidSalaryDurationId == lastPaidSalaryDurationId).ToList();
+                if(loanCalculationHistoryList.Count > 0)
                 {
-                    foreach (var item in LoanCalculationHistoryList)
+                    foreach (var item in loanCalculationHistoryList)
                     {
                         LoanCalculation calculation = _db.LoanCalculation.Find(item.LoanCalculationId);
                         calculation.LoanAmount += item.LoanAmount;
@@ -715,7 +715,7 @@ namespace FTL_HRMS.Controllers
                         _db.Entry(calculation).State = EntityState.Modified;
                         _db.SaveChanges();
                     }
-                    _db.LoanCalculationHistory.RemoveRange(_db.LoanCalculationHistory.Where(u => u.EmployeeId == sl && u.PaidSalaryDurationId == LastPaidSalaryDurationId));
+                    _db.LoanCalculationHistory.RemoveRange(_db.LoanCalculationHistory.Where(u => u.EmployeeId == sl && u.PaidSalaryDurationId == lastPaidSalaryDurationId));
                     _db.SaveChanges();
                     return true;
                 }
@@ -727,19 +727,19 @@ namespace FTL_HRMS.Controllers
             }
         }
 
-        public bool UpdateEmployeeLeaveCounts(int sl, double EarnLeave, double WithoutPayLeave)
+        public bool UpdateEmployeeLeaveCounts(int sl, double earnLeave, double withoutPayLeave)
         {
             try
             {
-                int EarnLeaveCountId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Earn").Select(i => i.Sl).FirstOrDefault();
-                var earnLeaveCount = _db.LeaveCounts.Find(EarnLeaveCountId);
-                earnLeaveCount.AvailableDay = earnLeaveCount.AvailableDay + EarnLeave;
+                int earnLeaveCountId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Earn").Select(i => i.Sl).FirstOrDefault();
+                var earnLeaveCount = _db.LeaveCounts.Find(earnLeaveCountId);
+                earnLeaveCount.AvailableDay = earnLeaveCount.AvailableDay + earnLeave;
                 _db.Entry(earnLeaveCount).State = EntityState.Modified;
                 _db.SaveChanges();
 
-                int WithoutLeaveCountId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay").Select(i => i.Sl).FirstOrDefault();
-                var withoutLeaveCount = _db.LeaveCounts.Find(WithoutLeaveCountId);
-                withoutLeaveCount.AvailableDay = withoutLeaveCount.AvailableDay + WithoutPayLeave;
+                int withoutLeaveCountId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay").Select(i => i.Sl).FirstOrDefault();
+                var withoutLeaveCount = _db.LeaveCounts.Find(withoutLeaveCountId);
+                withoutLeaveCount.AvailableDay = withoutLeaveCount.AvailableDay + withoutPayLeave;
                 _db.Entry(withoutLeaveCount).State = EntityState.Modified;
                 _db.SaveChanges();
 

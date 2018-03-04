@@ -31,13 +31,13 @@ namespace FTL_HRMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult EmployeeTypeReport(string employeeTypeId, string departmentGroupId,string ddl_dept, string ddl_designation)
+        public ActionResult EmployeeTypeReport(string employeeTypeId, string departmentGroupId,string ddlDept, string ddlDesignation)
         {
             int etid, dgid, did, dsid;
             Int32.TryParse(employeeTypeId, out etid);
             Int32.TryParse(departmentGroupId, out dgid);
-            Int32.TryParse(ddl_dept, out did);
-            Int32.TryParse(ddl_designation, out dsid);
+            Int32.TryParse(ddlDept, out did);
+            Int32.TryParse(ddlDesignation, out dsid);
             List<EmployeeType> employeeTypeList = new List<EmployeeType>();
             employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
             ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name");

@@ -180,8 +180,8 @@ namespace FTL_HRMS.Controllers
                 #region Edit Leave Count                
                 if (_db.LeaveCounts.Where(i => i.EmployeeId == leaveHistory.EmployeeId && i.LeaveTypeId == leaveHistory.LeaveTypeId).Select(i => i.Sl).Count() > 0)
                 {
-                    int CountId = _db.LeaveCounts.Where(i => i.EmployeeId == leaveHistory.EmployeeId && i.LeaveTypeId == leaveHistory.LeaveTypeId).Select(i => i.Sl).FirstOrDefault();
-                    LeaveCount leaveCount = _db.LeaveCounts.Find(CountId);
+                    int countId = _db.LeaveCounts.Where(i => i.EmployeeId == leaveHistory.EmployeeId && i.LeaveTypeId == leaveHistory.LeaveTypeId).Select(i => i.Sl).FirstOrDefault();
+                    LeaveCount leaveCount = _db.LeaveCounts.Find(countId);
                     if(leaveHistory.LeaveType.Name == "Without Pay")
                     {
                         leaveCount.AvailableDay = leaveCount.AvailableDay + leaveHistory.Day;

@@ -44,11 +44,11 @@ namespace FTL_HRMS.Controllers
             try
             { 
                 UserStore<ApplicationUser> store = new UserStore<ApplicationUser>(_db);
-                UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(store);
+                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(store);
                 string empCode = Convert.ToString(Request["field-1"]);
                 String userId = _db.Users.Where(u => u.UserName == empCode).Select(i => i.Id).FirstOrDefault();//"<YourLogicAssignsRequestedUserId>";
                 String newPassword = Convert.ToString(Request["field-2"]); //"<PasswordAsTypedByUser>";
-                String hashedNewPassword = UserManager.PasswordHasher.HashPassword(newPassword);
+                String hashedNewPassword = userManager.PasswordHasher.HashPassword(newPassword);
                 ApplicationUser cUser = await store.FindByIdAsync(userId);
                 await store.SetPasswordHashAsync(cUser, hashedNewPassword);
                 await store.UpdateAsync(cUser);
@@ -84,19 +84,19 @@ namespace FTL_HRMS.Controllers
         {
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
-            string CodeOrName = Request["CodeOrName"];
-            List<Employee> EmployeeList = _db.Employee.Where(r => (r.Name.Contains(CodeOrName) || r.Code.Contains(CodeOrName)) && r.Sl != userId && r.Status == true && r.IsSystemOrSuperAdmin == false).ToList();
+            string codeOrName = Request["CodeOrName"];
+            List<Employee> employeeList = _db.Employee.Where(r => (r.Name.Contains(codeOrName) || r.Code.Contains(codeOrName)) && r.Sl != userId && r.Status == true && r.IsSystemOrSuperAdmin == false).ToList();
 
-            List<VMEmployee> EmpList = new List<VMEmployee>();
-            foreach (var item in EmployeeList)
+            List<VMEmployee> empList = new List<VMEmployee>();
+            foreach (var item in employeeList)
             {
                 VMEmployee emp = new VMEmployee();
                 emp.Sl = item.Sl;
                 emp.Code = item.Code;
                 emp.Name = item.Name;
-                EmpList.Add(emp);
+                empList.Add(emp);
             }
-            return Json(EmpList, JsonRequestBehavior.AllowGet);
+            return Json(empList, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

@@ -20,8 +20,8 @@ namespace FTL_HRMS.Controllers
         public ActionResult Index()
         {
             var empList = _db.Employee.Where(x => x.Status == true && x.IsSystemOrSuperAdmin == false).ToList();
-            var ProbationList = empList.Where(x=> x.ProbationStatus == true).ToList();
-            return View(ProbationList);
+            var probationList = empList.Where(x=> x.ProbationStatus == true).ToList();
+            return View(probationList);
         }
         #endregion
 

@@ -61,9 +61,9 @@ namespace FTL_HRMS.Controllers
             var user = await UserManager.FindAsync(model.UserName, model.Password);
             if (user != null)
             {
-                int CustomUserId = _dbCtx.Users.Where(i => i.UserName == model.UserName).Select(i => i.CustomUserId).FirstOrDefault();
-                string Code = _dbCtx.Employee.Where(i => i.Sl == CustomUserId).Select(i => i.Code).FirstOrDefault();
-                if (Code != "SystemAdmin")
+                int customUserId = _dbCtx.Users.Where(i => i.UserName == model.UserName).Select(i => i.CustomUserId).FirstOrDefault();
+                string code = _dbCtx.Employee.Where(i => i.Sl == customUserId).Select(i => i.Code).FirstOrDefault();
+                if (code != "SystemAdmin")
                 {
                     if (_dbCtx.Subscription.Select(i => i.Sl).Count() > 0)
                     {
@@ -115,14 +115,14 @@ namespace FTL_HRMS.Controllers
         #region Encrypt And Decrypt
         public string EncryptString(string str)
         {
-            string EncrptKey = "2013;[pnuLIT)WebCodeExpert";
+            string encrptKey = "2013;[pnuLIT)WebCodeExpert";
             byte[] byKey = { };
-            byte[] IV = { 18, 52, 86, 120, 144, 171, 205, 239 };
-            byKey = System.Text.Encoding.UTF8.GetBytes(EncrptKey.Substring(0, 8));
+            byte[] iv = { 18, 52, 86, 120, 144, 171, 205, 239 };
+            byKey = System.Text.Encoding.UTF8.GetBytes(encrptKey.Substring(0, 8));
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
             byte[] inputByteArray = Encoding.UTF8.GetBytes(str);
             MemoryStream ms = new MemoryStream();
-            CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(byKey, IV), CryptoStreamMode.Write);
+            CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(byKey, iv), CryptoStreamMode.Write);
             cs.Write(inputByteArray, 0, inputByteArray.Length);
             cs.FlushFinalBlock();
             return Convert.ToBase64String(ms.ToArray());
@@ -131,16 +131,16 @@ namespace FTL_HRMS.Controllers
         public string DecryptString(string str)
         {
             str = str.Replace(" ", "+");
-            string DecryptKey = "2013;[pnuLIT)WebCodeExpert";
+            string decryptKey = "2013;[pnuLIT)WebCodeExpert";
             byte[] byKey = { };
-            byte[] IV = { 18, 52, 86, 120, 144, 171, 205, 239 };
+            byte[] iv = { 18, 52, 86, 120, 144, 171, 205, 239 };
             byte[] inputByteArray = new byte[str.Length];
 
-            byKey = System.Text.Encoding.UTF8.GetBytes(DecryptKey.Substring(0, 8));
+            byKey = System.Text.Encoding.UTF8.GetBytes(decryptKey.Substring(0, 8));
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
             inputByteArray = Convert.FromBase64String(str.Replace(" ", "+"));
             MemoryStream ms = new MemoryStream();
-            CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(byKey, IV), CryptoStreamMode.Write);
+            CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(byKey, iv), CryptoStreamMode.Write);
             cs.Write(inputByteArray, 0, inputByteArray.Length);
             cs.FlushFinalBlock();
             System.Text.Encoding encoding = System.Text.Encoding.UTF8;

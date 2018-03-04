@@ -16,7 +16,7 @@ namespace FTL_HRMS.Controllers
     public class MonthlyAttendancesController : Controller
     {
         private HRMSDbContext _db = new HRMSDbContext();
-        AttendanceController att = new AttendanceController();
+        AttendanceController _att = new AttendanceController();
 
         // GET: MonthlyAttendances
         public ActionResult Index()
@@ -28,7 +28,7 @@ namespace FTL_HRMS.Controllers
         #region Employee Attendence Report
         public ActionResult EmployeeAttendenceReport()
         {
-            att.SyncAttendance();
+            _att.SyncAttendance();
             List<DepartmentGroup> groupList = new List<DepartmentGroup>();
             groupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name");
@@ -37,13 +37,13 @@ namespace FTL_HRMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult EmployeeAttendenceReport(string departmentGroupId, string ddl_dept)
+        public ActionResult EmployeeAttendenceReport(string departmentGroupId, string ddlDept)
         {
             int dgid, did;
             Int32.TryParse(departmentGroupId, out dgid);
-            Int32.TryParse(ddl_dept, out did);
-            DateTime Date = Utility.Utility.GetDefaultDate();
-            DateTime.TryParse(Request["Date"], out Date);
+            Int32.TryParse(ddlDept, out did);
+            DateTime date = Utility.Utility.GetDefaultDate();
+            DateTime.TryParse(Request["Date"], out date);
 
             List<DepartmentGroup> groupList = new List<DepartmentGroup>();
             groupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
@@ -52,33 +52,33 @@ namespace FTL_HRMS.Controllers
             ViewBag.Status = "SelectType";
             TempData["dgid"] = dgid;
             TempData["did"] = did;
-            TempData["Date"] = Date;
-            List<MonthlyAttendance> attendenceList = GetEmployeeList(dgid, did, Date);
+            TempData["Date"] = date;
+            List<MonthlyAttendance> attendenceList = GetEmployeeList(dgid, did, date);
             return View(attendenceList);
         }
-        public List<MonthlyAttendance> GetEmployeeList(int departmentGroupId, int departmentId, DateTime Date)
+        public List<MonthlyAttendance> GetEmployeeList(int departmentGroupId, int departmentId, DateTime date)
         {
             List<MonthlyAttendance> attendenceList = new List<MonthlyAttendance>();
-            if (Date.Equals(Utility.Utility.GetDefaultDate()))
+            if (date.Equals(Utility.Utility.GetDefaultDate()))
             {
-                Date = DateTime.Now.AddDays(-1);
+                date = DateTime.Now.AddDays(-1);
             }
             if (departmentGroupId > 0)
             {
                 if (departmentId > 0)
                 {
-                    attendenceList = _db.MonthlyAttendance.Where(x => x.Employee.Designation.Department.DepartmentGroup.Sl.Equals(departmentGroupId)).Where(x => x.Employee.Designation.Department.Sl.Equals(departmentId)).Where(x=> x.Date==Date).ToList();
+                    attendenceList = _db.MonthlyAttendance.Where(x => x.Employee.Designation.Department.DepartmentGroup.Sl.Equals(departmentGroupId)).Where(x => x.Employee.Designation.Department.Sl.Equals(departmentId)).Where(x=> x.Date==date).ToList();
                 }
                 else
                 {
-                    attendenceList = _db.MonthlyAttendance.Where(x => x.Employee.Designation.Department.DepartmentGroup.Sl.Equals(departmentGroupId)).Where(x => x.Date == Date).ToList();
+                    attendenceList = _db.MonthlyAttendance.Where(x => x.Employee.Designation.Department.DepartmentGroup.Sl.Equals(departmentGroupId)).Where(x => x.Date == date).ToList();
                     
                 }
 
             }
             else if (departmentGroupId == 0)
             {
-                attendenceList = _db.MonthlyAttendance.Include(x => x.Employee).Where(x=>x.Date == Date).ToList();
+                attendenceList = _db.MonthlyAttendance.Include(x => x.Employee).Where(x=>x.Date == date).ToList();
             }
             else
             {
@@ -91,7 +91,7 @@ namespace FTL_HRMS.Controllers
         #region EmployeeWise Attendence
         public ActionResult EmployeewiseAttendenceReport()
         {
-            att.SyncAttendance();
+            _att.SyncAttendance();
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
             List<Employee> employeeList = new List<Employee>();
@@ -101,19 +101,19 @@ namespace FTL_HRMS.Controllers
             return View(attendenceList);
         }
         [HttpPost]
-        public ActionResult EmployeewiseAttendenceReport(string EmployeeId)
+        public ActionResult EmployeewiseAttendenceReport(string employeeId)
         {
             int eid;
-            Int32.TryParse(EmployeeId, out eid);
-            DateTime FromDate = Utility.Utility.GetDefaultDate();
+            Int32.TryParse(employeeId, out eid);
+            DateTime fromDate = Utility.Utility.GetDefaultDate();
             if(Request["FromDate"]!="")
             {
-                DateTime.TryParse(Request["FromDate"], out FromDate);
+                DateTime.TryParse(Request["FromDate"], out fromDate);
             }
-            DateTime ToDate = Utility.Utility.GetDefaultDate();
+            DateTime toDate = Utility.Utility.GetDefaultDate();
             if (Request["ToDate"]!="")
             {
-                DateTime.TryParse(Request["ToDate"], out ToDate);
+                DateTime.TryParse(Request["ToDate"], out toDate);
             }
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
@@ -122,43 +122,43 @@ namespace FTL_HRMS.Controllers
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             ViewBag.Status = "SelectType";
             TempData["dgid"] = eid;
-            TempData["FromDate"] = FromDate;
-            TempData["ToDate"] = ToDate;
-            ViewBag.FromDate = FromDate;
-            ViewBag.ToDate = ToDate;
-            ViewBag.EmpId = Int32.TryParse(EmployeeId, out eid);
-            List<MonthlyAttendance> attendenceList = GetEmployeewiseList(eid, FromDate, ToDate);
+            TempData["FromDate"] = fromDate;
+            TempData["ToDate"] = toDate;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
+            ViewBag.EmpId = Int32.TryParse(employeeId, out eid);
+            List<MonthlyAttendance> attendenceList = GetEmployeewiseList(eid, fromDate, toDate);
             return View(attendenceList);
         }
 
-        public List<MonthlyAttendance> GetEmployeewiseList(int employeeId, DateTime FromDate, DateTime ToDate)
+        public List<MonthlyAttendance> GetEmployeewiseList(int employeeId, DateTime fromDate, DateTime toDate)
         {
             List<MonthlyAttendance> attendenceList = new List<MonthlyAttendance>();
-            if (FromDate.Equals(Utility.Utility.GetDefaultDate()))
+            if (fromDate.Equals(Utility.Utility.GetDefaultDate()))
             {
-                FromDate = DateTime.Now.AddDays(-1);
-                ToDate = DateTime.Now.AddDays(-1);
+                fromDate = DateTime.Now.AddDays(-1);
+                toDate = DateTime.Now.AddDays(-1);
             }
-            if (ToDate.Equals(Utility.Utility.GetDefaultDate()))
+            if (toDate.Equals(Utility.Utility.GetDefaultDate()))
             {
-                ToDate = DateTime.Now.AddDays(-1);
+                toDate = DateTime.Now.AddDays(-1);
             }
             if (employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] != "" || 
                 employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] != "" ||
                 employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] == "")
             {
-                attendenceList = _db.MonthlyAttendance.Where(x => x.Employee.Sl.Equals(employeeId)).Where(x => x.Date >= FromDate  && x.Date <= ToDate).ToList();
+                attendenceList = _db.MonthlyAttendance.Where(x => x.Employee.Sl.Equals(employeeId)).Where(x => x.Date >= fromDate  && x.Date <= toDate).ToList();
             }
             else if (employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] == "")
             {
-                attendenceList = _db.MonthlyAttendance.Where(x => x.Employee.Sl.Equals(employeeId)).Where(x => x.Date.Day == ToDate.Day && x.Date.Month == ToDate.Month && x.Date.Year == ToDate.Year).ToList();
+                attendenceList = _db.MonthlyAttendance.Where(x => x.Employee.Sl.Equals(employeeId)).Where(x => x.Date.Day == toDate.Day && x.Date.Month == toDate.Month && x.Date.Year == toDate.Year).ToList();
             }
             else 
             {
-                attendenceList = _db.MonthlyAttendance.Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
+                attendenceList = _db.MonthlyAttendance.Where(x => DbFunctions.TruncateTime(x.Date) >= fromDate.Date && DbFunctions.TruncateTime(x.Date) <= toDate.Date).ToList();
             }
-            ViewBag.FromDate = FromDate;
-            ViewBag.ToDate = ToDate;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
             ViewBag.EmpId = employeeId;
             return attendenceList;
         }
@@ -169,7 +169,7 @@ namespace FTL_HRMS.Controllers
         #region EmployeeWise Attendence
         public ActionResult EmployeewiseFilterAttendenceReport()
         {
-            att.SyncAttendance();
+            _att.SyncAttendance();
             List<Employee> employeeList = new List<Employee>();
             employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
@@ -177,46 +177,46 @@ namespace FTL_HRMS.Controllers
             return View(attendenceList);
         }
         [HttpPost]
-        public ActionResult EmployeewiseFilterAttendenceReport(string EmployeeId)
+        public ActionResult EmployeewiseFilterAttendenceReport(string employeeId)
         {
             int eid;
-            Int32.TryParse(EmployeeId, out eid);
-            DateTime FromDate = Utility.Utility.GetDefaultDate();
+            Int32.TryParse(employeeId, out eid);
+            DateTime fromDate = Utility.Utility.GetDefaultDate();
             if (Request["FromDate"] != "")
             {
-                DateTime.TryParse(Request["FromDate"], out FromDate);
+                DateTime.TryParse(Request["FromDate"], out fromDate);
             }
-            DateTime ToDate = Utility.Utility.GetDefaultDate();
+            DateTime toDate = Utility.Utility.GetDefaultDate();
             if (Request["ToDate"] != "")
             {
-                DateTime.TryParse(Request["ToDate"], out ToDate);
+                DateTime.TryParse(Request["ToDate"], out toDate);
             }
             List<Employee> employeeList = new List<Employee>();
             employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             ViewBag.Status = "SelectType";
             TempData["dgid"] = eid;
-            TempData["FromDate"] = FromDate;
-            TempData["ToDate"] = ToDate;
-            ViewBag.FromDate = FromDate;
-            ViewBag.ToDate = ToDate;
-            ViewBag.EmpId = Int32.TryParse(EmployeeId, out eid);
-            List<FilterAttendanceView> attendenceList = GetEmployeewiseFilterList(eid, FromDate, ToDate);
+            TempData["FromDate"] = fromDate;
+            TempData["ToDate"] = toDate;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
+            ViewBag.EmpId = Int32.TryParse(employeeId, out eid);
+            List<FilterAttendanceView> attendenceList = GetEmployeewiseFilterList(eid, fromDate, toDate);
             return View(attendenceList);
         }
 
-        public List<FilterAttendanceView> GetEmployeewiseFilterList(int employeeId, DateTime FromDate, DateTime ToDate)
+        public List<FilterAttendanceView> GetEmployeewiseFilterList(int employeeId, DateTime fromDate, DateTime toDate)
         {
             string query = String.Empty;
             List<FilterAttendanceView> attendenceList = new List<FilterAttendanceView>();
-            if (FromDate.Equals(Utility.Utility.GetDefaultDate()))
+            if (fromDate.Equals(Utility.Utility.GetDefaultDate()))
             {
-                FromDate = DateTime.Now.AddDays(-1);
-                ToDate = DateTime.Now.AddDays(-1);
+                fromDate = DateTime.Now.AddDays(-1);
+                toDate = DateTime.Now.AddDays(-1);
             }
-            if (ToDate.Equals(Utility.Utility.GetDefaultDate()))
+            if (toDate.Equals(Utility.Utility.GetDefaultDate()))
             {
-                ToDate = DateTime.Now.AddDays(-1);
+                toDate = DateTime.Now.AddDays(-1);
             }
             if (employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] != "" ||
                 employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] != "" ||
@@ -224,22 +224,22 @@ namespace FTL_HRMS.Controllers
             {
                 //attendenceList = _db.FilterAttendanceView.SqlQuery("select * from FilterAttendanceView").ToList();
                 //attendenceList = _db.FilterAttendanceView.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
-                query = "select * from FilterAttendanceView where EmployeeId = "+employeeId +" and Date between '"+FromDate.Date+"' and '"+ToDate.Date+"'";
+                query = "select * from FilterAttendanceView where EmployeeId = "+employeeId +" and Date between '"+fromDate.Date+"' and '"+toDate.Date+"'";
             }
             else if (employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] == "")
             {
                 //attendenceList = _db.FilterAttendanceView.Where(x => x.EmployeeId.Equals(employeeId)).Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
-                query = "select * from FilterAttendanceView where EmployeeId = " + employeeId + " and Date between '" + FromDate.Date + "' and '" + ToDate.Date + "'";
+                query = "select * from FilterAttendanceView where EmployeeId = " + employeeId + " and Date between '" + fromDate.Date + "' and '" + toDate.Date + "'";
             }
             else
             {
                 //attendenceList = _db.FilterAttendanceView.Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
-                query = "select * from FilterAttendanceView where Date between '" + FromDate.Date + "' and '" + ToDate.Date + "'";
+                query = "select * from FilterAttendanceView where Date between '" + fromDate.Date + "' and '" + toDate.Date + "'";
             }
             FilterAttendanceViewGatway filterAttendanceViewGatway = new FilterAttendanceViewGatway();
             attendenceList = filterAttendanceViewGatway.GetFilterAttendanceView(query);
-            ViewBag.FromDate = FromDate;
-            ViewBag.ToDate = ToDate;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
             ViewBag.EmpId = employeeId;
             return attendenceList;
         }
@@ -314,8 +314,8 @@ namespace FTL_HRMS.Controllers
                 monthlyAttendance.EmployeeId = monthlyAttendance.EmployeeId;
                 monthlyAttendance.IsCalculated = false;
                 string userName = User.Identity.Name;
-                int UserId = DbUtility.GetUserId(_db, userName);
-                monthlyAttendance.UpdatedBy = UserId;
+                int userId = DbUtility.GetUserId(_db, userName);
+                monthlyAttendance.UpdatedBy = userId;
                 monthlyAttendance.UpdateDate = DateTime.Now;
                 _db.Entry(monthlyAttendance).State = EntityState.Modified;
                 _db.SaveChanges();

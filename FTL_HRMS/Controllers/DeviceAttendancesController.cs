@@ -20,18 +20,18 @@ namespace FTL_HRMS.Controllers
         {
             _attendanceController.SyncAttendance();
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
-            var Codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
-            foreach (var item in Codes)
+            var codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
+            foreach (var item in codes)
             {
-                List<DeviceAttendance> device = new List<DeviceAttendance>();
+                List<DeviceAttendance> device;
                 device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
                 if(device.Count > 0)
                 {
-                    DateTime CheckTime = device.Min(p => p.CheckTime);
+                    DateTime checkTime = device.Min(p => p.CheckTime);
                     VMTodaysAttendance attendance = new VMTodaysAttendance();
                     attendance.Code = item;
                     attendance.Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
-                    attendance.CheckTime = CheckTime;
+                    attendance.CheckTime = checkTime;
                     attendance.Status = "Present";
                     todaysAttendance.Add(attendance);
                 }
@@ -49,18 +49,18 @@ namespace FTL_HRMS.Controllers
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
             if (type == "Present")
             {
-                var Codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
-                foreach (var item in Codes)
+                var codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
+                foreach (var item in codes)
                 {
                     List<DeviceAttendance> device = new List<DeviceAttendance>();
                     device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
                     if (device.Count > 0)
                     {
-                        DateTime CheckTime = device.Min(p => p.CheckTime);
+                        DateTime checkTime = device.Min(p => p.CheckTime);
                         VMTodaysAttendance attendance = new VMTodaysAttendance();
                         attendance.Code = item;
                         attendance.Name = _db.Employee.Where(i => i.Code == item).Select(i => i.Name).FirstOrDefault();
-                        attendance.CheckTime = CheckTime;
+                        attendance.CheckTime = checkTime;
                         attendance.Status = "Present";
                         todaysAttendance.Add(attendance);
                     }
@@ -70,24 +70,24 @@ namespace FTL_HRMS.Controllers
             {
                 List<DeviceAttendance> device = new List<DeviceAttendance>();
                 device = _db.DeviceAttendance.Where(i => i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
-                var Codes = device.Select(m => m.EmployeeCode).Distinct();
+                var codes = device.Select(m => m.EmployeeCode).Distinct();
 
                 List<LeaveHistory> leave = new List<LeaveHistory>();
                 leave = _db.LeaveHistories.Where(i => i.FromDate < DateTime.Now && i.ToDate > DateTime.Now).ToList();
-                var EmpSl = leave.Select(m => m.EmployeeId).Distinct();
+                var empSl = leave.Select(m => m.EmployeeId).Distinct();
 
                 List<Employee> employee = _db.Employee.Where(i => i.Status != false && i.IsSystemOrSuperAdmin != true).ToList();
-                foreach (var item in Codes)
+                foreach (var item in codes)
                 {
                     employee.Where(p => p.Code == item).ToList().ForEach(p => employee.Remove(p));
                 }
-                foreach (var item in EmpSl)
+                foreach (var item in empSl)
                 {
                     employee.Where(p => p.Sl == item).ToList().ForEach(p => employee.Remove(p));
                 }
 
-                var EmpCode = employee.Select(m => m.Code).Distinct();
-                foreach (var item in EmpCode)
+                var empCode = employee.Select(m => m.Code).Distinct();
+                foreach (var item in empCode)
                 {
                     VMTodaysAttendance attendance = new VMTodaysAttendance();
                     attendance.Code = item;
@@ -99,8 +99,8 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                var EmpSl = _db.LeaveHistories.Select(m => m.EmployeeId).Distinct();
-                foreach (var item in EmpSl)
+                var empSl = _db.LeaveHistories.Select(m => m.EmployeeId).Distinct();
+                foreach (var item in empSl)
                 {
                     if (_db.LeaveHistories.Where(i => i.EmployeeId == item && i.FromDate < DateTime.Now && i.ToDate > DateTime.Now).Count() > 0)
                     {

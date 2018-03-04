@@ -109,9 +109,9 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                double OldDays = _db.LeaveTypes.Where(i => i.Sl == leaveType.Sl).Select(i => i.Day).FirstOrDefault();
-                double NewDays = leaveType.Day;
-                double DifferenceDays = OldDays - NewDays;
+                double oldDays = _db.LeaveTypes.Where(i => i.Sl == leaveType.Sl).Select(i => i.Day).FirstOrDefault();
+                double newDays = leaveType.Day;
+                double differenceDays = oldDays - newDays;
 
                 _db.Entry(leaveType).State = EntityState.Modified;
                 _db.SaveChanges();
@@ -125,7 +125,7 @@ namespace FTL_HRMS.Controllers
                     for (int i = 0; i < leaveCountList.Count; i++)
                     {
                         LeaveCount leaveCount = _db.LeaveCounts.Find(leaveCountList[i].Sl);
-                        leaveCount.AvailableDay = leaveCount.AvailableDay - DifferenceDays;
+                        leaveCount.AvailableDay = leaveCount.AvailableDay - differenceDays;
                         _db.Entry(leaveCount).State = EntityState.Modified;
                         _db.SaveChanges();
                     }

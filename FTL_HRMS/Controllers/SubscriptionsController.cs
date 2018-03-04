@@ -17,13 +17,13 @@ namespace FTL_HRMS.Controllers
 {
     public class SubscriptionsController : Controller
     {
-        private HRMSDbContext db = new HRMSDbContext();
+        private HRMSDbContext _db = new HRMSDbContext();
 
         #region List (We don't use it)
         // GET: Subscriptions
         public ActionResult Index()
         {
-            return View(db.Subscription.ToList());
+            return View(_db.Subscription.ToList());
         }
         #endregion 
 
@@ -35,7 +35,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Subscription subscription = db.Subscription.Find(id);
+            Subscription subscription = _db.Subscription.Find(id);
             if (subscription == null)
             {
                 return HttpNotFound();
@@ -60,8 +60,8 @@ namespace FTL_HRMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Subscription.Add(subscription);
-                db.SaveChanges();
+                _db.Subscription.Add(subscription);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -73,10 +73,10 @@ namespace FTL_HRMS.Controllers
         // GET: Subscriptions/Edit/5
         public ActionResult Edit()
         {
-            if (db.Subscription.Select(i => i.Sl).Count() > 0)
+            if (_db.Subscription.Select(i => i.Sl).Count() > 0)
             {
-                int id = db.Subscription.Select(i => i.Sl).FirstOrDefault();
-                Subscription subscription = db.Subscription.Find(id);
+                int id = _db.Subscription.Select(i => i.Sl).FirstOrDefault();
+                Subscription subscription = _db.Subscription.Find(id);
                 if (subscription == null)
                 {
                     return HttpNotFound();
@@ -101,15 +101,15 @@ namespace FTL_HRMS.Controllers
 
             if (subscription.Sl != 0)
             {
-                db.Entry(subscription).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(subscription).State = System.Data.Entity.EntityState.Modified;
+                _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return View(subscription);
             }
             else
             {
-                db.Subscription.Add(subscription);
-                db.SaveChanges();
+                _db.Subscription.Add(subscription);
+                _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return View(subscription);
             }
@@ -124,7 +124,7 @@ namespace FTL_HRMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Subscription subscription = db.Subscription.Find(id);
+            Subscription subscription = _db.Subscription.Find(id);
             if (subscription == null)
             {
                 return HttpNotFound();
@@ -137,9 +137,9 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Subscription subscription = db.Subscription.Find(id);
-            db.Subscription.Remove(subscription);
-            db.SaveChanges();
+            Subscription subscription = _db.Subscription.Find(id);
+            _db.Subscription.Remove(subscription);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
@@ -149,7 +149,7 @@ namespace FTL_HRMS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -158,14 +158,14 @@ namespace FTL_HRMS.Controllers
         #region Encrypt
         public string EncryptString(string str)
         {
-            string EncrptKey = "2013;[pnuLIT)WebCodeExpert";
+            string encrptKey = "2013;[pnuLIT)WebCodeExpert";
             byte[] byKey = { };
-            byte[] IV = { 18, 52, 86, 120, 144, 171, 205, 239 };
-            byKey = System.Text.Encoding.UTF8.GetBytes(EncrptKey.Substring(0, 8));
+            byte[] iv = { 18, 52, 86, 120, 144, 171, 205, 239 };
+            byKey = System.Text.Encoding.UTF8.GetBytes(encrptKey.Substring(0, 8));
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
             byte[] inputByteArray = Encoding.UTF8.GetBytes(str);
             MemoryStream ms = new MemoryStream();
-            CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(byKey, IV), CryptoStreamMode.Write);
+            CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(byKey, iv), CryptoStreamMode.Write);
             cs.Write(inputByteArray, 0, inputByteArray.Length);
             cs.FlushFinalBlock();
             return Convert.ToBase64String(ms.ToArray());
