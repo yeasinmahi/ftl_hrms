@@ -316,7 +316,7 @@ namespace FTL_HRMS.Controllers
                 {
                     _db.SaveChanges();
                 }
-                catch (Exception exception)
+                catch (Exception)
                 {
                     TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
                     return EmployeeDefaultList(employee);
@@ -349,7 +349,7 @@ namespace FTL_HRMS.Controllers
                     {
                         _db.SaveChanges();
                     }
-                    catch (Exception exception)
+                    catch (Exception)
                     {
                         TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.RoleAddFailed);
                         return EmployeeDefaultList(employee);
@@ -364,7 +364,7 @@ namespace FTL_HRMS.Controllers
                         _db.Employee.Remove(emp);
                         _db.SaveChanges();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         
                     }

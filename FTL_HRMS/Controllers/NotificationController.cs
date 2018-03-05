@@ -139,7 +139,7 @@ namespace FTL_HRMS.Controllers
                 WebMail.Send(to: email, subject: mailSubject, body: emailBody, isBodyHtml: true);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {   
                 return false;
             }
