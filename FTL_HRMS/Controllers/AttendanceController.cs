@@ -145,7 +145,22 @@ namespace FTL_HRMS.Controllers
         {
             try
             {
-                _db.FilterAttendance.Add(filterAttendance);
+                if (_db.FilterAttendance.Where(i => i.EmployeeId == filterAttendance.EmployeeId && DbFunctions.TruncateTime(i.Date) == filterAttendance.Date.Date).ToList().Count > 0)
+                {
+                    int id = _db.FilterAttendance.Where(i => i.EmployeeId == filterAttendance.EmployeeId && DbFunctions.TruncateTime(i.Date) == filterAttendance.Date.Date).Select(i => i.Sl).FirstOrDefault();
+                    FilterAttendance filter = _db.FilterAttendance.Find(id);
+                    if (filter != null)
+                    {
+                        filter.InTime = filterAttendance.InTime;
+                        filter.OutTime = filterAttendance.OutTime;
+                        filter.IsCalculated = false;
+                        _db.Entry(filter).State = EntityState.Modified;
+                    }
+                }
+                else
+                {
+                    _db.FilterAttendance.Add(filterAttendance);
+                }
                 return true;
             }
             catch(Exception)
@@ -170,7 +185,7 @@ namespace FTL_HRMS.Controllers
 
         public List<DeviceAttendance> GetDeviceAttendance(string code, DateTime date)
         {
-            return _db.DeviceAttendance.Where(i => i.EmployeeCode == code && DbFunctions.TruncateTime(i.CheckTime) == date.Date && i.IsCalculated == false).ToList();
+            return _db.DeviceAttendance.Where(i => i.EmployeeCode == code && DbFunctions.TruncateTime(i.CheckTime) == date.Date).ToList();
         }
         #endregion
 
