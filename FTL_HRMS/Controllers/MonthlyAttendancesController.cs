@@ -191,8 +191,7 @@ namespace FTL_HRMS.Controllers
             {
                 DateTime.TryParse(Request["ToDate"], out toDate);
             }
-            List<Employee> employeeList = new List<Employee>();
-            employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
+            var employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
             ViewBag.Status = "SelectType";
             TempData["dgid"] = eid;
