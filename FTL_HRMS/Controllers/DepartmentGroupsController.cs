@@ -59,7 +59,7 @@ namespace FTL_HRMS.Controllers
                     string userName = User.Identity.Name;
                     int userId = DbUtility.GetUserId(_db, userName);
                     departmentGroup.CreatedBy = userId;
-                    departmentGroup.CreateDate = DateTime.Now;
+                    departmentGroup.CreateDate = Utility.Utility.GetCurrentDateTime();
                     departmentGroup.Status = true;
                     DbUtility.Status status = _genericData.Insert<DepartmentGroup>(departmentGroup);
                     TempData["message"] = DbUtility.GetStatusMessage(status);
