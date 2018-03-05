@@ -2931,6 +2931,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\AttandanceByDateRangeReport.cs">
       <SubType>Component</SubType>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AttandanceByDateRangeReport.rpt</DependentUpon>
     </Compile>
     <Compile Include="Reports\BonusAndPenaltieseReport.cs">
       <AutoGen>True</AutoGen>
@@ -3053,6 +3056,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\PromotionHistoryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PromotionHistoryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PromotionHistoryReport1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PromotionHistoryReport.rpt</DependentUpon>
@@ -3588,6 +3597,7 @@
     </Content>
     <Content Include="Reports\PromotionHistoryReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PromotionHistoryReport1.cs</LastGenOutput>
     </Content>
     <Content Include="Reports\MonthlySalarySheetReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
