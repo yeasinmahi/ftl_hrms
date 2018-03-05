@@ -107,10 +107,24 @@
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td width="10%" align="center">
-                                @Html.DisplayFor(modelItem => item.InTime)
+                                @if (item.Status == "P" || item.Status == "L")
+                                {
+                                    @Html.DisplayFor(modelItem => item.InTime)
+                                }
+                                else
+                                {
+                                    @Html.Display("No Time")
+                                }
                             </td>
                             <td width="10%" align="center">
-                                @Html.DisplayFor(modelItem => item.OutTime)
+                                @if (item.Status == "P" || item.Status == "L")
+                                {
+                                    @Html.DisplayFor(modelItem => item.OutTime)
+                                }
+                                else
+                                {
+                                    @Html.Display("No Time")
+                                }
                             </td>
                             <td width="10%" align="center">
                                 @Html.DisplayFor(modelItem => item.Status)
