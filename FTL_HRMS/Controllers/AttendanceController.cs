@@ -210,9 +210,9 @@ namespace FTL_HRMS.Controllers
         public DateTime GetFirstDate()
         {
             DateTime firstDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            if (_db.FilterAttendance.Where(i => i.IsCalculated).ToList().Count > 0)
+            if (_db.FilterAttendance.Where(i => !i.IsCalculated).ToList().Count > 0)
             {
-                firstDate = _db.FilterAttendance.Where(i=> i.IsCalculated).ToList().Max(i => i.Date.Date).AddDays(1);
+                firstDate = _db.FilterAttendance.Where(i=> !i.IsCalculated).ToList().Min(i => i.Date.Date);
             }
             return firstDate;
         }

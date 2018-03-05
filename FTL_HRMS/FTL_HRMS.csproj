@@ -3061,12 +3061,6 @@
       <DependentUpon>PromotionHistoryReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\PromotionHistoryReport1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PromotionHistoryReport.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Reports\ResignationApplicationReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
