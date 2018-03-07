@@ -87,7 +87,7 @@ namespace FTL_HRMS.Controllers
                     fileStorage.EmployeeId = fileStorage.EmployeeId;
                     fileStorage.Path = fullFileName;
                     fileStorage.CreatedBy = userId;
-                    fileStorage.CreateDate = DateTime.Now;
+                    fileStorage.CreateDate = Utility.Utility.GetCurrentDateTime();
                     _db.FileStorage.Add(fileStorage);
                     _db.SaveChanges();
 

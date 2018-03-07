@@ -59,7 +59,7 @@ namespace FTL_HRMS.Controllers
                     string userName = User.Identity.Name;
                     int userId = DbUtility.GetUserId(_db, userName);
                     departmentGroup.CreatedBy = userId;
-                    departmentGroup.CreateDate = DateTime.Now;
+                    departmentGroup.CreateDate = Utility.Utility.GetCurrentDateTime();
                     departmentGroup.Status = true;
                     DbUtility.Status status = _genericData.Insert<DepartmentGroup>(departmentGroup);
                     TempData["message"] = DbUtility.GetStatusMessage(status);
@@ -109,7 +109,7 @@ namespace FTL_HRMS.Controllers
                     string userName = User.Identity.Name;
                     int userId = DbUtility.GetUserId(_db, userName);
                     departmentGroup.UpdatedBy = userId;
-                    departmentGroup.UpdateDate = DateTime.Now;
+                    departmentGroup.UpdateDate = Utility.Utility.GetCurrentDateTime();
                     _db.Entry(departmentGroup).State = EntityState.Modified;
                     _db.SaveChanges();
                     TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
@@ -126,7 +126,7 @@ namespace FTL_HRMS.Controllers
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 departmentGroup.UpdatedBy = userId;
-                departmentGroup.UpdateDate = DateTime.Now;
+                departmentGroup.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(departmentGroup).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
@@ -159,10 +159,18 @@ namespace FTL_HRMS.Controllers
             if (_db.Department.Where(i => i.DepartmentGroupId == id && i.Status == true).ToList().Count < 1)
             {
                 DepartmentGroup departmentGroup = _db.DepartmentGroup.Find(id);
-                departmentGroup.Status = false;
-                _db.Entry(departmentGroup).State = EntityState.Modified;
-                _db.SaveChanges();
-                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
+                if (departmentGroup != null)
+                {
+                    departmentGroup.Status = false;
+                    _db.Entry(departmentGroup).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteSuccess);
+                }
+                else
+                {
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.DeleteFailed);
+                }
+               
             }
             else
             {

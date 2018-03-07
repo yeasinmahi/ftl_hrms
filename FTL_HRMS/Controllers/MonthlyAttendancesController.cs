@@ -9,7 +9,6 @@ using FTL_HRMS.Models.Payroll;
 using FTL_HRMS.Models.ViewModels;
 using FTL_HRMS.Utility;
 using FTL_HRMS.Models.Hr;
-using FTL_HRMS.Models.ViewModels;
 
 namespace FTL_HRMS.Controllers
 {
@@ -61,7 +60,7 @@ namespace FTL_HRMS.Controllers
             List<MonthlyAttendance> attendenceList = new List<MonthlyAttendance>();
             if (date.Equals(Utility.Utility.GetDefaultDate()))
             {
-                date = DateTime.Now.AddDays(-1);
+                date = Utility.Utility.GetCurrentDateTime().AddDays(-1);
             }
             if (departmentGroupId > 0)
             {
@@ -136,12 +135,12 @@ namespace FTL_HRMS.Controllers
             List<MonthlyAttendance> attendenceList = new List<MonthlyAttendance>();
             if (fromDate.Equals(Utility.Utility.GetDefaultDate()))
             {
-                fromDate = DateTime.Now.AddDays(-1);
-                toDate = DateTime.Now.AddDays(-1);
+                fromDate = Utility.Utility.GetCurrentDateTime().AddDays(-1);
+                toDate = Utility.Utility.GetCurrentDateTime().AddDays(-1);
             }
             if (toDate.Equals(Utility.Utility.GetDefaultDate()))
             {
-                toDate = DateTime.Now.AddDays(-1);
+                toDate = Utility.Utility.GetCurrentDateTime().AddDays(-1);
             }
             if (employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] != "" || 
                 employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] != "" ||
@@ -206,16 +205,15 @@ namespace FTL_HRMS.Controllers
 
         public List<FilterAttendanceView> GetEmployeewiseFilterList(int employeeId, DateTime fromDate, DateTime toDate)
         {
-            string query = String.Empty;
-            List<FilterAttendanceView> attendenceList = new List<FilterAttendanceView>();
+            string query;
             if (fromDate.Equals(Utility.Utility.GetDefaultDate()))
             {
-                fromDate = DateTime.Now.AddDays(-1);
-                toDate = DateTime.Now.AddDays(-1);
+                fromDate = Utility.Utility.GetCurrentDateTime().AddDays(-1);
+                toDate = Utility.Utility.GetCurrentDateTime().AddDays(-1);
             }
             if (toDate.Equals(Utility.Utility.GetDefaultDate()))
             {
-                toDate = DateTime.Now.AddDays(-1);
+                toDate = Utility.Utility.GetCurrentDateTime().AddDays(-1);
             }
             if (employeeId > 0 && Request["ToDate"] != "" && Request["FromDate"] != "" ||
                 employeeId > 0 && Request["ToDate"] == "" && Request["FromDate"] != "" ||
@@ -235,8 +233,7 @@ namespace FTL_HRMS.Controllers
                 //attendenceList = _db.FilterAttendanceView.Where(x => DbFunctions.TruncateTime(x.Date) >= FromDate.Date && DbFunctions.TruncateTime(x.Date) <= ToDate.Date).ToList();
                 query = "select * from FilterAttendanceView where Date between '" + fromDate.Date + "' and '" + toDate.Date + "'";
             }
-            FilterAttendanceViewGatway filterAttendanceViewGatway = new FilterAttendanceViewGatway();
-            attendenceList = filterAttendanceViewGatway.GetFilterAttendanceView(query);
+            var attendenceList = new FilterAttendanceViewGatway().GetFilterAttendanceView(query);
             ViewBag.FromDate = fromDate;
             ViewBag.ToDate = toDate;
             ViewBag.EmpId = employeeId;
@@ -315,7 +312,7 @@ namespace FTL_HRMS.Controllers
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 monthlyAttendance.UpdatedBy = userId;
-                monthlyAttendance.UpdateDate = DateTime.Now;
+                monthlyAttendance.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(monthlyAttendance).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);

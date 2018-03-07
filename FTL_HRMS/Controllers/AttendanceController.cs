@@ -93,7 +93,7 @@ namespace FTL_HRMS.Controllers
         public List<DateTime> DistinctDateListFromDeviceAttendance()
         {
             List<DateTime> dateList = _db.DeviceAttendance.Where(i => i.IsCalculated == false).ToList().Select(m => m.CheckTime.Date).Distinct().ToList();
-            dateList.Remove(DateTime.Now.Date);
+            dateList.Remove(Utility.Utility.GetCurrentDateTime().Date);
             return dateList;
         }
 
@@ -224,7 +224,7 @@ namespace FTL_HRMS.Controllers
 
         public DateTime GetFirstDate()
         {
-            DateTime firstDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            DateTime firstDate = new DateTime(Utility.Utility.GetCurrentDateTime().Year, Utility.Utility.GetCurrentDateTime().Month, 1);
             if (_db.FilterAttendance.Where(i => !i.IsCalculated).ToList().Count > 0)
             {
                 firstDate = _db.FilterAttendance.Where(i=> !i.IsCalculated).ToList().Min(i => i.Date.Date);
@@ -234,7 +234,7 @@ namespace FTL_HRMS.Controllers
 
         public DateTime GetLastDate()
         {
-            DateTime lastDate = DateTime.Now.AddDays(-1).Date;
+            DateTime lastDate = Utility.Utility.GetCurrentDateTime().AddDays(-1).Date;
             return lastDate;
         }
 

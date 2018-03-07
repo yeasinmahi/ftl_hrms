@@ -47,5 +47,12 @@ namespace FTL_HRMS.Utility
         {
             return "{0:hh:mm tt}";
         }
+
+        public static DateTime GetCurrentDateTime()
+        {
+            DateTime timeUtc = DateTime.UtcNow;
+            TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("Bangladesh Standard Time");
+            return TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone);
+        }
     }
 }

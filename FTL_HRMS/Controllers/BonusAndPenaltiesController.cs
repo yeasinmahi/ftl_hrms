@@ -55,7 +55,7 @@ namespace FTL_HRMS.Controllers
             {
                 bonusAndPenalty.EmployeeId = bonusAndPenalty.EmployeeId;
                 bonusAndPenalty.CreatedBy = userId;
-                bonusAndPenalty.CreateDate = DateTime.Now;
+                bonusAndPenalty.CreateDate = Utility.Utility.GetCurrentDateTime();
                 _db.BonusAndPenalty.Add(bonusAndPenalty);
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
@@ -92,7 +92,7 @@ namespace FTL_HRMS.Controllers
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 bonusAndPenalty.UpdatedBy = userId;
-                bonusAndPenalty.UpdateDate = DateTime.Now;
+                bonusAndPenalty.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(bonusAndPenalty).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);

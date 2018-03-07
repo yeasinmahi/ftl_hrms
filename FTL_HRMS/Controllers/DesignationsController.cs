@@ -81,7 +81,7 @@ namespace FTL_HRMS.Controllers
                     string userName = User.Identity.Name;
                     int userId = DbUtility.GetUserId(_db, userName);
                     designation.CreatedBy = userId;
-                    designation.CreateDate = DateTime.Now;
+                    designation.CreateDate = Utility.Utility.GetCurrentDateTime();
                     designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
                     designation.Status = true;
                     _db.Designation.Add(designation);
@@ -155,7 +155,7 @@ namespace FTL_HRMS.Controllers
                     string userName = User.Identity.Name;
                     int userId = DbUtility.GetUserId(_db, userName);
                     designation.UpdatedBy = userId;
-                    designation.UpdateDate = DateTime.Now;
+                    designation.UpdateDate = Utility.Utility.GetCurrentDateTime();
                     designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
                     _db.Entry(designation).State = EntityState.Modified;
                     _db.SaveChanges();
@@ -171,7 +171,7 @@ namespace FTL_HRMS.Controllers
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 designation.UpdatedBy = userId;
-                designation.UpdateDate = DateTime.Now;
+                designation.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 designation.DepartmentId = Convert.ToInt32(Request["ddl_dept"]);
                 _db.Entry(designation).State = EntityState.Modified;
                 _db.SaveChanges();

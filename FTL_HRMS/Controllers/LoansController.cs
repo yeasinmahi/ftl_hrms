@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using FTL_HRMS.DAL;
-using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
-using Microsoft.AspNet.Identity;
 using FTL_HRMS.Models.Payroll;
 using static FTL_HRMS.Utility.Utility;
 
@@ -54,19 +53,19 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,EmployeeId,LoanAmount,CreateDate,LoanReason,LoanDuration,Status,UpdateDate,UpdatedBy,Remarks")] Loan loan)
+        public async Task<ActionResult> Create([Bind(Include = "Sl,EmployeeId,LoanAmount,CreateDate,LoanReason,LoanDuration,Status,UpdateDate,UpdatedBy,Remarks")] Loan loan)
         {
             if (loan.LoanAmount != 0)
             {
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 loan.EmployeeId = userId;
-                loan.CreateDate = DateTime.Now;
+                loan.CreateDate = Utility.Utility.GetCurrentDateTime();
                 loan.Status = "Pending";
                 _db.Loan.Add(loan);
                 _db.SaveChanges();
                 int employeeId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
-                NotificationController.GetInstant().SentMailToAll(NotificationType.Loan, NotificationStatus.Pending, employeeId);
+                await NotificationController.GetInstant().SentMailToAll(NotificationType.Loan, NotificationStatus.Pending, employeeId);
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
                 return RedirectToAction("Create");
             }
@@ -107,7 +106,7 @@ namespace FTL_HRMS.Controllers
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 loan.EmployeeId = userId;
-                loan.CreateDate = DateTime.Now;
+                loan.CreateDate = Utility.Utility.GetCurrentDateTime();
                 loan.Status = "Pending";
                 _db.Entry(loan).State = EntityState.Modified;
                 _db.SaveChanges();
@@ -131,7 +130,7 @@ namespace FTL_HRMS.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult LoanApproval([Bind(Include = "Sl,EmployeeId,LoanAmount,CreateDate,LoanReason,LoanDuration,Status,UpdateDate,UpdatedBy,Remarks")] Loan loan)
+        public async Task<RedirectToRouteResult> LoanApproval([Bind(Include = "Sl,EmployeeId,LoanAmount,CreateDate,LoanReason,LoanDuration,Status,UpdateDate,UpdatedBy,Remarks")] Loan loan)
         {
             int id = Convert.ToInt32(Request["field-1"]);
             string status = Convert.ToString(Request["field-2"]);
@@ -145,17 +144,17 @@ namespace FTL_HRMS.Controllers
                 loan.Status = status;
                 loan.Remarks = remarks;
                 loan.UpdatedBy = userId;
-                loan.UpdateDate = DateTime.Now;
+                loan.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(loan).State = EntityState.Modified;
                 _db.SaveChanges();
                 int employeeId = loan.EmployeeId;
                 if (status == "Considered")
                 {
-                    NotificationController.GetInstant().SentMailToAll(NotificationType.Loan, NotificationStatus.Consider, employeeId);
+                    await NotificationController.GetInstant().SentMailToAll(NotificationType.Loan, NotificationStatus.Consider, employeeId);
                 }
                 else if (status == "Canceled")
                 {
-                    NotificationController.GetInstant().SentMailToAll(NotificationType.Loan, NotificationStatus.Cancel, employeeId);
+                    await NotificationController.GetInstant().SentMailToAll(NotificationType.Loan, NotificationStatus.Cancel, employeeId);
                 }
                 if(status == "Approved")
                 {
@@ -166,7 +165,7 @@ namespace FTL_HRMS.Controllers
                     calculation.LoanDuration = loan.LoanDuration;
                     _db.LoanCalculation.Add(calculation);
                     _db.SaveChanges();
-                    NotificationController.GetInstant().SentMailToAll(NotificationType.Loan, NotificationStatus.Approve, employeeId);
+                    await NotificationController.GetInstant().SentMailToAll(NotificationType.Loan, NotificationStatus.Approve, employeeId);
                 }
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("LoanApproval", "Loans");

@@ -71,7 +71,7 @@ namespace FTL_HRMS.Controllers
                         Subscription subscription = _dbCtx.Subscription.Find(id);
                         if (DecryptString(subscription.Code) == "▓╖▓╖▓╖")
                         {
-                            if (subscription.Date.Date >= DateTime.Now.Date)
+                            if (subscription.Date.Date >= Utility.Utility.GetCurrentDateTime().Date)
                             {
                                 await SignInAsync(user, model.RememberMe);
                                 return RedirectToAction("AdminDashboard", "Home");
