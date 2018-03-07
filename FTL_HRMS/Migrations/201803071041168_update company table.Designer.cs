@@ -7,13 +7,13 @@ namespace FTL_HRMS.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class changebrachmodel : IMigrationMetadata
+    public sealed partial class updatecompanytable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(changebrachmodel));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(updatecompanytable));
         
         string IMigrationMetadata.Id
         {
-            get { return "201711291030036_change brach model"; }
+            get { return "201803071041168_update company table"; }
         }
         
         string IMigrationMetadata.Source
