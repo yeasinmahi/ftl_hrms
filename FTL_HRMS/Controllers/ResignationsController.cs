@@ -66,7 +66,7 @@ namespace FTL_HRMS.Controllers
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 resignation.EmployeeId = userId;
-                resignation.CreateDate = DateTime.Now;
+                resignation.CreateDate = Utility.Utility.GetCurrentDateTime();
                 resignation.Status = "Pending";
                 _db.Resignation.Add(resignation);
                 _db.SaveChanges();
@@ -106,7 +106,7 @@ namespace FTL_HRMS.Controllers
                 resignation.Status = status;
                 resignation.Remarks = remarks;
                 resignation.UpdatedBy = userId;
-                resignation.UpdateDate = DateTime.Now;
+                resignation.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(resignation).State = EntityState.Modified;
                 _db.SaveChanges();
                 int employeeId = resignation.EmployeeId;
@@ -170,7 +170,7 @@ namespace FTL_HRMS.Controllers
             if (ModelState.IsValid)
             {
                 resignation.UpdatedBy = resignation.EmployeeId;
-                resignation.UpdateDate = DateTime.Now;
+                resignation.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(resignation).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);

@@ -46,9 +46,9 @@ namespace FTL_HRMS.Controllers
                 ViewBag.TotalEmployee = _db.Employee.Where(x=> x.Status== true).Count();
                 ViewBag.TotalAdmin = _db.Designation.Where(x=> x.RoleName == "Admin").Where(x => x.Status == true).Count();
                 ViewBag.TotalBranch = _db.Branches.Where(x => x.Status == true).Count();
-                DateTime d1 = DateTime.Now;
-                DateTime d2 = DateTime.Now.AddDays(30);
-                DateTime d3 = DateTime.Now.AddDays(-30);
+                DateTime d1 = Utility.Utility.GetCurrentDateTime();
+                DateTime d2 = Utility.Utility.GetCurrentDateTime().AddDays(30);
+                DateTime d3 = Utility.Utility.GetCurrentDateTime().AddDays(-30);
                 if (_db.Holiday.Where(i => i.Date > d1 && i.Date < d2).Count() >0)
                 {
                     ViewBag.Holiday = _db.Holiday.Where(i => i.Date > d1 && i.Date < d2).Count();

@@ -304,7 +304,7 @@ namespace FTL_HRMS.Controllers
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 employee.CreatedBy = userId;
-                employee.CreateDate = DateTime.Now;
+                employee.CreateDate = Utility.Utility.GetCurrentDateTime();
                 employee.IsSystemOrSuperAdmin = false;
                 employee.Status = true;
                 if (employee.ProbationStatus != true)
@@ -552,7 +552,7 @@ namespace FTL_HRMS.Controllers
                         string userName = User.Identity.Name;
                         int UserId = DbUtility.GetUserId(_db, userName);
                         employee.UpdatedBy = UserId;
-                        employee.UpdateDate = DateTime.Now;
+                        employee.UpdateDate = Utility.Utility.GetCurrentDateTime();
                         _db.Entry(employee).State = EntityState.Modified;
                         _db.SaveChanges();
 
@@ -588,7 +588,7 @@ namespace FTL_HRMS.Controllers
                     string userName = User.Identity.Name;
                     int UserId = DbUtility.GetUserId(_db, userName);
                     employee.UpdatedBy = UserId;
-                    employee.UpdateDate = DateTime.Now;
+                    employee.UpdateDate = Utility.Utility.GetCurrentDateTime();
                     _db.Entry(employee).State = EntityState.Modified;
                     _db.SaveChanges();
 

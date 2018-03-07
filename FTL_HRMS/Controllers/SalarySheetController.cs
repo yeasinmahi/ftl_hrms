@@ -46,9 +46,12 @@ namespace FTL_HRMS.Controllers
             {
                 int lastPaidSalaryDurationId = id;
                 PaidSalaryDuration lastPaidSalary = _db.PaidSalaryDuration.Find(lastPaidSalaryDurationId);
-                lastPaidSalary.IsPaid = true;
-                lastPaidSalary.PaidDate = DateTime.Now;
-                _db.Entry(lastPaidSalary).State = EntityState.Modified;
+                if (lastPaidSalary != null)
+                {
+                    lastPaidSalary.IsPaid = true;
+                    lastPaidSalary.PaidDate = Utility.Utility.GetCurrentDateTime();
+                    _db.Entry(lastPaidSalary).State = EntityState.Modified;
+                }
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                 return RedirectToAction("PaidSalaryDurationList", "SalarySheet");
@@ -74,7 +77,7 @@ namespace FTL_HRMS.Controllers
                 toDate = _db.PaidSalaryDuration.Where(i => i.Sl == lastPaidSalaryDurationId).Select(i => i.ToDate).FirstOrDefault();
             }
             int pendingSheet = _db.PaidSalaryDuration.Where(i => i.IsPaid == false).ToList().Count;
-            if(startDate.Date > toDate.Date && endDate.Date < DateTime.Now.Date && pendingSheet == 0)
+            if(startDate.Date > toDate.Date && endDate.Date < Utility.Utility.GetCurrentDateTime().Date && pendingSheet == 0)
             {
                 _att.SyncAttendance();
                 List<int> employeeSlList = GetEmployeeSlFromMonthlyAttendance(startDate, endDate);
@@ -218,7 +221,7 @@ namespace FTL_HRMS.Controllers
                 paidSalaryDuration.FromDate = startDate;
                 paidSalaryDuration.ToDate = endDate;
                 paidSalaryDuration.WorkingDay = workingDays;
-                paidSalaryDuration.GenerateDate = DateTime.Now;
+                paidSalaryDuration.GenerateDate = Utility.Utility.GetCurrentDateTime();
                 paidSalaryDuration.IsPaid = false;
                 paidSalaryDuration.PaidDate = null;
                 _db.PaidSalaryDuration.Add(paidSalaryDuration);

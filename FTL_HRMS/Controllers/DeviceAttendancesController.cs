@@ -21,9 +21,10 @@ namespace FTL_HRMS.Controllers
             _attendanceController.SyncAttendance();
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
             var codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
+            DateTime nowTime = Utility.Utility.GetCurrentDateTime();
             foreach (var item in codes)
             {
-                var device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
+                var device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == nowTime.Day && i.CheckTime.Month == nowTime.Month && i.CheckTime.Year == nowTime.Year).ToList();
                 if(device.Count > 0)
                 {
                     DateTime checkTime = device.Min(p => p.CheckTime);
@@ -48,12 +49,13 @@ namespace FTL_HRMS.Controllers
                 type = Request["SelectType"];
             }
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
+            DateTime nowTime = Utility.Utility.GetCurrentDateTime();
             if (type == "Present")
             {
                 var codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
                 foreach (var item in codes)
                 {
-                    var device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
+                    var device = _db.DeviceAttendance.Where(i => i.EmployeeCode == item && i.CheckTime.Day == nowTime.Day && i.CheckTime.Month == nowTime.Month && i.CheckTime.Year == nowTime.Year).ToList();
                     if (device.Count > 0)
                     {
                         DateTime checkTime = device.Min(p => p.CheckTime);
@@ -70,10 +72,10 @@ namespace FTL_HRMS.Controllers
             }
             else if (type == "Absent")
             {
-                var device = _db.DeviceAttendance.Where(i => i.CheckTime.Day == DateTime.Now.Day && i.CheckTime.Month == DateTime.Now.Month && i.CheckTime.Year == DateTime.Now.Year).ToList();
+                var device = _db.DeviceAttendance.Where(i => i.CheckTime.Day == nowTime.Day && i.CheckTime.Month == nowTime.Month && i.CheckTime.Year == nowTime.Year).ToList();
                 var codes = device.Select(m => m.EmployeeCode).Distinct();
 
-                var leave = _db.LeaveHistories.Where(i => i.FromDate < DateTime.Now && i.ToDate > DateTime.Now).ToList();
+                var leave = _db.LeaveHistories.Where(i => i.FromDate < nowTime && i.ToDate > nowTime).ToList();
                 var empSl = leave.Select(m => m.EmployeeId).Distinct();
 
                 List<Employee> employee = _db.Employee.Where(i => i.Status && i.IsSystemOrSuperAdmin != true).ToList();
@@ -104,7 +106,7 @@ namespace FTL_HRMS.Controllers
                 var empSl = _db.LeaveHistories.Select(m => m.EmployeeId).Distinct();
                 foreach (var item in empSl)
                 {
-                    if (_db.LeaveHistories.Any(i => i.EmployeeId == item && i.FromDate < DateTime.Now && i.ToDate > DateTime.Now))
+                    if (_db.LeaveHistories.Any(i => i.EmployeeId == item && i.FromDate < Utility.Utility.GetCurrentDateTime() && i.ToDate > Utility.Utility.GetCurrentDateTime()))
                     {
                         VMTodaysAttendance attendance = new VMTodaysAttendance
                         {

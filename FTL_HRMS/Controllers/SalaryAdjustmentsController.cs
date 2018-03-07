@@ -62,7 +62,7 @@ namespace FTL_HRMS.Controllers
                     salaryAdjustment.Amount = -salaryAdjustment.Amount;
                 }
                 salaryAdjustment.CreatedBy = userId;
-                salaryAdjustment.CreateDate = DateTime.Now;
+                salaryAdjustment.CreateDate = Utility.Utility.GetCurrentDateTime();
                 _db.SalaryAdjustment.Add(salaryAdjustment);
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
@@ -117,7 +117,7 @@ namespace FTL_HRMS.Controllers
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 salaryAdjustment.UpdatedBy = userId;
-                salaryAdjustment.UpdateDate = DateTime.Now;
+                salaryAdjustment.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(salaryAdjustment).State = System.Data.Entity.EntityState.Modified;
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);

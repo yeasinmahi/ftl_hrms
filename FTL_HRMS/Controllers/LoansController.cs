@@ -60,7 +60,7 @@ namespace FTL_HRMS.Controllers
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 loan.EmployeeId = userId;
-                loan.CreateDate = DateTime.Now;
+                loan.CreateDate = Utility.Utility.GetCurrentDateTime();
                 loan.Status = "Pending";
                 _db.Loan.Add(loan);
                 _db.SaveChanges();
@@ -106,7 +106,7 @@ namespace FTL_HRMS.Controllers
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 loan.EmployeeId = userId;
-                loan.CreateDate = DateTime.Now;
+                loan.CreateDate = Utility.Utility.GetCurrentDateTime();
                 loan.Status = "Pending";
                 _db.Entry(loan).State = EntityState.Modified;
                 _db.SaveChanges();
@@ -144,7 +144,7 @@ namespace FTL_HRMS.Controllers
                 loan.Status = status;
                 loan.Remarks = remarks;
                 loan.UpdatedBy = userId;
-                loan.UpdateDate = DateTime.Now;
+                loan.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(loan).State = EntityState.Modified;
                 _db.SaveChanges();
                 int employeeId = loan.EmployeeId;

@@ -68,7 +68,7 @@ namespace FTL_HRMS.Controllers
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
             leaveHistory.EmployeeId = userId;
-            leaveHistory.CreateDate = DateTime.Now;
+            leaveHistory.CreateDate = Utility.Utility.GetCurrentDateTime();
             leaveHistory.Day = (leaveHistory.ToDate - leaveHistory.FromDate.AddDays(-1)).Days;
             leaveHistory.Status = "Pending";
 
@@ -132,7 +132,7 @@ namespace FTL_HRMS.Controllers
                 leaveHistory.Status = status;
                 leaveHistory.Remarks = remarks;
                 leaveHistory.UpdatedBy = userId;
-                leaveHistory.UpdateDate = DateTime.Now;
+                leaveHistory.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(leaveHistory).State = EntityState.Modified;
                 _db.SaveChanges();
                 int employeeId = _db.Users.Where(i => i.UserName == userName).Select(s => s.CustomUserId).FirstOrDefault();
@@ -173,7 +173,7 @@ namespace FTL_HRMS.Controllers
                 leaveHistory.Status = status;
                 leaveHistory.Remarks = remarks;
                 leaveHistory.UpdatedBy = userId;
-                leaveHistory.UpdateDate = DateTime.Now;
+                leaveHistory.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(leaveHistory).State = EntityState.Modified;
                 _db.SaveChanges();
 
@@ -242,7 +242,7 @@ namespace FTL_HRMS.Controllers
             {
                 leaveHistory.Day = (leaveHistory.ToDate - leaveHistory.FromDate.AddDays(-1)).Days;
                 leaveHistory.UpdatedBy = leaveHistory.EmployeeId;
-                leaveHistory.UpdateDate = DateTime.Now;
+                leaveHistory.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(leaveHistory).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);

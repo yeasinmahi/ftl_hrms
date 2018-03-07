@@ -109,7 +109,7 @@ namespace FTL_HRMS.Controllers
                     string userName = User.Identity.Name;
                     int userId = DbUtility.GetUserId(_db, userName);
                     departmentGroup.UpdatedBy = userId;
-                    departmentGroup.UpdateDate = DateTime.Now;
+                    departmentGroup.UpdateDate = Utility.Utility.GetCurrentDateTime();
                     _db.Entry(departmentGroup).State = EntityState.Modified;
                     _db.SaveChanges();
                     TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
@@ -126,7 +126,7 @@ namespace FTL_HRMS.Controllers
                 string userName = User.Identity.Name;
                 int userId = DbUtility.GetUserId(_db, userName);
                 departmentGroup.UpdatedBy = userId;
-                departmentGroup.UpdateDate = DateTime.Now;
+                departmentGroup.UpdateDate = Utility.Utility.GetCurrentDateTime();
                 _db.Entry(departmentGroup).State = EntityState.Modified;
                 _db.SaveChanges();
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);

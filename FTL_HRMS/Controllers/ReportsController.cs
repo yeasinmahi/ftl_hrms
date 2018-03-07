@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using CrystalDecisions.CrystalReports.Engine;
 using System.Collections.Generic;
 using System.Linq;
+using CrystalDecisions.Shared;
 using FTL_HRMS.DAL;
 using FTL_HRMS.Models.Hr;
 using FTL_HRMS.Utility;
@@ -379,6 +380,29 @@ namespace FTL_HRMS.Controllers
         }
         #endregion
 
+        #region Fileter Attendance
+        public ActionResult PrintFilterAttendanceReport(int employeeId, DateTime fromDate, DateTime toDate)
+        {
+            //int employeeId = Convert.ToInt32(Request["EmployeeId"]);
+            //DateTime fromDate = Convert.ToDateTime(Request["fromDate"]);
+            //DateTime toDate = Convert.ToDateTime(Request["toDate"]);
+            string selectedFormula;
+            if (employeeId > 0)
+            {
+                selectedFormula = "{FilterAttendanceView.Date}>=Date (" + fromDate.ToString("yyyy,MM,dd") +
+                              ") and {FilterAttendanceView.Date}<= Date (" + toDate.ToString("yyyy,MM,dd") +
+                              " ) and {FilterAttendanceView.EmployeeId}= " + employeeId + "";
+            }
+            else
+            {
+                selectedFormula = "{FilterAttendanceView.Date}>=Date (" + fromDate.ToString("yyyy,MM,dd") +
+                              ") and {FilterAttendanceView.Date}<= Date (" + toDate.ToString("yyyy,MM,dd") +
+                              " )";
+            }
+
+            return RedirectToAction("PrintReport", "Reports", new { sourceName = "FilterAttendanceReport", fileName = "Filter Attendance", selectedFormula = selectedFormula });
+        }
+        #endregion
         #region AttandanceByDateRange
         public ActionResult PrintAttandanceByDateRangeReport()
         {
@@ -527,10 +551,34 @@ namespace FTL_HRMS.Controllers
             string password = DbUtility.GetConectionStringProperty(connectionString,
                 DbUtility.ConnectionStringProperty.Password);
             rd.Load(Path.Combine(Server.MapPath("~/Reports"), reportName + ".rpt"));
-            rd.SetDatabaseLogon(user, password, dataSource, databaseName);
+            //rd.SetDatabaseLogon(user, password, dataSource, databaseName);
+            ConnectionInfo connectionInfo = GetConnecitionInfo(user, password, dataSource, databaseName);
+            SetDatabaseLogon(rd, connectionInfo);
             return rd;
         }
 
+        private ConnectionInfo GetConnecitionInfo(string user, string password, string dataSource, string databaseName)
+        {
+            ConnectionInfo connectionInfo = new ConnectionInfo
+            {
+                ServerName = dataSource,
+                DatabaseName = databaseName,
+                UserID = user,
+                Password = password
+            };
+
+            return connectionInfo;
+        }
+        private void SetDatabaseLogon(ReportDocument cryRpt, ConnectionInfo connectionInfo)
+        {
+            Tables tables = cryRpt.Database.Tables;
+            foreach (Table table in tables)
+            {
+                var tableLogOnInfo = table.LogOnInfo;
+                tableLogOnInfo.ConnectionInfo = connectionInfo;
+                table.ApplyLogOnInfo(tableLogOnInfo);
+            }
+        }
         private void SetResponceProperty()
         {
             Response.Buffer = false;
@@ -557,5 +605,7 @@ namespace FTL_HRMS.Controllers
         }
 
         #endregion
+
+        
     }
 }
