@@ -9,7 +9,7 @@ namespace FTL_HRMS.Models.Payroll
     {
         [Key]
         public int Sl { get; set; }
-        
+
         [Required(ErrorMessage = "Name cannot be empty")]
         [MaxLength(250)]
         public string Name { get; set; }
@@ -49,5 +49,18 @@ namespace FTL_HRMS.Models.Payroll
         DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
         public DateTime StartingDate { get; set; }
+
+        [DataType(DataType.Date),
+        DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
+        ApplyFormatInEditMode = true)]
+        public DateTime LastEarnLeaveCountDate { get; set; }
+        
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Not a number")]
+        [Range(0, 12, ErrorMessage = "Please use month between 0 to 12")]
+        public int EarnLeaveDuration { get; set; }
+
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Not a number")]
+        [Range(1, 30, ErrorMessage = "Please use day between 1 to 30")]
+        public int EarnLeaveCountDay { get; set; }
     }
 }
