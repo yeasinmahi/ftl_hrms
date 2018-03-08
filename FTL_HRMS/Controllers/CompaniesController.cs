@@ -135,7 +135,7 @@ namespace FTL_HRMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Company company = _db.Company.Find(id);
-            _db.Company.Remove(company);
+            if (company != null) _db.Company.Remove(company);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
