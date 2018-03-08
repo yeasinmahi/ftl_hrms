@@ -67,7 +67,7 @@ namespace FTL_HRMS.Controllers
         // GET: Companies/Edit/5
         public ActionResult Edit()
         {
-            if(_db.Company.Select(i=> i.Sl).Count() > 0)
+            if(_db.Company.Select(i=> i.Sl).Any())
             {
                 int id = _db.Company.Select(i => i.Sl).FirstOrDefault();
                 Company company = _db.Company.Find(id);
@@ -89,24 +89,27 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Name,Address,Email,Website,Phone,Mobile,AlternativeMobile,RegistrationNo,RegistrationDate,TINNumber,StartingDate")] Company company)
+        public ActionResult Edit([Bind(Include = "Sl,Name,Address,Email,Website,Phone,Mobile,AlternativeMobile,RegistrationNo,RegistrationDate,TINNumber,StartingDate, EarnLeaveCountDay, EarnLeaveDuration")] Company company)
         {
-            if (company.Sl != 0)
+            if (ModelState.IsValid)
             {
-                _db.Entry(company).State = EntityState.Modified;
-                _db.SaveChanges();
-                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
-                ViewBag.Address = company.Address;
-                return View(company);
+                if (company.Sl != 0)
+                {
+                    _db.Entry(company).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
+                    ViewBag.Address = company.Address;
+                    
+                }
+                else
+                {
+                    _db.Company.Add(company);
+                    _db.SaveChanges();
+                    TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
+                    ViewBag.Address = company.Address;
+                }
             }
-            else
-            {
-                _db.Company.Add(company);
-                _db.SaveChanges();
-                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
-                ViewBag.Address = company.Address;
-                return View(company);
-            }
+            return View(company);
         }
         #endregion
 

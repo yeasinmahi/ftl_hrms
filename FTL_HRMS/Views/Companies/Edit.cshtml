@@ -1,4 +1,5 @@
-﻿@model FTL_HRMS.Models.Payroll.Company
+﻿@using System.Web.UI.WebControls
+@model FTL_HRMS.Models.Payroll.Company
 
 @{
     ViewBag.Title = "Edit";
@@ -75,8 +76,17 @@
                                 @Html.LabelFor(model => model.StartingDate, "Starting Date")
                             </div>
                             <div>
-                                @Html.EditorFor(model => model.StartingDate, new { htmlAttributes = new { @class = "form-control datepicker", @type = "DateTime", style = "width:80%" } })
-                                @Html.ValidationMessageFor(model => model.StartingDate, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.StartingDate, new {htmlAttributes = new {@class = "form-control datepicker", @type = "DateTime", style = "width:80%"}})
+                                @Html.ValidationMessageFor(model => model.StartingDate, "", new {@class = "text-danger"})
+                            </div>
+
+
+                            <div>
+                                @Html.LabelFor(model => model.EarnLeaveCountDay, "Earn Leave Count Day")
+                            </div>
+                            <div>
+                                @Html.EditorFor(model => model.EarnLeaveCountDay, new { htmlAttributes = new { @class = "form-control", style = "width:80%", PlaceHolder = "Ex: 14", type = "number", required = "true" } })
+                                @Html.ValidationMessageFor(model => model.EarnLeaveCountDay, "", new { @class = "text-danger" })
                             </div>
                             <br />
                         </div>
@@ -117,9 +127,18 @@
                                 @Html.LabelFor(model => model.TINNumber, "TIN Number")
                             </div>
                             <div>
-                                @Html.EditorFor(model => model.TINNumber, new { htmlAttributes = new { @class = "form-control", style = "width:80%" } })
-                                @Html.ValidationMessageFor(model => model.TINNumber, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.TINNumber, new {htmlAttributes = new {@class = "form-control", style = "width:80%"}})
+                                @Html.ValidationMessageFor(model => model.TINNumber, "", new {@class = "text-danger"})
                             </div>
+
+                            <div>
+                                @Html.LabelFor(model => model.EarnLeaveDuration, "Earn Leave Duration in Month")
+                            </div>
+                            <div>
+                                @Html.EditorFor(model => model.EarnLeaveDuration, new {htmlAttributes = new {@class = "form-control", style = "width:80%", PlaceHolder = "Ex: 6", type = "number", required = "true"} })
+                                @Html.ValidationMessageFor(model => model.EarnLeaveDuration, "", new {@class = "text-danger"})
+                            </div>
+
                             <br />
                         </div>
                     </div>

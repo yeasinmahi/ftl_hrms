@@ -40,9 +40,9 @@ namespace FTL_HRMS.Models.Hr
         [Required(ErrorMessage = "IsOvertimeCalculated cannot be empty")]
         public bool IsOvertimeCalculated { get; set; }
 
-        public double? OvertimeConsiderationTime { get; set; }
+        public double OvertimeConsiderationTime { get; set; }
 
-        public double? OvertimePaymentPercentage { get; set; }
+        public double OvertimePaymentPercentage { get; set; }
 
         [DefaultValue(true)]
         public bool Status { get; set; }
