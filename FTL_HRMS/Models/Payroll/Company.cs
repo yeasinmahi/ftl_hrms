@@ -53,7 +53,7 @@ namespace FTL_HRMS.Models.Payroll
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
-        public DateTime LastEarnLeaveCountDate { get; set; }
+        public DateTime? LastEarnLeaveCountDate { get; set; }
         
         [DataType(DataType.PhoneNumber, ErrorMessage = "Not a number")]
         [Range(0, 12, ErrorMessage = "Please use month between 0 to 12")]
