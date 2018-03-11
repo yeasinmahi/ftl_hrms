@@ -2819,6 +2819,7 @@
     <Compile Include="Controllers\DeviceAttendancesController.cs" />
     <Compile Include="Controllers\DisciplinaryActionsController.cs" />
     <Compile Include="Controllers\DisciplinaryActionTypesController.cs" />
+    <Compile Include="Controllers\EarnLeaveController.cs" />
     <Compile Include="Controllers\EducationsController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\EmployeeTypesController.cs" />
@@ -3481,6 +3482,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\AdminTemplate\assets\plugins\data-table\" />
     <Folder Include="Content\assets\data\images\" />
+    <Folder Include="Views\EarnLeave\" />
     <Folder Include="Views\Notification\" />
   </ItemGroup>
   <ItemGroup>

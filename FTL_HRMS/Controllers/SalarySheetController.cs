@@ -324,13 +324,13 @@ namespace FTL_HRMS.Controllers
                 {
                     int earnLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Earn").Select(i => i.Sl).FirstOrDefault();
                     var earnLeave = _db.LeaveCounts.Find(earnLeaveId);
-                    earnLeave.AvailableDay = 0;
+                    earnLeave.AvailableDay = Math.Floor(result) - result;
                     _db.Entry(earnLeave).State = EntityState.Modified;
                     _db.SaveChanges();
 
                     int withoutPayLeaveId = _db.LeaveCounts.Where(i => i.EmployeeId == sl && i.LeaveType.Name == "Without Pay").Select(i => i.Sl).FirstOrDefault();
                     var withoutPayLeave = _db.LeaveCounts.Find(withoutPayLeaveId);
-                    withoutPayLeave.AvailableDay = withoutPayLeave.AvailableDay - result;
+                    withoutPayLeave.AvailableDay = withoutPayLeave.AvailableDay - Math.Floor(result);
                     _db.Entry(withoutPayLeave).State = EntityState.Modified;
                     _db.SaveChanges();
                 }
