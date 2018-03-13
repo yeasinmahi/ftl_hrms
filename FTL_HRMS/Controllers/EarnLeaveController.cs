@@ -26,7 +26,7 @@ namespace FTL_HRMS.Controllers
             int EarnLeaveStartingMonth = GetEarnLeaveStartingMonth();
             int EarnLeaveCountDay = GetEarnLeaveCountDay();
             DateTime LastDateFromFilterAttendance = GetLastDateFromFilterAttendance();
-            DateTime FirstDate = Utility.Utility.GetCurrentDateTime();
+            DateTime FirstDate = Utility.Utility.GetDefaultDate();
 
             foreach (var emp in employeeList)
             {
@@ -41,7 +41,7 @@ namespace FTL_HRMS.Controllers
                         }
                         else
                         {
-                            FirstDate = LastEarnLeaveCountDate;
+                            FirstDate = LastEarnLeaveCountDate.AddDays(1);
                         }
                     }
                     else
@@ -79,7 +79,7 @@ namespace FTL_HRMS.Controllers
 
         public DateTime GetLastEarnLeaveCountDate()
         {
-            return _db.Company.Select(i => i.LastEarnLeaveCountDate).FirstOrDefault() ?? Utility.Utility.GetCurrentDateTime();
+            return _db.Company.Select(i => i.LastEarnLeaveCountDate).FirstOrDefault() ?? Utility.Utility.GetDefaultDate();
         }
 
         public int GetEarnLeaveStartingMonth()
@@ -94,7 +94,14 @@ namespace FTL_HRMS.Controllers
 
         public DateTime GetLastDateFromFilterAttendance()
         {
-            return _db.FilterAttendance.Where(i => i.IsCalculated == true).Max(i => i.Date);
+            if(_db.FilterAttendance.Where(i => i.IsCalculated == true).Count() > 0)
+            {
+                return _db.FilterAttendance.Where(i => i.IsCalculated == true).Max(i => i.Date);
+            }
+            else
+            {
+                return Utility.Utility.GetDefaultDate();
+            }           
         }
 
         public DateTime GetEarnLeaveCountStartingDate(DateTime EmployeeJoiningDate, int EarnLeaveStartingMonth)
