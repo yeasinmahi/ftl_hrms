@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -16,10 +17,11 @@ namespace FTL_HRMS.Controllers
         // GET: EarnLeave
         public ActionResult Index()
         {
+            ViewData["LastSync"] = GetLastEarnLeaveCountDate();
             return View();
         }
 
-        public void CalculateEarnLeave()
+        public ActionResult CalculateEarnLeave()
         {
             List<Employee> employeeList = GetEmployeeList();
             DateTime LastEarnLeaveCountDate = GetLastEarnLeaveCountDate();
@@ -70,6 +72,8 @@ namespace FTL_HRMS.Controllers
             {
                 //Failed!
             }
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.SyncSuccess);
+            return RedirectToAction("Index", "EarnLeave");
         }
 
         public List<Employee> GetEmployeeList()

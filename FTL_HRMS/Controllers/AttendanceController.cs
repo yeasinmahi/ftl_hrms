@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using static FTL_HRMS.Utility.DbUtility;
+using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -14,11 +15,24 @@ namespace FTL_HRMS.Controllers
     {
         private readonly HRMSDbContext _db = new HRMSDbContext();
 
-        public void SyncAttendance()
+        public ActionResult Index()
+        {
+            ViewData["LastSync"] = GetLastMonthlyAttendanceDate();
+            return View();
+        }
+
+        public DateTime GetLastMonthlyAttendanceDate()
+        {
+            return _db.MonthlyAttendance.Max(i => i.Date);
+        }
+
+        public ActionResult SyncAttendance()
         {
             MoveDeviceToDeviceAttendance();
             MoveDeviceAttendanceToFilterAttendance();
             MoveFilterAttendanceToMonthlyAttendance();
+            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.SyncSuccess);
+            return RedirectToAction("Index", "Attendance");
         }
 
         #region MoveDeviceToDeviceAttendance

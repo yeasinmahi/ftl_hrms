@@ -30,7 +30,9 @@ namespace FTL_HRMS.Utility
             DateRangeExceed,
             PasswordMismatch,
             CodeFormat,
-            RoleAddFailed
+            RoleAddFailed,
+            SyncSuccess,
+            SyncFailed
         }
 
         public static string GetStatusMessage(Status status)
@@ -73,6 +75,10 @@ namespace FTL_HRMS.Utility
                     return "0Enter only alphabets and digits as Code";
                 case Status.RoleAddFailed:
                     return "0Role Add Failed";
+                case Status.SyncSuccess:
+                    return "1Sync Successfull";
+                case Status.SyncFailed:
+                    return "0Sync Failed";
                 default:
                     return "0Cannot get the error";
             }

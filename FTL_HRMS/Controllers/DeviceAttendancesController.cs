@@ -13,12 +13,12 @@ namespace FTL_HRMS.Controllers
     public class DeviceAttendancesController : Controller
     {
         private readonly HRMSDbContext _db = new HRMSDbContext();
-        readonly AttendanceController _attendanceController = new AttendanceController();
+        //readonly AttendanceController _attendanceController = new AttendanceController();
         #region List
         // GET: DeviceAttendances
         public ActionResult Index()
         {
-            _attendanceController.SyncAttendance();
+            //_attendanceController.SyncAttendance();
             List<VMTodaysAttendance> todaysAttendance = new List<VMTodaysAttendance>();
             var codes = _db.DeviceAttendance.Select(m => m.EmployeeCode).Distinct();
             DateTime nowTime = Utility.Utility.GetCurrentDateTime();

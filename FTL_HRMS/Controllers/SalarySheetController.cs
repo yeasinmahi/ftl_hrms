@@ -14,7 +14,7 @@ namespace FTL_HRMS.Controllers
     { 
         // GET: SalarySheet
         private HRMSDbContext _db = new HRMSDbContext();
-        AttendanceController _att = new AttendanceController();
+        //AttendanceController _att = new AttendanceController();
 
         public ActionResult Index()
         {
@@ -79,7 +79,7 @@ namespace FTL_HRMS.Controllers
             int pendingSheet = _db.PaidSalaryDuration.Where(i => i.IsPaid == false).ToList().Count;
             if(startDate.Date > toDate.Date && endDate.Date < Utility.Utility.GetCurrentDateTime().Date && pendingSheet == 0)
             {
-                _att.SyncAttendance();
+                //_att.SyncAttendance();
                 List<int> employeeSlList = GetEmployeeSlFromMonthlyAttendance(startDate, endDate);
                 double workingDays = GetWorkingDays(startDate);
                 int paidSalaryDurationId = InsertPaidSalaryDuration(startDate, endDate, workingDays);

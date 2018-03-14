@@ -15,7 +15,7 @@ namespace FTL_HRMS.Controllers
     public class MonthlyAttendancesController : Controller
     {
         private HRMSDbContext _db = new HRMSDbContext();
-        AttendanceController _att = new AttendanceController();
+        //AttendanceController _att = new AttendanceController();
 
         // GET: MonthlyAttendances
         public ActionResult Index()
@@ -27,7 +27,7 @@ namespace FTL_HRMS.Controllers
         #region Employee Attendence Report
         public ActionResult EmployeeAttendenceReport()
         {
-            _att.SyncAttendance();
+            //_att.SyncAttendance();
             List<DepartmentGroup> groupList = new List<DepartmentGroup>();
             groupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(groupList, "Sl", "Name");
@@ -90,7 +90,7 @@ namespace FTL_HRMS.Controllers
         #region EmployeeWise Attendence
         public ActionResult EmployeewiseAttendenceReport()
         {
-            _att.SyncAttendance();
+            //_att.SyncAttendance();
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
             List<Employee> employeeList = new List<Employee>();
@@ -168,7 +168,7 @@ namespace FTL_HRMS.Controllers
         #region EmployeeWise Attendence
         public ActionResult EmployeewiseFilterAttendenceReport()
         {
-            _att.SyncAttendance();
+            //_att.SyncAttendance();
             List<Employee> employeeList = new List<Employee>();
             employeeList = _db.Employee.Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false).ToList();
             ViewBag.EmployeeId = new SelectList(employeeList, "Sl", "Code");
