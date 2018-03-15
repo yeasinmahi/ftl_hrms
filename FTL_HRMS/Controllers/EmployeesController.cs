@@ -40,9 +40,9 @@ namespace FTL_HRMS.Controllers
 
         #region Reset Password
         public async Task<ActionResult> ResetPassword()
-       {
+        {
             try
-            { 
+            {
                 UserStore<ApplicationUser> store = new UserStore<ApplicationUser>(_db);
                 UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(store);
                 string empCode = Convert.ToString(Request["field-1"]);
@@ -260,17 +260,17 @@ namespace FTL_HRMS.Controllers
             Session["EducationList"] = new List<Education>();
             Session["ExperienceList"] = new List<Experience>();
 
-            Employee employee = (Employee) TempData["Employee"];
-            
+            Employee employee = (Employee)TempData["Employee"];
+
             List<SourceOfHire> sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name");
-            
+
             List<Branch> branchList = _db.Branches.Where(i => i.Status == true).ToList();
             ViewBag.BranchId = new SelectList(branchList, "Sl", "Name");
-            
+
             List<EmployeeType> employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
             ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name");
-            
+
             List<DepartmentGroup> departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
             ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
@@ -289,14 +289,17 @@ namespace FTL_HRMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Gender,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,IsSystemOrSuperAdmin,Status,ProbationStatus,IsSpecialEmployee,ParmanentDate,EmergencyMobile,RelationEmergencyMobile,BloodGroup,MedicalHistory,Height,Weight,ExtraCurricularActivities")] Employee employee, HttpPostedFileBase image1)
         {
-            if (UserValidation(employee.Code, Request["Password"], Request["ConfirmPassword"]) && Convert.ToString(Request["Password"]).Length >= 6)
+            if (UserValidation(employee.Code, Request["Password"], Request["ConfirmPassword"]) &&
+                Convert.ToString(Request["Password"]).Length >= 6)
             {
                 #region Add Employee
+
                 string permanentAddress = Request["PermanentAddress"].ToString();
                 string presentAddress = Request["PresentAddress"].ToString();
                 int designationId = Convert.ToInt32(Request["ddl_designation"]);
 
-                string role = _db.Designation.Where(i => i.Sl == designationId).Select(i => i.RoleName).FirstOrDefault();
+                string role =
+                    _db.Designation.Where(i => i.Sl == designationId).Select(i => i.RoleName).FirstOrDefault();
 
                 employee.PresentAddress = presentAddress;
                 employee.PermanentAddress = permanentAddress;
@@ -314,7 +317,15 @@ namespace FTL_HRMS.Controllers
                 _db.Employee.Add(employee);
                 try
                 {
-                    _db.SaveChanges();
+                    if (ModelState.IsValid)
+                    {
+                        _db.SaveChanges();
+                    }
+                    else
+                    {
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+                        return EmployeeDefaultList(employee);
+                    }
                 }
                 catch (Exception)
                 {
@@ -366,15 +377,16 @@ namespace FTL_HRMS.Controllers
                     }
                     catch (Exception)
                     {
-                        
+
                     }
                     TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.CodeFormat);
                     return EmployeeDefaultList(employee);
                 }
-                
+
                 #endregion
 
                 #region Add Education
+
                 List<Education> educationList = new List<Education>();
                 educationList = (List<Education>)Session["EducationList"];
 
@@ -391,9 +403,11 @@ namespace FTL_HRMS.Controllers
                     _db.Education.Add(education);
                     _db.SaveChanges();
                 }
+
                 #endregion
 
                 #region Add Experience
+
                 List<Experience> experienceList = new List<Experience>();
                 experienceList = (List<Experience>)Session["ExperienceList"];
 
@@ -411,9 +425,11 @@ namespace FTL_HRMS.Controllers
                     _db.Experience.Add(experience);
                     _db.SaveChanges();
                 }
+
                 #endregion
 
                 #region Add Image
+
                 if (image1 != null)
                 {
                     Images image = new Images();
@@ -423,9 +439,11 @@ namespace FTL_HRMS.Controllers
                     _db.Images.Add(image);
                     _db.SaveChanges();
                 }
+
                 #endregion
 
                 #region Add Leave Count
+
                 List<LeaveType> typeList = new List<LeaveType>();
                 typeList = _db.LeaveTypes.ToList();
 
@@ -438,9 +456,11 @@ namespace FTL_HRMS.Controllers
                     _db.LeaveCounts.Add(leaveCount);
                     _db.SaveChanges();
                 }
+
                 #endregion
 
                 #region Add Employee Salary Distribution
+
                 if (_db.SalaryDistribution.Select(i => i.Sl).Count() > 0)
                 {
                     int id = _db.SalaryDistribution.Select(i => i.Sl).FirstOrDefault();
@@ -472,6 +492,7 @@ namespace FTL_HRMS.Controllers
                     _db.EmployeeSalaryDistribution.Add(distribution);
                     _db.SaveChanges();
                 }
+
                 #endregion
 
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddSuccess);
@@ -481,18 +502,20 @@ namespace FTL_HRMS.Controllers
             {
                 List<SourceOfHire> sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
                 ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
-                
+
                 List<Branch> branchList = _db.Branches.Where(i => i.Status == true).ToList();
                 ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", employee.BranchId);
-                
+
                 List<EmployeeType> employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
                 ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
-                
-                List<DepartmentGroup> departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+
+                List<DepartmentGroup> departmentGroupList =
+                    _db.DepartmentGroup.Where(i => i.Status == true).ToList();
                 ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
                 return View(employee);
             }
+
         }
         #endregion
 
@@ -536,7 +559,7 @@ namespace FTL_HRMS.Controllers
                 {
                     if (_db.Users.Where(u => u.UserName == employee.Code).Count() > 0)
                     {
-                        TempData["message"] =  DbUtility.GetStatusMessage(DbUtility.Status.Exist);
+                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.Exist);
                     }
                     else
                     {
@@ -683,7 +706,7 @@ namespace FTL_HRMS.Controllers
             if (_db.Users.Where(i => i.UserName == username).Count() > 0)
             {
                 isValidate = false;
-                TempData["message"] =DbUtility.GetStatusMessage(DbUtility.Status.CodeExist);
+                TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.CodeExist);
             }
             else
             {

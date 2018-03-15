@@ -71,11 +71,13 @@ namespace FTL_HRMS.Models.Hr
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage = "Date of birth can not be empty")]
         public DateTime DateOfBirth { get; set; }
 
         [DataType(DataType.Date),
         DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}",
         ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage = "Date of joining can not be empty")]
         public DateTime DateOfJoining { get; set; }
 
         [Required(ErrorMessage = "Source Of Hire cannot be empty")]
@@ -94,6 +96,9 @@ namespace FTL_HRMS.Models.Hr
         [ForeignKey("Branch")]
         public int BranchId { get; set; }
 
+        [DataType(DataType.Currency)]
+        [Required(ErrorMessage = "Gross Salary can not be empty")]
+        [Range(0, double.MaxValue, ErrorMessage = "The value must be greater than 0")]
         public double GrossSalary { get; set; }
 
         [ForeignKey("CreateEmployee")]
@@ -127,19 +132,26 @@ namespace FTL_HRMS.Models.Hr
         public DateTime? ParmanentDate { get; set; }
         
         [StringLength(450)]
+        [Required(ErrorMessage = "Emergency mobile can not be empty")]
         public string EmergencyMobile { get; set; }
         
         [StringLength(450)]
+        [Required(ErrorMessage = "Relation Emergency Mobile can not be empty")]
         public string RelationEmergencyMobile { get; set; }
-        
+
+        [Required(ErrorMessage = "Blood Group can not be empty")]
         public string BloodGroup { get; set; }
-        
+
+        [Required(ErrorMessage = "Medical History can not be empty")]
         public string MedicalHistory { get; set; }
 
+        [Required(ErrorMessage = "Gross can not be empty")]
         public string Height { get; set; }
 
+        [Required(ErrorMessage = "Weight can not be empty")]
         public string Weight { get; set; }
-        
+
+        [Required(ErrorMessage = "Extra Curricular Activities can not be empty")]
         public string ExtraCurricularActivities { get; set; }
 
 

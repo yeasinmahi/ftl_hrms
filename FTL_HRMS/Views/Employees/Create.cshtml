@@ -313,7 +313,7 @@
                                             @Html.LabelFor(model => model.GrossSalary, "Gross Salary", new { @class = "required" })
                                         </div>
                                         <div>
-                                            @Html.EditorFor(model => model.GrossSalary, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @tabindex = 18, @required = true } })
+                                            @Html.EditorFor(model => model.GrossSalary, new { htmlAttributes = new { @class = "form-control", style = "width:100%", @type = "number",  @tabindex = 18, @required = true } })
                                             @Html.ValidationMessageFor(model => model.GrossSalary, "", new { @class = "text-danger" })
                                         </div>
                                         <div>
