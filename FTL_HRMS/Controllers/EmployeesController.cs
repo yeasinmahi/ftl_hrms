@@ -33,7 +33,7 @@ namespace FTL_HRMS.Controllers
         {
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
-            List<Employee> employeeList = _db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status == true && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
+            List<Employee> employeeList = _db.Employee.Include(a => a.SourceOfHire).Include(a => a.Designation).Include(a => a.EmployeeType).Include(a => a.Branch).Where(i => i.Status && i.IsSystemOrSuperAdmin == false && i.Sl != userId).ToList();
             return View(employeeList);
         }
         #endregion
@@ -85,7 +85,7 @@ namespace FTL_HRMS.Controllers
             string userName = User.Identity.Name;
             int userId = DbUtility.GetUserId(_db, userName);
             string codeOrName = Request["CodeOrName"];
-            List<Employee> employeeList = _db.Employee.Where(r => (r.Name.Contains(codeOrName) || r.Code.Contains(codeOrName)) && r.Sl != userId && r.Status == true && r.IsSystemOrSuperAdmin == false).ToList();
+            List<Employee> employeeList = _db.Employee.Where(r => (r.Name.Contains(codeOrName) || r.Code.Contains(codeOrName)) && r.Sl != userId && r.Status && r.IsSystemOrSuperAdmin == false).ToList();
 
             List<VMEmployee> empList = new List<VMEmployee>();
             foreach (var item in employeeList)
@@ -262,16 +262,16 @@ namespace FTL_HRMS.Controllers
 
             Employee employee = (Employee)TempData["Employee"];
 
-            List<SourceOfHire> sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+            List<SourceOfHire> sourceOfHireList = _db.SourceOfHire.Where(i => i.Status).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name");
 
-            List<Branch> branchList = _db.Branches.Where(i => i.Status == true).ToList();
+            List<Branch> branchList = _db.Branches.Where(i => i.Status).ToList();
             ViewBag.BranchId = new SelectList(branchList, "Sl", "Name");
 
-            List<EmployeeType> employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            List<EmployeeType> employeeTypeList = _db.EmployeeType.Where(i => i.Status).ToList();
             ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name");
 
-            List<DepartmentGroup> departmentGroupList = _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+            List<DepartmentGroup> departmentGroupList = _db.DepartmentGroup.Where(i => i.Status).ToList();
             ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
             if (employee != null)
@@ -287,7 +287,7 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Gender,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,CreatedBy,CreateDate,UpdatedBy,UpdateDate,IsSystemOrSuperAdmin,Status,ProbationStatus,IsSpecialEmployee,ParmanentDate,EmergencyMobile,RelationEmergencyMobile,BloodGroup,MedicalHistory,Height,Weight,ExtraCurricularActivities")] Employee employee, HttpPostedFileBase image1)
+        public ActionResult Create([Bind(Include = "Sl,Code,Name,FathersName,MothersName,PresentAddress,PermanentAddress,Gender,Mobile,Email,NIDorBirthCirtificate,DrivingLicence,PassportNumber,DateOfBirth,DateOfJoining,SourceOfHireId,DesignationId,EmployeeTypeId,BranchId,GrossSalary,IsSystemOrSuperAdmin,ProbationStatus,IsSpecialEmployee,ParmanentDate,EmergencyMobile,RelationEmergencyMobile,BloodGroup,MedicalHistory,Height,Weight,ExtraCurricularActivities")] Employee employee, HttpPostedFileBase image1)
         {
             if (UserValidation(employee.Code, Request["Password"], Request["ConfirmPassword"]) &&
                 Convert.ToString(Request["Password"]).Length >= 6)
@@ -323,7 +323,13 @@ namespace FTL_HRMS.Controllers
                     }
                     else
                     {
-                        TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
+                        List<String> errors = Utility.Utility.GetErrorListFromModelState(ModelState);
+                        TempData["message"] = "0";
+                        foreach (string error in errors)
+                        {
+                            TempData["message"] +=error + "  \n";
+                        }
+                        //TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.AddFailed);
                         return EmployeeDefaultList(employee);
                     }
                 }
@@ -333,7 +339,7 @@ namespace FTL_HRMS.Controllers
                     return EmployeeDefaultList(employee);
                 }
 
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
+               // var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
 
                 ApplicationUser user = new ApplicationUser();
@@ -500,17 +506,17 @@ namespace FTL_HRMS.Controllers
             }
             else
             {
-                List<SourceOfHire> sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+                List<SourceOfHire> sourceOfHireList = _db.SourceOfHire.Where(i => i.Status).ToList();
                 ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
 
-                List<Branch> branchList = _db.Branches.Where(i => i.Status == true).ToList();
+                List<Branch> branchList = _db.Branches.Where(i => i.Status).ToList();
                 ViewBag.BranchId = new SelectList(branchList, "Sl", "Name", employee.BranchId);
 
-                List<EmployeeType> employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+                List<EmployeeType> employeeTypeList = _db.EmployeeType.Where(i => i.Status).ToList();
                 ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
 
                 List<DepartmentGroup> departmentGroupList =
-                    _db.DepartmentGroup.Where(i => i.Status == true).ToList();
+                    _db.DepartmentGroup.Where(i => i.Status).ToList();
                 ViewBag.DepartmentGroupId = new SelectList(departmentGroupList, "Sl", "Name");
 
                 return View(employee);
@@ -534,11 +540,11 @@ namespace FTL_HRMS.Controllers
             }
 
             List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
-            sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+            sourceOfHireList = _db.SourceOfHire.Where(i => i.Status).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
 
             List<EmployeeType> employeeTypeList = new List<EmployeeType>();
-            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            employeeTypeList = _db.EmployeeType.Where(i => i.Status).ToList();
             ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
 
             return View(employee);
@@ -642,11 +648,11 @@ namespace FTL_HRMS.Controllers
                 TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateFailed);
             }
             List<SourceOfHire> sourceOfHireList = new List<SourceOfHire>();
-            sourceOfHireList = _db.SourceOfHire.Where(i => i.Status == true).ToList();
+            sourceOfHireList = _db.SourceOfHire.Where(i => i.Status).ToList();
             ViewBag.SourceOfHireId = new SelectList(sourceOfHireList, "Sl", "Name", employee.SourceOfHireId);
 
             List<EmployeeType> employeeTypeList = new List<EmployeeType>();
-            employeeTypeList = _db.EmployeeType.Where(i => i.Status == true).ToList();
+            employeeTypeList = _db.EmployeeType.Where(i => i.Status).ToList();
             ViewBag.EmployeeTypeId = new SelectList(employeeTypeList, "Sl", "Name", employee.EmployeeTypeId);
 
             return View(employee);

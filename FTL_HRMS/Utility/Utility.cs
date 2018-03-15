@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FTL_HRMS.Utility
 {
@@ -53,6 +56,16 @@ namespace FTL_HRMS.Utility
             DateTime timeUtc = DateTime.UtcNow;
             TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("Bangladesh Standard Time");
             return TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone);
+        }
+        public static List<string> GetErrorListFromModelState
+                                              (ModelStateDictionary modelState)
+        {
+            var query = from state in modelState.Values
+                        from error in state.Errors
+                        select error.ErrorMessage;
+
+            var errorList = query.ToList();
+            return errorList;
         }
     }
 }
