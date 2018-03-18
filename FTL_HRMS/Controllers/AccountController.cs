@@ -40,8 +40,23 @@ namespace FTL_HRMS.Controllers
             this.RoleManager = roleManager;
         }
 
+        [AllowAnonymous]
+        public ActionResult ContactUs()
+        {
+            return View();
+        }
 
+        [AllowAnonymous]
+        public ActionResult Help()
+        {
+            return View();
+        }
 
+        [AllowAnonymous]
+        public ActionResult About()
+        {
+            return View();
+        }
         //
         // GET: /Account/Login
         [AllowAnonymous]
