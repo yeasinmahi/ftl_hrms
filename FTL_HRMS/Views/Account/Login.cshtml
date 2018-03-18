@@ -5,7 +5,7 @@
 }
 <div id="login" class="login loginpage col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-2 col-xs-8">
 
-        @if (@TempData["ErrLogin"] != null)
+        @if (TempData["ErrLogin"] != null)
         {
             <div class="alert alert-danger fade in">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -21,7 +21,6 @@
                 <div class="panel-heading" style="text-align:center; font-size:18px">CapitaLand Development Limited</div>
 
                 <div class="panel-body">
-                    <form name="loginform" id="loginform" action="index.html" method="post">
                         <label style="font-size:18px;color:black; margin-left:2%">Sign In</label>
                         <label style="font-size:13px;color:black; margin-left:2%">to continue to HRMS</label>
                         <label for="user_login">
@@ -36,7 +35,6 @@
                         <p class="submit">
                             <input type="submit" name="wp-submit" id="wp-submit" class="btn btn-info btn-block" value="Sign In" />
                         </p>
-                    </form>
                     <p id="nav">
                         <a class="pull-left" href="@Url.Action("ContactUs", "Account")" style="color: black">Contact Us</a>
                         <a class="pull-right" href="@Url.Action("About", "Account")" style="color: black">About</a>
