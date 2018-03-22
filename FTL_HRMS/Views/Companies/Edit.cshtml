@@ -30,6 +30,7 @@
                     @Html.Partial("~/Views/Shared/WarningMessage.cshtml")
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.Sl)
+                    @Html.HiddenFor(model => model.LastEarnLeaveCountDate)
                     <div class="col-md-offset-1">
                         <div class="col-md-6">
                             <div>

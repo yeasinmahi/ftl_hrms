@@ -217,6 +217,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\AdminTemplate\assets\images\login-logo.png" />
     <Content Include="Content\AdminTemplate\Help.html" />
     <Content Include="Content\AdminTemplate\ContactUs.html" />
     <Content Include="Content\AdminTemplate\assets\css\animate.min.css" />

@@ -76,6 +76,7 @@ namespace FTL_HRMS.Controllers
                     return HttpNotFound();
                 }
                 ViewBag.Address = company.Address;
+                ViewBag.LastEarnLeaveCountDate = company.LastEarnLeaveCountDate;
                 return View(company);
             }
             else
@@ -89,7 +90,7 @@ namespace FTL_HRMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Sl,Name,Address,Email,Website,Phone,Mobile,AlternativeMobile,RegistrationNo,RegistrationDate,TINNumber,StartingDate, EarnLeaveCountDay, EarnLeaveDuration")] Company company)
+        public ActionResult Edit([Bind(Include = "Sl,Name,Address,Email,Website,Phone,Mobile,AlternativeMobile,RegistrationNo,RegistrationDate,TINNumber,StartingDate, LastEarnLeaveCountDate, EarnLeaveCountDay, EarnLeaveDuration")] Company company)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +100,7 @@ namespace FTL_HRMS.Controllers
                     _db.SaveChanges();
                     TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.UpdateSuccess);
                     ViewBag.Address = company.Address;
-                    
+
                 }
                 else
                 {
