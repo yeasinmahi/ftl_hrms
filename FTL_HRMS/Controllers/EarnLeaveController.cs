@@ -15,12 +15,6 @@ namespace FTL_HRMS.Controllers
     {
         private HRMSDbContext _db = new HRMSDbContext();
         // GET: EarnLeave
-        public ActionResult Index()
-        {
-            ViewData["LastSync"] = GetLastEarnLeaveCountDate();
-            return View();
-        }
-
         public ActionResult CalculateEarnLeave()
         {
             List<Employee> employeeList = GetEmployeeList();

@@ -15,17 +15,6 @@ namespace FTL_HRMS.Controllers
     {
         private readonly HRMSDbContext _db = new HRMSDbContext();
 
-        public ActionResult Index()
-        {
-            ViewData["LastSync"] = GetLastMonthlyAttendanceDate();
-            return View();
-        }
-
-        public DateTime GetLastMonthlyAttendanceDate()
-        {
-            return _db.MonthlyAttendance.Max(i => i.Date);
-        }
-
         public ActionResult SyncAttendance()
         {
             MoveDeviceToDeviceAttendance();
