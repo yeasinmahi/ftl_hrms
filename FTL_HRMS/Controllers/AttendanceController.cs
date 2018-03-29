@@ -32,7 +32,7 @@ namespace FTL_HRMS.Controllers
             MoveDeviceAttendanceToFilterAttendance();
             MoveFilterAttendanceToMonthlyAttendance();
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.SyncSuccess);
-            return RedirectToAction("Index", "Attendance");
+            return RedirectToAction("Index", "Sync");
         }
 
         #region MoveDeviceToDeviceAttendance

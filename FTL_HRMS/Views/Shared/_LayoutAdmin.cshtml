@@ -65,11 +65,7 @@
             }
             @if (Request.IsAuthenticated)
             {
-
-
                 HRMSDbContext db_ctx = new HRMSDbContext();
-                
-
 
                 UserManager<FTL_HRMS.Models.ApplicationUser> userManager = new UserManager<FTL_HRMS.Models.ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<FTL_HRMS.Models.ApplicationUser>(new HRMSDbContext()));
 

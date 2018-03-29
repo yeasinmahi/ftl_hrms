@@ -73,7 +73,7 @@ namespace FTL_HRMS.Controllers
                 //Failed!
             }
             TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.SyncSuccess);
-            return RedirectToAction("Index", "EarnLeave");
+            return RedirectToAction("Index", "Sync");
         }
 
         public List<Employee> GetEmployeeList()
@@ -120,7 +120,7 @@ namespace FTL_HRMS.Controllers
 
         public double GetEmployeeEarnLeaveCount(int EmployeePresentDays, int EarnLeaveCountDay)
         {
-            return EmployeePresentDays / EarnLeaveCountDay;
+            return Convert.ToDouble(EmployeePresentDays) / Convert.ToDouble(EarnLeaveCountDay);
         }
 
         public bool UpdateEmployeeLeaveCounts(int sl, double EmployeeEarnLeaveCount)
