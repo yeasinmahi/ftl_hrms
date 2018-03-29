@@ -273,12 +273,12 @@ namespace FTL_HRMS.Controllers
             return _db.FilterAttendance.Where(i => i.EmployeeId == sl && DbFunctions.TruncateTime(i.Date) == date.Date).ToList();
         }
 
-        public bool IsEmployeeLate(DateTime inTime, DateTime openingTime, double lateConsiderationTime)
+        public bool IsEmployeeLate(DateTime inTime, DateTime outTime, DateTime openingTime, DateTime closingTime, double lateConsiderationTime)
         {
             try
             {
                 DateTime openingTimeWithConsidration = openingTime.AddMinutes(lateConsiderationTime);
-                if (inTime.TimeOfDay >= openingTimeWithConsidration.TimeOfDay)
+                if (inTime.TimeOfDay > openingTimeWithConsidration.TimeOfDay || outTime.TimeOfDay < closingTime.TimeOfDay)
                 {
                     return true;
                 }
@@ -389,7 +389,7 @@ namespace FTL_HRMS.Controllers
                         {
                             double lateConsiderationTime = emp.Branch.LateConsiderationTime;
                             FilterAttendance filterAttendance = employeeAttendance.FirstOrDefault();
-                            if (filterAttendance != null && IsEmployeeLate(filterAttendance.InTime, emp.Branch.OpeningTime, lateConsiderationTime))
+                            if (filterAttendance != null && IsEmployeeLate(filterAttendance.InTime, filterAttendance.OutTime, emp.Branch.OpeningTime, emp.Branch.EndingTime, lateConsiderationTime))
                             {
                                 monthlyAttendance.Status = "L";
                             }
