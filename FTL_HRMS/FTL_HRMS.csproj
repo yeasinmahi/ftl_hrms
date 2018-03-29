@@ -3494,7 +3494,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\AdminTemplate\assets\plugins\data-table\" />
     <Folder Include="Content\assets\data\images\" />
-    <Folder Include="Views\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Reports\BranchReport.rpt">
