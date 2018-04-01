@@ -7,7 +7,6 @@ using System.Linq;
 using System.Web.Mvc;
 using FTL_HRMS.DAL;
 using static FTL_HRMS.Utility.DbUtility;
-using FTL_HRMS.Utility;
 
 namespace FTL_HRMS.Controllers
 {
@@ -20,7 +19,7 @@ namespace FTL_HRMS.Controllers
             MoveDeviceToDeviceAttendance();
             MoveDeviceAttendanceToFilterAttendance();
             MoveFilterAttendanceToMonthlyAttendance();
-            TempData["message"] = DbUtility.GetStatusMessage(DbUtility.Status.SyncSuccess);
+            TempData["message"] = GetStatusMessage(Status.SyncSuccess);
             return RedirectToAction("Index", "Sync");
         }
 
@@ -188,8 +187,18 @@ namespace FTL_HRMS.Controllers
 
         public List<DeviceAttendance> GetDeviceAttendance(string code, DateTime date)
         {
-            return _db.DeviceAttendance.Where(i => i.EmployeeCode == code && DbFunctions.TruncateTime(i.CheckTime) == date.Date).ToList();
+            if (
+                _db.DeviceAttendance.Where(
+                    i => i.EmployeeCode == code && DbFunctions.TruncateTime(i.CheckTime) == date.Date && i.IsCalculated == false).ToList().Count >
+                0)
+            {
+                return
+                    _db.DeviceAttendance.Where(
+                        i => i.EmployeeCode == code && DbFunctions.TruncateTime(i.CheckTime) == date.Date).ToList();
+            }
+            return null;
         }
+
         #endregion
 
         #region MoveFilterAttendanceToMonthlyAttendance
